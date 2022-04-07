@@ -1,6 +1,6 @@
 {
 	"common": {
-		"name": "samart_home_handy_bis",
+		"name": "hiob",
 		"version": "0.0.1",
 		"news": {
 			"0.0.1": {
@@ -16,18 +16,18 @@
 				"zh-cn": "首次出版"
 			}
 		},
-		"title": "HandyVis",
+		"title": "HioB",
 		"titleLang": {
-			"en": "Handy Vis",
-			"de": "Handy Vis",
-			"ru": "Handy Vis",
-			"pt": "Handy Vis",
-			"nl": "Handy Vis",
-			"fr": "Handy Vis",
-			"it": "Handy Vis",
-			"es": "Handy Vis",
-			"pl": "Handy Vis",
-			"zh-cn": "Handy Vis"
+			"en": "HioB",
+			"de": "HioB Vis",
+			"ru": "HioB Vis",
+			"pt": "HioB Vis",
+			"nl": "HioB Vis",
+			"fr": "HioB Vis",
+			"it": "HioB Vis",
+			"es": "HioB Vis",
+			"pl": "HioB Vis",
+			"zh-cn": "HioB Vis"
 		},
 		"desc": {
 			"en": "Visualisierung für das Handy",
@@ -56,7 +56,7 @@
 		"icon": "samart_home_handy_bis.png",
 		"enabled": true,
 		"extIcon": "https://raw.githubusercontent.com/mor15Euro1/ioBroker.samart_home_handy_bis/main/admin/samart_home_handy_bis.png",
-		"readme": "https://github.com/mor15Euro1/ioBroker.samart_home_handy_bis/blob/main/README.md",
+		"readme": "https://github.com/mor15Euro1/ioBroker.HioB/blob/main/README.md",
 		"loglevel": "info",
 		"mode": "daemon",
 		"type": "visualization",

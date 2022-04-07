@@ -1,12 +1,12 @@
 {
-  "name": "iobroker.samart_home_handy_bis",
+  "name": "iobroker.hiob",
   "version": "0.0.1",
   "description": "Visualisierung für das Handy",
   "author": {
     "name": "mor15Euro",
     "email": "moritz@bachmaiers.de"
   },
-  "homepage": "https://github.com/mor15Euro1/ioBroker.samart_home_handy_bis",
+  "homepage": "https://github.com/mor15Euro1/ioBroker.HioB",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mor15Euro1/ioBroker.samart_home_handy_bis"
+    "url": "https://github.com/mor15Euro1/ioBroker.HioB"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.6.0",
@@ -65,7 +65,7 @@
     "release": "release-script"
   },
   "bugs": {
-    "url": "https://github.com/mor15Euro1/ioBroker.samart_home_handy_bis/issues"
+    "url": "https://github.com/mor15Euro1/ioBroker.HioB/issues"
   },
   "readmeFilename": "README.md"
 }
