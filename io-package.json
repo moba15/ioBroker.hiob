@@ -1,0 +1,79 @@
+{
+	"common": {
+		"name": "samart_home_handy_bis",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "HandyVis",
+		"titleLang": {
+			"en": "Handy Vis",
+			"de": "Handy Vis",
+			"ru": "Handy Vis",
+			"pt": "Handy Vis",
+			"nl": "Handy Vis",
+			"fr": "Handy Vis",
+			"it": "Handy Vis",
+			"es": "Handy Vis",
+			"pl": "Handy Vis",
+			"zh-cn": "Handy Vis"
+		},
+		"desc": {
+			"en": "Visualisierung für das Handy",
+			"de": "Visualisierung für das Handy",
+			"ru": "Visualisierung für das Handy",
+			"pt": "Visualisierung für das Handy",
+			"nl": "Visualisierung für das Handy",
+			"fr": "Visualisierung für das Handy",
+			"it": "Visualisierung für das Handy",
+			"es": "Visualisierung für das Handy",
+			"pl": "Visualisierung für das Handy",
+			"zh-cn": "方便的可视化"
+		},
+		"authors": [
+			"mor15Euro <moritz@bachmaiers.de>"
+		],
+		"keywords": [
+			"ioBroker",
+			"template",
+			"Smart Home",
+			"home automation"
+		],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "main.js",
+		"icon": "samart_home_handy_bis.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/mor15Euro1/ioBroker.samart_home_handy_bis/main/admin/samart_home_handy_bis.png",
+		"readme": "https://github.com/mor15Euro1/ioBroker.samart_home_handy_bis/blob/main/README.md",
+		"loglevel": "info",
+		"mode": "daemon",
+		"type": "visualization",
+		"compact": true,
+		"connectionType": "local",
+		"dataSource": "push",
+		"materialize": true,
+		"dependencies": [
+			{
+				"js-controller": ">=2.0.0"
+			}
+		]
+	},
+	"native": {
+		"option1": "*",
+		"option2": 42
+	},
+	"objects": [],
+	"instanceObjects": []
+}

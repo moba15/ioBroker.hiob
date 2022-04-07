@@ -1,0 +1,39 @@
+{
+	"cli": true,
+	"target": "directory",
+	"adapterName": "samart_home_handy_bis",
+	"title": "HandyVis",
+	"description": "Visualisierung für das Handy",
+	"expert": "no",
+	"features": [
+		"adapter"
+	],
+	"adminFeatures": [],
+	"type": "visualization",
+	"startMode": "daemon",
+	"connectionType": "local",
+	"dataSource": "push",
+	"connectionIndicator": "no",
+	"language": "JavaScript",
+	"adminReact": "no",
+	"tools": [
+		"ESLint",
+		"type checking"
+	],
+	"i18n": "words.js",
+	"releaseScript": "yes",
+	"devServer": "yes",
+	"devServerPort": 8082,
+	"indentation": "Tab",
+	"quotes": "double",
+	"es6class": "yes",
+	"authorName": "mor15Euro",
+	"authorGithub": "mor15Euro1",
+	"authorEmail": "moritz@bachmaiers.de",
+	"gitRemoteProtocol": "HTTPS",
+	"gitCommit": "no",
+	"defaultBranch": "main",
+	"license": "MIT License",
+	"dependabot": "no",
+	"creatorVersion": "2.1.1"
+}
