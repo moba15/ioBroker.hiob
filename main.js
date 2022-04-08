@@ -65,12 +65,7 @@ class SamartHomeHandyBis extends utils.Adapter {
 			},
 			native: {},
 		});
-
 		// In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-		const states = this.config.option1.split(";");
-		states.forEach((element) => {
-			this.subscribeForeignStates(element);
-		});
 		// You can also add a subscription for multiple states. The following line watches all states starting with "lights."
 		// this.subscribeStates("lights.*");
 		// Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
