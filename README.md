@@ -1,5 +1,5 @@
 ![Logo](admin/samart_home_handy_bis.png)
-# ioBroker.samart_home_handy_bis
+# ioBroker.hioB
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.samart_home_handy_bis.svg)](https://www.npmjs.com/package/iobroker.samart_home_handy_bis)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.samart_home_handy_bis.svg)](https://www.npmjs.com/package/iobroker.samart_home_handy_bis)
