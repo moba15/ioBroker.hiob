@@ -1,42 +1,42 @@
-﻿![Logo](admin/samart_home_handy_bis.png) 
-# ioBroker.hioB
+# Introduction
+
+## Installation
+
+Zunächst musst du den HioB Adapter manuell installieren:
+
+* Der Adpater muss manuell Installiert werden, hierfür muss der Expertenmodus im IoBroker aktiviert werden
+* Die aktuellste Version findest auf GitHub: [https://github.com/mor15Euro1/ioBroker.HioB.git  ](https://github.com/mor15Euro1/ioBroker.HioB.git)
+* Nach der Installation wird ein gültiger und freier Port für den Adapter benötigt (z.B. 8090), dieser muss bei den Adapter-Einstellungen angeben werden
 
 
-## HioB for ioBroker
 
-Visualisation for your IoBroker and Handy
+## App Einrichtung:
 
-## Getting started
-* This section will be updated soon
+### Installation:&#x20;
 
-## Changelog
-<!--
-	Placeholder for the next version (at the beginning of the line):
-	### **WORK IN PROGRESS**
--->
+* Installieren die App unter [https://play.google.com/store/apps/details?id=de.bachmaier.smart\_home](https://play.google.com/store/apps/details?id=de.bachmaier.smart\_home)
 
-### **WORK IN PROGRESS**
-* This App is in Progress and it may change a lot during Development
+### Geräte Einrichten
 
-## License
-MIT License
+#### Manuell in der App:&#x20;
 
-Copyright (c) 2022 mor15Euro <hiob@bachmaiers.de> <http://bachmaiers.de/hiob>
+* Es kann jederzeit Manuell ein Gerät unter "Device-Settings" hinzugefügt/bearbeitet werden
+* Hierfür werden die ObjectIDs vom IoBroker-Datenpunkt benötigt
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+#### Manuell im IoBroker (Empfohlen):
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+* Zunächst muss eine Aufzählungskategorie mit der ID „hiob“ erstellt werden
+* Nun können Geräte in diese Kategorie hinzugefügt werden.
+*   Daraufhin muss in der App folgendes gemacht werden:&#x20;
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+    1. Bei „Update Enums“ auf „Update“ klicken&#x20;
+    2. Bei „Import Enums“ auf „Import“ klicken
+
+    Daraufhin werden **alle Geräte** aus der HioB-Aufzählung importiert.
+
+**Wichtig:** Füge nur einzelne Datenpunkte hinzu, die später auch in der App benötigt werden.
+
+**Tipp:** Je nach Anzahl bzw. Komplexität des SmartHomes ist eine Gruppierung (z.B. nach Stockwerken, Räumen oder Gerätetypen) zu empfehlen.
+
+
+
