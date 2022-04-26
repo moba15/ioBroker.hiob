@@ -38,5 +38,11 @@ Zunächst musst du den HioB Adapter manuell installieren:
 
 **Tipp:** Je nach Anzahl bzw. Komplexität des SmartHomes ist eine Gruppierung (z.B. nach Stockwerken, Räumen oder Gerätetypen) zu empfehlen.
 
+### Tabs/Screens Hinzufügen
+
+* Unter "Screen-Settings" kannst du einen neuen Screen/Tab hinzufügen
+* In jedem Screen kannst du (nachdem dem du diese hinzugefügt hast) verschiedene [Widgets](https://app.gitbook.com/s/YWLvuNyLNp6aa7cn2y33/\~/changes/oA9p3RZ4zPIZXkJxzQ1V/widgets)/Gruppen hinzufügen
+* Die Reihenfolge kann nachträglich über Drag-and-Drop ändern
+
 
 
