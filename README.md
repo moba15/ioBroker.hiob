@@ -55,6 +55,7 @@ Zunächst musst du den HioB Adapter manuell installieren:
 * Der Name des Widget bestimmt dabei den Anzeigenamen unter "Widget-Settings"
 * Der optionale "Value" des Widgtes bestimmt dabei den Anzeigetext auf der Hauptseite
 * Um ein Widget benutzen zu können, muss dieses noch einem beliebigen Screen/Tab oder Gruppe unter "Screen-Settings" hinzugefügt werden
+* Eine vollständige Liste aller Widgets kann [hier](widgets.md) gefunden werden
 
 
 
