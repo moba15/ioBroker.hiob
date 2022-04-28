@@ -18,6 +18,11 @@ Zunächst musst du den HioB Adapter manuell installieren:
 
 ### Geräte Einrichten
 
+#### Geräte Strucktur
+
+* Ein Gerät besteht aus mehreren Datenpunkte
+* Die meisten Widgets benötigen dabei jeweils **nur ein** Datenpunkt des jeweiligen Gerätes
+
 #### Manuell in der App:&#x20;
 
 * Es kann jederzeit Manuell ein Gerät unter "Device-Settings" hinzugefügt/bearbeitet werden
@@ -43,6 +48,13 @@ Zunächst musst du den HioB Adapter manuell installieren:
 * Unter "Screen-Settings" kannst du einen neuen Screen/Tab hinzufügen
 * In jedem Screen kannst du (nachdem dem du diese hinzugefügt hast) verschiedene [Widgets](https://app.gitbook.com/s/YWLvuNyLNp6aa7cn2y33/\~/changes/oA9p3RZ4zPIZXkJxzQ1V/widgets)/Gruppen hinzufügen
 * Die Reihenfolge kann nachträglich über Drag-and-Drop ändern
+
+### Widgets erstellen
+
+* Widgets können unter "Widget-Settings" erstellt werden
+* Der Name des Widget bestimmt dabei den Anzeigenamen unter "Widget-Settings"
+* Der optionale "Value" des Widgtes bestimmt dabei den Anzeigetext auf der Hauptseite
+* Um ein Widget benutzen zu können, muss dieses noch einem beliebigen Screen/Tab oder Gruppe unter "Screen-Settings" hinzugefügt werden
 
 
 
