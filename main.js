@@ -111,6 +111,8 @@ class SamartHomeHandyBis extends utils.Adapter {
 			const members = enumDevices[i].common.members;
 			const dataPoints = [];
 			for(const z in members) {
+				this.log.info("ok krass");
+				this.log.info(members[z]);
 				dataPoints.push({
 					"name": "name",
 					"id": members[z],
