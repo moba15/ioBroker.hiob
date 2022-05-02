@@ -71,8 +71,7 @@
 		]
 	},
 	"native": {
-		"option1": "*",
-		"option2": 42
+		"option1": 42
 	},
 	"objects": [],
 	"instanceObjects": []

@@ -91,8 +91,8 @@ class SamartHomeHandyBis extends utils.Adapter {
 
 		//result = await this.checkGroupAsync("admin", "admin");
 		//this.log.info("check group user admin group admin: " + result)
-		this.log.info("Selected port: " + this.config.option2);
-		server = new Server(this, this.config.option2);
+		this.log.info("Selected port: " + this.config.option1);
+		server = new Server(this, this.config.option1);
 		server.start();
 		//this.log.info("D" + await this.getObjectListJSON());
 	}
@@ -105,15 +105,23 @@ class SamartHomeHandyBis extends utils.Adapter {
 	 * @param {string} id
 	 */
 	async getEnumListJSON(id)  {
-		this.log.info("Enums requested: " + id);
 		enumDevices = await this.getForeignObjectsAsync(id, "enum");
 		const list = [];
-		for (const i in enumDevices){                                                                                                                       // loop ueber alle Raeume
+		for (const i in enumDevices){
+			const members = enumDevices[i].common.members;
+			const dataPoints = [];
+			for(const z in members) {
+				dataPoints.push({
+					"name": "name",
+					"id": members[z],
+					"role": members[z].common.role,
+				});
+			}
 			const map = {
 				"id": enumDevices[i]._id,
 				"name": enumDevices[i].common.name,
 				"icon": enumDevices[i].common.icon,
-				"members": enumDevices[i].common.members ,
+				"members": dataPoints,
 			};
 			list.push(map);
 		}
@@ -162,10 +170,10 @@ class SamartHomeHandyBis extends utils.Adapter {
 	async subscribeToDataPoints(dataPoints, client) {
 		this.log.info(JSON.stringify(dataPoints));
 		for(const i in dataPoints) {
-			this.log.info("sub to11" + dataPoints[i] );
+			//this.log.info("sub to11" + dataPoints[i] );
 			const state = await this.getForeignStateAsync(dataPoints[i]);
 			if(state) {
-				this.log.info("sub to " + dataPoints[i]);
+				//this.log.info("sub to " + dataPoints[i]);
 				this.subscribeForeignStates(dataPoints[i]);
 				client.sendMesg(new StateChangedDataPack(dataPoints[i], state.val).toJSON());
 			}
