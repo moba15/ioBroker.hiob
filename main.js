@@ -125,7 +125,7 @@ class SamartHomeHandyBis extends utils.Adapter {
 				"id": enumDevices[i]._id,
 				"name": enumDevices[i].common.name,
 				"icon": enumDevices[i].common.icon,
-				"members": dataPoints,
+				"dataPointMembers": dataPoints,
 			};
 			list.push(map);
 		}
