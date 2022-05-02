@@ -111,7 +111,6 @@ class SamartHomeHandyBis extends utils.Adapter {
 			const members = enumDevices[i].common.members;
 			const dataPoints = [];
 			for(const z in members) {
-				this.log.info("ok krass");
 				const dataPoint = await this.getForeignObjectAsync(members[z]);
 				if(!dataPoint)
 					continue;
