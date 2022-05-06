@@ -1,5 +1,15 @@
 # Introduction
 
+## Description
+
+HioB ist eine App Anwendung, die es ermöglicht deine Geräte von deinem ioBroker über eine HandyApp zu steuern.&#x20;
+
+
+
+**Warum solltest man diese App benutzen**: Die App bietet eine Performante Lösung, um dein SmartHome über dein Handy zu bedienen. Zudem bietet die App eine einfache Einrichtung.
+
+**ACHTUNG**: Die App ist noch einen sehr fürhen Entwicklungsstatus.
+
 ## Installation
 
 Zunächst musst du den HioB Adapter manuell installieren:
