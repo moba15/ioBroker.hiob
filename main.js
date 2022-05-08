@@ -65,10 +65,6 @@ class SamartHomeHandyBis extends utils.Adapter {
 			},
 			native: {},
 		});
-		const dataPoint = await this.getForeignObjectAsync("deconz.0.Lights.29.on");
-		if(dataPoint) {
-			this.log.info(JSON.stringify(dataPoint.enums));
-		}
 		// In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
 		// You can also add a subscription for multiple states. The following line watches all states starting with "lights."
 		// this.subscribeStates("lights.*");
