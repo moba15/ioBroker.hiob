@@ -115,9 +115,10 @@ class SamartHomeHandyBis extends utils.Adapter {
 				if(!dataPoint)
 					continue;
 				dataPoints.push({
-					"name": "name",
+					"name": dataPoint.common.name,
 					"id": members[z],
 					"role": dataPoint.common.role,
+					"custom": dataPoint.common.custom == null ? null : dataPoint.common.custom,
 				});
 			}
 			const map = {
@@ -129,6 +130,22 @@ class SamartHomeHandyBis extends utils.Adapter {
 			list.push(map);
 		}
 		return JSON.stringify(list);
+	}
+
+	/**
+	 * @param {String} id
+	 */
+	async getObjectInfo(id)  {
+		const dataPoint = await this.getForeignObjectAsync(id);
+		if(!dataPoint)
+			return;
+		const d = {
+			"name": dataPoint.common.name,
+			"id": id,
+			"role": dataPoint.common.role,
+			"custom": dataPoint.common.custom == null ? null : dataPoint.common.custom,
+		};
+		return JSON.stringify(d);
 	}
 
 	/**
