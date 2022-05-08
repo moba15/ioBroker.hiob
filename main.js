@@ -65,6 +65,8 @@ class SamartHomeHandyBis extends utils.Adapter {
 			},
 			native: {},
 		});
+		await this.getForeignObjectAsync("test").then((v) => {if(v) v.common.max;});
+
 		// In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
 		// You can also add a subscription for multiple states. The following line watches all states starting with "lights."
 		// this.subscribeStates("lights.*");
@@ -118,7 +120,7 @@ class SamartHomeHandyBis extends utils.Adapter {
 					"name": dataPoint.common.name,
 					"id": members[z],
 					"role": dataPoint.common.role,
-					"custom": dataPoint.common.custom == null ? null : dataPoint.common.custom,
+					"otherDetails": dataPoint.common.custom,
 				});
 			}
 			const map = {
@@ -143,7 +145,7 @@ class SamartHomeHandyBis extends utils.Adapter {
 			"name": dataPoint.common.name,
 			"id": id,
 			"role": dataPoint.common.role,
-			"custom": dataPoint.common.custom == null ? null : dataPoint.common.custom,
+			"otherDetails": dataPoint.common,
 		};
 		return JSON.stringify(d);
 	}
