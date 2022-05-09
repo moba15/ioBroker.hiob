@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "hiob",
-		"version": "0.0.2",
+		"version": "0.0.22",
 		"news": {
 			"0.0.1": {
 				"en": "initial release",
@@ -71,8 +71,34 @@
 		]
 	},
 	"native": {
-		"option1": 42
+		"option1": 43
 	},
 	"objects": [],
-	"instanceObjects": []
+	"instanceObjects": [
+		{
+
+			"_id": "info.connection",
+	
+			"type": "state",
+	
+			"common": {
+	
+				"role": "indicator.connected",
+	
+				"name": "If adapter configuration successfully validated",
+	
+				"type": "boolean",
+	
+				"read": true,
+	
+				"write": false,
+	
+				"def": false
+	
+			},
+	
+			"native": {}
+	
+		}
+	]
 }

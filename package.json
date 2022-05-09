@@ -1,12 +1,12 @@
 {
   "name": "iobroker.hiob",
-  "version": "0.0.2",
+  "version": "0.0.22",
   "description": "Visualisierung für das Handy",
   "author": {
     "name": "mor15Euro",
     "email": "moritz@bachmaiers.de"
   },
-  "homepage": "https://github.com/mor15Euro1/ioBroker.HioB",
+  "homepage": "https://github.com/mor15Euro1/ioBroker.hioB",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -16,10 +16,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mor15Euro1/ioBroker.HioB"
+    "url": "https://github.com/mor15Euro1/ioBroker.hioB"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.6.0",
+    "iobroker.hiob": "^0.0.21",
     "ws": "^8.5.0"
   },
   "devDependencies": {
@@ -65,7 +66,7 @@
     "release": "release-script"
   },
   "bugs": {
-    "url": "https://github.com/mor15Euro1/ioBroker.HioB/issues"
+    "url": "https://github.com/mor15Euro1/ioBroker.hioB/issues"
   },
   "readmeFilename": "README.md"
 }

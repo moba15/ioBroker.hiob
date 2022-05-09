@@ -34,7 +34,7 @@ class SamartHomeHandyBis extends utils.Adapter {
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
-
+		this.setState("info.connection", false, true); // change to yellow
 		/*
 		For every state in the system there has to be also an object of type state
 		Here a simple template for a boolean variable named "testVariable"
