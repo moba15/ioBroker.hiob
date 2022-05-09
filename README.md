@@ -14,8 +14,13 @@ HioB ist eine App Anwendung, die es ermöglicht deine Geräte von deinem ioBroke
 
 Zunächst musst du den HioB Adapter manuell installieren:
 
-* Der Adpater muss manuell Installiert werden, hierfür muss der Expertenmodus im IoBroker aktiviert werden
-* Die aktuellste Version findest auf GitHub: [https://github.com/mor15Euro1/ioBroker.HioB.git  ](https://github.com/mor15Euro1/ioBroker.HioB.git)
+* Der Adpater muss manuell über die Konsole installiert werden
+
+```
+npm install iobroker.hiob
+iobroker add hiob
+```
+
 * Nach der Installation wird ein gültiger und freier Port für den Adapter benötigt (z.B. 8090), dieser muss bei den Adapter-Einstellungen angeben werden
 
 
