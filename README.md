@@ -18,7 +18,7 @@ Zunächst musst du den HioB Adapter manuell installieren:
 
 ```
 npm install iobroker.hiob
-iobroker add hiob 
+iobroker add hiob
 ```
 
 * Nach der Installation wird ein gültiger und freier Port für den Adapter benötigt (z.B. 8090), dieser muss bei den Adapter-Einstellungen angeben werden
