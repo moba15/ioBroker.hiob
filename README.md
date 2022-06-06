@@ -1,5 +1,9 @@
 # Introduction
 
+## Known Bugs
+
+* Export: Export ist momentan nur in den Download Ordner möglich
+
 ## Description
 
 HioB ist eine App Anwendung, die es ermöglicht deine Geräte von deinem ioBroker über eine HandyApp zu steuern.&#x20;
