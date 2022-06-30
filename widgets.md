@@ -1,16 +1,41 @@
 # Widgets
 
+## Allgemein
+
+* Alle Templates benötigen einen Namen, der (sofern Value nicht gesetzt wurde) auch als Anzeige Namen für das Widget benutzt wird
+* Das Value Feld kann dabei optional auch ausgefüllt werden, falls der Anzeigename vom Template Namen abweichen soll
+
 ## Button
 
 * Type: boolean
 * Einfacher Schaltknopf
+* Button Text: Dieser Text wird im Button angezeigt (siehe Bild)
+* Device & Datapoint\*: Hier wird ausgewählt, welcher Datenpunkt beim Drücken geschalten wird
+
+<details>
+
+<summary>Einstellungsmenü</summary>
+
+![](<.gitbook/assets/template\_button (1).jpg>)
+
+</details>
 
 ## Value
 
 * Type: all
 * Zeigt den aktuellen Wert eines Datenpunktes an
+* Round to: Dieser Wert gibt an, auf wie viele Nachkommastellen gerundet werden soll
+* Device & Datapoint\*: Hier wird ausgewählt, wessen Wert angezeigt werden soll
 
-## Switch witch slider
+<details>
+
+<summary>Einstellungsmenü</summary>
+
+![](.gitbook/assets/template\_value.jpg)
+
+</details>
+
+## Switch with slider
 
 * Type: boolean/int/boolean
 * Ein einfacher Schalter
