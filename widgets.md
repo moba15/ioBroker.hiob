@@ -16,7 +16,7 @@
 
 <summary>Einstellungsmenü</summary>
 
-![](<.gitbook/assets/template\_button (1).jpg>)
+<img src=".gitbook/assets/template_button (1).jpg" alt="" data-size="line">
 
 </details>
 
