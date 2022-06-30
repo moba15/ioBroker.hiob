@@ -16,7 +16,7 @@
 
 <summary>Einstellungsmenü</summary>
 
-<img src=".gitbook/assets/template_button (1).jpg" alt="" data-size="line">
+<img src=".gitbook/assets/template_button (1).jpg" alt="" data-size="original">
 
 </details>
 
