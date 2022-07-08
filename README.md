@@ -47,8 +47,12 @@ iobroker add hiob
 
 #### Manuell im IoBroker (Empfohlen):
 
-* Zunächst muss eine Aufzählungskategorie mit der ID „hiob“ erstellt werden
+*   Zunächst muss eine Aufzählungskategorie mit der ID „hiob“ erstellt werden
+
+    ![](.gitbook/assets/grafik.png)
 * Nun können Geräte in diese Kategorie hinzugefügt werden.
+  * Füge **nur** Datenpunkte hinzu, die direkt angesteuert werden können (also keine Ordner o.ä)
+  * Alle Kategorie-Elemente, die **Datenpunkte enthalten** werden später von der App als eigenes Device eingerichtet. (Im Foto oben, würde die App somit nur ein Gerät mit dem Namen "WohnzimmerLicht" und dessen Datenpunkt erstellen)
 *   Daraufhin muss in der App folgendes gemacht werden:&#x20;
 
     1. Bei „Update Enums“ auf „Update“ klicken&#x20;
