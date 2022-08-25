@@ -94,9 +94,9 @@ class SamartHomeHandyBis extends utils.Adapter {
 
 		//result = await this.checkGroupAsync("admin", "admin");
 		//this.log.info("check group user admin group admin: " + result)
-		this.adapter.log.info("Sql Abfrage");
+		this.log.info("Sql Abfrage");
         const a = this;
-        this.adapter.sendTo('sql.0', 'getHistory', {
+        this.sendTo('sql.0', 'getHistory', {
             id: '*',
             options: {
                 end:       Date.now(),
