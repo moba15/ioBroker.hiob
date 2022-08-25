@@ -5,6 +5,7 @@
 const adapterName = require("./io-package.json").common.name;
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
+// @ts-ignore
 const utils = require("@iobroker/adapter-core");
 const Server = require("./lib/server.js");
 const StateChangedDataPack = require("./lib/datapackages.js");
@@ -63,7 +64,7 @@ class SamartHomeHandyBis extends utils.Adapter {
 				write: false,
 				history: true
 			},
-			native: {},
+			native: {}, 
 		});
 		await this.getForeignObjectAsync("test").then((v) => {if(v) v.common.max;});
 
