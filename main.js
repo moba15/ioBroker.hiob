@@ -94,6 +94,22 @@ class SamartHomeHandyBis extends utils.Adapter {
 
 		//result = await this.checkGroupAsync("admin", "admin");
 		//this.log.info("check group user admin group admin: " + result)
+		this.adapter.log.info("Sql Abfrage");
+        const a = this;
+        this.adapter.sendTo('sql.0', 'getHistory', {
+            id: '*',
+            options: {
+                end:       Date.now(),
+                count:     50,
+                aggregate: 'onchange',
+                addId: true
+            }
+        }, function (result) {
+            for (var i = 0; i < result.result.length; i++) {
+                a.adapter.log.info(result.result[i].id + ' ' + new Date(result.result[i].ts).toISOString());
+            }
+        });
+        
 		this.log.info("Selected port: " + this.config.option1);
 		server = new Server(this, this.config.option1);
 		server.start();
