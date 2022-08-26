@@ -107,8 +107,8 @@ class SamartHomeHandyBis extends utils.Adapter {
 		}, function (result) {
 			if(result) {
 				a.log.info(JSON.stringify(result.result));
-				for (let i = 0; i < result.message.result.length; i++) {
-					a.log.info(result.message.result[i].id + " " + new Date(result.message.result[i].ts).toISOString());
+				for (let i = 0; i < result.result.length; i++) {
+					a.log.info(result.result[i].id + " " + new Date(result.result[i].ts).toISOString());
 				}
 			}
 		});
