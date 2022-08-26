@@ -106,11 +106,14 @@ class SamartHomeHandyBis extends utils.Adapter {
 			}
 		}, function (result) {
 			if(result) {
+				a.log.info(JSON.stringify(result));
 				for (let i = 0; i < result.message.result.length; i++) {
 					a.log.info(result.message.result[i].id + " " + new Date(result.message.result[i].ts).toISOString());
 				}
 			}
 		});
+
+		
 
 		this.log.info("Selected port: " + this.config.option1);
 		server = new Server(this, this.config.option1);
