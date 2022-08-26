@@ -1,6 +1,6 @@
 {
   "name": "iobroker.hiob",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Visualisierung für das Handy",
   "author": {
     "name": "mor15Euro",
@@ -12,7 +12,7 @@
     "ioBroker",
     "template",
     "Smart Home",
-    "home automation"
+    "home automation" 
   ],
   "repository": {
     "type": "git",

@@ -64,7 +64,7 @@ class SamartHomeHandyBis extends utils.Adapter {
 				write: false,
 				history: true
 			},
-			native: {}, 
+			native: {},
 		});
 		await this.getForeignObjectAsync("test").then((v) => {if(v) v.common.max;});
 
@@ -95,21 +95,23 @@ class SamartHomeHandyBis extends utils.Adapter {
 		//result = await this.checkGroupAsync("admin", "admin");
 		//this.log.info("check group user admin group admin: " + result)
 		this.log.info("Sql Abfrage");
-        const a = this;
-        this.sendTo('sql.0', 'getHistory', {
-            id: '*',
-            options: {
-                end:       Date.now(),
-                count:     50,
-                aggregate: 'onchange',
-                addId: true
-            }
-        }, function (result) {
-            for (var i = 0; i < result.result.length; i++) {
-                a.adapter.log.info(result.result[i].id + ' ' + new Date(result.result[i].ts).toISOString());
-            }
-        });
-        
+		const a = this;
+		this.sendTo("sql.0", "getHistory", {
+			id: "*",
+			options: {
+				end:       Date.now(),
+				count:     50,
+				aggregate: "onchange",
+				addId: true
+			}
+		}, function (result) {
+			if(result) {
+				for (let i = 0; i < result.message.length; i++) {
+					a.log.info(result.message[i].id + " " + new Date(result.message[i].ts).toISOString());
+				}
+			}
+		});
+
 		this.log.info("Selected port: " + this.config.option1);
 		server = new Server(this, this.config.option1);
 		server.start();
