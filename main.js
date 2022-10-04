@@ -5,7 +5,6 @@
 const adapterName = require("./io-package.json").common.name;
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
-// @ts-ignore
 const utils = require("@iobroker/adapter-core");
 const Server = require("./lib/server.js");
 const StateChangedDataPack = require("./lib/datapackages.js");
@@ -94,27 +93,6 @@ class SamartHomeHandyBis extends utils.Adapter {
 
 		//result = await this.checkGroupAsync("admin", "admin");
 		//this.log.info("check group user admin group admin: " + result)
-		this.log.info("Sql Abfrage");
-		const a = this;
-		this.sendTo("sql.0", "getHistory", {
-			id: "*",
-			options: {
-				end:       Date.now(),
-				count:     50,
-				aggregate: "onchange",
-				addId: true
-			}
-		}, function (result) {
-			if(result) {
-				a.log.info(JSON.stringify(result.result));
-				for (let i = 0; i < result.result.length; i++) {
-					a.log.info(result.result[i].id + " " + new Date(result.result[i].ts).toISOString());
-				}
-			}
-		});
-
-		
-
 		this.log.info("Selected port: " + this.config.option1);
 		server = new Server(this, this.config.option1);
 		server.start();
