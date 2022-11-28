@@ -5,11 +5,14 @@
 const adapterName = require("./io-package.json").common.name;
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
+// @ts-ignore
 const utils = require("@iobroker/adapter-core");
-const Server = require("./lib/server.js");
+const Server = require("./lib/server.js").Server;
+const Listener = require("./lib/listener.js");
 const StateChangedDataPack = require("./lib/datapackages.js");
+const LoginManager = require("./lib/login/login_manager").LoginManager;
+const historyManager = require("./lib/history/history_manager.js");
 
-let server;
 let enumDevices;
 
 
@@ -18,22 +21,28 @@ let enumDevices;
 
 class SamartHomeHandyBis extends utils.Adapter {
 
+
 	/**
 	 * @param {Partial<utils.AdapterOptions>} [options={}]
 	 */
 	constructor(options) {
 		super({...options,name: adapterName,});
 		this.on("ready", this.onReady.bind(this));
-		this.on("stateChange", this.onStateChange.bind(this));
+		//this.on("stateChange", this.onStateChange.bind(this));
+		this.listener = new Listener(this);
+		this.loginManager = new LoginManager(this);
+		this.on("stateChange", this.listener.onStateChange.bind(this.listener));
 		this.on("objectChange", this.onObjectChange.bind(this));
 		this.on("message", this.onMessage.bind(this));
 		this.on("unload", this.onUnload.bind(this));
+		this.historyManager = new historyManager.HistroyManager(this);
 	}
 
 	/**
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
+
 		this.setState("info.connection", false, true); // change to yellow
 		/*
 		For every state in the system there has to be also an object of type state
@@ -93,9 +102,31 @@ class SamartHomeHandyBis extends utils.Adapter {
 
 		//result = await this.checkGroupAsync("admin", "admin");
 		//this.log.info("check group user admin group admin: " + result)
+		this.log.debug("Sql Abfrage LMAO");
+		const a = this;
+		/*this.sendTo("sql.0", "getHistory", {
+			id: "*",
+			options: {
+				end:       Date.now(),
+				count:     3,
+				aggregate: "onchange",
+				addId: true
+			}
+		}, function (result) {
+			if(result) {
+				a.log.info(JSON.stringify(result.result));
+				for (let i = 0; i < result.result.length; i++) {
+					a.log.info(result.result[i].id + " " + new Date(result.result[i].ts).toISOString());
+				}
+			}
+		});*/
+
+		//this.history =  (new history.OnUpdateHistorySubscription(this, "hiob.0.testVariable", 1000*10, 0   ,Date.now() , 1));
+		//this.history.start();
+
 		this.log.info("Selected port: " + this.config.option1);
-		server = new Server(this, this.config.option1);
-		server.start();
+		this.server = new Server(this, this.config.option1);
+		this.server.start();
 		//this.log.info("D" + await this.getObjectListJSON());
 	}
 
@@ -131,7 +162,7 @@ class SamartHomeHandyBis extends utils.Adapter {
 			};
 			list.push(map);
 		}
-		return JSON.stringify(list);
+		return list;
 	}
 
 	/**
@@ -161,7 +192,8 @@ class SamartHomeHandyBis extends utils.Adapter {
 			// clearTimeout(timeout2);
 			// ...
 			// clearInterval(interval1);
-			server.stop();
+			if(this.server)
+				this.server.stop();
 			callback();
 		} catch (e) {
 			callback();
@@ -190,17 +222,19 @@ class SamartHomeHandyBis extends utils.Adapter {
 	}
 
 	async subscribeToDataPoints(dataPoints, client) {
-		this.log.info(JSON.stringify(dataPoints));
+		this.log.debug(JSON.stringify(dataPoints));
 		for(const i in dataPoints) {
 			//this.log.info("sub to11" + dataPoints[i] );
 			const state = await this.getForeignStateAsync(dataPoints[i]);
 			if(state) {
 				//this.log.info("sub to " + dataPoints[i]);
 				this.subscribeForeignStates(dataPoints[i]);
-				client.sendMesg(new StateChangedDataPack(dataPoints[i], state.val).toJSON());
+				client.sendMesg(new StateChangedDataPack(dataPoints[i], state.val).toJSON(), true);
 			}
 		}
 	}
+
+	
 
 
 	/**
@@ -212,7 +246,8 @@ class SamartHomeHandyBis extends utils.Adapter {
 		if (state) {
 			// The state was changed
 			//this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-			server.broadcastMsg(new StateChangedDataPack(id, state.val).toJSON());
+			if(this.server)
+				this.server.broadcastMsg(new StateChangedDataPack(id, state.val).toJSON());
 		} else {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
@@ -248,3 +283,5 @@ if (require.main !== module) {
 	// otherwise start the instance directly
 	new SamartHomeHandyBis();
 }
+
+module.exports = SamartHomeHandyBis;

@@ -31,7 +31,7 @@
 
 <summary>Einstellungsmenü</summary>
 
-![](<.gitbook/assets/template\_value (1).jpg>)
+![](.gitbook/assets/template\_value.jpg)
 
 </details>
 
