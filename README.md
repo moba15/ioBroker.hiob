@@ -84,3 +84,4 @@ iobroker add hiob
 ## License 
   MIT
 
+Copyright (c) 2022 mor15Euro <moritz@bachmaiers.de>
