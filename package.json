@@ -6,7 +6,7 @@
     "name": "mor15Euro",
     "email": "moritz@bachmaiers.de"
   },
-  "homepage": "https://github.com/mor15Euro1/ioBroker.hioB",
+  "homepage": "https://github.com/moba15/ioBroker.hiob.git",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mor15Euro1/ioBroker.hioB"
+    "url": "https://github.com/moba15/ioBroker.hiob.git"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^2.6.0",
