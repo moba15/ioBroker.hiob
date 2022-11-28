@@ -78,5 +78,9 @@ iobroker add hiob
 * Um ein Widget benutzen zu können, muss dieses noch einem beliebigen Screen/Tab oder Gruppe unter "Screen-Settings" hinzugefügt werden
 * Eine vollständige Liste aller Widgets kann [hier](widgets.md) gefunden werden
 
+## Changelog 
+* Added secure login
 
+## License 
+  MIT
 
