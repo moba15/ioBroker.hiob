@@ -1,6 +1,7 @@
 # Introduction
 
 ## Known Bugs
+Please report any bugs to the Forum: https://forum.iobroker.net/topic/55250/neuer-adapter-hiob-handy-app/
 
 ## Description
 
