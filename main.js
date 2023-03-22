@@ -12,6 +12,7 @@ const Listener = require("./lib/listener.js");
 const StateChangedDataPack = require("./lib/datapackages.js");
 const LoginManager = require("./lib/login/login_manager").LoginManager;
 const historyManager = require("./lib/history/history_manager.js");
+const TemplateSettingsManager = require("./lib/template_settings/template_settings_manager.js").TemplateSettingsManager;
 
 let enumDevices;
 
@@ -31,6 +32,7 @@ class SamartHomeHandyBis extends utils.Adapter {
 		//this.on("stateChange", this.onStateChange.bind(this));
 		this.listener = new Listener(this);
 		this.loginManager = new LoginManager(this);
+		this.templateSettingsManager = new TemplateSettingsManager(this);
 		this.on("stateChange", this.listener.onStateChange.bind(this.listener));
 		this.on("objectChange", this.onObjectChange.bind(this));
 		this.on("message", this.onMessage.bind(this));
@@ -102,8 +104,7 @@ class SamartHomeHandyBis extends utils.Adapter {
 
 		//result = await this.checkGroupAsync("admin", "admin");
 		//this.log.info("check group user admin group admin: " + result)
-		this.log.debug("Sql Abfrage LMAO");
-		const a = this;
+		//const a = this;
 		/*this.sendTo("sql.0", "getHistory", {
 			id: "*",
 			options: {
@@ -234,7 +235,6 @@ class SamartHomeHandyBis extends utils.Adapter {
 		}
 	}
 
-	
 
 
 	/**
