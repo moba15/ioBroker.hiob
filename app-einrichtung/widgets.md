@@ -16,7 +16,7 @@
 
 <summary>Einstellungsmenü</summary>
 
-![](.gitbook/assets/test.jpg)
+<img src="../.gitbook/assets/test.jpg" alt="" data-size="original">
 
 </details>
 
@@ -31,7 +31,7 @@
 
 <summary>Einstellungsmenü</summary>
 
-![](.gitbook/assets/template\_value.jpg)
+<img src="../.gitbook/assets/template_value.jpg" alt="" data-size="original">
 
 </details>
 

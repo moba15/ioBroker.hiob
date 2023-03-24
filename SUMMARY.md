@@ -1,4 +1,6 @@
 # Table of contents
 
 * [Introduction](README.md)
-  * [Widgets](widgets.md)
+* [Installation/Update](installation-update.md)
+* [App Einrichtung](app-einrichtung/README.md)
+  * [Widgets](app-einrichtung/widgets.md)
