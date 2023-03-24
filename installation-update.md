@@ -36,7 +36,7 @@ Hinweis: Diese Version könnte sehr instabil sein und ist meistens noch stark in
 
 ```bash
 cd /opt/iobroker #Teilweise nicht benötigt
-npm install iobroker.hiob@0.0.31-beta.1 #Installation über das NPM Repository
+npm install iobroker.hiob@0.0.40-beta.1 #Installation über das NPM Repository
 iobroker restart hiob #Instanz neustarten
 ```
 
