@@ -4,7 +4,7 @@
 
 Zunächst muss die richtige IP und der richtige Port in den "IoBroker-Settings" eingetragen werden, darauf kann über "Reconnect" eine Verbindungsanfrage erstellt werden
 
-<figure><img src="../.gitbook/assets/connection_example (1).jpg" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/connection_example.jpg" alt=""><figcaption></figcaption></figure>
 
 Daraufhin ist eine Anmeldung erforderlich:
 
@@ -29,7 +29,7 @@ Daraufhin ist eine Anmeldung erforderlich:
 
 * Zunächst muss eine Aufzählungskategorie mit der ID „hiob“ erstellt werden
 
-<figure><img src="../.gitbook/assets/aufzählung_1e (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/aufzählung_1e.png" alt=""><figcaption></figcaption></figure>
 
 * Nun können Geräte in diese Kategorie hinzugefügt werden.
   * Füge **nur** Datenpunkte hinzu, die direkt angesteuert werden können (also keine Ordner o.ä)
@@ -44,7 +44,7 @@ Daraufhin ist eine Anmeldung erforderlich:
 
 Screens werden später als Tab oberhalb angezeigt, zwischen denen man wechseln kann:
 
-<figure><img src="../.gitbook/assets/aufzählung_1e.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/aufzählung_1e (1).png" alt=""><figcaption></figcaption></figure>
 
 * Unter "Screen-Settings" kannst du einen neuen Screen/Tab hinzufügen
 * In jedem Screen kannst du (nachdem dem du diese hinzugefügt hast) verschiedene [Widgets](https://app.gitbook.com/s/YWLvuNyLNp6aa7cn2y33/\~/changes/oA9p3RZ4zPIZXkJxzQ1V/widgets)/Gruppen hinzufügen
@@ -54,6 +54,6 @@ Screens werden später als Tab oberhalb angezeigt, zwischen denen man wechseln k
 
 * Widgets können unter "Widget-Settings" erstellt werden
 * Der Name des Widget bestimmt dabei den Anzeigenamen unter "Widget-Settings"
-* Der optionale "Value" des Widgtes bestimmt dabei den Anzeigetext auf der Hauptseite
+* Der optionale "Value" des Widgets bestimmt dabei den Anzeigetext auf der Hauptseite
 * Um ein Widget benutzen zu können, muss dieses noch einem beliebigen Screen/Tab oder Gruppe unter "Screen-Settings" hinzugefügt werden
-* Eine vollständige Liste aller Widgets kann [hier](widgets.md) gefunden werden
+* Eine vollständige Liste aller Widgets kann [hier](../widgets.md) gefunden werden
