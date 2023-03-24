@@ -1,7 +1,3 @@
----
-description: 'Frage Stellung: Wie installiert man HioB?'
----
-
 # Installation/Update
 
 ## Installation des Adapters:
@@ -12,10 +8,11 @@ Der Adapter befindet sich noch nicht offizielen ioBroker-Repository, weshalb die
 
 <summary>Befehl für die Installation der Final Version:</summary>
 
-<pre class="language-bash"><code class="lang-bash"><strong>cd /opt/iobroker #Teilweise nicht benötigt
-</strong>npm install iobroker.hiob #Installation über das NPM Repository
+```bash
+cd /opt/iobroker #Teilweise nicht benötigt
+npm install iobroker.hiob #Installation über das NPM Repository
 iobroker add hiob #Hinzufügen einer neuen HioB instanz
-</code></pre>
+```
 
 </details>
 
