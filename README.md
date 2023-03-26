@@ -29,7 +29,7 @@ HioB ist eine App Anwendung, die es ermöglicht deine Geräte von deinem ioBroke
 
 ## Coming with 0.0.40
 
-* Allow Login without password (Settings -> IoBroker Settings)
+* Allow Login without password (Settings -> IoBroker Settings): [more infos](app-einrichtung/#verbindung-mit-dem-adapter)
 * You will be able to upload and load setting to/from ioBroker
   * Settings -> Config Sync&#x20;
     * Press the "+" to add a new Config
