@@ -1,18 +1,21 @@
-/*global systemDictionary:true */
+/* eslint no-unused-vars: off */
+/* eslint no-global-assign: off */
+/* global systemDictionary */
 "use strict";
 
 systemDictionary = {
-	"samart_home_handy_bis adapter settings": {
-		"en": "Adapter settings for samart_home_handy_bis",
-		"de": "Adaptereinstellungen für samart_home_handy_bis",
-		"ru": "Настройки адаптера для samart_home_handy_bis",
-		"pt": "Configurações do adaptador para samart_home_handy_bis",
-		"nl": "Adapterinstellingen voor samart_home_handy_bis",
-		"fr": "Paramètres d'adaptateur pour samart_home_handy_bis",
-		"it": "Impostazioni dell'adattatore per samart_home_handy_bis",
-		"es": "Ajustes del adaptador para samart_home_handy_bis",
-		"pl": "Ustawienia adaptera dla samart_home_handy_bis",
-		"zh-cn": "samart_home_handy_bis的适配器设置"
+	"hiob-ts adapter settings": {
+		"en": "Adapter settings for hiob-ts",
+		"de": "Adaptereinstellungen für hiob-ts",
+		"ru": "Настройки адаптера для hiob-ts",
+		"pt": "Configurações do adaptador para hiob-ts",
+		"nl": "Adapterinstellingen voor hiob-ts",
+		"fr": "Paramètres d'adaptateur pour hiob-ts",
+		"it": "Impostazioni dell'adattatore per hiob-ts",
+		"es": "Ajustes del adaptador para hiob-ts",
+		"pl": "Ustawienia adaptera dla hiob-ts",
+		"uk": "Налаштування адаптера для hiob-ts",
+		"zh-cn": "hiob-ts的适配器设置"
 	},
 	"option1": {
 		"en": "option1",
@@ -24,18 +27,20 @@ systemDictionary = {
 		"it": "opzione 1",
 		"es": "Opción 1",
 		"pl": "opcja 1",
+		"uk": "варіант1",
 		"zh-cn": "选项1"
 	},
 	"option2": {
 		"en": "option2",
 		"de": "Option 2",
-		"ru": "вариант 2",
-		"pt": "opção 2",
-		"nl": "Optie 2",
-		"fr": "Option 2",
-		"it": "opzione 2",
-		"es": "opcion 2",
-		"pl": "Opcja 2",
-		"zh-cn": "选项2"
+		"ru": "option2",
+		"pt": "option2",
+		"nl": "option2",
+		"fr": "option2",
+		"it": "option2",
+		"es": "option2",
+		"pl": "option2",
+		"uk": "option2",
+		"zh-cn": "option2"
 	}
 };

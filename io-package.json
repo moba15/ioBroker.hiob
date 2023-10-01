@@ -71,34 +71,33 @@
 		]
 	},
 	"native": {
-		"option1": 43
+		"port": "8090",
+		"useCert": false,
+		"certPath": "",
+		"keyPath": ""
 	},
 	"objects": [],
 	"instanceObjects": [
 		{
-
-			"_id": "info.connection",
-	
-			"type": "state",
-	
+			"_id": "info",
+			"type": "channel",
 			"common": {
-	
-				"role": "indicator.connected",
-	
-				"name": "If adapter configuration successfully validated",
-	
-				"type": "boolean",
-	
-				"read": true,
-	
-				"write": false,
-	
-				"def": false
-	
+				"name": "Information"
 			},
-	
 			"native": {}
-	
+		},
+		{
+			"_id": "info.connection",
+			"type": "state",
+			"common": {
+				"role": "indicator.connected",
+				"name": "Device or service connected",
+				"type": "boolean",
+				"read": true,
+				"write": false,
+				"def": false
+			},
+			"native": {}
 		}
 	]
 }

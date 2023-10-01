@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/timer/cyclic.ts"],
+  "sourcesContent": ["export interface Cyclic {\n    /**\n     * expiration\n    */\n    expiration() : void;\n}"],
+  "mappings": ";;;;;;;;;;;;;;AAAA;AAAA;",
+  "names": []
+}

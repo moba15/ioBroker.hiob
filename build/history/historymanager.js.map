@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/history/historymanager.ts"],
+  "sourcesContent": ["export class HistoryManager {\n    \n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,MAAM,eAAe;AAE5B;",
+  "names": []
+}

@@ -1,10 +1,9 @@
 {
 	"cli": true,
 	"target": "directory",
-	"adapterName": "samart_home_handy_bis",
-	"title": "HandyVis",
-	"description": "Visualisierung für das Handy",
-	"expert": "no",
+	"adapterName": "hiob-ts",
+	"title": "hiob-ts",
+	"expert": "yes",
 	"features": [
 		"adapter"
 	],
@@ -13,27 +12,26 @@
 	"startMode": "daemon",
 	"connectionType": "local",
 	"dataSource": "push",
-	"connectionIndicator": "no",
-	"language": "JavaScript",
-	"adminReact": "no",
+	"connectionIndicator": "yes",
+	"language": "TypeScript",
+	"nodeVersion": "16",
+	"adminUi": "html",
 	"tools": [
-		"ESLint",
-		"type checking"
+		"ESLint"
 	],
 	"i18n": "words.js",
 	"releaseScript": "yes",
-	"devServer": "yes",
-	"devServerPort": 8082,
+	"devServer": "no",
 	"indentation": "Tab",
 	"quotes": "double",
 	"es6class": "yes",
-	"authorName": "mor15Euro",
-	"authorGithub": "mor15Euro1",
+	"authorName": "Moritz",
+	"authorGithub": "moba15",
 	"authorEmail": "moritz@bachmaiers.de",
-	"gitRemoteProtocol": "HTTPS",
+	"gitRemoteProtocol": "SSH",
 	"gitCommit": "no",
 	"defaultBranch": "main",
 	"license": "MIT License",
 	"dependabot": "no",
-	"creatorVersion": "2.1.1"
+	"creatorVersion": "2.5.0"
 }
