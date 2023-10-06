@@ -1,13 +1,13 @@
 import { Events, StateChangeEvent } from "../listener/listener";
-import { HiobTs } from "../main";
+import { SamartHomeHandyBis } from "../main";
 import { Client } from "../server/client";
 import { LoginApprovedPacket, LoginDeclinedPacket, LoginKeyPacket, RequestLoginPacket } from "../server/datapacks";
 import * as bcrypt from "bcrypt"
 import * as crypto from "crypto"
 export class LoginManager {
-    adapter: HiobTs;
+    adapter: SamartHomeHandyBis;
     pendingClients: Client[]
-    constructor(adapter: HiobTs) {
+    constructor(adapter: SamartHomeHandyBis) {
         this.adapter = adapter;
         this.adapter.listener.on(Events.StateChange, this.onStateChange.bind(this));
         this.pendingClients = []
@@ -15,7 +15,7 @@ export class LoginManager {
 
     private async onStateChange(event: StateChangeEvent) : Promise<void>  {
 		this.adapter.log.debug("Something changed");
-		if(event.objectID.startsWith("hiob-ts.")) {
+		if(event.objectID.startsWith("hiob.")) {
 			this.adapter.log.debug("HioB Datapoint changed");
 			const splited = event.objectID.split(".");
 			if(splited[2] == "devices" && splited[4] == "approved") {

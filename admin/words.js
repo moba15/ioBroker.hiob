@@ -4,18 +4,18 @@
 "use strict";
 
 systemDictionary = {
-	"hiob-ts adapter settings": {
-		"en": "Adapter settings for hiob-ts",
-		"de": "Adaptereinstellungen für hiob-ts",
-		"ru": "Настройки адаптера для hiob-ts",
-		"pt": "Configurações do adaptador para hiob-ts",
-		"nl": "Adapterinstellingen voor hiob-ts",
-		"fr": "Paramètres d'adaptateur pour hiob-ts",
-		"it": "Impostazioni dell'adattatore per hiob-ts",
-		"es": "Ajustes del adaptador para hiob-ts",
-		"pl": "Ustawienia adaptera dla hiob-ts",
-		"uk": "Налаштування адаптера для hiob-ts",
-		"zh-cn": "hiob-ts的适配器设置"
+	"hiob adapter settings": {
+		"en": "Adapter settings for hiob",
+		"de": "Adaptereinstellungen für hiob",
+		"ru": "Настройки адаптера для hiob",
+		"pt": "Configurações do adaptador para hiob",
+		"nl": "Adapterinstellingen voor hiob",
+		"fr": "Paramètres d'adaptateur pour hiob",
+		"it": "Impostazioni dell'adattatore per hiob",
+		"es": "Ajustes del adaptador para hiob",
+		"pl": "Ustawienia adaptera dla hiob",
+		"uk": "Налаштування адаптера для hiob",
+		"zh-cn": "hiob的适配器设置"
 	},
 	"option1": {
 		"en": "option1",

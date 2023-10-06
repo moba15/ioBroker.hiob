@@ -1,6 +1,6 @@
 import { IncomingMessage } from "http";
 import { WebSocket } from "ws";
-import { HiobTs } from "../main";
+import { SamartHomeHandyBis } from "../main";
 import { Server } from "./server";
 import { EnumUpdatePack, EnumUpdateRequestPack, GetTemplateSettingPack, RequestLoginPacket, StateChangeRequestPack, SubscribeToDataPointsHistory, SubscribeToDataPointsPack, TemplateSettingCreatePack, TemplateSettingUploadPack, TemplateSettingUploadSuccessPack, TemplateSettingsRequestedPack } from "./datapacks";
 import { TemplateSettings } from "../template/template_manager";
@@ -14,7 +14,7 @@ export class Client {
     approved;
     id?: string
     name?: string
-    constructor(socket: WebSocket, server: Server, req: IncomingMessage, adapter: HiobTs) {
+    constructor(socket: WebSocket, server: Server, req: IncomingMessage, adapter: SamartHomeHandyBis) {
         this.socket = socket;
         this.server = server;
         this.req = req;

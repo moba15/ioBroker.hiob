@@ -24,7 +24,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var main_exports = {};
 __export(main_exports, {
-  HiobTs: () => HiobTs
+  SamartHomeHandyBis: () => SamartHomeHandyBis
 });
 module.exports = __toCommonJS(main_exports);
 var utils = __toESM(require("@iobroker/adapter-core"));
@@ -33,11 +33,11 @@ var import_listener = require("./listener/listener");
 var import_loginmanager = require("./login/loginmanager");
 var import_datapacks = require("./server/datapacks");
 var import_template_manager = require("./template/template_manager");
-class HiobTs extends utils.Adapter {
+class SamartHomeHandyBis extends utils.Adapter {
   constructor(options = {}) {
     super({
       ...options,
-      name: "hiob-ts"
+      name: "hiob"
     });
     this.port = 8095;
     this.keyPath = "";
@@ -66,29 +66,60 @@ class HiobTs extends utils.Adapter {
     this.server.startServer();
   }
   async getEnumListJSON(id) {
-    const enumDevices = await this.getForeignObjectsAsync(id, "enum");
     const list = [];
-    for (const i in enumDevices) {
-      const members = enumDevices[i].common.members;
-      const dataPoints = [];
-      for (const z in members) {
-        const dataPoint = await this.getForeignObjectAsync(z);
-        if (!dataPoint)
+    if (false) {
+      const enumDevices = await this.getForeignObjectsAsync(id, "enum");
+      for (const i in enumDevices) {
+        const members = enumDevices[i].common.members;
+        const dataPoints = [];
+        if (!dataPoints) {
           continue;
-        dataPoints.push({
-          "name": dataPoint.common.name,
-          "id": z,
-          "role": dataPoint.common.role,
-          "otherDetails": dataPoint.common.custom
-        });
+        }
+        for (const z in members) {
+          const dataPoint = await this.getForeignObjectAsync(z);
+          if (!dataPoint)
+            continue;
+          dataPoints.push({
+            "name": dataPoint.common.name,
+            "id": z,
+            "role": dataPoint.common.role,
+            "otherDetails": dataPoint.common.custom
+          });
+        }
+        const map = {
+          "id": enumDevices[i]._id,
+          "name": enumDevices[i].common.name,
+          "icon": enumDevices[i].common.icon,
+          "dataPointMembers": dataPoints
+        };
+        list.push(map);
       }
-      const map = {
-        "id": enumDevices[i]._id,
-        "name": enumDevices[i].common.name,
-        "icon": enumDevices[i].common.icon,
-        "dataPointMembers": dataPoints
-      };
-      list.push(map);
+    } else {
+      for (const type of ["folder", "channel"]) {
+        const aliasFolder = await this.getForeignObjectsAsync("alias.0.*", type);
+        for (const device in aliasFolder) {
+          const dataPoints = [];
+          this.log.debug(JSON.stringify(device));
+          const aliasStates = await this.getForeignObjectsAsync(device + ".*", "state");
+          for (const state in aliasStates) {
+            this.log.debug(JSON.stringify(state));
+            const dataPoint = await this.getForeignObjectAsync(state);
+            dataPoints.push({
+              "name": dataPoint.common.name,
+              "id": state,
+              "role": dataPoint.common.role,
+              "otherDetails": dataPoint.common.custom
+            });
+          }
+          const map = {
+            "id": aliasFolder[device]._id,
+            "name": aliasFolder[device].common.name,
+            "icon": aliasFolder[device].common.icon,
+            "dataPointMembers": dataPoints
+          };
+          list.push(map);
+        }
+      }
     }
     return list;
   }
@@ -118,12 +149,12 @@ class HiobTs extends utils.Adapter {
   }
 }
 if (require.main !== module) {
-  module.exports = (options) => new HiobTs(options);
+  module.exports = (options) => new SamartHomeHandyBis(options);
 } else {
-  (() => new HiobTs())();
+  (() => new SamartHomeHandyBis())();
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  HiobTs
+  SamartHomeHandyBis
 });
 //# sourceMappingURL=main.js.map
