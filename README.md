@@ -17,11 +17,11 @@ HioB ist eine App Anwendung, die es ermöglicht deine Geräte von deinem ioBroke
 
 
 
-## First Steps
+## Description
 
-1. Installation/Update: [hier](installation-update.md)
-2. App Einrichtung: [hier](app-einrichtung/)
-3. Widgets: [hier](widgets.md)
+English: [Description](/docs/en/README.md)</br>
+German: [Beschreibung](/docs/de/README.md)
+</br> Thanks to [Lucky-ESA](https://github.com/Lucky-ESA)
 
 ## Changelog 0.0.30
 
