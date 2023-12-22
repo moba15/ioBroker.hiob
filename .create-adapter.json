@@ -1,8 +1,8 @@
 {
 	"cli": true,
 	"target": "directory",
-	"adapterName": "hiob-ts",
-	"title": "hiob-ts",
+	"adapterName": "hiob",
+	"title": "hiob",
 	"expert": "yes",
 	"features": [
 		"adapter"

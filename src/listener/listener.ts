@@ -1,7 +1,7 @@
 "use strict";
 
 import EventEmitter from "events";
-import { HiobTs } from "../main";
+import { SamartHomeHandyBis } from "../main";
 import { StateChangedDataPack } from "../server/datapacks";
 
 export enum Events {
@@ -11,7 +11,7 @@ export enum Events {
 export class Listener extends EventEmitter {
 
 	adapter
-	constructor(adapter: HiobTs) {
+	constructor(adapter: SamartHomeHandyBis) {
 		super();
 		this.adapter = adapter;
 	}

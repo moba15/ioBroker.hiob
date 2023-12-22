@@ -39,7 +39,7 @@ class LoginManager {
   }
   async onStateChange(event) {
     this.adapter.log.debug("Something changed");
-    if (event.objectID.startsWith("hiob-ts.")) {
+    if (event.objectID.startsWith("hiob.")) {
       this.adapter.log.debug("HioB Datapoint changed");
       const splited = event.objectID.split(".");
       if (splited[2] == "devices" && splited[4] == "approved") {

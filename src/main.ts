@@ -14,7 +14,7 @@ import { TemplateManager } from "./template/template_manager";
 
 // Load your modules here, e.g.:
 // import * as fs from "fs";
-export class HiobTs extends utils.Adapter {
+export class SamartHomeHandyBis extends utils.Adapter {
 	server?: Server;
 	listener: Listener
 	loginManager: LoginManager
@@ -27,7 +27,7 @@ export class HiobTs extends utils.Adapter {
 	public constructor(options: Partial<utils.AdapterOptions> = {}) {
 		super({
 			...options,
-			name: "hiob-ts",
+			name: "hiob",
 		});
 		this.templateManager = new TemplateManager(this);
 		this.listener = new Listener(this);
@@ -123,30 +123,50 @@ export class HiobTs extends utils.Adapter {
 			otherDetails: any;
 		}[];
 	}[]> {
-		const enumDevices = await this.getForeignObjectsAsync(id, "enum");
-		const list = [];
-		for (const i in enumDevices) {
-			const members = enumDevices[i].common.members;
-			const dataPoints = [];
-			for (const z in members) {
-				const dataPoint = await this.getForeignObjectAsync(z);
-				if (!dataPoint)
-					continue;
-				dataPoints.push({
-					"name": dataPoint.common.name,
-					"id": z,
-					"role": dataPoint.common.role,
-					"otherDetails": dataPoint.common.custom,
-				});
+		const list: {
+			id: string;
+			name: ioBroker.StringOrTranslated;
+			icon: string | undefined;
+			dataPointMembers: {
+				name: any;
+				id: any;
+				role: any;
+				otherDetails: any;
+			}[];
+		}[] = [];
+		if(false) {
+			const enumDevices = await this.getForeignObjectsAsync(id, "enum");
+
+			for (const i in enumDevices) {
+				const members = enumDevices[i].common.members;
+				const dataPoints = [];
+				if(!dataPoints) {
+					continue
+				}
+				for (const z in members) {
+					const dataPoint = await this.getForeignObjectAsync(z);
+					if (!dataPoint)
+						continue;
+					dataPoints.push({
+						"name": dataPoint!.common.name,
+						"id": z,
+						"role": dataPoint!.common.role,
+						"otherDetails": dataPoint!.common.custom,
+					});
+				}
+				const map = {
+					"id": enumDevices[i]._id,
+					"name": enumDevices[i].common.name,
+					"icon": enumDevices[i].common.icon,
+					"dataPointMembers": dataPoints,
+				};
+				list.push(map);
 			}
-			const map = {
-				"id": enumDevices[i]._id,
-				"name": enumDevices[i].common.name,
-				"icon": enumDevices[i].common.icon,
-				"dataPointMembers": dataPoints,
-			};
-			list.push(map);
+
+		} else {
+
 		}
+
 		return list;
 	}
 
@@ -229,8 +249,8 @@ export class HiobTs extends utils.Adapter {
 
 if (require.main !== module) {
 	// Export the constructor in compact mode
-	module.exports = (options: Partial<utils.AdapterOptions> | undefined) => new HiobTs(options);
+	module.exports = (options: Partial<utils.AdapterOptions> | undefined) => new SamartHomeHandyBis(options);
 } else {
 	// otherwise start the instance directly
-	(() => new HiobTs())();
+	(() => new SamartHomeHandyBis())();
 }

@@ -1,10 +1,10 @@
-import { HiobTs } from "../main";
+import { SamartHomeHandyBis } from "../main";
 import { Client } from "../server/client";
 
 export class TemplateManager {
 
-    adapter: HiobTs
-    constructor(adapter: HiobTs) {
+    adapter: SamartHomeHandyBis
+    constructor(adapter: SamartHomeHandyBis) {
         this.adapter = adapter;
     }
 

@@ -1,6 +1,10 @@
 {
   "name": "iobroker.hiob",
+<<<<<<< HEAD
   "version": "0.0.5",
+=======
+  "version": "0.0.52",
+>>>>>>> d5a89870c325039cc904ab8723ace96d62dfee9d
   "description": "Visualisierung für das Handy",
   "author": {
     "name": "mor15Euro",
@@ -83,7 +87,7 @@
     "release": "release-script"
   },
   "bugs": {
-    "url": "https://github.com/moba15/ioBroker.hiob-ts/issues"
+    "url": "https://github.com/moba15/ioBroker.hiob/issues"
   },
   "readmeFilename": "README.md"
 }

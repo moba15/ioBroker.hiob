@@ -10,11 +10,11 @@ export class Server {
    keyPath: string;
    useCert: boolean;
    port: number;
-   adapter: m.HiobTs;
+   adapter: m.SamartHomeHandyBis;
    socket: ws.Server | undefined;
    stoped: boolean = false;
    conClients : Client[] = [];
-   constructor(port: number = 4500, keyPath: string = "key.pem", certPath: string = "cert.pem", adapter: m.HiobTs, useCert: boolean = false) {
+   constructor(port: number = 4500, keyPath: string = "key.pem", certPath: string = "cert.pem", adapter: m.SamartHomeHandyBis, useCert: boolean = false) {
       this.port = port;
       this.certPath = certPath;
       this.keyPath = keyPath;
