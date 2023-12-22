@@ -91,7 +91,13 @@ class LoginManager {
     if (!loginRequestData.key) {
       return false;
     }
-    if (!await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
+    if (needPWD && !(needPWD == null ? void 0 : needPWD.val)) {
+      this.adapter.log.debug("Password needed");
+      if (!loginRequestData.user || !loginRequestData.password || await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
+        return false;
+      }
+    }
+    if (!bcrypt.compare(keyState.val.toString(), loginRequestData.key)) {
       this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong key");
       return false;
     }
