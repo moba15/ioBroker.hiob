@@ -95,31 +95,6 @@ class SamartHomeHandyBis extends utils.Adapter {
         list.push(map);
       }
     } else {
-      for (const type of ["folder", "channel"]) {
-        const aliasFolder = await this.getForeignObjectsAsync("alias.0.*", type);
-        for (const device in aliasFolder) {
-          const dataPoints = [];
-          this.log.debug(JSON.stringify(device));
-          const aliasStates = await this.getForeignObjectsAsync(device + ".*", "state");
-          for (const state in aliasStates) {
-            this.log.debug(JSON.stringify(state));
-            const dataPoint = await this.getForeignObjectAsync(state);
-            dataPoints.push({
-              "name": dataPoint.common.name,
-              "id": state,
-              "role": dataPoint.common.role,
-              "otherDetails": dataPoint.common.custom
-            });
-          }
-          const map = {
-            "id": aliasFolder[device]._id,
-            "name": aliasFolder[device].common.name,
-            "icon": aliasFolder[device].common.icon,
-            "dataPointMembers": dataPoints
-          };
-          list.push(map);
-        }
-      }
     }
     return list;
   }

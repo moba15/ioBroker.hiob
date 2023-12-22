@@ -88,6 +88,9 @@ class LoginManager {
     if (keyState == null || keyState.val == null) {
       return false;
     }
+    if (!loginRequestData.key) {
+      return false;
+    }
     if (!await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
       this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong key");
       return false;
