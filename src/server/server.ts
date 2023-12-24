@@ -25,7 +25,7 @@ export class Server {
 
    startServer() : void {
       let server
-      
+
 
       if(this.useCert) {
          server = createServer({
@@ -58,7 +58,6 @@ export class Server {
   }
 
   stop() : void {
-   //TODO: Stop server
    this.socket?.close()
    this.adapter.log.info("Server stoped");
    this.stoped = true;

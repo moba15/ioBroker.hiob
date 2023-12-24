@@ -6,8 +6,9 @@
 		"checkJs": false,
 		"noEmit": false,
 		"declaration": false,
-		"sourceMap": false,
-		"inlineSourceMap": true,
+		"sourceMap": true,
+		"inlineSourceMap": false,
+
 		
 	},
 	"include": [

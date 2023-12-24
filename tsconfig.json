@@ -32,8 +32,8 @@
 		// Uncomment this if you want the old behavior of catch variables being `any`
 		// "useUnknownInCatchVariables": false,
 
-		"sourceMap": false,
-		"inlineSourceMap": true
+		"sourceMap": true,
+		"inlineSourceMap": false
 	},
 	"include": [
 		"src/**/*.ts"

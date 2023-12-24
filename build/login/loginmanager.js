@@ -33,29 +33,43 @@ var bcrypt = __toESM(require("bcrypt"));
 var crypto = __toESM(require("crypto"));
 class LoginManager {
   constructor(adapter) {
+    this.approveLogins = false;
     this.adapter = adapter;
     this.adapter.listener.on(import_listener.Events.StateChange, this.onStateChange.bind(this));
     this.pendingClients = [];
   }
   async onStateChange(event) {
-    this.adapter.log.debug("Something changed");
     if (event.objectID.startsWith("hiob.")) {
-      this.adapter.log.debug("HioB Datapoint changed");
       const splited = event.objectID.split(".");
-      if (splited[2] == "devices" && splited[4] == "approved") {
-        this.adapter.log.debug("HioB device Datapoint changed");
+      if (splited.length > 4 && splited[2] == "devices" && splited[4] == "approved") {
         const deviceID = splited[3];
-        this.adapter.log.debug("DeviceID: " + deviceID.toString());
         const cl = this.pendingClients.find((e) => e.id == deviceID);
         if (cl && event.value) {
-          const keys = await this.genKey();
-          await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[1], true);
-          cl.sendMSG(new import_datapacks.LoginKeyPacket(keys[0]).toJSON(), false);
+          await this.setAndSendLoginKeys(deviceID, cl);
         } else {
           this.adapter.log.debug("No pending client found");
         }
+      } else if (splited[2] == "approveNextLogins") {
+        if (event.value) {
+          if (this.approveLoginsTimeout) {
+            clearTimeout(this.approveLoginsTimeout);
+          }
+          this.approveLogins = true;
+          this.approveLoginsTimeout = setTimeout(() => {
+            this.approveLogins = false;
+            this.approveLoginsTimeout = void 0;
+            this.adapter.setStateAsync("approveNextLogins", false, true);
+          }, 1e3 * 60);
+        } else {
+          this.approveLogins = false;
+        }
       }
     }
+  }
+  async setAndSendLoginKeys(deviceID, cl) {
+    const keys = await this.genKey();
+    await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[1], true);
+    cl.sendMSG(new import_datapacks.LoginKeyPacket(keys[0]).toJSON(), false);
   }
   async onLoginRequest(client, loginRequestData) {
     this.adapter.log.debug("Client(" + client.toString() + ") requested to login");
@@ -81,27 +95,33 @@ class LoginManager {
     const approved = await this.adapter.getStateAsync("devices." + deviceIDRep + ".approved");
     const keyState = await this.adapter.getStateAsync("devices." + deviceIDRep + ".key");
     const needPWD = await this.adapter.getStateAsync("devices." + deviceIDRep + ".noPwdAllowed");
+    let apr = true;
     if (!approved || !approved.val) {
       this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): not approved");
-      return false;
+      apr = false;
     }
     if (keyState == null || keyState.val == null) {
-      return false;
+      apr = false;
     }
     if (!loginRequestData.key) {
-      return false;
+      apr = false;
     }
     if (needPWD && !(needPWD == null ? void 0 : needPWD.val)) {
-      this.adapter.log.debug("Password needed");
-      if (!loginRequestData.user || !loginRequestData.password || await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
-        return false;
+      if (!loginRequestData.user || !loginRequestData.password || !await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
+        this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong password");
+        apr = false;
       }
     }
-    if (!bcrypt.compare(keyState.val.toString(), loginRequestData.key)) {
+    if (keyState != null && keyState.val != null && !bcrypt.compare(keyState.val.toString(), loginRequestData.key)) {
       this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong key");
-      return false;
+      apr = false;
     }
-    return true;
+    if (!apr && this.approveLogins) {
+      await this.adapter.setStateAsync("devices." + deviceIDRep + ".approved", true, true);
+      await this.setAndSendLoginKeys(deviceIDRep, client);
+      apr = true;
+    }
+    return apr;
   }
   async createObjects(deviceIDRep, deviceName, key) {
     await this.adapter.setObjectNotExistsAsync("devices." + deviceIDRep + ".connected", {

@@ -6,7 +6,9 @@ import * as bcrypt from "bcrypt"
 import * as crypto from "crypto"
 export class LoginManager {
     adapter: SamartHomeHandyBis;
-    pendingClients: Client[]
+    pendingClients: Client[];
+	approveLogins: boolean = false;
+	approveLoginsTimeout?: NodeJS.Timeout;
     constructor(adapter: SamartHomeHandyBis) {
         this.adapter = adapter;
         this.adapter.listener.on(Events.StateChange, this.onStateChange.bind(this));
@@ -14,23 +16,34 @@ export class LoginManager {
     }
 
     private async onStateChange(event: StateChangeEvent) : Promise<void>  {
-		this.adapter.log.debug("Something changed");
+
 		if(event.objectID.startsWith("hiob.")) {
-			this.adapter.log.debug("HioB Datapoint changed");
 			const splited = event.objectID.split(".");
-			if(splited[2] == "devices" && splited[4] == "approved") {
-				this.adapter.log.debug("HioB device Datapoint changed");
+			//If Datapoint is approved Datapoint
+			if(splited.length>4 && splited[2] == "devices" && splited[4] == "approved") {
 				const deviceID = splited[3];
-				this.adapter.log.debug("DeviceID: " + deviceID.toString());
-				//Get Client from pending list;
+				//Get Client from pending list
 				const cl = this.pendingClients.find((e) => e.id == deviceID);
+				//If Approved was set to true
 				if(cl && event.value) {
-					const keys = await this.genKey();
-					await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[1], true);
-					cl.sendMSG(new LoginKeyPacket(keys[0]).toJSON(), false);
+					await this.setAndSendLoginKeys(deviceID, cl);
 
 				} else {
 					this.adapter.log.debug("No pending client found");
+				}
+			} else if(splited[2] == "approveNextLogins") {
+				if(event.value) {
+					if(this.approveLoginsTimeout) {
+						clearTimeout(this.approveLoginsTimeout);
+					}
+					this.approveLogins = true;
+					this.approveLoginsTimeout = setTimeout(() => {
+						this.approveLogins = false;
+						this.approveLoginsTimeout = undefined;
+						this.adapter.setStateAsync("approveNextLogins", false, true);
+					}, 1000*60)
+				} else {
+					this.approveLogins = false;
 				}
 			}
 		}
@@ -39,9 +52,13 @@ export class LoginManager {
 	}
 
 
+	private async setAndSendLoginKeys(deviceID: string , cl: Client) : Promise<void> {
+		const keys = await this.genKey();
+		await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[1], true);
+		cl.sendMSG(new LoginKeyPacket(keys[0]).toJSON(), false);
+	}
 
-
-    public async onLoginRequest(client: Client, loginRequestData: RequestLoginPacket ) : Promise<boolean> {
+	public async onLoginRequest(client: Client, loginRequestData: RequestLoginPacket ) : Promise<boolean> {
         this.adapter.log.debug("Client(" + client.toString() + ") requested to login")
         this.pendingClients.push(client);
         let deviceIDRep = loginRequestData.deviceID.replace(".", "-");
@@ -68,31 +85,43 @@ export class LoginManager {
         const approved = await this.adapter.getStateAsync("devices." + deviceIDRep + ".approved");
 		const keyState = await this.adapter.getStateAsync("devices." + deviceIDRep + ".key");
 		const needPWD = await this.adapter.getStateAsync("devices." + deviceIDRep + ".noPwdAllowed");
+		//Check if next should be accepted:
+		let apr = true;
         if(!approved || !approved.val) {
             this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): not approved");
-            return false;
+            apr = false;
         }
         if(keyState == null || keyState.val == null) {
-            return false;
+            apr = false;
         }
 		if(!loginRequestData.key) {
-			return false;
-		}
-		
-		if(needPWD && !needPWD?.val) {
-			this.adapter.log.debug("Password needed");
-			
-			if(!loginRequestData.user || !loginRequestData.password || (await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password))) {
-				return false;
-			}
-				
+			apr = false;
 		}
 
-        if(!bcrypt.compare( keyState.val.toString(), loginRequestData.key)) {
+		if(needPWD && !needPWD?.val) {
+
+			if(!loginRequestData.user || !loginRequestData.password || !(await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password))) {
+				this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong password");
+				apr = false;
+			}
+
+		}
+
+
+        if( keyState != null && keyState.val != null && !bcrypt.compare( keyState.val.toString(), loginRequestData.key)) {
             this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong key");
-            return false;
+           	apr = false;
         }
-        return true;
+		if(!apr && this.approveLogins) {
+			await this.adapter.setStateAsync("devices." + deviceIDRep + ".approved", true, true);
+
+			//Send Login Keys
+			await this.setAndSendLoginKeys(deviceIDRep, client);
+
+
+			apr = true;
+		}
+        return apr;
 
     }
 

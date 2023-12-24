@@ -43,7 +43,6 @@ class Listener extends import_events.default {
   onStateChange(id, state) {
     var _a;
     if (state != null) {
-      this.adapter.log.debug("State chnaged:" + state.toString());
       (_a = this.adapter.server) == null ? void 0 : _a.broadcastMsg(new import_datapacks.StateChangedDataPack(id, state.val).toJSON());
       this.emit("stateChanged" /* StateChange */, new StateChangeEvent(id, state.val));
     } else {

@@ -52,6 +52,20 @@ class SamartHomeHandyBis extends utils.Adapter {
   }
   async onReady() {
     this.setState("info.connection", true, true);
+    await this.setObjectNotExistsAsync("approveNextLogins", {
+      type: "state",
+      common: {
+        name: "Connected",
+        type: "boolean",
+        role: "indicator.approve",
+        def: false,
+        read: true,
+        write: true
+      },
+      native: {}
+    });
+    await this.setStateAsync("approveNextLogins", false, true);
+    this.subscribeStates("approveNextLogins");
     this.loadConfigs();
     this.initServer();
   }
@@ -67,34 +81,34 @@ class SamartHomeHandyBis extends utils.Adapter {
   }
   async getEnumListJSON(id) {
     const list = [];
-    if (false) {
-      const enumDevices = await this.getForeignObjectsAsync(id, "enum");
-      for (const i in enumDevices) {
-        const members = enumDevices[i].common.members;
-        const dataPoints = [];
-        if (!dataPoints) {
-          continue;
-        }
-        for (const z in members) {
-          const dataPoint = await this.getForeignObjectAsync(z);
-          if (!dataPoint)
-            continue;
-          dataPoints.push({
-            "name": dataPoint.common.name,
-            "id": z,
-            "role": dataPoint.common.role,
-            "otherDetails": dataPoint.common.custom
-          });
-        }
-        const map = {
-          "id": enumDevices[i]._id,
-          "name": enumDevices[i].common.name,
-          "icon": enumDevices[i].common.icon,
-          "dataPointMembers": dataPoints
-        };
-        list.push(map);
+    const enumDevices = await this.getForeignObjectsAsync(id, "enum");
+    for (const i in enumDevices) {
+      const members = enumDevices[i].common.members;
+      if (!members) {
+        continue;
       }
-    } else {
+      const dataPoints = [];
+      if (!dataPoints) {
+        continue;
+      }
+      for (const z of members) {
+        const dataPoint = await this.getForeignObjectAsync(z);
+        if (!dataPoint)
+          continue;
+        dataPoints.push({
+          "name": dataPoint.common.name,
+          "id": z,
+          "role": dataPoint.common.role,
+          "otherDetails": dataPoint.common.custom
+        });
+      }
+      const map = {
+        "id": enumDevices[i]._id,
+        "name": enumDevices[i].common.name,
+        "icon": enumDevices[i].common.icon,
+        "dataPointMembers": dataPoints
+      };
+      list.push(map);
     }
     return list;
   }
