@@ -33,8 +33,8 @@ export class Listener extends EventEmitter {
 }
 
 export class StateChangeEvent {
-    objectID
-    value
+    objectID: string
+    value: any
 	constructor(objectID: string, value: string | number | boolean | undefined| null) {
 		this.objectID = objectID;
 		this.value = value;

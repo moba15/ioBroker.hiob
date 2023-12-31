@@ -57,6 +57,14 @@ export class Server {
       this.conClients.forEach((element) => {if(element.isConnected) element.sendMSG(msg, true);});
   }
 
+  isConnected(deviceID: string ) : boolean {
+      return this.conClients.some(c => c.isConnected && c.id == deviceID);
+  }
+
+  getClient(deviceID: string) : (Client | undefined) {
+       return this.conClients.find(c => c.isConnected && c.id == deviceID);
+}
+
   stop() : void {
    this.socket?.close()
    this.adapter.log.info("Server stoped");
