@@ -28,7 +28,7 @@ English: [Description](/docs/en/README.md)</br>
 German: [Beschreibung](/docs/de/README.md)
 </br> Thanks to [Lucky-ESA](https://github.com/Lucky-ESA)
 
-## Changelog 0.0.30
+## Changelog 0.0.54
 
 * Added secure login
 
