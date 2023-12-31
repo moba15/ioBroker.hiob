@@ -31,6 +31,8 @@ German: [Beschreibung](/docs/de/README.md)
 ## Changelog 0.0.54
 
 * Added secure login
+* Added secure connetion
+* Automatic acceptance of incoming connections for 60 seconds
 
 ## License
 
