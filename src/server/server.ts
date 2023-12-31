@@ -52,9 +52,9 @@ export class Server {
 
    }
 
-   broadcastMsg(msg: string) :void  {
+   broadcastMsg(msg: string,  notification: boolean) :void  {
       //this.webSocketServer.clients.forEach((e) => {});
-      this.conClients.forEach((element) => {if(element.isConnected) element.sendMSG(msg, true);});
+      this.conClients.filter(e => !e.onlySendNotification).forEach((element) => {if(element.isConnected) element.sendMSG(msg, true);});
   }
 
   isConnected(deviceID: string ) : boolean {

@@ -33,6 +33,7 @@ var import_listener = require("./listener/listener");
 var import_loginmanager = require("./login/loginmanager");
 var import_datapacks = require("./server/datapacks");
 var import_template_manager = require("./template/template_manager");
+var import_notification_manager = require("./notification/notification_manager");
 class SamartHomeHandyBis extends utils.Adapter {
   constructor(options = {}) {
     super({
@@ -45,6 +46,7 @@ class SamartHomeHandyBis extends utils.Adapter {
     this.useCer = false;
     this.templateManager = new import_template_manager.TemplateManager(this);
     this.listener = new import_listener.Listener(this);
+    new import_notification_manager.NotificationManager(this);
     this.loginManager = new import_loginmanager.LoginManager(this);
     this.on("ready", this.onReady.bind(this));
     this.on("stateChange", this.listener.onStateChange.bind(this.listener));

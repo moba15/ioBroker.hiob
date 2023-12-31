@@ -2,7 +2,20 @@ import { IncomingMessage } from "http";
 import { WebSocket } from "ws";
 import { SamartHomeHandyBis } from "../main";
 import { Server } from "./server";
-import { EnumUpdatePack, EnumUpdateRequestPack, GetTemplateSettingPack, RequestLoginPacket, StateChangeRequestPack, SubscribeToDataPointsHistory, SubscribeToDataPointsPack, TemplateSettingCreatePack, TemplateSettingUploadPack, TemplateSettingUploadSuccessPack, TemplateSettingsRequestedPack } from "./datapacks";
+import {
+    EnumUpdatePack,
+    EnumUpdateRequestPack,
+    GetTemplateSettingPack,
+    RequestLoginPacket,
+    StateChangeRequestPack,
+    SubscribeToDataPointsHistory,
+    SubscribeToDataPointsPack,
+    TemplateSettingCreatePack,
+    TemplateSettingUploadPack,
+    TemplateSettingUploadSuccessPack,
+    TemplateSettingsRequestedPack,
+    NotificationPack
+} from "./datapacks";
 import { TemplateSettings } from "../template/template_manager";
 
 export class Client {
@@ -12,6 +25,7 @@ export class Client {
     req;
     adapter;
     approved;
+    onlySendNotification: boolean = false;
     id?: string
     name?: string
     constructor(socket: WebSocket, server: Server, req: IncomingMessage, adapter: SamartHomeHandyBis) {
@@ -44,31 +58,32 @@ export class Client {
     onData(data: string): void {
         try {
             const map = JSON.parse(data);
+            const content = map["content"] ?? {};
             this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + "type: " + map["type"]);
             switch (map["type"]) {
                 case "iobStateChangeRequest":
                     if (this.approved)
-                        this.onStateChangeRequest(new StateChangeRequestPack(map["content"]["stateID"], map["content"]["value"]));
+                        this.onStateChangeRequest(new StateChangeRequestPack(content["stateID"], content["value"]));
                     break;
                 case "enumUpdateRequest": //Enum update Request
                     if (this.approved)
-                        this.onEnumUpdateRequest(new EnumUpdateRequestPack(map["content"]["id"]));
+                        this.onEnumUpdateRequest(new EnumUpdateRequestPack(content["id"]));
                     break;
                 case "subscribeToDataPoints":
                     if (this.approved)
-                        this.onSubscribeToDataPoints(new SubscribeToDataPointsPack(map["content"]["dataPoints"]));
+                        this.onSubscribeToDataPoints(new SubscribeToDataPointsPack(content["dataPoints"]));
                     break;
                 case "subscribeHistory":
                     if (this.approved)
-                        this.onSubscribeToHistory(new SubscribeToDataPointsHistory(map["content"]["dataPoint"], map["content"]["end"], map["content"]["start"], map["content"]["interval"]));
+                        this.onSubscribeToHistory(new SubscribeToDataPointsHistory(content["dataPoint"], content["end"], content["start"], content["interval"]));
                     //TODO:
                     break;
                 case "requestLogin":
-                    this.onLoginRequest(new RequestLoginPacket(map["content"]["deviceName"], map["content"]["deviceID"], map["content"]["key"], map["content"]["user"], map["content"]["password"]));
+                    this.onLoginRequest(new RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["user"], content["password"]));
                     break;
                 case "templateSettingCreate":
-                    this.adapter.log.debug((map["content"]["name"]));
-                    this.onTemplateSettingCreate(new TemplateSettingCreatePack(map["content"]["name"]));
+                    this.adapter.log.debug((content["name"]));
+                    this.onTemplateSettingCreate(new TemplateSettingCreatePack(content["name"]));
                     break;
                 case "requestTemplatesSettings":
                     this.adapter.log.debug("requestTemplatesSettings");
@@ -76,12 +91,15 @@ export class Client {
                     break;
                 case "uploadTemplateSetting":
                     this.adapter.log.debug("uploadTemplateSetting");
-                    this.onTemplateUpload(new TemplateSettingUploadPack(map["content"]["name"], map["content"]["devices"], map["content"]["screens"], map["content"]["widgets"]));
+                    this.onTemplateUpload(new TemplateSettingUploadPack(content["name"], content["devices"], content["screens"], content["widgets"]));
                     break;
 
                 case "getTemplatesSetting":
                     this.adapter.log.debug("getTemplatesSetting");
-                    this.getTemplatesSetting(map["content"]["name"], map["content"]["device"], map["content"]["screen"], map["content"]["widget"]);
+                    this.getTemplatesSetting(content["name"], content["device"], content["screen"], content["widget"]);
+                    break;
+                case "notification":
+                    this.onNotification(new NotificationPack(content["onlySendNotification"], content["content"], content["date"]))
                     break;
 
             }
@@ -175,9 +193,16 @@ export class Client {
 
     }
 
+    onNotification(pack: NotificationPack) {
+        if(pack.onlySendNotification != undefined) {
+            this.onlySendNotification = pack.onlySendNotification;
+        }
+
+    }
+
 
     toString(): string {
-        return this.req.socket.address + ":" + this.req.socket.remotePort
+        return this.req.socket.address() + ":" + this.req.socket.remotePort
     }
 
 }

@@ -25,6 +25,7 @@ var import_datapacks = require("./datapacks");
 var import_template_manager = require("../template/template_manager");
 class Client {
   constructor(socket, server, req, adapter) {
+    this.onlySendNotification = false;
     this.socket = socket;
     this.server = server;
     this.req = req;
@@ -48,32 +49,34 @@ class Client {
     return false;
   }
   onData(data) {
+    var _a;
     try {
       const map = JSON.parse(data);
+      const content = (_a = map["content"]) != null ? _a : {};
       this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + "type: " + map["type"]);
       switch (map["type"]) {
         case "iobStateChangeRequest":
           if (this.approved)
-            this.onStateChangeRequest(new import_datapacks.StateChangeRequestPack(map["content"]["stateID"], map["content"]["value"]));
+            this.onStateChangeRequest(new import_datapacks.StateChangeRequestPack(content["stateID"], content["value"]));
           break;
         case "enumUpdateRequest":
           if (this.approved)
-            this.onEnumUpdateRequest(new import_datapacks.EnumUpdateRequestPack(map["content"]["id"]));
+            this.onEnumUpdateRequest(new import_datapacks.EnumUpdateRequestPack(content["id"]));
           break;
         case "subscribeToDataPoints":
           if (this.approved)
-            this.onSubscribeToDataPoints(new import_datapacks.SubscribeToDataPointsPack(map["content"]["dataPoints"]));
+            this.onSubscribeToDataPoints(new import_datapacks.SubscribeToDataPointsPack(content["dataPoints"]));
           break;
         case "subscribeHistory":
           if (this.approved)
-            this.onSubscribeToHistory(new import_datapacks.SubscribeToDataPointsHistory(map["content"]["dataPoint"], map["content"]["end"], map["content"]["start"], map["content"]["interval"]));
+            this.onSubscribeToHistory(new import_datapacks.SubscribeToDataPointsHistory(content["dataPoint"], content["end"], content["start"], content["interval"]));
           break;
         case "requestLogin":
-          this.onLoginRequest(new import_datapacks.RequestLoginPacket(map["content"]["deviceName"], map["content"]["deviceID"], map["content"]["key"], map["content"]["user"], map["content"]["password"]));
+          this.onLoginRequest(new import_datapacks.RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["user"], content["password"]));
           break;
         case "templateSettingCreate":
-          this.adapter.log.debug(map["content"]["name"]);
-          this.onTemplateSettingCreate(new import_datapacks.TemplateSettingCreatePack(map["content"]["name"]));
+          this.adapter.log.debug(content["name"]);
+          this.onTemplateSettingCreate(new import_datapacks.TemplateSettingCreatePack(content["name"]));
           break;
         case "requestTemplatesSettings":
           this.adapter.log.debug("requestTemplatesSettings");
@@ -81,11 +84,14 @@ class Client {
           break;
         case "uploadTemplateSetting":
           this.adapter.log.debug("uploadTemplateSetting");
-          this.onTemplateUpload(new import_datapacks.TemplateSettingUploadPack(map["content"]["name"], map["content"]["devices"], map["content"]["screens"], map["content"]["widgets"]));
+          this.onTemplateUpload(new import_datapacks.TemplateSettingUploadPack(content["name"], content["devices"], content["screens"], content["widgets"]));
           break;
         case "getTemplatesSetting":
           this.adapter.log.debug("getTemplatesSetting");
-          this.getTemplatesSetting(map["content"]["name"], map["content"]["device"], map["content"]["screen"], map["content"]["widget"]);
+          this.getTemplatesSetting(content["name"], content["device"], content["screen"], content["widget"]);
+          break;
+        case "notification":
+          this.onNotification(new import_datapacks.NotificationPack(content["onlySendNotification"], content["content"], content["date"]));
           break;
       }
     } catch (e) {
@@ -147,8 +153,13 @@ class Client {
     const map = await this.adapter.templateManager.getTemplateSettings(name);
     this.sendMSG(new import_datapacks.GetTemplateSettingPack(device ? map["devices"] : null, screen ? map["screens"] : null, widget ? map["widgets"] : null).toJSON(), true);
   }
+  onNotification(pack) {
+    if (pack.onlySendNotification != void 0) {
+      this.onlySendNotification = pack.onlySendNotification;
+    }
+  }
   toString() {
-    return this.req.socket.address + ":" + this.req.socket.remotePort;
+    return this.req.socket.address() + ":" + this.req.socket.remotePort;
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

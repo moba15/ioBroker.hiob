@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch ioBroker Adapter",
+      "skipFiles": ["<node_internals>/**"],
+      "args": ["--debug", "0"],
+      "program": "node_modules/iobroker.hiob/build/main.js",
+      "cwd": "${workspaceFolder}/.dev-server/default",
+      "sourceMaps": true,
+      
+    }
+  ]
+}

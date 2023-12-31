@@ -22,8 +22,8 @@ export class Listener extends EventEmitter {
 		if (state != null) {
 			// The state was changed
 			//this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-
-			this.adapter.server?.broadcastMsg(new StateChangedDataPack(id, state.val).toJSON());
+			//Check if notification
+			this.adapter.server?.broadcastMsg(new StateChangedDataPack(id, state.val).toJSON(), false);
 			this.emit(Events.StateChange, new StateChangeEvent(id, state.val));
 		} else {
 			this.emit("stateDeleted", new StateChangeEvent(id, null));

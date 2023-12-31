@@ -217,6 +217,19 @@ class LoginManager {
       },
       native: {}
     });
+    await this.adapter.setObjectNotExistsAsync("devices." + deviceIDRep + ".sendNotification", {
+      type: "state",
+      common: {
+        name: "Send Notification",
+        type: "string",
+        role: "indicator",
+        def: "",
+        read: true,
+        write: true
+      },
+      native: {}
+    });
+    await this.adapter.subscribeStatesAsync("devices." + deviceIDRep + ".sendNotification");
   }
   genRandomString(length) {
     let result = "";

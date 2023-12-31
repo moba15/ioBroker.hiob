@@ -289,3 +289,25 @@ export class GetTemplateSettingPack extends DataPack {
 
 
 }
+
+
+export class NotificationPack extends DataPack {
+    onlySendNotification? : boolean
+    content?: string | Map<string, any>;
+    date?: Date
+    constructor(onlySendNotification?: boolean, content?: string | Map<string, any>, date?: Date) {
+        super("notification");
+        this.onlySendNotification = onlySendNotification;
+        this.content = content;
+        this.date = date;
+    }
+    toJSON() : string {
+        const map = {
+            "type": this.type,
+            "onlySendNotification": this.onlySendNotification,
+            "content": this.content,
+            "date": this.date
+        };
+        return JSON.stringify(map).toString();
+    }
+}

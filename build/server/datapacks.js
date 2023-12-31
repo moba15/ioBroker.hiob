@@ -18,6 +18,7 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var datapacks_exports = {};
 __export(datapacks_exports, {
+  DataPack: () => DataPack,
   EnumUpdatePack: () => EnumUpdatePack,
   EnumUpdateRequestPack: () => EnumUpdateRequestPack,
   FirstPingPack: () => FirstPingPack,
@@ -26,6 +27,7 @@ __export(datapacks_exports, {
   LoginApprovedPacket: () => LoginApprovedPacket,
   LoginDeclinedPacket: () => LoginDeclinedPacket,
   LoginKeyPacket: () => LoginKeyPacket,
+  NotificationPack: () => NotificationPack,
   RequestLoginPacket: () => RequestLoginPacket,
   StateChangeRequestPack: () => StateChangeRequestPack,
   StateChangedDataPack: () => StateChangedDataPack,
@@ -243,8 +245,26 @@ class GetTemplateSettingPack extends DataPack {
     return JSON.stringify(map).toString();
   }
 }
+class NotificationPack extends DataPack {
+  constructor(onlySendNotification, content, date) {
+    super("notification");
+    this.onlySendNotification = onlySendNotification;
+    this.content = content;
+    this.date = date;
+  }
+  toJSON() {
+    const map = {
+      "type": this.type,
+      "onlySendNotification": this.onlySendNotification,
+      "content": this.content,
+      "date": this.date
+    };
+    return JSON.stringify(map).toString();
+  }
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  DataPack,
   EnumUpdatePack,
   EnumUpdateRequestPack,
   FirstPingPack,
@@ -253,6 +273,7 @@ class GetTemplateSettingPack extends DataPack {
   LoginApprovedPacket,
   LoginDeclinedPacket,
   LoginKeyPacket,
+  NotificationPack,
   RequestLoginPacket,
   StateChangeRequestPack,
   StateChangedDataPack,

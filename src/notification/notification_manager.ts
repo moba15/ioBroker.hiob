@@ -1,7 +1,7 @@
 import {SamartHomeHandyBis} from "../main";
 import {Events, StateChangeEvent} from "../listener/listener";
 
-import {DataPack} from "../server/datapacks";
+import {DataPack, NotificationPack} from "../server/datapacks";
 import {Client} from "../server/client";
 
 export class NotificationManager {
@@ -44,8 +44,7 @@ export class NotificationManager {
 
 
     private sendNotificationLocal(client: Client, notification: string) : void {
-
-        client.sendMSG(new NotificationPacket(notification, Date.now()).toJSON(), true);
+        client.sendMSG(new NotificationPack(false, notification, new Date()).toJSON(), true);
     }
 
 
@@ -53,17 +52,3 @@ export class NotificationManager {
 
 }
 
-class NotificationPacket extends DataPack {
-    dateTime: number;
-    notification: string;
-    constructor(notification: string, dateTime: number) {
-        super("notificationPacket");
-        this.notification = notification;
-        this.dateTime = dateTime;
-    }
-
-    toJSON() : string {
-        return JSON.stringify(this).toString();
-    }
-
-}

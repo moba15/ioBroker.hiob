@@ -69,11 +69,17 @@ class Server {
     this.adapter.log.info("Server started and is listening on port: " + this.port);
     this.stoped = false;
   }
-  broadcastMsg(msg) {
-    this.conClients.forEach((element) => {
+  broadcastMsg(msg, notification) {
+    this.conClients.filter((e) => !e.onlySendNotification).forEach((element) => {
       if (element.isConnected)
         element.sendMSG(msg, true);
     });
+  }
+  isConnected(deviceID) {
+    return this.conClients.some((c) => c.isConnected && c.id == deviceID);
+  }
+  getClient(deviceID) {
+    return this.conClients.find((c) => c.isConnected && c.id == deviceID);
   }
   stop() {
     var _a;
