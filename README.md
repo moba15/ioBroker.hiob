@@ -32,18 +32,8 @@ German: [Beschreibung](/docs/de/README.md)
 
 * Added secure login
 
-## Coming with 0.0.40
-
-* Allow Login without password (Settings -> IoBroker Settings): [more infos](app-einrichtung/#verbindung-mit-dem-adapter)
-* You will be able to upload and load setting to/from ioBroker
-  * Settings -> Config Sync&#x20;
-    * Press the "+" to add a new Config
-    * Press upload/load to select which settings you want to upload/load to/from IoBroker
-    * Press the "update" key in the top right corner to update your Settings list
-  * Find the Config under hiob.x.settings.\<name> in IoBroker
-
 ## License
 
 MIT
 
-Copyright (c) 2022 mor15Euro [hiob@bachmaiers.de](http://localhost:5000/u/bh3bIYvKVLQXD837pc8JlAJHx3Z2)
+Copyright (c) 2024 mor15Euro [hiob@bachmaiers.de](http://localhost:5000/u/bh3bIYvKVLQXD837pc8JlAJHx3Z2)
