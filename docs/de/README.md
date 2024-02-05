@@ -13,6 +13,7 @@
 # Einstellungen
 
 -   [Generelle Einstellung](general.md)
+-   [Sichere Verbindung](secuteCon.md)
 
 # Benutzerdefinierte Einstellungen
 
