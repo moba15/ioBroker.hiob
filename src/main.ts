@@ -147,7 +147,10 @@ export class SamartHomeHandyBis extends utils.Adapter {
     public async subscribeToDataPoints(dataPoints: { [x: string]: any; }, client: Client): Promise<void> {
         this.log.debug(JSON.stringify(dataPoints));
         for (const i in dataPoints) {
-            //this.log.info("sub to11" + dataPoints[i] );
+            if(!(await this.foreignObjectExists(dataPoints[i]))) {
+                this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
+                continue;
+            }
             const state = await this.getForeignStateAsync(dataPoints[i]);
             if (state) {
                 //this.log.info("sub to " + dataPoints[i]);
