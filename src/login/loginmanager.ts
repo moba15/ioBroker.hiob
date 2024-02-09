@@ -55,12 +55,17 @@ export class LoginManager {
 	private async setAndSendLoginKeys(deviceID: string , cl: Client) : Promise<void> {
 		const keys = await this.genKey();
 		await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[1], true);
-		cl.sendMSG(new LoginKeyPacket(keys[0]).toJSON(), false);
+		for(const current of this.pendingClients) {
+			if(current.id == cl.id) {
+				current.sendMSG(new LoginKeyPacket(keys[0]).toJSON(), false);
+			}
+		}
 	}
 
 	public async onLoginRequest(client: Client, loginRequestData: RequestLoginPacket ) : Promise<boolean> {
         this.adapter.log.debug("Client(" + client.toString() + ") requested to login")
         this.pendingClients.push(client);
+		this.pendingClients = this.pendingClients.filter((cli, i, s) => s.indexOf(cli) == i );
         let deviceIDRep = loginRequestData.deviceID.replace(".", "-");
 		while(deviceIDRep.includes(".")) {
 			deviceIDRep = deviceIDRep.replace(".", "-");
@@ -73,7 +78,7 @@ export class LoginManager {
             this.loginDeclined(client);
 			return false;
         }
-		this.pendingClients.filter((cl, i) => cl != client);
+		this.pendingClients = this.pendingClients.filter((cl, i) => cl != client);
 		client.onApprove();
 		client.sendMSG(new LoginApprovedPacket().toJSON(), false);
 		return true;
@@ -109,8 +114,8 @@ export class LoginManager {
 		if(loginRequestData.key == null) {
 			apr = false;
 		}
-        if( keyState != null && keyState.val != null && loginRequestData.key  && ! (await bcrypt.compare( keyState.val.toString(), loginRequestData.key))) {
-            this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong key");
+        if( keyState != null && keyState.val != null && loginRequestData.key  && !(await bcrypt.compare( loginRequestData.key, keyState.val.toString()))) {
+            this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong key" + !(await bcrypt.compare(  loginRequestData.key, keyState.val.toString()))) ;
            	apr = false;
         }
 		if(!apr && this.approveLogins) {
@@ -261,13 +266,13 @@ export class LoginManager {
 	}
 
     private async genKey() : Promise<[string, string]> {
-		const key = this.genRandomString(512);
-		const hashedKey = await bcrypt.hash(key, 5);
+		const key = this.genRandomString(256);
+		const hashedKey = await bcrypt.hash(key, 0);
         return [key, hashedKey];
     }
 
     private loginDeclined(client: Client) : void {
-        client.sendMSG(new LoginDeclinedPacket().toJSON(), false);
+        client.sendMSG(new LoginDeclinedPacket().toJSON(), false); 
     }
 
 }
