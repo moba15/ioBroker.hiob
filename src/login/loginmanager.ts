@@ -106,19 +106,17 @@ export class LoginManager {
 			}
 
 		}
-
-
-        if( keyState != null && keyState.val != null && !bcrypt.compare( keyState.val.toString(), loginRequestData.key)) {
+		if(loginRequestData.key == null) {
+			apr = false;
+		}
+        if( keyState != null && keyState.val != null && loginRequestData.key  && ! (await bcrypt.compare( keyState.val.toString(), loginRequestData.key))) {
             this.adapter.log.debug("Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong key");
            	apr = false;
         }
 		if(!apr && this.approveLogins) {
 			await this.adapter.setStateAsync("devices." + deviceIDRep + ".approved", true, true);
-
 			//Send Login Keys
 			await this.setAndSendLoginKeys(deviceIDRep, client);
-
-
 			apr = true;
 		}
         return apr;
@@ -204,7 +202,7 @@ export class LoginManager {
 				read: true,
 				write: true,
 			},
-			native: {},
+			native: {}, 
 		});
 
 		this.adapter.setState("devices." + deviceIDRep + ".lastConnection", Date.now())
