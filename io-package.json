@@ -1,7 +1,7 @@
 {
 	"common": {
 		"name": "hiob",
-		"version": "0.0.55",
+		"version": "0.0.55-1",
 		"news": {
 			"0.0.1": {
 				"en": "initial release",
@@ -64,6 +64,10 @@
 		"connectionType": "local",
 		"dataSource": "push",
 		"materialize": true,
+		"licenseInformation": {
+			"license": "MIT",
+			"type": "free"
+		},
 		"dependencies": [
 			{
 				"js-controller": ">=2.0.0"
