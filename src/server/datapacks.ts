@@ -318,7 +318,7 @@ export class GetTemplateSettingPack extends DataPack {
         const map = {
             "type": this.type,
             "screens": this.screens,
-            "widg": this.widgets,
+            "widget": this.widgets,
             "devices": this.devices,
         };
         return map;
