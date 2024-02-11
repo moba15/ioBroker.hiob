@@ -23,10 +23,12 @@ export class Listener extends EventEmitter {
 			// The state was changed
 			//this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 			//Check if notification
-			this.adapter.server?.broadcastMsg(new StateChangedDataPack(id, state.val).toJSON(), false);
-			this.emit(Events.StateChange, new StateChangeEvent(id, state.val));
+			if (!id.startsWith("hiob.")) {
+				this.adapter.server?.broadcastMsg(new StateChangedDataPack(id, state.val, state.ack).toJSON(), false);
+			}
+			this.emit(Events.StateChange, new StateChangeEvent(id, state.val, state.ack));
 		} else {
-			this.emit("stateDeleted", new StateChangeEvent(id, null));
+			this.emit("stateDeleted", new StateChangeEvent(id, null, null));
 			this.adapter.log.info(`state ${id} deleted`);
 		}
 	}
@@ -35,8 +37,10 @@ export class Listener extends EventEmitter {
 export class StateChangeEvent {
     objectID: string
     value: any
-	constructor(objectID: string, value: string | number | boolean | undefined| null) {
+	ack: any
+	constructor(objectID: string, value: string | number | boolean | undefined| null, ack: boolean | undefined | null) {
 		this.objectID = objectID;
 		this.value = value;
+		this.ack = ack;
 	}
 }

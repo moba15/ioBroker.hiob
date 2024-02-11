@@ -41,9 +41,9 @@ export class Server {
       this.socket.on("error", (e) =>  {this.adapter.log.info("error: " + e.message); this.adapter.setState("info.connection", false, true);} );
       this.adapter.setState("info.connection", true, true);
       this.socket.on("connection", (socket: ws.WebSocket, req) => {
-          this.adapter.log.debug("Client connected");
-          this.conClients.push(new Client(socket, this, req, this.adapter));
-          socket.send(new FirstPingPack().toJSON());
+         this.adapter.log.debug("Client connected");
+         this.conClients.push(new Client(socket, this, req, this.adapter));
+         socket.send(new FirstPingPack().toJSON());
       });
       server?.listen(this.port);
       this.adapter.log.info("Server started and is listening on port: " + this.port);

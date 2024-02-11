@@ -15,13 +15,13 @@ export class StateChangeRequestPack extends DataPack {
         this.newValue = newValue;
     }
 
-    toJSON() : string {
+    toJSON() : any {
         const map = {
             "type": this.type,
             "objectID": this.objectID,
             "newValue": this.newValue,
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 
 }
@@ -29,19 +29,22 @@ export class StateChangeRequestPack extends DataPack {
 export class StateChangedDataPack extends DataPack {
     objectID
     value
-    constructor(objectID: string, value: any) {
+    ack
+    constructor(objectID: string, value: any, ack: boolean) {
         super("iobStateChanged")
         this.objectID = objectID;
         this.value = value;
+        this.ack = ack;
     }
 
-    toJSON() : string {
+    toJSON() : any {
         const map = {
             "type": this.type,
             "objectID": this.objectID,
             "value": this.value,
+            "ack": this.ack,
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 
 }
@@ -66,12 +69,12 @@ export class EnumUpdatePack extends DataPack {
         this.enumsJSON = enumsJSON;
     }
 
-    toJSON() : string {
+    toJSON() : any {
         const map = {
             "type": this.type,
             "enums": this.enumsJSON,
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 
 }
@@ -86,8 +89,25 @@ export class FirstPingPack extends DataPack {
     toJSON() : string {
         const map = {
             "type": this.type,
+            content: {}
         };
         return JSON.stringify(map).toString();
+    }
+
+}
+
+
+export class NewAesPacket extends DataPack {
+    constructor() {
+        super("setNewAes");
+    }
+
+    toJSON() : any {
+        const map = {
+            "type": this.type,
+            content: {}
+        };
+        return map;
     }
 
 }
@@ -96,13 +116,15 @@ export class RequestLoginPacket extends DataPack {
     deviceName: string;
     deviceID: string
     key: string
+    version: string
     user: string
     password: string
-    constructor(deviceName: string, deviceID: string, key: string, user: string, password: string ) {
+    constructor(deviceName: string, deviceID: string, key: string, version: string, user: string, password: string ) {
         super("requestLogin");
         this.deviceName = deviceName;
         this.deviceID = deviceID;
         this.key = key;
+        this.version = version;
         this.user = user;
         this.password = password;
     }
@@ -117,13 +139,13 @@ export class LoginAnswer extends DataPack {
         this.suc = suc;
     }
 
-    toJSON() : string {
+    toJSON() : any {
         const map = {
             "type": this.type,
             "key": this.key,
             "suc": this.suc
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 }
 
@@ -162,25 +184,28 @@ export class LoginKeyPacket extends DataPack {
         this.key = key;
     }
 
-    toJSON() : string {
+    toJSON() : any {
         const map = {
             "type": this.type,
             "key": this.key,
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 }
 
 export class LoginApprovedPacket extends DataPack {
-    constructor() {
+    release
+    constructor(release: string) {
         super("loginApproved");
+        this.release = release;
     }
 
-    toJSON() : string{
+    toJSON() : any {
         const map = {
             "type": this.type,
+            "release": this.release,
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 }
 
@@ -191,11 +216,23 @@ export class LoginDeclinedPacket extends DataPack {
     }
 
 
-    toJSON() : string{
+    toJSON() : any {
         const map = {
             "type": this.type,
         };
-        return JSON.stringify(map).toString();
+        return map;
+    }
+}
+
+export class WrongAesKeyPack extends DataPack {
+    constructor() {
+        super("wrongAesKey");
+    }
+    toJSON() : any {
+        const map = {
+            "type": this.type,
+        };
+        return map;
     }
 }
 
@@ -206,11 +243,11 @@ export class TemplateSettingCreatePack extends DataPack {
         this.name = name;
     }
 
-    toJSON() : string {
+    toJSON() : any {
         const map = {
             "type": this.type,
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 
 }
@@ -222,12 +259,12 @@ export class TemplateSettingsRequestedPack extends DataPack {
         this.list = list;
     }
 
-    toJSON() : string {
+    toJSON() : any {
         const map = {
             "type": this.type,
             "settings": this.list,
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 
 }
@@ -254,11 +291,11 @@ export class TemplateSettingUploadSuccessPack extends DataPack {
         super("uploadTemplateSettingSuccess");
     }
 
-    toJSON() : string {
+    toJSON() : any {
         const map = {
             "type": this.type,
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 
 
@@ -277,14 +314,14 @@ export class GetTemplateSettingPack extends DataPack {
         this.widgets = widgets;
     }
 
-    toJSON() : string {
+    toJSON() : any {
         const map = {
             "type": this.type,
             "screens": this.screens,
             "widg": this.widgets,
             "devices": this.devices,
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 
 
@@ -301,13 +338,13 @@ export class NotificationPack extends DataPack {
         this.content = content;
         this.date = date;
     }
-    toJSON() : string {
+    toJSON() : any {
         const map = {
             "type": this.type,
             "onlySendNotification": this.onlySendNotification,
             "content": this.content,
             "date": this.date
         };
-        return JSON.stringify(map).toString();
+        return map;
     }
 }

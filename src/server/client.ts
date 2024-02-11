@@ -17,6 +17,7 @@ import {
     NotificationPack
 } from "./datapacks";
 import { TemplateSettings } from "../template/template_manager";
+import * as CryptoJS from "crypto-js";
 
 export class Client {
     socket;
@@ -25,9 +26,10 @@ export class Client {
     req;
     adapter;
     approved;
+    aesKey?: string;
     onlySendNotification: boolean = false;
-    id?: string
-    name?: string
+    id?: string;
+    name?: string;
     constructor(socket: WebSocket, server: Server, req: IncomingMessage, adapter: SamartHomeHandyBis) {
         this.socket = socket;
         this.server = server;
@@ -35,6 +37,7 @@ export class Client {
         this.isConnected = true;
         this.adapter = adapter;
         this.approved = false;
+        this.aesKey = "";
         socket.on("message", this.onData.bind(this));
         socket.on("close", this.onEnd.bind(this));
         socket.onerror = this.onError.bind(this);
@@ -44,22 +47,68 @@ export class Client {
         this.socket.pause();
     }
 
-    sendMSG(msg: string, needAproval: boolean = false): boolean {
+    sendMSG(msg: any, needAproval: boolean = false): boolean {
         if (needAproval && !this.approved) {
-            this.adapter.log.debug("The Client was not approved to get a msg (" + msg + + ")" +  needAproval)
-            return false
-        }
-        this.socket.send(msg)
-        this.adapter.log.debug("Send MSG( " + msg + ")" + " to Client(" + this.toString() + ")")
-        return false
+            this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
+            return false;
+          }
+          const send = {
+            type: msg["type"],
+            content: ""
+          };
+          if (this.aesKey != "" && Object.keys(msg).length > 1) {
+            this.adapter.log.debug(`ENCRYPT KEY: ${this.aesKey}`);
+            const aes = `${this.aesKey}${msg["type"]}`;
+            delete msg["type"];
+            send["content"] = CryptoJS.AES.encrypt(JSON.stringify(msg), aes).toString();
+          } else {
+            delete msg["type"];
+            send["content"] = msg;
+          }
+          this.socket.send(JSON.stringify(send).toString());
+          this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
+          return false;
     }
 
+    setAESKey(aesKey: string): void {
+        this.aesKey = aesKey;
+    }
+
+    setID(id: string): void {
+        this.id = id;
+    }
 
     onData(data: string): void {
         try {
             const map = JSON.parse(data);
+            if (map && map["content"] != null && typeof map["content"] === "string") {
+                if (this.aesKey != "" || map["type"] === "requestLogin") {
+                    this.adapter.log.debug(`KEY: ${this.aesKey}`);
+                    let aes = "";
+                    if (map["type"] === "requestLogin") {
+                        aes = `tH8Lm-${map["type"]}`; // Dummy Key
+                    } else {
+                        aes = `${this.aesKey}${map["type"]}`;
+                    }
+                    try {
+                        const bytes = CryptoJS.AES.decrypt(map["content"], aes);
+                        map["content"] = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)) ?? {};
+                        this.adapter.log.debug("Client(" + this.toString() + ") decrypt: " + JSON.stringify(map));
+                    } catch (error) {
+                        this.onWrongAesKey();
+                        this.adapter.log.warn(`Wrong AES Key - ${error}`);
+                        return;
+                    }
+                } else {
+                    if (this.aesKey == "" && map["type"] != "requestLogin") {
+                        this.adapter.log.warn(`Please enabled AES encryption`);
+                        this.onWrongAesKey();
+                        return;
+                    }
+                }
+            }
             const content = map["content"] ?? {};
-            this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + "type: " + map["type"]);
+            this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + " type: " + map["type"]);
             switch (map["type"]) {
                 case "iobStateChangeRequest":
                     if (this.approved)
@@ -79,7 +128,12 @@ export class Client {
                     //TODO:
                     break;
                 case "requestLogin":
-                    this.onLoginRequest(new RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["user"], content["password"]));
+                    if (!content["version"]) {
+                        //TODO: Send info to APP
+                        this.adapter.log.warn(`Please update the HioB APP!`)
+                        return;
+                    }
+                    this.onLoginRequest(new RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["version"], content["user"], content["password"]));
                     break;
                 case "templateSettingCreate":
                     this.adapter.log.debug((content["name"]));
@@ -168,6 +222,11 @@ export class Client {
 
     }
 
+    onWrongAesKey(): void {
+        this.adapter.loginManager.onWrongAesKey(this);
+
+    }
+
     async onTemplateSettingsRequest(): Promise<void> {
         const list = await this.adapter.templateManager.fetchTemplateSettings();
         this.sendMSG(new TemplateSettingsRequestedPack(list).toJSON(), true);
@@ -202,7 +261,7 @@ export class Client {
 
 
     toString(): string {
-        return this.req.socket.address() + ":" + this.req.socket.remotePort
+        return JSON.stringify(this.req.socket.address()) + ":" + this.req.socket.remotePort
     }
 
 }

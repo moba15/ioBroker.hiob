@@ -155,7 +155,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
             if (state) {
                 //this.log.info("sub to " + dataPoints[i]);
                 this.subscribeForeignStates(dataPoints[i]);
-                client.sendMSG(new StateChangedDataPack(dataPoints[i], state.val).toJSON(), true);
+                client.sendMSG(new StateChangedDataPack(dataPoints[i], state.val, state.ack).toJSON(), true);
             }
         }
     }
@@ -195,15 +195,15 @@ export class SamartHomeHandyBis extends utils.Adapter {
     /**
      * Is called if a subscribed state changes
      */
-    private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
-        if (state) {
-            // The state was changed
-            this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-        } else {
-            // The state was deleted
-            this.log.info(`state ${id} deleted`);
-        }
-    }
+    //private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
+    //    if (state) {
+    //        // The state was changed
+    //        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+    //    } else {
+    //        // The state was deleted
+    //        this.log.info(`state ${id} deleted`);
+    //    }
+    //}
 
     // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
     // /**
