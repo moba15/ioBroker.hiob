@@ -8,11 +8,12 @@ export class LoginManager {
     adapter: SamartHomeHandyBis;
     pendingClients: Client[];
 	approveLogins: boolean = false;
-	approveLoginsTimeout?: NodeJS.Timeout;
+	approveLoginsTimeout: any;
     constructor(adapter: SamartHomeHandyBis) {
         this.adapter = adapter;
         this.adapter.listener.on(Events.StateChange, this.onStateChange.bind(this));
-        this.pendingClients = []
+        this.pendingClients = [];
+		this.approveLoginsTimeout = undefined;
     }
 
     private async onStateChange(event: StateChangeEvent) : Promise<void>  {
@@ -58,10 +59,11 @@ export class LoginManager {
 			} else if(splited[2] == "approveNextLogins") {
 				if(event.value) {
 					if(this.approveLoginsTimeout) {
-						clearTimeout(this.approveLoginsTimeout);
+						this.adapter.clearTimeout(this.approveLoginsTimeout);
+						this.approveLoginsTimeout = undefined;
 					}
 					this.approveLogins = true;
-					this.approveLoginsTimeout = setTimeout(() => {
+					this.approveLoginsTimeout = this.adapter.setTimeout(() => {
 						this.approveLogins = false;
 						this.approveLoginsTimeout = undefined;
 						this.adapter.setStateAsync("approveNextLogins", false, true);
@@ -112,6 +114,12 @@ export class LoginManager {
 			}
 		}
 	}
+
+	public async stop() : Promise<boolean> {
+		this.approveLoginsTimeout && this.adapter.clearTimeout(this.approveLoginsTimeout);
+		this.approveLoginsTimeout = undefined;
+		return false;
+    }
 
 	public async onWrongAesKey(client: Client) : Promise<boolean> {
         this.adapter.log.debug("Client(" + client.toString() + ") send wrong aes!")
@@ -202,15 +210,15 @@ export class LoginManager {
 				name: {
 					"en": "Connected",
 					"de": "Verbunden",
-					"ru": "Ð¡Ð¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ",
+					"ru": "Соединение",
 					"pt": "Conectado",
 					"nl": "Verbonden",
-					"fr": "ConnectÃ©",
+					"fr": "Connecté",
 					"it": "Collegato",
 					"es": "Conectado",
-					"pl": "PoÅ‚Ä…czone",
-					"uk": "Ð—Ð²'ÑÐ·Ð°Ñ‚Ð¸ÑÑ",
-					"zh-cn": "å·²è¿žæŽ¥"
+					"pl": "Połączone",
+					"uk": "Зв'язатися",
+					"zh-cn": "已连接"
 				},
 				type: "boolean",
 				role: "info.status",
@@ -261,15 +269,15 @@ export class LoginManager {
 				name: {
 					"en": "Name",
 					"de": "Name",
-					"ru": "Ð˜Ð¼Ñ",
+					"ru": "Имя",
 					"pt": "Nome",
 					"nl": "Naam",
-					"fr": "DÃ©nomination",
+					"fr": "Dénomination",
 					"it": "Nome",
 					"es": "Nombre",
 					"pl": "Nazwa",
-					"uk": "Ð†Ð¼'Ñ",
-					"zh-cn": "åç§°"
+					"uk": "Ім'я",
+					"zh-cn": "名称"
 				},
 				type: "string",
 				role: "info.name",
@@ -292,12 +300,12 @@ export class LoginManager {
 					"ru": "ID",
 					"pt": "ID",
 					"nl": "ID",
-					"fr": "NUMÃ‰RO",
+					"fr": "NUMÉRO",
 					"it": "ID",
 					"es": "ID",
 					"pl": "ID",
-					"uk": "Ð†Ðœ'Ð¯",
-					"zh-cn": "èº«ä»½è¯"
+					"uk": "ІМ'Я",
+					"zh-cn": "身份证"
 				},
 				type: "string",
 				role: "info.address",
@@ -314,16 +322,16 @@ export class LoginManager {
 			common: {
 				name: {
 					"en": "Key",
-					"de": "SchlÃ¼ssel",
-					"ru": "ÐšÐ»ÑŽÑ‡",
+					"de": "Schlüssel",
+					"ru": "Ключ",
 					"pt": "Chaveiro",
 					"nl": "Sleutel",
-					"fr": "ClÃ©",
+					"fr": "Clé",
 					"it": "Chiave",
 					"es": "Clave",
 					"pl": "Klucz",
-					"uk": "Ð“Ð¾Ð»Ð¾Ð²Ð½Ð°",
-					"zh-cn": "å¯†é’¥"
+					"uk": "Головна",
+					"zh-cn": "密钥"
 				},
 				type: "string",
 				role: "state",
@@ -342,15 +350,15 @@ export class LoginManager {
 				name: {
 					"en": "Last Connection",
 					"de": "Letzte Verbindung",
-					"ru": "ÐŸÐ¾ÑÐ»ÐµÐ´Ð½ÐµÐµ ÑÐ¾ÐµÐ´Ð¸Ð½ÐµÐ½Ð¸Ðµ",
-					"pt": "Ãšltima conexÃ£o",
+					"ru": "Последнее соединение",
+					"pt": "Última conexão",
 					"nl": "Laatste verbinding",
-					"fr": "DerniÃ¨re connexion",
+					"fr": "Dernière connexion",
 					"it": "Ultima connessione",
-					"es": "Ãšltima conexiÃ³n",
-					"pl": "Ostatnie poÅ‚Ä…czenie",
-					"uk": "ÐžÑÑ‚Ð°Ð½Ð½Ñ” Ð¿Ñ–Ð´ÐºÐ»ÑŽÑ‡ÐµÐ½Ð½Ñ",
-					"zh-cn": "ä¸Šæ¬¡è¿žæŽ¥"
+					"es": "Última conexión",
+					"pl": "Ostatnie połączenie",
+					"uk": "Останнє підключення",
+					"zh-cn": "上次连接"
 				},
 				type: "number",
 				role: "date",
@@ -371,15 +379,15 @@ export class LoginManager {
 				name: {
 					"en": "Approved",
 					"de": "Genehmigt",
-					"ru": "Ð£Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð½Ñ‹Ðµ",
+					"ru": "Утвержденные",
 					"pt": "Aprovado",
 					"nl": "Goedgekeurd",
-					"fr": "ApprouvÃ©",
+					"fr": "Approuvé",
 					"it": "Approvazione",
 					"es": "Aprobado",
 					"pl": "Zatwierdzone",
-					"uk": "Ð—Ð°Ñ‚Ð²ÐµÑ€Ð´Ð¶ÐµÐ½Ð½Ñ",
-					"zh-cn": "æ ¸å®šæ•°"
+					"uk": "Затвердження",
+					"zh-cn": "核定数"
 				},
 				type: "boolean",
 				role: "switch",
@@ -397,15 +405,15 @@ export class LoginManager {
 				name: {
 					"en": "No Password Allowed",
 					"de": "Kein Passwort erlaubt",
-					"ru": "Ð‘ÐµÐ· Ð¿Ð°Ñ€Ð¾Ð»Ñ",
+					"ru": "Без пароля",
 					"pt": "Nenhuma senha permitida",
 					"nl": "Geen wachtwoord toegestaan",
-					"fr": "Pas de mot de passe autorisÃ©",
+					"fr": "Pas de mot de passe autorisé",
 					"it": "Nessuna password consentita",
-					"es": "No se admite contraseÃ±a",
-					"pl": "Brak hasÅ‚a",
-					"uk": "ÐÐµÐ¼Ð°Ñ” Ð¿Ð°Ñ€Ð¾Ð»Ñ",
-					"zh-cn": "æ²¡æœ‰å…è®¸çš„å¯†ç "
+					"es": "No se admite contraseña",
+					"pl": "Brak hasła",
+					"uk": "Немає пароля",
+					"zh-cn": "没有允许的密码"
 				},
 				type: "boolean",
 				role: "switch",
@@ -424,15 +432,15 @@ export class LoginManager {
 				name: {
 					"en": "Send Notification",
 					"de": "Mitteilung senden",
-					"ru": "ÐžÑ‚Ð¿Ñ€Ð°Ð²Ð¸Ñ‚ÑŒ ÑƒÐ²ÐµÐ´Ð¾Ð¼Ð»ÐµÐ½Ð¸Ðµ",
-					"pt": "Enviar notificaÃ§Ã£o",
+					"ru": "Отправить уведомление",
+					"pt": "Enviar notificação",
 					"nl": "Kennisgeving versturen",
 					"fr": "Envoyer une notification",
 					"it": "Invia notifica",
-					"es": "Enviar notificaciÃ³n",
-					"pl": "WyÅ›lij powiadomienie",
-					"uk": "ÐÐ°Ð´Ñ–ÑÐ»Ð°Ñ‚Ð¸ Ð¿Ð¾Ð²Ñ–Ð´Ð¾Ð¼Ð»ÐµÐ½Ð½Ñ",
-					"zh-cn": "å‘é€é€šçŸ¥"
+					"es": "Enviar notificación",
+					"pl": "Wyślij powiadomienie",
+					"uk": "Надіслати повідомлення",
+					"zh-cn": "发送通知"
 				},
 				type: "string",
 				role: "state", //TODO: Indicator
@@ -448,17 +456,17 @@ export class LoginManager {
 			type: "state",
 			common: {
 				name: {
-				  "en": "Insert AES-key into the APP.",
-				  "de": "AES-key in die APP einfÃ¼gen.",
-				  "ru": "Ð’ÑÑ‚Ð°Ð²Ð¸Ñ‚ÑŒ AES-ÐºÐ»ÑŽÑ‡ Ð² APP.",
-				  "pt": "Insira o AES-key no APP.",
-				  "nl": "Plaats AES-toets in de APP.",
-				  "fr": "InsÃ©rer la touche AES dans l'APP.",
-				  "it": "Inserire AES-chiave nella APP.",
-				  "es": "Inserte AES-key en el APP.",
-				  "pl": "Wstaw klucz AES- do APP.",
-				  "uk": "Ð’ÑÑ‚Ð°Ð²Ñ‚Ðµ AES-ÐºÐ»ÑŽÑ‡ Ñƒ APP.",
-				  "zh-cn": "åœ¨APPä¸­æ’å…¥AESé”®."
+					"en": "Insert AES-key into the APP.",
+					"de": "AES-key in die APP einfügen.",
+					"ru": "Вставить AES-ключ в APP.",
+					"pt": "Insira o AES-key no APP.",
+					"nl": "Plaats AES-toets in de APP.",
+					"fr": "Insérer la touche AES dans l'APP.",
+					"it": "Inserire AES-chiave nella APP.",
+					"es": "Inserte AES-key en el APP.",
+					"pl": "Wstaw klucz AES- do APP.",
+					"uk": "Вставте AES-ключ у APP.",
+					"zh-cn": "在APP中插入AES键."
 				},
 				type: "string",
 				role: "state",
@@ -479,7 +487,7 @@ export class LoginManager {
 			client.aesKey = get_aes.val;
 			client.setAESKey(client.aesKey);
 		} else {
-			this.adapter.log.warn("Cannot find AES Key. Please Restart Adapter!")
+			this.adapter.log.warn("Cannot find AES Key. Please Restart Adapter!");
 		}
 		await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_new`, {
 			type: "state",
@@ -487,15 +495,15 @@ export class LoginManager {
 				name: {
 					"en": "Create new AES-Key",
 					"de": "Neue AES-Key erstellen",
-					"ru": "Ð¡Ð¾Ð·Ð´Ð°Ñ‚ÑŒ Ð½Ð¾Ð²Ñ‹Ðµ AES-Key",
+					"ru": "Создать новые AES-Key",
 					"pt": "Criar novo AES-Key",
 					"nl": "Nieuwe AES-sleutel aanmaken",
-					"fr": "CrÃ©er une nouvelle clÃ© AES",
+					"fr": "Créer une nouvelle clé AES",
 					"it": "Crea nuovo AES-Key",
 					"es": "Crear nuevo AES-Key",
-					"pl": "UtwÃ³rz nowy klucz AES-",
-					"uk": "Ð¡Ñ‚Ð²Ð¾Ñ€ÐµÐ½Ð½Ñ Ð½Ð¾Ð²Ð¸Ñ… AES-Key",
-					"zh-cn": "åˆ›å»ºæ–° AES å¯†é’¥"
+					"pl": "Utwórz nowy klucz AES-",
+					"uk": "Створення нових AES-Key",
+					"zh-cn": "创建新 AES 密钥"
 				},
 				type: "boolean",
 				role: "button",
@@ -512,16 +520,16 @@ export class LoginManager {
 			common: {
 				name: {
 					"en": "AES encryption active",
-					"de": "AES-VerschlÃ¼sselung aktiv",
-					"ru": "ÐÐºÑ‚Ð¸Ð²Ð½Ð¾Ðµ ÑˆÐ¸Ñ„Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ AES",
+					"de": "AES-Verschlüsselung aktiv",
+					"ru": "Активное шифрование AES",
 					"pt": "AES criptografia ativa",
 					"nl": "AES-versleuteling actief",
 					"fr": "Cryptage AES actif",
 					"it": "AES crittografia attiva",
-					"es": "AES encriptaciÃ³n activa",
+					"es": "AES encriptación activa",
 					"pl": "Aktywne szyfrowanie AES",
-					"uk": "AES ÑˆÐ¸Ñ„Ñ€ÑƒÐ²Ð°Ð½Ð½Ñ Ð°ÐºÑ‚Ð¸Ð²Ð½Ð°",
-					"zh-cn": "AES åŠ å¯†æ´»åŠ¨"
+					"uk": "AES шифрування активна",
+					"zh-cn": "AES 加密活动"
 				},
 				type: "boolean",
 				role: "switch",

@@ -33,7 +33,7 @@ export class Server {
             key: fs.readFileSync(this.keyPath),
          });
          this.adapter.log.info("[Server] Starting secure server...")
-         this.socket = new ws.Server({server: server})
+         this.socket = new ws.Server({server: server, port: this.port})
       } else {
          this.adapter.log.info("[Server] Starting server...")
          this.socket = new ws.Server({port: this.port})
@@ -55,7 +55,7 @@ export class Server {
    broadcastMsg(msg: string,  notification: boolean) :void  {
       //this.webSocketServer.clients.forEach((e) => {});
       this.conClients.filter(e => !e.onlySendNotification).forEach((element) => {if(element.isConnected) element.sendMSG(msg, true);});
-  }
+   }
 
   isConnected(deviceID: string ) : boolean {
       return this.conClients.some(c => c.isConnected && c.id == deviceID);
@@ -63,11 +63,14 @@ export class Server {
 
   getClient(deviceID: string) : (Client | undefined) {
        return this.conClients.find(c => c.isConnected && c.id == deviceID);
-}
+  }
 
   stop() : void {
-   this.socket?.close()
-   this.adapter.log.info("Server stoped");
-   this.stoped = true;
-}
+    for (const client of this.conClients) {
+      client.stop();
+    }
+    this.socket?.close()
+    this.adapter.log.info("Server stoped");
+    this.stoped = true;
+  }
 }

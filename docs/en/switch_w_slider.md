@@ -1,63 +1,62 @@
 ![Logo](../../admin/hiob.png)
 
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Division Line](division.md)
+-   [Create Web View](webview.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)
 
 ## Switch with Slider
 
-### Mit Switch with Slider kann man ein Schalter mit Dimmer (optional) erstellen
+### With Switch with Slider you can create a switch with dimmer (optional).
 
-- Nach links wischen um ein Widget zu löschen.
-- Rechts unten das Pluszeichen drücken.
-![Switch with Slider](../de/img/app_create_value_done.png)
+- Swipe left to delete a widget.
+- Press the plus sign at the bottom right.
 
+![Switch with Slider](img/../../de/img/app_create_value_done.png)
 
-- Dropdown: `Switch with Slider` auswählen.
-- Name: Name vom Widget
-- Value (optional): Anzeigetext im Widget. Bleibt das Feld leer wird der Name verwendet.
-- Round to: Stellen nach dem Komma
-- Unit (optional): Einheit vom Value
-- Device: Hier die gewünschte Auflistung wählen.
-- Datapoint: Auswahl der Datenpunkte aus der gewählten Auflistung - Datenpunkt muss boolean true/false sein!
+- Dropdown: select `Switch with Slider`.
+- Name: Name of the widget
+- Value (optional): Display text in the widget. If the field remains empty, the name is used.
+- Round to: Places after the decimal point
+- Unit (optional): Unit of value
+- Device: Select the desired listing here.
+- Datapoint: Selection of data points from the selected list - data point must be boolean true/false!
 
-![Switch with Slider](../de/img/app_create_widget_switch.png)
+![Switch with Slider](img/../../de/img/app_create_widget_switch.png)
 
-- Wenn Dimmen gewünscht ist muss bei Slider ein Haken gesetzt werden.
-- Slider Display: Namen vom Slider.
-- Min: Wert minimal (Standard 0).
-- Max: Wert maximal (Standard 100).
-- Steps: In welchen Schritten Änderungen durchgeführt werden dürfen (Standard 10).
-- Device: Die gewünschte Auflistung wählen.
-- Datapoint: Auswahl der Datenpunkte aus der gewählten Auflistung - Datenpunkt muss number sein!
+- If dimming is desired, a tick must be placed next to Slider.
+- Slider Display: Names of the slider.
+- Min: Minimum value (default 0).
+- Max: value maximum (default 100).
+- Steps: In which steps changes can be made (standard 10).
+- Device: Select the desired listing.
+- Datapoint: Selection of data points from the selected list - data point must be number!
 
-![Switch with Slider](../de/img/app_create_widget_slider.png)
+![Switch with Slider](img/../../de/img/app_create_widget_slider.png)
 
-- Mit Reachable kann ein Popup erstellt werden um einen Wert von einem Datenpunkt zu sehen.
-- Reachable Display: Name vom Reachable.
-- Device: Die gewünschte Auflistung wählen.
-- Datapoint: Auswahl der Datenpunkte aus der gewählten Auflistung - Datenpunkt muss boolean true/false sein!
+- With Reachable a popup can be created to see a value from a data point.
+- Reachable Display: Name of the Reachable.
+- Device: Select the desired listing.
+- Datapoint: Selection of data points from the selected list - data point must be boolean true/false!
 
-![Switch with Slider](../de/img/app_create_widget_reach.png)
+![Switch with Slider](img/../../de/img/app_create_widget_reach.png)
 
-- Danach speichern drücken.
+- Then press save.
 
-![Switch with Slider](../de/img/app_create_switch_done.png)
+![Switch with Slider](img/../../de/img/app_create_switch_done.png)
 
-- Fügt das Widget einem Screen zu und steuert damit einen Datenpunkt. Auf das Widget lange drücken damit das Popup Fentser sich öffnet. Im Popup kann der aktuellen Schaltzustand eingesehen werden oder ein Level einstellen.
+- Adds the widget to a screen and uses it to control a data point. Long press the widget to open the popup window. The current switching status can be viewed or a level can be set in the popup.
 
-![Switch with Slider](../de/img/app_create_switch_screen.png)
-![Switch with Slider](../de/img/app_create_switch_screen_popup.png)
+![Switch with Slider](img/../../de/img/app_create_switch_screen.png)
+![Switch with Slider](img/../../de/img/app_create_switch_screen_popup.png)
 
-
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Division Line](division.md)
+-   [Create Web View](webview.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)

@@ -1,34 +1,33 @@
 ![Logo](../../admin/hiob.png)
 
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [Create Web View](webview.md)
+-   [Create Graph (only sql Adapter)](graph.md)
 
-## Web View
+## Table
 
-### Mit Table kann ein JSON anzeigen lassen
+### With Table you can display JSON
 
-- Nach links wischen um ein Widget zu löschen.
-- Rechts unten das Pluszeichen drücken.
+- Swipe left to delete a widget.
+- Press the plus sign at the bottom right.
 
-![app_create_web_done.png](../de/img/app_create_web_done.png)
+![app_create_web_done.png](img/../../de/img/app_create_web_done.png)
 
+- Dropdown: select `Table`.
+- Name: Name of the widget
+- Header: Header text from the table
+- Elements per Page: How many elements are displayed per page.
+- initial sort: Sorts the array (first element)
+- Device: Select the desired listing.
+- Datapoint: Selection of data points from the selected collection - The value must have an array with JSON element.
 
-- Dropdown: `Table` auswählen.
-- Name: Name vom Widget
-- Header: Kopftext vom Table
-- Elements per Page: Wie viele Elemente pro Seite angezeigt werden.
-- initial sort: Sortiert den Array (erste Element)
-- Device: Die gewünschte Auflistung wählen.
-- Datapoint: Auswahl der Datenpunkte aus der gewählten Auflistung - Der Wert muss ein Array mit JSON Element haben.
+![add_create_table.png](img/../../de/img/add_create_table.png)
 
-![add_create_table.png](img/add_create_table.png)
-
-- Beispiel JSON
+- Example JSON
 ```json
 [
   {
@@ -50,24 +49,24 @@
 ]
 ```
 
-- add: Nun die gewünschten Spalten erstellen. Hier im Beispiel sind es `name` und `zustand`. In `column key` muss der key aus dem JSON eingetragen werden. In `column name` kann man einen Namen vergeben.
-![add_create_table_column_1.png](img/add_create_table_column_1.png)
-![add_create_table_column_2.png](img/add_create_table_column_2.png)
-![add_create_table.png](img/add_create_table_column.png)
+- add: Now create the desired columns. Here in the example it is `name` and `state`. The key from the JSON must be entered in `column key`. You can assign a name in `column name`.
 
-- Danach speichern drücken.
+![add_create_table_column_1.png](img/../../de/img/add_create_table_column_1.png)
+![add_create_table_column_2.png](img/../../de/img/add_create_table_column_2.png)
+![add_create_table.png](img/../../de/img/add_create_table_column.png)
 
-![app_create_table_done.png](../de/img/app_create_table_done.png)
+- Then press save.
 
-- Das Widget einem Screen hinzufügen.
+![app_create_table_done.png](img/../../de/img/app_create_table_done.png)
 
-![app_create_table_screen.png](img/add_create_table_screen.png)
+- Add the widget to a screen.
 
+![app_create_table_screen.png](img/../../de/img/add_create_table_screen.png)
 
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [Create Web View](webview.md)
+-   [Create Graph (only sql Adapter)](graph.md)

@@ -22,8 +22,8 @@ export class SamartHomeHandyBis extends utils.Adapter {
     port: number = 8095;
     keyPath: string = "";
     certPath: string = "";
-    useCer: boolean = false
-    templateManager: TemplateManager
+    useCer: boolean = false;
+    templateManager: TemplateManager;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -40,6 +40,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
         // this.on("objectChange", this.onObjectChange.bind(this));
         // this.on("message", this.onMessage.bind(this));
         this.on("unload", this.onUnload.bind(this));
+        this.server = undefined;
 
     }
 
@@ -51,13 +52,38 @@ export class SamartHomeHandyBis extends utils.Adapter {
         // Reset the connection indicator during startup
         this.setState("info.connection", true, true);
 
+        if (this.config.port < 1025) {
+            this.log.warn(`Port is automatically changed because it is less than 1025 - ${this.config.port}`);
+            this.config.port = 8095;
+        } else if (this.config.port > 65535) {
+            this.log.warn(`Port will be changed automatically as it is greater than 65535 - ${this.config.port}`);
+            this.config.port = 8095;
+        }
+
+        const check_port = await this.getPortAsync(this.config.port);
+        if (check_port != this.config.port) {
+            this.log.warn(`Port ${this.config.port} is used!! Change to port ${check_port}.`);
+            this.config.port = check_port;
+        }
 
         await this.setObjectNotExistsAsync("approveNextLogins", {
             type: "state",
             common: {
-                name: "Connected",
+                name: {
+					"en": "Connected",
+					"de": "Verbunden",
+					"ru": "Соединение",
+					"pt": "Conectado",
+					"nl": "Verbonden",
+					"fr": "Connecté",
+					"it": "Collegato",
+					"es": "Conectado",
+					"pl": "Połączone",
+					"uk": "Зв'язатися",
+					"zh-cn": "已连接"
+				},
                 type: "boolean",
-                role: "indicator.approve",
+                role: "button",
                 def: false,
                 read: true,
                 write: true,
@@ -71,10 +97,10 @@ export class SamartHomeHandyBis extends utils.Adapter {
     }
 
     private loadConfigs(): void {
-        this.port = Number(this.config.port)
+        this.port = Number(this.config.port);
         this.certPath = this.config.certPath;
-        this.useCer = this.config.useCert
-        this.keyPath = this.config.keyPath
+        this.useCer = this.config.useCert;
+        this.keyPath = this.config.keyPath;
 
 
     }
@@ -118,7 +144,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
             }
             const dataPoints : any[] = [];
             if (!dataPoints) {
-                continue
+                continue;
             }
             for (const z of members) {
                 const dataPoint = await this.getForeignObjectAsync(z);
@@ -165,12 +191,9 @@ export class SamartHomeHandyBis extends utils.Adapter {
      */
     private onUnload(callback: () => void): void {
         try {
-            // Here you must clear all timeouts or intervals that may still be active
-            // clearTimeout(timeout1);
-            // clearTimeout(timeout2);
-            // ...
-            // clearInterval(interval1);
-
+            // Stop ws Server and Timeouts
+            this.server && this.server.stop();
+            this.server = undefined;
             callback();
         } catch (e) {
             callback();

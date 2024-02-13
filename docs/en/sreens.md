@@ -4,62 +4,64 @@
 -   [Step 1: Installation and APP setup](app.md)
 -   [Step 2: Create Enums](enum.md)
 -   [Step 3: Create Widgets](widgets.md)
+-   [step 4: Create Screnns](sreens.md)
 -   [Step 5: Create Backups](backups.md)
 
-## Screens erstellen `Screen Settings`
+## Create Screens `Screen Settings`
 
-- Hier können nun Screens für den Header erstellt werden und diesen kann man Widgets hinzufügen. Widgets können in Sceerns nicht doppelt hinzugefügt werden.
-- Nach links wischen um ein Screen zu löschen. Wenn der letzte Screen gelöscht wird, erscheint automatisch ein neuer mit dem Namen Template.
+- Screens for the header can now be created here and widgets can be added to them. Widgets cannot be added twice in Sceerns.
+- Swipe left to delete a screen. When the last screen is deleted, a new one called Template will automatically appear.
 
-- Rechts unten das Pluszeichen drücken um ein neuen Screnn zu erstellen oder auf `Template` klicken um den Namen zu ändern.
+- Press the plus sign at the bottom right to create a new screen or click on 'Template' to change the name.
 
-![app_create_screen.png](../de/img/app_create_screen.png)
+![app_create_screen.png](img/../../de/img/app_create_screen.png)
 
-- Einen Namen eintragen der im Header angezeigt werden soll und es kann ein Icon ausgewählt werden. Danach auf speichern drücken.
+- Enter a name that should be displayed in the header and an icon can be selected. Then press save.
 
-![app_create_screen_new.png](../de/img/app_create_screen_new.png)
-![app_create_screen_new_pic.png](../de/img/app_create_screen_new_pic.png)
+![app_create_screen_new.png](img/../../de/img/app_create_screen_new.png)
+![app_create_screen_new_pic.png](img/../../de/img/app_create_screen_new_pic.png)
 
-- In diesem Screen kann man Gruppen erstellen, zusätzliche Divisions und Widgets hinzufügen.
-- Mit der Checkbox `Enabled` kann der Screen de-/aktiviert werden.
-- Mit Klick auf das linke untere Kreuz werden Widgets hinzuzufügt. In diesem Popup kann man die Katergorien aufklappen und mit einem Haken ausgewählt werden.
+- In this screen you can create groups, add additional divisions and widgets.
+- The screen can be deactivated/activated with the checkbox `Enabled`.
+- By clicking on the bottom left cross, widgets are added. In this popup you can expand the categories and select them with a tick.
 
-![app_create_screen_widget.png](../de/img/app_create_screen_widget.png)
-![app_create_screen_widget_select.png](../de/img/app_create_screen_widget_select.png)
+![app_create_screen_widget.png](img/../../de/img/app_create_screen_widget.png)
+![app_create_screen_widget_select.png](img/../../de/img/app_create_screen_widget_select.png)
 
-- Mit klick auf den mittleren Button kann eine Gruppe angelegt werden.
-![app_create_sceen_group.png](../de/img/app_create_sceen_group.png)
-![app_create_screen_group_done.png](../de/img/app_create_screen_group_done.png)
+- A group can be created by clicking on the middle button.
 
-- Dieser Gruppe können nun Widgets und Divisions hinzufügen werden.
-- Mit `Expanded` kann man bestimmen, ob die Gruppe geöffnet oder geschlossen angezeigt wird.
-- Zusätzlich ist die Auswahl eines ICON möglich.
+![app_create_sceen_group.png](img/../../de/img/app_create_sceen_group.png)
+![app_create_screen_group_done.png](img/../../de/img/app_create_screen_group_done.png)
 
-![app_create_screen_group_widget.png](../de/img/app_create_screen_group_widget.png)
+- Widgets and divisions can now be added to this group.
+- With `Expanded` you can determine whether the group is displayed open or closed.
+- It is also possible to select an ICON.
 
-- Mit drücken auf den 3ten Button von links kann man Division anlegen. Natürlich kann ein Division auch über Widget angelegt werden. Die Höhe einstellen und den Button `Add` drücken.
+![app_create_screen_group_widget.png](img/../../de/img/app_create_screen_group_widget.png)
 
-![app_create_screen_division.png](../de/img/app_create_screen_division.png)
+- You can create division by pressing the 3rd button from the left. Of course, a division can also be created using a widget. Set the height and press the 'Add' button.
 
-- Durch drücken und halten eines Widgets kann die Position geändert werden.
+![app_create_screen_division.png](img/../../de/img/app_create_screen_division.png)
 
-![app_create_screen_change.png](../de/img/app_create_screen_change.png)
+- By pressing and holding a widget the position can be changed.
 
-- Die erstellten Screen sollten nun so aussehen.
+![app_create_screen_change.png](img/../../de/img/app_create_screen_change.png)
 
-![app_create_screen_done_2.png](../de/img/app_create_screen_done_2.png)
-![app_create_screen_done_1.png](../de/img/app_create_screen_done_1.png)
+- The created screens should now look like this.
 
-- Nun zur Screen Übersicht wechseln und auf das Haus rechts oben drücken um die Screens anzeigen zu lassen.
+![app_create_screen_done_2.png](img/../../de/img/app_create_screen_done_2.png)
+![app_create_screen_done_1.png](img/../../de/img/app_create_screen_done_1.png)
 
-![app_create_screen_done_3.png](../de/img/app_create_screen_done_3.png)
-![app_overview_1.png](../de/img/app_overview_1.png)
-![app_overview_2.png](../de/img/app_overview_2.png)
-![app_overview_3.png](../de/img/app_overview_3.png)
+- Now switch to the screen overview and press the house at the top right to display the screens.
 
+![app_create_screen_done_3.png](img/../../de/img/app_create_screen_done_3.png)
+![app_overview_1.png](img/../../de/img/app_overview_1.png)
+![app_overview_2.png](img/../../de/img/app_overview_2.png)
+![app_overview_3.png](img/../../de/img/app_overview_3.png)
 
 -   [Back to Summary](/docs/en/README.md)
 -   [Step 1: Installation and APP setup](app.md)
 -   [Step 2: Create Enums](enum.md)
 -   [Step 3: Create Widgets](widgets.md)
+-   [step 4: Create Screnns](sreens.md)
 -   [Step 5: Create Backups](backups.md)

@@ -1,87 +1,86 @@
 ![Logo](../../admin/hiob.png)
 
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [Create Web View](webview.md)
+-   [Create Table](table.md)
 
 ## Graph (only sql Adapter)
 
-### Mit Graph kann man Diagramme von Datenpunkte erzeugen, die von SQL- oder History-Adapter aufgezeichnet werden.
+### With Graph you can create graphs of data points recorded by SQL or history adapters.
 
-- Nach links wischen um ein Widget zu löschen.
-- Rechts unten das Pluszeichen drücken.
+- Swipe left to delete a widget.
+- Press the plus sign at the bottom right.
 
-![app_create_table_done.png](../de/img/app_create_table_done.png)
+![app_create_table_done.png](img/../../de/img/app_create_table_done.png)
 
-
-- Es sollte erst eine Aufzeichnung gestartet werden. In den 2 Bilder wurde als Beispiel der SQL-Adapter verwendet. Benutzerdefinierte Einstellungen anklicken und SQL aktivieren.
+- A recording should first be started. The SQL adapter was used as an example in the 2 pictures. Click Custom Settings and enable SQL.
 
 ![create_watch_sql.png](img/create_watch_sql.png)
 ![create_watch_sql_activ.png](img/create_watch_sql_activ.png)
 
+- Dropdown: select `Graph (only sql Adapter)`.
+- Name: Name of the widget
+- Title: Header text of the graph
+- Y Axis: Open the Y Axis group and press the Add Y Axis button.
 
-- Dropdown: `Graph (only sql Adapter)` auswählen.
-- Name: Name vom Widget
-- Title: Kopftext vom Graph
-- Y Axis: Die Gruppe Y Axis öffnen und `Button Add Y Axis` drücken.
+![app_create_graph.png](img/../../de/img/app_create_graph.png)
 
-![app_create_graph.png](../de/img/app_create_graph.png)
+- Swipe left to delete a Y axis.
+- Several Y Axis (vertical lines) can be created, which can then be selected when creating the line.
+- Description: Description of the scaling
+- min: Start scaling. Here I start with 1
+- max: End of saclation. In example 100
+- interval: Scaling interval. In the example 10 is entered. So 1,11,22,33,xxx is displayed
 
-- Nach links wischen um eine Y Achse zu löschen.
-- Es können mehrere Y Axis (senkrechte Linie) angelegt werden, die dann bei der Erstellung der Line auswählbar sind.
-- Description: Beschreibung der Skalierung
-- min: Start Skalierung. Hier fange ich mit 1 an
-- max: Ende Saklierung. Im Bsp. 100
-- interval: Intervall der Skalierung. Im Bsp. ist 10 eingetragen. Somit wird 1,11,22,33,xxx angezeigt
-![app_create_graph_y_add.png](../de/img/app_create_graph_y_add.png)
+![app_create_graph_y_add.png](img/../../de/img/app_create_graph_y_add.png)
 
-- Nach links wischen um eine X Achse zu löschen.
-- X Axis: Die Gruppe X Axis öffnen und `Button Add X Axis` drücken.
-- Es können mehrere X Axis (waagerechte Linie) angelegt werden, die dann bei der Erstellung der Line auswählbar sind.
-- Description: Beschreibung der Skalierung
-- End of axis: Ende der Skalierung (Auswahlmöglichkeiten siehe Bild).
-- Scope: Wie oft die Scope Unit angezeigt werden soll. Trägt man nun unter Scope Unit `hour` ein, wird eine Stunde angezeigt. Trägt man eine 4 ein, werden dann 4 Stunden angezeigt.
-- Scope Unit: Hier die Einheit auswählen (Auswahlmöglichkeiten siehe Bild).
-![app_create_graph_x_add.png](../de/img/app_create_graph_x_add.png)
-![app_create_graph_x_add_end.png](../de/img/app_create_graph_x_add_end.png)
-![app_create_graph_x_add_unit.png](../de/img/app_create_graph_x_add_unit.png)
+- Swipe left to delete an X axis.
+- X Axis: Open the X Axis group and press `Button Add X Axis`.
+- Several X Axis (horizontal lines) can be created, which can then be selected when creating the line.
+- Description: Description of the scaling
+- End of axis: End of scaling (see image for options).
+- Scope: How often the scope unit should be displayed. If you now enter `hour` under Scope Unit, an hour will be displayed. If you enter 4, 4 hours will be displayed.
+- Scope Unit: Select the unit here (see image for options).
 
-- Nach links wischen um eine Line zu löschen.
-- Lines: Die Gruppe Lines öffnen und `Button Add Line` klicken.
-- Es können mehrere Lines (Das Diagramm) angelegt werden.
-- Name: Dieser Name wird im Diagramm als Header angezeigt
-- Device: Die gewünschte Auflistung wählen.
-- Datapoint: Auswahl vom Datenpunkt der von SQL überwacht wird.
-- Line Type: Type der Linie auswählen (Auswahlmöglichkeiten siehe Bild).
-- x axis: Auswahl aller X-Achse(n).
-- y axis: Auswahl aller Y-Achse(n).
-- Min time for next Update: Zeit wann spätestens aktualisiert werden soll. Bei APP Start wird automatisch aktualisiert.
-- Show datapoint: Es wird der Datenpunktname angezeigt.
+![app_create_graph_x_add.png](img/../../de/img/app_create_graph_x_add.png)
+![app_create_graph_x_add_end.png](img/../../de/img/app_create_graph_x_add_end.png)
+![app_create_graph_x_add_unit.png](img/../../de/img/app_create_graph_x_add_unit.png)
 
-![app_create_graph_line.png](../de/img/app_create_graph_line.png)
-![app_create_graph_line_type.png](../de/img/app_create_graph_line_type.png)
+- Swipe left to delete a line.
+- Lines: Open the Lines group and click the Add Line button.
+- Multiple lines (the diagram) can be created.
+- Name: This name will be displayed in the diagram as a header
+- Device: Select the desired listing.
+- Datapoint: Selection of the data point monitored by SQL.
+- Line Type: Select the type of line (see image for options).
+- x axis: Selection of all x axis(s).
+- y axis: Selection of all Y axis(s).
+- Min time for next Update: Time when the update should be updated at the latest. It updates automatically when the app starts.
+- Show datapoint: The data point name is displayed.
 
-- Tracking ball: Auf an setzen wenn Markierungen gesetzt werden sollen.
+![app_create_graph_line.png](img/../../de/img/app_create_graph_line.png)
+![app_create_graph_line_type.png](img/../../de/img/app_create_graph_line_type.png)
 
-![app_create_graph_tracking.png](../de/img/app_create_graph_tracking.png)
+- Tracking ball: Set to on if markings should be set.
 
-- Danach speichern drücken.
+![app_create_graph_tracking.png](img/../../de/img/app_create_graph_tracking.png)
 
-![app_create_graph_done.png](../de/img/app_create_graph_done.png)
+- Then press save.
 
-- Fügt das Widget einem Screen zu.
+![app_create_graph_done.png](img/../../de/img/app_create_graph_done.png)
 
-![app_create_graph_screen.png](../de/img/app_create_graph_screen.png)
+- Adds the widget to a screen.
 
+![app_create_graph_screen.png](img/../../de/img/app_create_graph_screen.png)
 
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [Create Web View](webview.md)
+-   [Create Table](table.md)

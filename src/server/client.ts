@@ -43,6 +43,10 @@ export class Client {
         socket.onerror = this.onError.bind(this);
     }
 
+    stop(): void {
+		this.stop;
+    }
+
     close(): void {
         this.socket.pause();
     }
@@ -130,7 +134,7 @@ export class Client {
                 case "requestLogin":
                     if (!content["version"]) {
                         //TODO: Send info to APP
-                        this.adapter.log.warn(`Please update the HioB APP!`)
+                        this.adapter.log.warn(`Please update the HioB APP!`);
                         return;
                     }
                     this.onLoginRequest(new RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["version"], content["user"], content["password"]));
@@ -153,14 +157,14 @@ export class Client {
                     this.getTemplatesSetting(content["name"], content["device"], content["screen"], content["widget"]);
                     break;
                 case "notification":
-                    this.onNotification(new NotificationPack(content["onlySendNotification"], content["content"], content["date"]))
+                    this.onNotification(new NotificationPack(content["onlySendNotification"], content["content"], content["date"]));
                     break;
 
             }
 
         } catch (e) {
             if (e instanceof SyntaxError) {
-                this.adapter.log.error("There is something wrong with the sent data: No valid JSON Format")
+                this.adapter.log.error("There is something wrong with the sent data: No valid JSON Format");
             }
 
         }
@@ -252,7 +256,7 @@ export class Client {
 
     }
 
-    onNotification(pack: NotificationPack) {
+    onNotification(pack: NotificationPack): any {
         if(pack.onlySendNotification != undefined) {
             this.onlySendNotification = pack.onlySendNotification;
         }
@@ -261,7 +265,7 @@ export class Client {
 
 
     toString(): string {
-        return JSON.stringify(this.req.socket.address()) + ":" + this.req.socket.remotePort
+        return JSON.stringify(this.req.socket.address()) + ":" + this.req.socket.remotePort;
     }
 
 }

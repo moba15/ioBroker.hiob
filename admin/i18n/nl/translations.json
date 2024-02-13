@@ -1,0 +1,11 @@
+{
+    "hiob adapter settings": "Adapterinstellingen voor hiob",
+    "select a port": "selecteer een poort",
+    "useCert": "Gebruik certificaat voor verbinding",
+    "useCert_tooltip": "Gebruik certificaat voor verbinding",
+    "certPath": "Pad naar certificaat",
+    "certPath_tooltip": "Pad naar certificaat",
+    "keyPath": "Pad naar sleutel",
+    "keyPath_tooltip": "Pad naar sleutel",
+    "link to description": "link naar beschrijving"
+}

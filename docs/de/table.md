@@ -8,7 +8,7 @@
 -   [Web View erstellen](webview.md)
 -   [Graph (only sql Adapter) erstellen](graph.md)
 
-## Web View
+## Table
 
 ### Mit Table kann ein JSON anzeigen lassen
 

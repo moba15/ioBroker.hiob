@@ -1,16 +1,18 @@
 ![Logo](../../admin/hiob.png)
 
--   [Zurück zur Beschreibung](/docs/de/README.md)
--   [Schritt 2: ENUMS erstellen](enum.md)
--   [Schritt 3: Widgets erstellen](widgets.md)
--   [Schritt 4: Screnns erstellen](sreens.md)
--   [Schritt 5: Backups erstellen](backups.md)
+-   [Back to Summary](/docs/en/README.md)
+-   [Step 1: Installation and APP setup](app.md)
+-   [Step 2: Create Enums](enum.md)
+-   [Step 3: Create Widgets](widgets.md)
+-   [step 4: Create Screnns](sreens.md)
+-   [Step 5: Create Backups](backups.md)
 
-## Generelle Einstellungen `General Settings`
+## General Settings `General Settings`
 
-- Hier können die Einstellungen auf das Handy gespeichert oder wiederherstellt werden.
-- Export anklicken, Ordner auswählen und speichern.
-- Import anklicken, Backup-Datei auswählen und importieren.
-- Vibration: Keine Funktion
-- Info Device Name und Geräte ID
-![app_general_settings.png](../de/img/app_general_settings.png)
+- Here the settings can be saved or restored to the cell phone.
+- Click export, select folder and save.
+- Click import, select backup file and import.
+- Vibration: No function
+- Info Device Name and Device ID
+
+![app_general_settings.png](img/../../de/img/app_general_settings.png)

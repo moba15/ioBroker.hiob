@@ -1,0 +1,11 @@
+{
+    "hiob adapter settings": "hiob 的适配器设置",
+    "select a port": "选择一个端口",
+    "useCert": "使用证书进行连接",
+    "useCert_tooltip": "使用证书进行连接",
+    "certPath": "证书路径",
+    "certPath_tooltip": "证书路径",
+    "keyPath": "密钥路径",
+    "keyPath_tooltip": "密钥路径",
+    "link to description": "链接到描述"
+}

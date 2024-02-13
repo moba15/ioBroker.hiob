@@ -12,7 +12,7 @@
 
 # Schritt 1: Instanz Einstellungen
 
-1. Bitte einen freien Port (Standard ist 8090) eintragen. Sollte der ausgewählte Port belegt sein, wird der nächste freie Port verwendet. Diesen wird ins Log sehen geschrieben und sollte dann in der Konfig-Instanz übernommen werden.
+1. Bitte einen freien Port (Standard ist 8090) eintragen. Sollte der ausgewählte Port belegt sein, wird der nächste freie Port verwendet. Dieser wird ins Log geschrieben und sollte dann in die Konfig-Instanz übernommen werden.
 2. Für das Grafik Widget benötigt man entweder den SQL oder Histroy Adapter um Änderungen von Datenpunkte aufzuzeichnen. Bitte entweder eine SQL- oder History-Instanz auswählen.
 3. Nun den Adapter starten.
 ![instance.png](img/instance.png)
@@ -63,6 +63,9 @@
 - Sollte dort ein rotes WLAN Zeichen blinken, dann kann keine Verbindung aufgebaut werden. Entweder befindet man sich nicht im selben Netzwerk oder der Datenpunkt `approved` steht auf false.
 ![app_connection_on.png](img/app_connection_on.png)
 ![app_connection_off.png](img/app_connection_off.png)
+
+-   [Sichere Verbindung](secureCon.md)
+-   [Einfache AES Verschlüsselung](aessecure.md)
 
 -   [Zurück zur Beschreibung](/docs/de/README.md)
 -   [Schritt 2: ENUMS erstellen](enum.md)

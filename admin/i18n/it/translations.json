@@ -1,0 +1,11 @@
+{
+    "hiob adapter settings": "Impostazioni dell'adattatore per hiob",
+    "select a port": "seleziona un porto",
+    "useCert": "Utilizza il certificato per la connessione",
+    "useCert_tooltip": "Utilizza il certificato per la connessione",
+    "certPath": "Percorso verso il certificato",
+    "certPath_tooltip": "Percorso verso il certificato",
+    "keyPath": "Percorso alla chiave",
+    "keyPath_tooltip": "Percorso alla chiave",
+    "link to description": "collegamento alla descrizione"
+}
