@@ -1,6 +1,6 @@
 export interface Cyclic {
     /**
      * expiration
-    */
-    expiration() : void;
+     */
+    expiration(): void;
 }

@@ -1,3 +1,1 @@
-export class HistoryManager {
-    
-}
+export class HistoryManager {}

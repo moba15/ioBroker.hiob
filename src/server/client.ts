@@ -14,7 +14,7 @@ import {
     TemplateSettingUploadPack,
     TemplateSettingUploadSuccessPack,
     TemplateSettingsRequestedPack,
-    NotificationPack
+    NotificationPack,
 } from "./datapacks";
 import { TemplateSettings } from "../template/template_manager";
 import * as CryptoJS from "crypto-js";
@@ -44,7 +44,7 @@ export class Client {
     }
 
     stop(): void {
-		this.stop;
+        this.stop;
     }
 
     close(): void {
@@ -55,23 +55,24 @@ export class Client {
         if (needAproval && !this.approved) {
             this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
             return false;
-          }
-          const send = {
+        }
+        this.adapter.log.debug("Send MSG( " + JSON.stringify(msg) + ") to Client(" + this.toString() + ")");
+        const send = {
             type: msg["type"],
-            content: ""
-          };
-          if (this.aesKey != "" && Object.keys(msg).length > 1) {
+            content: "",
+        };
+        if (this.aesKey != "" && Object.keys(msg).length > 1) {
             this.adapter.log.debug(`ENCRYPT KEY: ${this.aesKey}`);
             const aes = `${this.aesKey}${msg["type"]}`;
             delete msg["type"];
             send["content"] = CryptoJS.AES.encrypt(JSON.stringify(msg), aes).toString();
-          } else {
+        } else {
             delete msg["type"];
             send["content"] = msg;
-          }
-          this.socket.send(JSON.stringify(send).toString());
-          this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
-          return false;
+        }
+        this.socket.send(JSON.stringify(send).toString());
+        this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
+        return false;
     }
 
     setAESKey(aesKey: string): void {
@@ -119,8 +120,7 @@ export class Client {
                         this.onStateChangeRequest(new StateChangeRequestPack(content["stateID"], content["value"]));
                     break;
                 case "enumUpdateRequest": //Enum update Request
-                    if (this.approved)
-                        this.onEnumUpdateRequest(new EnumUpdateRequestPack(content["id"]));
+                    if (this.approved) this.onEnumUpdateRequest(new EnumUpdateRequestPack(content["id"]));
                     break;
                 case "subscribeToDataPoints":
                     if (this.approved)
@@ -140,7 +140,7 @@ export class Client {
                     this.onLoginRequest(new RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["version"], content["user"], content["password"]));
                     break;
                 case "templateSettingCreate":
-                    this.adapter.log.debug((content["name"]));
+                    this.adapter.log.debug(JSON.stringify(content["name"]));
                     this.onTemplateSettingCreate(new TemplateSettingCreatePack(content["name"]));
                     break;
                 case "requestTemplatesSettings":
@@ -151,7 +151,6 @@ export class Client {
                     this.adapter.log.debug("uploadTemplateSetting");
                     this.onTemplateUpload(new TemplateSettingUploadPack(content["name"], content["devices"], content["screens"], content["widgets"]));
                     break;
-
                 case "getTemplatesSetting":
                     this.adapter.log.debug("getTemplatesSetting");
                     this.getTemplatesSetting(content["name"], content["device"], content["screen"], content["widget"]);
@@ -159,19 +158,13 @@ export class Client {
                 case "notification":
                     this.onNotification(new NotificationPack(content["onlySendNotification"], content["content"], content["date"]));
                     break;
-
             }
-
         } catch (e) {
             if (e instanceof SyntaxError) {
                 this.adapter.log.error("There is something wrong with the sent data: No valid JSON Format");
             }
-
         }
-
-
     }
-
 
     onApprove(): void {
         this.approved = true;
@@ -188,6 +181,7 @@ export class Client {
         this.server.conClients = this.server.conClients.filter(this.filter.bind(this));
         this.adapter.log.debug("Size: " + this.server.conClients.length.toString());
     }
+
     onError(): void {
         this.setConnection();
         this.isConnected = false;
@@ -201,17 +195,19 @@ export class Client {
         // this.adapter.setStateAsync("devices." + this.deviceID + ".connected", false, true);
     }
 
-
     onStateChangeRequest(request: StateChangeRequestPack): void {
-        this.adapter.setForeignState(request.objectID, request.newValue, false);
+        //Catch missing alias objects
+        try {
+            this.adapter.setForeignState(request.objectID, request.newValue, false);
+        } catch (e) {
+            this.adapter.log.warn(`The data point ${request.objectID} does not exist! ${e}`);
+        }
     }
 
     async onEnumUpdateRequest(request: EnumUpdateRequestPack): Promise<void> {
         const result = await this.adapter.getEnumListJSON(request.id);
         this.sendMSG(new EnumUpdatePack(request.id, result).toJSON(), true);
-
     }
-
 
     onSubscribeToDataPoints(sub: SubscribeToDataPointsPack): void {
         this.adapter.subscribeToDataPoints(sub.dataPoints, this);
@@ -223,18 +219,15 @@ export class Client {
 
     onLoginRequest(requestLoginPacket: RequestLoginPacket): void {
         this.adapter.loginManager.onLoginRequest(this,requestLoginPacket);
-
     }
 
     onWrongAesKey(): void {
         this.adapter.loginManager.onWrongAesKey(this);
-
     }
 
     async onTemplateSettingsRequest(): Promise<void> {
         const list = await this.adapter.templateManager.fetchTemplateSettings();
         this.sendMSG(new TemplateSettingsRequestedPack(list).toJSON(), true);
-
     }
 
     async onTemplateSettingCreate(templateSettingCreatePack: TemplateSettingCreatePack): Promise<void> {
@@ -257,19 +250,12 @@ export class Client {
     }
 
     onNotification(pack: NotificationPack): any {
-        if(pack.onlySendNotification != undefined) {
+        if (pack.onlySendNotification != undefined) {
             this.onlySendNotification = pack.onlySendNotification;
         }
-
     }
-
 
     toString(): string {
         return JSON.stringify(this.req.socket.address()) + ":" + this.req.socket.remotePort;
     }
-
 }
-
-
-
-

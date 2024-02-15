@@ -5,20 +5,20 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 import * as utils from "@iobroker/adapter-core";
-import {Server} from "./server/server";
-import {Listener} from "./listener/listener";
-import {LoginManager} from "./login/loginmanager";
-import {Client} from "./server/client";
-import {StateChangedDataPack} from "./server/datapacks";
-import {TemplateManager} from "./template/template_manager";
-import {NotificationManager} from "./notification/notification_manager";
+import { Server } from "./server/server";
+import { Listener } from "./listener/listener";
+import { LoginManager } from "./login/loginmanager";
+import { Client } from "./server/client";
+import { StateChangedDataPack } from "./server/datapacks";
+import { TemplateManager } from "./template/template_manager";
+import { NotificationManager } from "./notification/notification_manager";
 
 // Load your modules here, e.g.:
 // import * as fs from "fs";
 export class SamartHomeHandyBis extends utils.Adapter {
     server?: Server;
-    listener: Listener
-    loginManager: LoginManager
+    listener: Listener;
+    loginManager: LoginManager;
     port: number = 8095;
     keyPath: string = "";
     certPath: string = "";
@@ -41,7 +41,6 @@ export class SamartHomeHandyBis extends utils.Adapter {
         // this.on("message", this.onMessage.bind(this));
         this.on("unload", this.onUnload.bind(this));
         this.server = undefined;
-
     }
 
     /**
@@ -70,18 +69,18 @@ export class SamartHomeHandyBis extends utils.Adapter {
             type: "state",
             common: {
                 name: {
-					"en": "Connected",
-					"de": "Verbunden",
-					"ru": "Соединение",
-					"pt": "Conectado",
-					"nl": "Verbonden",
-					"fr": "Connecté",
-					"it": "Collegato",
-					"es": "Conectado",
-					"pl": "Połączone",
-					"uk": "Зв'язатися",
-					"zh-cn": "已连接"
-				},
+                    en: "Connected",
+                    de: "Verbunden",
+                    ru: "Соединение",
+                    pt: "Conectado",
+                    nl: "Verbonden",
+                    fr: "Connecté",
+                    it: "Collegato",
+                    es: "Conectado",
+                    pl: "Połączone",
+                    uk: "Зв'язатися",
+                    "zh-cn": "已连接",
+                },
                 type: "boolean",
                 role: "button",
                 def: false,
@@ -101,8 +100,6 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.certPath = this.config.certPath;
         this.useCer = this.config.useCert;
         this.keyPath = this.config.keyPath;
-
-
     }
 
     private initServer(): void {
@@ -110,18 +107,19 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.server.startServer();
     }
 
-
-    public async getEnumListJSON(id: string): Promise<{
-        id: string;
-        name: ioBroker.StringOrTranslated;
-        icon: string | undefined;
-        dataPointMembers: {
-            name: any;
-            id: any;
-            role: any;
-            otherDetails: any;
-        }[];
-    }[]> {
+    public async getEnumListJSON(id: string): Promise<
+        {
+            id: string;
+            name: ioBroker.StringOrTranslated;
+            icon: string | undefined;
+            dataPointMembers: {
+                name: any;
+                id: any;
+                role: any;
+                otherDetails: any;
+            }[];
+        }[]
+    > {
         const list: {
             id: string;
             name: ioBroker.StringOrTranslated;
@@ -134,46 +132,43 @@ export class SamartHomeHandyBis extends utils.Adapter {
             }[];
         }[] = [];
 
-
         const enumDevices = await this.getForeignObjectsAsync(id, "enum");
 
         for (const i in enumDevices) {
-            const members : string[] | undefined = enumDevices[i].common.members;
-            if(!members) {
+            const members: string[] | undefined = enumDevices[i].common.members;
+            if (!members) {
                 continue;
             }
-            const dataPoints : any[] = [];
+            const dataPoints: any[] = [];
             if (!dataPoints) {
                 continue;
             }
             for (const z of members) {
                 const dataPoint = await this.getForeignObjectAsync(z);
-                if (!dataPoint)
-                    continue;
+                if (!dataPoint) continue;
                 dataPoints.push({
-                    "name": dataPoint!.common.name,
-                    "id": z,
-                    "role": dataPoint!.common.role,
-                    "otherDetails": dataPoint!.common.custom,
+                    name: dataPoint!.common.name,
+                    id: z,
+                    role: dataPoint!.common.role,
+                    otherDetails: dataPoint!.common.custom,
                 });
             }
             const map = {
-                "id": enumDevices[i]._id,
-                "name": enumDevices[i].common.name,
-                "icon": enumDevices[i].common.icon,
-                "dataPointMembers": dataPoints,
+                id: enumDevices[i]._id,
+                name: enumDevices[i].common.name,
+                icon: enumDevices[i].common.icon,
+                dataPointMembers: dataPoints,
             };
             list.push(map);
         }
 
-
         return list;
     }
 
-    public async subscribeToDataPoints(dataPoints: { [x: string]: any; }, client: Client): Promise<void> {
+    public async subscribeToDataPoints(dataPoints: { [x: string]: any }, client: Client): Promise<void> {
         this.log.debug(JSON.stringify(dataPoints));
         for (const i in dataPoints) {
-            if(!(await this.foreignObjectExists(dataPoints[i]))) {
+            if (!(await this.foreignObjectExists(dataPoints[i]))) {
                 this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
                 continue;
             }
@@ -244,7 +239,6 @@ export class SamartHomeHandyBis extends utils.Adapter {
     // 		}
     // 	}
     // }
-
 }
 
 if (require.main !== module) {

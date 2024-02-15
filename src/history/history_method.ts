@@ -1,3 +1,1 @@
-export enum HistoryMethod {
-
-}
+export enum HistoryMethod {}
