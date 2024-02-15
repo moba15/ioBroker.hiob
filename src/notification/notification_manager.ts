@@ -18,7 +18,7 @@ export class NotificationManager {
 
     private onStateChange(event: StateChangeEvent): void {
         const match: RegExpMatchArray | null = event.objectID.match("(hiob.\\d*.devices.)(.*)(.sendNotification)");
-        if (match && match[2]) {
+        if (match && match[2] && !event.ack) {
             const deviceID = match[2];
             const client = this.adapter.server?.getClient(deviceID);
             //Check if client is connected
@@ -32,6 +32,7 @@ export class NotificationManager {
                     this.backlog[deviceID] = [event.value];
                 }
             }
+            this.adapter.setState(event.objectID, { ack: true });
         }
     }
 
