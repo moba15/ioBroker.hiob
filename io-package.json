@@ -1,107 +1,139 @@
 {
-	"common": {
-		"name": "hiob",
-		"version": "0.0.55-1",
-		"news": {
-			"0.0.1": {
-				"en": "initial release",
-				"de": "Erstveröffentlichung",
-				"ru": "Начальная версия",
-				"pt": "lançamento inicial",
-				"nl": "Eerste uitgave",
-				"fr": "Première version",
-				"it": "Versione iniziale",
-				"es": "Versión inicial",
-				"pl": "Pierwsze wydanie",
-				"zh-cn": "首次出版"
-			}
-		},
-		"title": "HioB",
-		"titleLang": {
-			"en": "HioB",
-			"de": "HioB Vis",
-			"ru": "HioB Vis",
-			"pt": "HioB Vis",
-			"nl": "HioB Vis",
-			"fr": "HioB Vis",
-			"it": "HioB Vis",
-			"es": "HioB Vis",
-			"pl": "HioB Vis",
-			"zh-cn": "HioB Vis"
-		},
-		"desc": {
-			"en": "Visualisierung für das Handy",
-			"de": "Visualisierung für das Handy",
-			"ru": "Visualisierung für das Handy",
-			"pt": "Visualisierung für das Handy",
-			"nl": "Visualisierung für das Handy",
-			"fr": "Visualisierung für das Handy",
-			"it": "Visualisierung für das Handy",
-			"es": "Visualisierung für das Handy",
-			"pl": "Visualisierung für das Handy",
-			"zh-cn": "方便的可视化"
-		},
-		"authors": [
-			"mor15Euro <moritz@bachmaiers.de>"
-		],
-		"keywords": [
-			"ioBroker",
-			"template",
-			"Smart Home",
-			"home automation"
-		],
-		"license": "MIT",
-		"platform": "Javascript/Node.js",
-		"main": "main.js",
-		"icon": "samart_home_handy_bis.png",
-		"enabled": true,
-		"extIcon": "https://raw.githubusercontent.com/mor15Euro1/ioBroker.samart_home_handy_bis/main/admin/samart_home_handy_bis.png",
-		"readme": "https://github.com/mor15Euro1/ioBroker.HioB/blob/main/README.md",
-		"loglevel": "info",
-		"mode": "daemon",
-		"type": "visualization",
-		"compact": true,
-		"connectionType": "local",
-		"dataSource": "push",
-		"materialize": true,
-		"licenseInformation": {
-			"license": "MIT",
-			"type": "free"
-		},
-		"dependencies": [
-			{
-				"js-controller": ">=2.0.0"
-			}
-		]
-	},
-	"native": {
-		"port": "8090",
-		"useCert": false,
-		"certPath": "",
-		"keyPath": ""
-	},
-	"objects": [],
-	"instanceObjects": [
-		{
-			"_id": "info",
-			"type": "channel",
-			"common": {
-				"name": "Information"
-			},
-			"native": {}
-		},
-		{
-			"_id": "info.connection",
-			"type": "state",
-			"common": {
-				"role": "indicator.connected",
-				"name": "Device or service connected",
-				"type": "boolean",
-				"read": true,
-				"write": false,
-				"def": false
-			},
-			"native": {}
-		}
-	]
+    "common": {
+        "name": "hiob",
+        "version": "0.0.55",
+        "news": {
+            "0.0.55": {
+                "en": "Fixed Adapter crash if data point does not exist\nFixed some login errors\n",
+                "de": "Fixed Adapter Crash, wenn Datenpunkt nicht vorhanden ist\nBehoben einige Login-Fehler\n",
+                "ru": "Сбой фиксированного адаптера, если точки данных не существует\nИсправлены некоторые ошибки входа\n",
+                "pt": "Fixed Adapter crash se o ponto de dados não existir\nCorrigido alguns erros de login\n",
+                "nl": "Fixed Adapter crash als datapoint niet bestaat\nEnkele aanmeldfouten hersteld\n",
+                "fr": "Correction du crash de l'adaptateur si le point de données n'existe pas\nCorrection de certaines erreurs de connexion\n",
+                "it": "Corretto crash dell'adattatore se il punto di dati non esiste\nRisolto alcuni errori di login\n",
+                "es": "Accidente de adaptador fijo si el punto de datos no existe\nArreglado algunos errores de inicio de sesión\n",
+                "pl": "Stała awaria adaptera, jeśli punkt danych nie istnieje\nNaprawiono pewne błędy logowania\n",
+                "uk": "Виправлено помилку адаптера, якщо точка даних не існує\nВиправлено помилки входу\n",
+                "zh-cn": "如果数据点不存在, 固定适配器崩溃\n修正一些登录错误\n"
+            },
+            "0.0.54": {
+                "en": "Added secure login\nAdded secure connetion\nAutomatic acceptance of incoming connections for 60 seconds\n",
+                "de": "Zusätzlicher sicherer Login\nHinzugefügt sichere connetion\nAutomatische Akzeptanz von eingehenden Verbindungen für 60 Sekunden\n",
+                "ru": "Добавить безопасный логин\nДобавлено безопасное соединение\nАвтоматическое принятие входящих соединений в течение 60 секунд\n",
+                "pt": "Adicionado login seguro\nAdicionado connetion seguro\nAceitação automática de conexões recebidas por 60 segundos\n",
+                "nl": "Veilig aanmelden toegevoegd\nToegevoegd beveiligde connetion\nAutomatische aanvaarding van inkomende verbindingen gedurende 60 seconden\n",
+                "fr": "Ajout d'une connexion sécurisée\nAjout d'une connexion sécurisée\nAcceptation automatique des connexions entrantes pendant 60 secondes\n",
+                "it": "Aggiunto il login sicuro\nAggiunto sicuro connetion\nAccettazione automatica delle connessioni in entrata per 60 secondi\n",
+                "es": "Acceso seguro\nConneción segura\nAceptación automática de las conexiones entrantes durante 60 segundos\n",
+                "pl": "Dodano bezpieczne logowanie\nDodano bezpieczne połączenie\nAutomatyczna akceptacja połączeń przychodzących przez 60 sekund\n",
+                "uk": "Додати безпечний логін\nДодано безпечне з'єднання\nАвтоматичне прийняття вхідних з'єднань протягом 60 секунд\n",
+                "zh-cn": "添加安全登录\n添加安全连接\n自动接收60秒的连接\n"
+            },
+            "0.0.1": {
+                "en": "initial release",
+                "de": "erstausstrahlung",
+                "ru": "первоначальный выпуск",
+                "pt": "lançamento inicial",
+                "nl": "eerste release",
+                "fr": "libération initiale",
+                "it": "rilascio iniziale",
+                "es": "liberación inicial",
+                "pl": "początkowe zwolnienie",
+                "uk": "початковий реліз",
+                "zh-cn": "初步释放"
+            }
+        },
+        "titleLang": {
+            "en": "HioB APP",
+            "de": "HioB APP",
+            "ru": "HioB APP",
+            "pt": "APP HioB",
+            "nl": "HioB APP",
+            "fr": "APP HioB",
+            "it": "APP HioB",
+            "es": "HioB APP",
+            "pl": "APP HioB",
+            "uk": "ХіоБ APP",
+            "zh-cn": "高级APP"
+        },
+        "desc": {
+            "en": "Visualization for mobile phones",
+            "de": "Visualisierung für Mobiltelefone",
+            "ru": "Визуализация мобильных телефонов",
+            "pt": "Visualização de telefones celulares",
+            "nl": "Visualisatie voor mobiele telefoons",
+            "fr": "Visualisation des téléphones mobiles",
+            "it": "Visualizzazione per cellulari",
+            "es": "Visualización para teléfonos móviles",
+            "pl": "Wizualizacja telefonów komórkowych",
+            "uk": "Візуалізація для мобільних телефонів",
+            "zh-cn": "移动电话可视化"
+        },
+        "authors": [
+            "mor15Euro <moritz@bachmaiers.de>"
+        ],
+        "keywords": [
+            "ioBroker",
+            "template",
+            "Smart Home",
+            "home automation"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "build/main.js",
+        "icon": "hiob.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/moba15/ioBroker.hiob/main/admin/hiob.png",
+        "readme": "https://github.com/moba15/ioBroker.hiob/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "visualization",
+        "compact": true,
+        "connectionType": "local",
+        "dataSource": "push",
+        "materialize": false,
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=3.3.22"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.1.13"
+            }
+        ]
+    },
+    "native": {
+        "port": 8090,
+        "useCert": false,
+        "certPath": "",
+        "keyPath": ""
+    },
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "Device or service connected",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
 }

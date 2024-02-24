@@ -2,56 +2,68 @@
 
 -   [Back to Summary](/docs/en/README.md)
 -   [Step 1: Installation and APP setup](app.md)
+-   [Step 2: Create Enums](enum.md)
 -   [Step 3: Create Widgets](widgets.md)
 -   [step 4: Create Screnns](sreens.md)
 -   [Step 5: Create Backups](backups.md)
 
-## Enums erstellen und APP `ioBroker Settings` + `Device Settings`
+## Create enums and APP `ioBroker Settings` + `Device Settings`
 
-# Schritt 2: Aufzählung erstellen
+# Step 1: Create Enums
 
-1. Erstellt eine neue Aufzählung `hiob` (alles klein schreiben). Unter `Name` und `ID bearbeiten` muss zwingend `hiob` eingetragen werden. Die anderen Felder sind Optional.
+1. Creates a new enum `job` (all lower case). “Hiob” must be entered under “Name” and “Edit ID”. The other fields are optional.
+
 ![ENUM](img/create_enum.png)
 ![ENUM](img/create_enum_save.png)
 
-2. Nun kann man beliebig viele Kategorien unter ENMU `hiob` erstellen. Es wäre vom Vorteil Katergorien wie Licht, Steckdosen oder Räume zu wählen. In der APP ist es dann etwas leichter die gewünschten Datenpunkte zu finden.
+2. Now you can create as many categories as you want under ENMU `hiob`. It would be advantageous to choose categories such as light, sockets or rooms. It is then a little easier to find the desired data points in the APP.
+
 ![ENUM](img/create_category.png)
 ![ENUM](img/create_enum_save.png)
 
-3. Es ist zu empfehlen Datenpunkte von Adapter als `alias` anzulegen. Hierzu wird der Adapter `alias-manager` empfohlen. Hier dann einen neuen `Kanal` erstellen und mit dem `alias-manager` dort die Datenpunkte hinzufügen. Datenpunkte unter 0_userdata.x oder javascript.x müssen nicht zwingend als alias angelegt werden.
+3. It is recommended to create adapter data points as `alias`. The adapter `alias-manager` is recommended for this. Then create a new `channel` here and add the data points there with the `alias manager`. Data points under 0_userdata.x or javascript.x do not necessarily have to be created as aliases.
+
 ![ENUM](img/create_alias.png)
 
-4. Jetzt noch die gewünschten Datenpunkte in den hiob-Aufzählungen hineinziehen.
+4. Now drag the desired data points into the Job lists.
+
 ![ENUM](img/create_category_datapoint.png)
 
-5. Zurück zur APP in `ioBroker Settings` und dort erst auf `Update` und danach `Sync` drücken.
-![ENUM](../de/img/app_login_wo_pw_suc.png)
+5. Go back to the APP in `ioBroker Settings` and press `Update` and then `Sync`.
 
-6. In der APP nun zu `Device Settings` wechseln. Werden hier die Kategorien grün angezeigt, dann hat alles funktioniert. Sind die Kategorien rot, dann bitte erneut `Update` und danach `Sync` ausführen.
-Mit wischen von rechts nach links können Kategorien gelöscht werden. Diese erscheinen wieder nach `Update` & `Sync`. Es ist möglich eigenen Kategorien anzulegen und in diesen neue Datenpunkte einzutragen. Diese müssen natürlich im ioBroker verhanden sein. Allerdings werden auch diese nach `Update` & `Sync` wieder gelöscht. Daher macht nach den Einstellungen/Änderungen ein Backup oder erstellt ein neues Backup!!!
-![ENUM](../de/img/app_dev_settings_green.png)
-![ENUM](../de/img/app_cat_del.png)
+![ENUM](img/../../de/img/app_login_wo_pw_suc.png)
 
-7. Mit klickt auf das + Zeichen kann eine neue Kategorie angelegt werden. Hier einen Namen eintragen der gut zugeordnet werden kann.
-![ENUM](../de/img/app_create_cat.png)
+6. Now switch to `Device Settings` in the APP. If the categories are displayed in green, then everything worked. If the categories are red, please run `Update` again and then `Sync`.
+Categories can be deleted by swiping from right to left. These appear again after `Update` & `Sync`. It is possible to create your own categories and enter new data points into them. Of course, these must be available in the ioBroker. However, these will also be deleted after `Update` & `Sync`. Therefore, after the settings/changes, make a backup or create a new backup!!!
 
-8. Mit drücken auf `Add data point man.` können neue Datenpunkte hinzufügen werden. Die ID muss in ioBroker vorhanden sein. Bsp.: Name: Worx Party-Modus und ID: worx.0.702470273301009453d9.mower.partyModus. Es wäre aber besser alles über alias anzulegen und dann den Aufzählungen zuzuweisen.
-Danach speichern drücken.
+![ENUM](img/../../de/img/app_dev_settings_green.png)
+![ENUM](img/../../de/img/app_cat_del.png)
+
+7. You can create a new category by clicking on the + sign. Enter a name here that can be easily assigned.
+
+![ENUM](img/../../de/img/app_create_cat.png)
+
+8. New data points can be added by pressing `Add data point man.`. The ID must exist in ioBroker. E.g.: Name: Worx Party Mode and ID: worx.0.702470273301009453d9.mower.partyMode. But it would be better to create everything using alias and then assign it to the enums.
+Then press save.
+
 ![ENUM](../de/img/app_create_cat_dp.png)
 
-9. Tippt auf eine Kategorie klicken um in die nächste Ansicht zu gelangen. Hier die Namen oder ID`s ändern beziehungsweise neue Datenpunkte hinzufügen. Mit wischen von rechts nach links können Datenpunkte gelöscht werden.
-![ENUM](../de/img/app_edit_device.png)
-![ENUM](../de/img/app_new_device.png)
-![ENUM](../de/img/app_del_device.png)
+9. Tap on a category to go to the next view. Change the names or IDs here or add new data points. Data points can be deleted by swiping from right to left.
 
-10. Durch klicken auf das `i` erscheinen zusätzlich Informationen über den Datenpunkt.
-![ENUM](../de/img/app_device_add_infos.png)
+![ENUM](img/../../de/img/app_edit_device.png)
+![ENUM](img/../../de/img/app_new_device.png)
+![ENUM](img/../../de/img/app_del_device.png)
+
+10. By clicking on the 'i', additional information about the data point appears.
+
+![ENUM](img/../../de/img/app_device_add_infos.png)
 
 
-# Add Enum funktioniert derzeit nicht!!!
+# Add Enum is currently not working!!!
 
 -   [Back to Summary](/docs/en/README.md)
 -   [Step 1: Installation and APP setup](app.md)
+-   [Step 2: Create Enums](enum.md)
 -   [Step 3: Create Widgets](widgets.md)
 -   [step 4: Create Screnns](sreens.md)
 -   [Step 5: Create Backups](backups.md)

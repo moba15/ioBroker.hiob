@@ -1,42 +1,41 @@
 ![Logo](../../admin/hiob.png)
 
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Web View](webview.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)
 
 ## Division Line
 
-### Trennlienen zwischen den Widgets
+### Dividers between the widgets
 
-- Nach links wischen um ein Widget zu löschen.
-- Rechts unten das Pluszeichen drücken.
+- Swipe left to delete a widget.
+- Press the plus sign at the bottom right.
 
-![division](../de/img/app_create_switch_done.png)
+![division](img/../../de/img/app_create_switch_done.png)
 
-- Dropdown: `Division Line` auswählen.
-- Name: Name vom Widget
-- Thickness: Die Stärke angeben.
-- Die Trennliene kann nur 1x pro Screen oder Gruppe verwendet werden.
+- Dropdown: Select `Division Line`.
+- Name: Name of the widget
+- Thickness: Specify the thickness.
+- The dividing line can only be used once per screen or group.
 
-![division](../de/img/app_create_division.png)
+![division](img/../../de/img/app_create_division.png)
 
-- Danach speichern drücken.
+- Then press save.
 
-![division](../de/img/app_create_division_done.png)
+![division](img/../../de/img/app_create_division_done.png)
 
-- Das Widget nun einem Screen hinzufügen.
+- Now add the widget to a screen.
 
-![division](../de/img/app_create_division_screen.png)
+![division](img/../../de/img/app_create_division_screen.png)
 
-
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Web View](webview.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)

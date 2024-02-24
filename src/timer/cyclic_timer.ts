@@ -1,4 +1,1 @@
-export class CyclicTimer {
-    
-
-}
+export class CyclicTimer {}

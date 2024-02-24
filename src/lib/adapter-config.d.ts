@@ -4,7 +4,7 @@
 declare global {
 	namespace ioBroker {
 		interface AdapterConfig {
-			port: string;
+			port: number;
 			useCert: boolean;
 			certPath: string;
 			keyPath: string
