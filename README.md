@@ -59,6 +59,7 @@
 
 -   (Lucky-ESA) Added simple AES encryption
 -   (Lucky-ESA) Preperation for latest request
+-   (moba15) Fixed login errors if AES encryption is disabled
 
 ### 0.0.55 (2023-02-11)
 
