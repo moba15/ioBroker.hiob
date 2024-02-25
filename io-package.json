@@ -1,139 +1,152 @@
 {
-    "common": {
-        "name": "hiob",
-        "version": "0.0.60-1",
-        "news": {
-            "0.0.55": {
-                "en": "Fixed Adapter crash if data point does not exist\nFixed some login errors\n",
-                "de": "Fixed Adapter Crash, wenn Datenpunkt nicht vorhanden ist\nBehoben einige Login-Fehler\n",
-                "ru": "Сбой фиксированного адаптера, если точки данных не существует\nИсправлены некоторые ошибки входа\n",
-                "pt": "Fixed Adapter crash se o ponto de dados não existir\nCorrigido alguns erros de login\n",
-                "nl": "Fixed Adapter crash als datapoint niet bestaat\nEnkele aanmeldfouten hersteld\n",
-                "fr": "Correction du crash de l'adaptateur si le point de données n'existe pas\nCorrection de certaines erreurs de connexion\n",
-                "it": "Corretto crash dell'adattatore se il punto di dati non esiste\nRisolto alcuni errori di login\n",
-                "es": "Accidente de adaptador fijo si el punto de datos no existe\nArreglado algunos errores de inicio de sesión\n",
-                "pl": "Stała awaria adaptera, jeśli punkt danych nie istnieje\nNaprawiono pewne błędy logowania\n",
-                "uk": "Виправлено помилку адаптера, якщо точка даних не існує\nВиправлено помилки входу\n",
-                "zh-cn": "如果数据点不存在, 固定适配器崩溃\n修正一些登录错误\n"
-            },
-            "0.0.54": {
-                "en": "Added secure login\nAdded secure connetion\nAutomatic acceptance of incoming connections for 60 seconds\n",
-                "de": "Zusätzlicher sicherer Login\nHinzugefügt sichere connetion\nAutomatische Akzeptanz von eingehenden Verbindungen für 60 Sekunden\n",
-                "ru": "Добавить безопасный логин\nДобавлено безопасное соединение\nАвтоматическое принятие входящих соединений в течение 60 секунд\n",
-                "pt": "Adicionado login seguro\nAdicionado connetion seguro\nAceitação automática de conexões recebidas por 60 segundos\n",
-                "nl": "Veilig aanmelden toegevoegd\nToegevoegd beveiligde connetion\nAutomatische aanvaarding van inkomende verbindingen gedurende 60 seconden\n",
-                "fr": "Ajout d'une connexion sécurisée\nAjout d'une connexion sécurisée\nAcceptation automatique des connexions entrantes pendant 60 secondes\n",
-                "it": "Aggiunto il login sicuro\nAggiunto sicuro connetion\nAccettazione automatica delle connessioni in entrata per 60 secondi\n",
-                "es": "Acceso seguro\nConneción segura\nAceptación automática de las conexiones entrantes durante 60 segundos\n",
-                "pl": "Dodano bezpieczne logowanie\nDodano bezpieczne połączenie\nAutomatyczna akceptacja połączeń przychodzących przez 60 sekund\n",
-                "uk": "Додати безпечний логін\nДодано безпечне з'єднання\nАвтоматичне прийняття вхідних з'єднань протягом 60 секунд\n",
-                "zh-cn": "添加安全登录\n添加安全连接\n自动接收60秒的连接\n"
-            },
-            "0.0.1": {
-                "en": "initial release",
-                "de": "erstausstrahlung",
-                "ru": "первоначальный выпуск",
-                "pt": "lançamento inicial",
-                "nl": "eerste release",
-                "fr": "libération initiale",
-                "it": "rilascio iniziale",
-                "es": "liberación inicial",
-                "pl": "początkowe zwolnienie",
-                "uk": "початковий реліз",
-                "zh-cn": "初步释放"
-            }
-        },
-        "titleLang": {
-            "en": "HioB APP",
-            "de": "HioB APP",
-            "ru": "HioB APP",
-            "pt": "APP HioB",
-            "nl": "HioB APP",
-            "fr": "APP HioB",
-            "it": "APP HioB",
-            "es": "HioB APP",
-            "pl": "APP HioB",
-            "uk": "ХіоБ APP",
-            "zh-cn": "高级APP"
-        },
-        "desc": {
-            "en": "Visualization for mobile phones",
-            "de": "Visualisierung für Mobiltelefone",
-            "ru": "Визуализация мобильных телефонов",
-            "pt": "Visualização de telefones celulares",
-            "nl": "Visualisatie voor mobiele telefoons",
-            "fr": "Visualisation des téléphones mobiles",
-            "it": "Visualizzazione per cellulari",
-            "es": "Visualización para teléfonos móviles",
-            "pl": "Wizualizacja telefonów komórkowych",
-            "uk": "Візуалізація для мобільних телефонів",
-            "zh-cn": "移动电话可视化"
-        },
-        "authors": [
-            "mor15Euro <moritz@bachmaiers.de>"
-        ],
-        "keywords": [
-            "ioBroker",
-            "template",
-            "Smart Home",
-            "home automation"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "build/main.js",
-        "icon": "hiob.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/moba15/ioBroker.hiob/main/admin/hiob.png",
-        "readme": "https://github.com/moba15/ioBroker.hiob/blob/main/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "visualization",
-        "compact": true,
-        "connectionType": "local",
-        "dataSource": "push",
-        "materialize": false,
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=3.3.22"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.1.13"
-            }
-        ]
+  "common": {
+    "name": "hiob",
+    "version": "0.0.60",
+    "news": {
+      "0.0.60": {
+        "en": "Added simple AES encryption\nPreperation for latest request\nFixed login errors if AES encryption is disabled",
+        "de": "Einfache AES-Verschlüsselung\nVorbereitung auf neueste Anfrage\nFehler behoben, wenn AES-Verschlüsselung deaktiviert ist",
+        "ru": "Добавлено простое шифрование AES\nПревосходность для последнего запроса\nИсправленные ошибки входа, если отключено шифрование AES",
+        "pt": "Adicionado simples criptografia AES\nPreperação para pedido mais recente\nErros de login fixos se a criptografia AES está desativada",
+        "nl": "Eenvoudige AES-versleuteling toegevoegd\nVoorbereiding voor laatste verzoek\nVaste login fouten als AES-encryptie is uitgeschakeld",
+        "fr": "Ajout d'un chiffrement simple AES\nPréperation pour la dernière demande\nErreurs de connexion corrigées si le chiffrement AES est désactivé",
+        "it": "Aggiunto semplice crittografia AES\nPreperazione per l'ultima richiesta\nErrori di login corretti se la crittografia AES è disabilitata",
+        "es": "Cifrado simple AES\nPreperación para la última solicitud\nErrores de inicio de sesión fijos si el cifrado AES está deshabilitado",
+        "pl": "Dodano proste szyfrowanie AES\nPreperacja do ostatniego wniosku\nNaprawiono błędy logowania w przypadku wyłączenia szyfrowania AES",
+        "uk": "Додано простий шифрування AES\nПопереднє замовлення для останнього запиту\nВиправлені помилки в логіні, якщо шифрування AES вимкнено",
+        "zh-cn": "添加简单的 AES 加密\n最新请求的预览\n如果禁用 AES 加密, 则固定登录错误"
+      },
+      "0.0.55": {
+        "en": "Fixed Adapter crash if data point does not exist\nFixed some login errors\n",
+        "de": "Fixed Adapter Crash, wenn Datenpunkt nicht vorhanden ist\nBehoben einige Login-Fehler\n",
+        "ru": "Сбой фиксированного адаптера, если точки данных не существует\nИсправлены некоторые ошибки входа\n",
+        "pt": "Fixed Adapter crash se o ponto de dados não existir\nCorrigido alguns erros de login\n",
+        "nl": "Fixed Adapter crash als datapoint niet bestaat\nEnkele aanmeldfouten hersteld\n",
+        "fr": "Correction du crash de l'adaptateur si le point de données n'existe pas\nCorrection de certaines erreurs de connexion\n",
+        "it": "Corretto crash dell'adattatore se il punto di dati non esiste\nRisolto alcuni errori di login\n",
+        "es": "Accidente de adaptador fijo si el punto de datos no existe\nArreglado algunos errores de inicio de sesión\n",
+        "pl": "Stała awaria adaptera, jeśli punkt danych nie istnieje\nNaprawiono pewne błędy logowania\n",
+        "uk": "Виправлено помилку адаптера, якщо точка даних не існує\nВиправлено помилки входу\n",
+        "zh-cn": "如果数据点不存在, 固定适配器崩溃\n修正一些登录错误\n"
+      },
+      "0.0.54": {
+        "en": "Added secure login\nAdded secure connetion\nAutomatic acceptance of incoming connections for 60 seconds\n",
+        "de": "Zusätzlicher sicherer Login\nHinzugefügt sichere connetion\nAutomatische Akzeptanz von eingehenden Verbindungen für 60 Sekunden\n",
+        "ru": "Добавить безопасный логин\nДобавлено безопасное соединение\nАвтоматическое принятие входящих соединений в течение 60 секунд\n",
+        "pt": "Adicionado login seguro\nAdicionado connetion seguro\nAceitação automática de conexões recebidas por 60 segundos\n",
+        "nl": "Veilig aanmelden toegevoegd\nToegevoegd beveiligde connetion\nAutomatische aanvaarding van inkomende verbindingen gedurende 60 seconden\n",
+        "fr": "Ajout d'une connexion sécurisée\nAjout d'une connexion sécurisée\nAcceptation automatique des connexions entrantes pendant 60 secondes\n",
+        "it": "Aggiunto il login sicuro\nAggiunto sicuro connetion\nAccettazione automatica delle connessioni in entrata per 60 secondi\n",
+        "es": "Acceso seguro\nConneción segura\nAceptación automática de las conexiones entrantes durante 60 segundos\n",
+        "pl": "Dodano bezpieczne logowanie\nDodano bezpieczne połączenie\nAutomatyczna akceptacja połączeń przychodzących przez 60 sekund\n",
+        "uk": "Додати безпечний логін\nДодано безпечне з'єднання\nАвтоматичне прийняття вхідних з'єднань протягом 60 секунд\n",
+        "zh-cn": "添加安全登录\n添加安全连接\n自动接收60秒的连接\n"
+      },
+      "0.0.1": {
+        "en": "initial release",
+        "de": "erstausstrahlung",
+        "ru": "первоначальный выпуск",
+        "pt": "lançamento inicial",
+        "nl": "eerste release",
+        "fr": "libération initiale",
+        "it": "rilascio iniziale",
+        "es": "liberación inicial",
+        "pl": "początkowe zwolnienie",
+        "uk": "початковий реліз",
+        "zh-cn": "初步释放"
+      }
     },
-    "native": {
-        "port": 8090,
-        "useCert": false,
-        "certPath": "",
-        "keyPath": ""
+    "titleLang": {
+      "en": "HioB APP",
+      "de": "HioB APP",
+      "ru": "HioB APP",
+      "pt": "APP HioB",
+      "nl": "HioB APP",
+      "fr": "APP HioB",
+      "it": "APP HioB",
+      "es": "HioB APP",
+      "pl": "APP HioB",
+      "uk": "ХіоБ APP",
+      "zh-cn": "高级APP"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "Device or service connected",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "Visualization for mobile phones",
+      "de": "Visualisierung für Mobiltelefone",
+      "ru": "Визуализация мобильных телефонов",
+      "pt": "Visualização de telefones celulares",
+      "nl": "Visualisatie voor mobiele telefoons",
+      "fr": "Visualisation des téléphones mobiles",
+      "it": "Visualizzazione per cellulari",
+      "es": "Visualización para teléfonos móviles",
+      "pl": "Wizualizacja telefonów komórkowych",
+      "uk": "Візуалізація для мобільних телефонів",
+      "zh-cn": "移动电话可视化"
+    },
+    "authors": [
+      "mor15Euro <moritz@bachmaiers.de>"
+    ],
+    "keywords": [
+      "ioBroker",
+      "template",
+      "Smart Home",
+      "home automation"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "build/main.js",
+    "icon": "hiob.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/moba15/ioBroker.hiob/main/admin/hiob.png",
+    "readme": "https://github.com/moba15/ioBroker.hiob/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "visualization",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "push",
+    "materialize": false,
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=3.3.22"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.13"
+      }
     ]
+  },
+  "native": {
+    "port": 8090,
+    "useCert": false,
+    "certPath": "",
+    "keyPath": ""
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Device or service connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
