@@ -3,6 +3,7 @@ name: Test and Release
 # Run this job on all pushes and pull requests
 # as well as tags with a semantic version
 on:
+  workflow_dispatch:
   push:
     branches:
       - "main"
@@ -30,7 +31,7 @@ jobs:
         with:
           node-version: '18.x'
           # Uncomment the following line if your adapter cannot be installed using 'npm ci'
-          # install-command: 'npm install'
+          install-command: 'npm install'
           lint: true
 
   # Runs adapter tests on all supported node versions and OSes
@@ -49,7 +50,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           os: ${{ matrix.os }}
           # Uncomment the following line if your adapter cannot be installed using 'npm ci'
-          # install-command: 'npm install'
+          install-command: 'npm install'
 
 # TODO: To enable automatic npm releases, create a token on npmjs.org 
 # Enter this token as a GitHub secret (with name NPM_TOKEN) in the repository options
