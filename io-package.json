@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "hiob",
-        "version": "0.0.55",
+        "version": "0.0.60",
         "news": {
             "0.0.55": {
                 "en": "Fixed Adapter crash if data point does not exist\nFixed some login errors\n",
