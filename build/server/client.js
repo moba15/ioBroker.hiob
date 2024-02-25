@@ -50,7 +50,8 @@ class Client {
   close() {
     this.socket.pause();
   }
-  sendMSG(msg, needAproval = false) {
+  async sendMSG(msg, needAproval = false) {
+    var _a;
     if (needAproval && !this.approved) {
       this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
       return false;
@@ -60,7 +61,7 @@ class Client {
       type: msg["type"],
       content: ""
     };
-    if (this.aesKey != "" && Object.keys(msg).length > 1) {
+    if (this.aesKey != "" && Object.keys(msg).length > 1 && ((_a = await this.adapter.getStateAsync("devices." + this.id + ".aesKey_active")) == null ? void 0 : _a.val)) {
       this.adapter.log.debug(`ENCRYPT KEY: ${this.aesKey}`);
       const aes = `${this.aesKey}${msg["type"]}`;
       delete msg["type"];
@@ -227,7 +228,7 @@ class Client {
     }
   }
   toString() {
-    return JSON.stringify(this.req.socket.address()) + ":" + this.req.socket.remotePort;
+    return JSON.stringify(this.req.socket.address()) + ":" + this.req.socket.remotePort + " id: " + this.id;
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

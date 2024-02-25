@@ -51,7 +51,7 @@ export class Client {
         this.socket.pause();
     }
 
-    sendMSG(msg: any, needAproval: boolean = false): boolean {
+    async sendMSG(msg: any, needAproval: boolean = false): Promise<boolean> {
         if (needAproval && !this.approved) {
             this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
             return false;
@@ -61,7 +61,7 @@ export class Client {
             type: msg["type"],
             content: "",
         };
-        if (this.aesKey != "" && Object.keys(msg).length > 1) {
+        if (this.aesKey != "" && Object.keys(msg).length > 1 && (await this.adapter.getStateAsync("devices." + this.id + ".aesKey_active"))?.val) {
             this.adapter.log.debug(`ENCRYPT KEY: ${this.aesKey}`);
             const aes = `${this.aesKey}${msg["type"]}`;
             delete msg["type"];
@@ -256,6 +256,6 @@ export class Client {
     }
 
     toString(): string {
-        return JSON.stringify(this.req.socket.address()) + ":" + this.req.socket.remotePort;
+        return JSON.stringify(this.req.socket.address()) + ":" + this.req.socket.remotePort + " id: " + this.id;
     }
 }
