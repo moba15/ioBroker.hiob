@@ -1,53 +1,51 @@
 ![Logo](../../admin/hiob.png)
 
--   [Button erstellen](button.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [Create Web View](webview.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)
 
 ## Value
 
-### Mit Value kann man z. Bsp. eine Zeit setzen
+### With Value you can e.g. E.g. set a time
 
-- Nach links wischen um ein Widget zu löschen.
-- Rechts unten das Pluszeichen drücken.
+- Swipe left to delete a widget.
+- Press the plus sign at the bottom right.
 
-![webview](img/app_create_button_done.png)
+![webview](img/../../de/img/app_create_button_done.png)
 
+- Dropdown: select `Value`.
+- Name: Name of the widget
+- Value (optional): Display text in the widget. If nothing is specified, the name is used.
+- Round to: How many digits after the decimal point to round up.
+- Unit (optional): Unit of value.
 
-- Dropdown: `Value` auswählen.
-- Name: Name vom Widget
-- Value (optional): Anzeigetext im Widget. Wird nichts angegeben wird der Name verwendet.
-- Round to: Wie viele Stellen nach dem Komma aufrunden.
-- Unit (optional): Einheit vom Wert.
+![webview](img/../../de/img/app_create_value.png)
 
-![webview](img/app_create_value.png)
+- Device: Select the desired listing.
 
-- Device: Die gewünschte Auflistung wählen.
+![webview](img/../../de/img/app_create_button_device.png)
 
-![webview](img/app_create_button_device.png)
+- Datapoint: Selection of data points from the selected list
 
-- Datapoint: Auswahl der Datenpunkte aus der gewählten Auflistung
+![webview](img/../../de/img/app_create_button_dp.png)
 
-![webview](img/app_create_button_dp.png)
+- Then press save.
 
-- Danach speichern drücken.
+![webview](img/../../de/img/app_create_value_done.png)
 
-![webview](img/app_create_value_done.png)
+- Add the widget to a screen and use it to control a data point. Long press on the widget so that the pop-up window opens in which the value can be changed.
 
-- Das Widget einem Screen zufügen und steuert damit einen Datenpunkt. Auf das Widget lange drücken damit sich das Popup Fenster öffnet in dem der Wert geändert werden kann.
+![webview](img/../../de/img/app_create_value_done.png)
+![webview](img/../../de/img/app_create_value_done.png)
 
-![webview](img/app_create_value_done.png)
-![webview](img/app_create_value_done.png)
-
-
--   [Button erstellen](button.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [Create Web View](webview.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)

@@ -1,136 +1,136 @@
 ![Logo](../../admin/hiob.png)
 
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [Create Web View](webview.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)
 
 ## Advanced/Flexible
 
-- Nach links wischen um ein Widget zu löschen.
-- Rechts unten das Pluszeichen drücken.
+- Swipe left to delete a widget.
+- Press the plus sign at the bottom right.
 
-![app_template.png](../de/img/app_template.png)
+![app_template.png](img/../../de/img/app_template.png)
 
-- `Name`: Name vom Widget
-- `Value` (optional): Anzeigetext im Widget. Wird nichts angegeben wird der Name verwendet.
+- `Name`: Name of Widget
+- `Value` (optional): Display text in the widget. If nothing is specified, the name is used.
 
-![app_create_advanced_value.png](../de/img/app_create_advanced_value.png)
+![app_create_advanced_value.png](img/../../de/img/app_create_advanced_value.png)
 
-- Main Body: Hier das gewünschte Widget auswählen.
+- Main Body: Select the desired widget here.
 
-- `Value` Damit kann ein Value angezeigt werden und zusätzlich bei einem vorgegebenen Wert einen neuen Wert setzen
-- `Multi Selection` Hier kann man ein Dropdown erstellen.
-- `Slider` Mit dem Slider kann man Lampen dimmen oder Rollladen steuern.
-- `Handle` Ein Switch bei dem der Wert vorgeben werden kann.
-- `Button` Derzeit nur ein Button um TRUE zu setzen.
+- `Value` This allows a value to be displayed and a new value to be set for a given value
+- `Multi Selection` You can create a dropdown here.
+- `Slider` You can use the slider to dim lamps or control roller shutters.
+- `Handle` A switch where the value can be specified.
+- `Button` Currently only one button to set TRUE.
 
-![app_create_advanced_select.png](../de/img/app_create_advanced_select.png)
+![app_create_advanced_select.png](img/../../de/img/app_create_advanced_select.png)
 
 ### Widget `Value`
 
-- `Round to`: Nach dem Komma aufrunden
-- `Unit (optional)`: Einheit vom Value
-- `Device`: Hier den gewünschten Enum auswählen
-- `Datapoint`: Auswahl der Datenpunkte aus dem gewählten Enum
-- `Text Rules`: Um eine Regel zu erstellen auf `add` klicken. In `Old Value` den Wert eintragen wann der Datenpunkt dann mit `New Value` überschrieben werden soll. Dann `add` drücken und wenn keine neuen benötigt werden `exit` drücken. Wenn Value die 10 erreicht wird der Datenpunkt auf 20 gesetzt. Eine Editierung ist später nicht möglich. Die Regel kann nur mit wischen gelöscht werden.
+- `Round to`: Round up after the decimal point
+- `Unit (optional)`: Unit of value
+- `Device`: Select the desired enum here
+- `Datapoint`: Selection of data points from the selected enum
+- `Text Rules`: To create a rule click on `add`. Enter the value in `Old Value` when the data point should then be overwritten with `New Value`. Then press `add` and if no new ones are needed press `exit`. When Value reaches 10, the data point is set to 20. Editing is not possible later. The rule can only be deleted with a swipe.
 
-![app_create_advanced_value_view.png](../de/img/app_create_advanced_value_view.png)
-![app_create_advanced_value_popup.png](../de/img/app_create_advanced_value_popup.png)
+![app_create_advanced_value_view.png](img/../../de/img/app_create_advanced_value_view.png)
+![app_create_advanced_value_popup.png](img/../../de/img/app_create_advanced_value_popup.png)
 
-- `Popup Menu`: Hier können weitere Widgets erstellt werden. Durch langes drücken auf das Widget öffnet sich ein Popup Menu mit euren erstellten Widgets.
-- Danach speichern drücken.
+- `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
+- Then press save.
 
-![app_create_advanced_value_popup_create_1.png](../de/img/app_create_advanced_value_popup_create_1.png)
-![app_create_advanced_value_popup_create_2.png](../de/img/app_create_advanced_value_popup_create_2.png)
-![app_create_advanced_value_popup_view_done_1.png](../de/img/app_create_advanced_value_popup_view_done_1.png)
-![app_create_advanced_value_popup_view_done_2.png](../de/img/app_create_advanced_value_popup_view_done_2.png)
+![app_create_advanced_value_popup_create_1.png](img/../../de/img/app_create_advanced_value_popup_create_1.png)
+![app_create_advanced_value_popup_create_2.png](img/../../de/img/app_create_advanced_value_popup_create_2.png)
+![app_create_advanced_value_popup_view_done_1.png](img/../../de/img/app_create_advanced_value_popup_view_done_1.png)
+![app_create_advanced_value_popup_view_done_2.png](img/../../de/img/app_create_advanced_value_popup_view_done_2.png)
 
 ### Widget `Multi Selection`
 
-![app_create_multi.png](../de/img/app_create_multi.png)
+![app_create_multi.png](img/../../de/img/app_create_multi.png)
 
-- `Device`: Hier den gewünschten Enum auswählen
-- `Datapoint`: Auswahl der Datenpunkte aus dem gewählten Enum
+- `Device`: Select the desired enum here
+- `Datapoint`: Selection of data points from the selected enum
 
-![app_create_multi_device.png](../de/img/app_create_multi_device.png)
+![app_create_multi_device.png](img/../../de/img/app_create_multi_device.png)
 
-- `Selections`: Um eine Auflistung zu erstellen auf `add` klicken. In `Display Value` einen Namen der Auswahl angeben und in `Dateipoint Value` den Wert eintragen der in den Datenpunkt geschieben werden soll. Die Selections können später durch langes Drücken noch sortiert werden. Eine Editierung ist später nicht möglich. Die Regel kann nur mit wischen gelöscht werden.
-- `Popup Menu`: Hier können weitere Widgets erstellt werden. Durch langes drücken auf das Widget öffnet sich ein Popup Menu mit euren erstellten Widgets.
-- Danach speichern drücken.
+- `Selections`: To create a list click on `add`. Enter a name for the selection in `Display Value` and enter the value that should be moved into the data point in `File Point Value`. The selections can be sorted later by long pressing. Editing is not possible later. The rule can only be deleted with a swipe.
+- `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
+- Then press save.
 
-![app_create_multi_option.png](../de/img/app_create_multi_option.png)
-![app_create_multi_option_1.png](../de/img/app_create_multi_option_1.png)
-![app_create_multi_option_2.png](../de/img/app_create_multi_option_2.png)
+![app_create_multi_option.png](img/../../de/img/app_create_multi_option.png)
+![app_create_multi_option_1.png](img/../../de/img/app_create_multi_option_1.png)
+![app_create_multi_option_2.png](img/../../de/img/app_create_multi_option_2.png)
 
-- So sieht es dann in der View aus. Hier erkennt man auch das vergessen wurde die 0 anzulegen.
+- This is what it looks like in the view. Here you can also see that the 0 was forgotten.
 
-![app_create_multi_done_1.png](../de/img/app_create_multi_done_1.png)
-![app_create_multi_done_2.png](../de/img/app_create_multi_done_2.png)
-![app_create_multi_done_3.png](../de/img/app_create_multi_done_3.png)
+![app_create_multi_done_1.png](img/../../de/img/app_create_multi_done_1.png)
+![app_create_multi_done_2.png](img/../../de/img/app_create_multi_done_2.png)
+![app_create_multi_done_3.png](img/../../de/img/app_create_multi_done_3.png)
 
 ### Widget `Slider`
 
-- `Device`: Hier den gewünschten Enum auswählen
-- `Datapoint`: Auswahl der Datenpunkte aus dem gewählten Enum - Datenpunkt muss number 0-x sein!
+- `Device`: Select the desired enum here
+- `Datapoint`: Selection of data points from the selected enum - data point must be number 0-x!
 
-![app_create_advanced_slider.png](../de/img/app_create_advanced_slider.png)
+![app_create_advanced_slider.png](img/../../de/img/app_create_advanced_slider.png)
 
-- `Min`: Wert minimal (Standard 0).
-- `Max`: Wert maximal (Standard 100).
-- `Steps`: In welchen Schritten Änderungen durchgeführt werden dürfen (Standard 10).
-- `Popup Menu`: Hier können weitere Widgets erstellt werden. Durch langes drücken auf das Widget öffnet sich ein Popup Menu mit euren erstellten Widgets.
-- Danach speichern drücken.
+- `Min`: Minimum value (default 0).
+- `Max`: Value maximum (default 100).
+- `Steps`: In which steps changes can be made (standard 10).
+- `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
+- Then press save.
 
-![app_create_advanced_slider_value.png](../de/img/app_create_advanced_slider_value.png)
+![app_create_advanced_slider_value.png](img/../../de/img/app_create_advanced_slider_value.png)
 
-- So sieht es dann in der View aus.
+- This is what it looks like in the view.
 
-![app_create_advanced_slider_done.png](../de/img/app_create_advanced_slider_done.png)
+![app_create_advanced_slider_done.png](img/../../de/img/app_create_advanced_slider_done.png)
 
 ### Widget `Handle`
 
-- `Device`: Hier den gewünschten Enum auswählen
-- `Datapoint`: Auswahl der Datenpunkte aus dem gewählten Enum - Datenpunkt muss number 0-x sein!
+- `Device`: Select the desired enum here
+- `Datapoint`: Selection of data points from the selected enum - data point must be number 0-x!
 
-![app_create_advanced_handle.png](../de/img/app_create_advanced_handle.png)
+![app_create_advanced_handle.png](img/../../de/img/app_create_advanced_handle.png)
 
-- `Send if on`: Wert der bei AN in den Datenpunkte gesetzt werden soll.
-- `Send if off`: Wert der bei AUS in den Datenpunkte gesetzt werden soll.
-- `Popup Menu`: Hier können weitere Widgets erstellt werden. Durch langes drücken auf das Widget öffnet sich ein Popup Menu mit euren erstellten Widgets.
-- Danach speichern drücken.
+- `Send if on`: Value that should be set in the data points when ON.
+- `Send if off`: Value that should be set in the data points when OFF.
+- `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
+- Then press save.
 
-![app_create_advanced_handle_value.png](../de/img/app_create_advanced_handle_value.png)
+![app_create_advanced_handle_value.png](img/../../de/img/app_create_advanced_handle_value.png)
 
-- So sieht es dann in der View aus.
+- This is what it looks like in the view.
 
-![app_create_advanced_handle_done.png](../de/img/app_create_advanced_handle_done.png)
+![app_create_advanced_handle_done.png](img/../../de/img/app_create_advanced_handle_done.png)
 
 ### Widget `Button`
 
-- `Device`: Hier den gewünschten Enum auswählen
-- `Datapoint`: Auswahl der Datenpunkte aus dem gewählten Enum - Datenpunkt muss number 0-x sein!
+- `Device`: Select the desired enum here
+- `Datapoint`: Selection of data points from the selected enum - data point must be number 0-x!
 
-![app_create_advanced_handle.png](../de/img/app_create_advanced_button.png)
+![app_create_advanced_handle.png](img/../../de/img/app_create_advanced_button.png)
 
-- `Button Lable`: Text im Button.
-- `Popup Menu`: Hier können weitere Widgets erstellt werden. Durch langes drücken auf das Widget öffnet sich ein Popup Menu mit euren erstellten Widgets.
-- Danach speichern drücken.
+- `Button Lable`: Text in the button.
+- `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
+- Then press save.
 
-![app_create_advanced_handle_value.png](../de/img/app_create_advanced_button_value.png)
+![app_create_advanced_handle_value.png](img/../../de/img/app_create_advanced_button_value.png)
 
-- So sieht es dann in der View aus.
+- This is what it looks like in the view.
 
-![app_create_advanced_handle_done.png](../de/img/app_create_advanced_button_done.png)
+![app_create_advanced_handle_done.png](img/../../de/img/app_create_advanced_button_done.png)
 
 
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [Create Web View](webview.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)

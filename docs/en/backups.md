@@ -5,29 +5,31 @@
 -   [Step 2: Create Enums](enum.md)
 -   [Step 3: Create Widgets](widgets.md)
 -   [step 4: Create Screnns](sreens.md)
+-   [Step 5: Create Backups](backups.md)
 
-## Backups erstellen `Config Sync`
+## Create Backup `Config Sync`
 
-- Hier kann man seine Settings (Widgets, Screen und Device) in ioBroker speichern.
-- Diese Backups können nur in ioBroker gelöscht werden. Hier den gewünschten Objektbaum unter `Settings` komplett löschen.
-- Rechts unten das Pluszeichen drücken.
+- Here you can save your settings (widgets, screen and device) in ioBroker.
+- These backups can only be deleted in ioBroker. Completely delete the desired object tree under 'Settings'.
+- Press the plus sign at the bottom right.
 
-![app_config_sync.png](../de/img/app_config_sync.png)
+![app_config_sync.png](img/../../de/img/app_config_sync.png)
 
-- Dort den Namen vom Backup-Ordner eintragen der erstellt werden soll.
+- Enter the name of the backup folder that should be created.
 
-![app_config_sync_create.png](../de/img/app_config_sync_create.png)
+![app_config_sync_create.png](img/../../de/img/app_config_sync_create.png)
 
-- Danach speichern drücken.
+- Then press save.
 
-![app_config_sync_create_done.png](../de/img/app_config_sync_create_done.png)
+![app_config_sync_create_done.png](img/../../de/img/app_config_sync_create_done.png)
 
-- Nun den Button `Upload Settings` drücken um ein Backup zu erstellen. Jetzt können z. Bsp. andere Benutzer diese Settings mit dem Button `Load` laden. Natürlich sind mehrere Backups möglich.
+- Now press the 'Upload Settings' button to create a backup. Now you can e.g. For example, other users can load these settings using the “Load” button. Of course, multiple backups are possible.
+
 ![config_sync_iobroker.png](img/config_sync_iobroker.png)
-
 
 -   [Back to Summary](/docs/en/README.md)
 -   [Step 1: Installation and APP setup](app.md)
 -   [Step 2: Create Enums](enum.md)
 -   [Step 3: Create Widgets](widgets.md)
 -   [step 4: Create Screnns](sreens.md)
+-   [Step 5: Create Backups](backups.md)

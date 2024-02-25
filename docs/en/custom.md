@@ -1,28 +1,28 @@
 ![Logo](../../admin/hiob.png)
 
--   [Zurück zur Beschreibung](/docs/de/README.md)
--   [Schritt 2: ENUMS erstellen](enum.md)
--   [Schritt 3: Widgets erstellen](widgets.md)
--   [Schritt 4: Screnns erstellen](sreens.md)
--   [Schritt 5: Backups erstellen](backups.md)
+-   [Back to Summary](/docs/en/README.md)
+-   [Step 2: Create ENUMS](enum.md)
+-   [Step 3: Create Widgets](widgets.md)
+-   [Step 4: Create Screnns](sreens.md)
+-   [Step 5: Create Backups](backups.md)
 
-## Benutzerdefinierte Einstellungen `Custom Theme Settings`
+## Custom settings `Custom Theme Settings`
 
-- Hier ist es möglich die Farbe vom Header und Switch zu ändern.
-- Mit `App bar Elevation` kann die Höhe vom Header bestimmt werden.
+- Here it is possible to change the color of the header and switch.
+- With `App bar Elevation` the height of the header can be determined.
 
-![app_theme_seetings.png](../de/img/app_theme_seetings.png)
+![app_theme_seetings.png](img/../../de/img/app_theme_seetings.png)
 
-- Wählt eurer Style aus.
+- Choose your style.
 
-![app_theme_seetings_style.png](../de/img/app_theme_seetings_style.png)
+![app_theme_seetings_style.png](img/../../de/img/app_theme_seetings_style.png)
 
-- Seed color: Wählt ein Farbe aus.
+- Seed color: Selects a color.
 
-![app_theme_seetings_color.png](../de/img/app_theme_seetings_color.png)
+![app_theme_seetings_color.png](img/../../de/img/app_theme_seetings_color.png)
 
--   [Zurück zur Beschreibung](/docs/de/README.md)
--   [Schritt 2: ENUMS erstellen](enum.md)
--   [Schritt 3: Widgets erstellen](widgets.md)
--   [Schritt 4: Screnns erstellen](sreens.md)
--   [Schritt 5: Backups erstellen](backups.md)
+-   [Back to Summary](/docs/en/README.md)
+-   [Step 2: Create ENUMS](enum.md)
+-   [Step 3: Create Widgets](widgets.md)
+-   [Step 4: Create Screnns](sreens.md)
+-   [Step 5: Create Backups](backups.md)

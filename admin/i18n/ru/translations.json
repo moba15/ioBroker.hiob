@@ -1,0 +1,11 @@
+{
+    "hiob adapter settings": "Настройки адаптера для hiob",
+    "select a port": "выберите порт",
+    "useCert": "Использовать сертификат для подключения",
+    "useCert_tooltip": "Использовать сертификат для подключения",
+    "certPath": "Путь к сертификату",
+    "certPath_tooltip": "Путь к сертификату",
+    "keyPath": "Путь к ключу",
+    "keyPath_tooltip": "Путь к ключу",
+    "link to description": "ссылка на описание"
+}

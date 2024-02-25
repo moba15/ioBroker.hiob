@@ -13,6 +13,8 @@
 # Settings
 
 -   [General Settings](general.md)
+-   [Secure Connection](secureCon.md)
+-   [Simple AES encryption](aessecure.md)
 
 # Custom Settings
 

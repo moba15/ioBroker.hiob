@@ -14,14 +14,13 @@
 	"dataSource": "push",
 	"connectionIndicator": "yes",
 	"language": "TypeScript",
-	"nodeVersion": "16",
-	"adminUi": "html",
+	"nodeVersion": "18",
+	"adminUi": "json",
 	"tools": [
 		"ESLint"
 	],
-	"i18n": "words.js",
 	"releaseScript": "yes",
-	"devServer": "no",
+	"devServer": "yes",
 	"indentation": "Tab",
 	"quotes": "double",
 	"es6class": "yes",

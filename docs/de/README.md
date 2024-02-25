@@ -14,6 +14,7 @@
 
 -   [Generelle Einstellung](general.md)
 -   [Sichere Verbindung](secureCon.md)
+-   [Einfache AES Verschlüsselung](aessecure.md)
 
 # Benutzerdefinierte Einstellungen
 

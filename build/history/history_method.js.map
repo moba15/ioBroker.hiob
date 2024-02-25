@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/history/history_method.ts"],
+  "sourcesContent": ["export enum HistoryMethod {}\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,IAAK,gBAAL,kBAAKA,mBAAL;AAAA,GAAK;",
+  "names": ["HistoryMethod"]
+}

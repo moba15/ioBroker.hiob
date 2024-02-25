@@ -3,20 +3,21 @@
 -   [Back to Summary](/docs/en/README.md)
 -   [Step 1: Installation and APP setup](app.md)
 -   [Step 2: Create Enums](enum.md)
+-   [Step 3: Create Widgets](widgets.md)
 -   [step 4: Create Screnns](sreens.md)
 -   [Step 5: Create Backups](backups.md)
 
-## Widgets erstellen `Template Settings`
+## Create Widgets `Template Settings`
 
-# Schritt 3: Widgets erstellen
+# Step 3: Create Widgets
 
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Web View erstellen](webview.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [create Web View](webview.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)
 
-![Overview](../de/img/app_overview.png)
+![Overview](img/../../de/img/app_overview.png)

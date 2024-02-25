@@ -1,46 +1,100 @@
-# Introduction
+![Logo](admin/hiob.png)
 
-## Known Bugs
+# ioBroker.hiob
 
-* Graph Widget funktioniert nicht mehr
-* Falls in der App ein Datenpunkt hinterlegt ist der nicht mehr exestiert kann dies zum Absturz des Adapters führen
+**Infos:** </br>
+[![GitHub license](https://img.shields.io/github/license/moba15/ioBroker.hiob)](https://github.com/moba15/ioBroker.hiob/blob/main/LICENSE)
+[![NPM version](https://img.shields.io/npm/v/iobroker.hiob.svg)](https://www.npmjs.com/package/iobroker.hiob)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.hiob.svg)](https://www.npmjs.com/package/iobroker.hiob)
+![Number of Installations](https://iobroker.live/badges/hiob-installed.svg)
+![GitHub size](https://img.shields.io/github/repo-size/moba15/ioBroker.hiob)</br>
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/moba15/ioBroker.hiob)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/moba15/ioBroker.hiob/latest)
+![GitHub last commit](https://img.shields.io/github/last-commit/moba15/ioBroker.hiob)
+![GitHub issues](https://img.shields.io/github/issues/moba15/ioBroker.hiob)</br>
+**Version:** </br>
+![Beta](https://img.shields.io/npm/v/iobroker.hiob.svg?color=red&label=beta)
 
-Please report any bugs to the Forum: https://forum.iobroker.net/topic/55250/neuer-adapter-hiob-handy-app/ or here in GitHub
+[![NPM](https://nodei.co/npm/iobroker.hiop.png?downloads=true)](https://nodei.co/npm/iobroker.hiob/)
+
+**Tests:** </br>
+![Test and Release](https://github.com/moba15/ioBroker.hiob/workflows/Test%20and%20Release/badge.svg)
+
+## HioB adapter for ioBroker
+
+-   Data points can be controlled with the HioB APP.
+
+## Requirements
+
+-   Node >= 16
+-   Android Phone
+
+## Tested with
+
+-   Samsung Android Phones
+-   Google Pixel Android Phones
+-   Sony Pixel Android Phones
+
+## APP Code
+
+[APP Code](https://github.com/moba15/hiob_app)
 
 ## Description
 
-HioB ist eine App Anwendung, die es ermöglicht deine Geräte von deinem ioBroker über eine HandyApp zu steuern.
+🇬🇧 [Description](/docs/en/README.md)</br>
+🇩🇪 [Beschreibung](/docs/de/README.md)
 
-**Warum solltest man diese App benutzen**: Die App bietet eine performante Lösung, um dein SmartHome über dein Handy zu bedienen. Zudem bietet die App eine einfache Einrichtung.
+## Questions
 
-**ACHTUNG**: Die App ist noch einen sehr fürhen Entwicklungsstatus.
+🇩🇪 [Fragen](https://forum.iobroker.net/topic/55250/neuer-adapter-hiob-handy-app)
 
-## Description
+## Changelog
 
-### Installation
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ### **WORK IN PROGRESS**
+-->
+### 0.0.60 (2024-02-25)
 
-```bash
-cd /opt/iobroker
-npm install iobroker.hiob
-```
+-   (Lucky-ESA) Added simple AES encryption
+-   (Lucky-ESA) Preperation for latest request
+-   (moba15) Fixed login errors if AES encryption is disabled
 
-English: [Description](/docs/en/README.md)</br>
-German: [Beschreibung](/docs/de/README.md)
-</br> Thanks to [Lucky-ESA](https://github.com/Lucky-ESA)
+### 0.0.55 (2023-02-11)
 
-## Changelog 0.0.55
+-   (moba15) Fixed Adapter crash if data point does not exist
+-   (moba15) Fixed some login errors
 
-* Fixed Adapter crash if data point does not exist
-* Fixed some login errors
+### 0.0.54 (2023-12-31)
 
-## Changelog 0.0.54
+-   (moba15) Added secure login
+-   (moba15) Added secure connetion
+-   (moba15) Automatic acceptance of incoming connections for 60 seconds
 
-* Added secure login
-* Added secure connetion
-* Automatic acceptance of incoming connections for 60 seconds
+### 0.0.1 (2023-03-26)
+
+-   (moba15) initial release
 
 ## License
 
-MIT
+MIT License
 
-Copyright (c) 2024 mor15Euro [hiob@bachmaiers.de](http://localhost:5000/u/bh3bIYvKVLQXD837pc8JlAJHx3Z2)
+Copyright (c) 2023-2024 mor15Euro [hiob@bachmaiers.de](http://localhost:5000/u/bh3bIYvKVLQXD837pc8JlAJHx3Z2)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

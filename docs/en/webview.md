@@ -1,46 +1,44 @@
 ![Logo](../../admin/hiob.png)
 
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)
 
 ## Web View
 
-### Mit Web View kann man eine Website anzeigen lassen.
+### With Web View you can display a website.
 
-- Nach links wischen um ein Widget zu löschen.
-- Rechts unten das Pluszeichen drücken.
+- Swipe left to delete a widget.
+- Press the plus sign at the bottom right.
 
-![webview](../de/img/app_create_division_done.png)
+![webview](img/../../de/img/app_create_division_done.png)
 
+- Dropdown: select `Web View`.
+- Name: Name of the widget
+- URL (optional): A URL such as E.g.: `http://192.168.x.x:8082/iqontrol/index.html?namespace=iqontrol.0`
+- Device: Select the desired listing.
+- Datapoint: Selection of the data point in which a web address is stored. By changing the data point, the address from the data point is updated or used.
+- Height: The height of the widget. If the size is too small, the website may be cut off.
+- Javascript enabled: Allows running Javascripts
 
-- Dropdown: `Web View` auswählen.
-- Name: Name vom Widget
-- URL (optional): Eine URL wie z. Bsp.: `http://192.168.x.x:8082/iqontrol/index.html?namespace=iqontrol.0`
-- Device: Die gewünschte Auflistung wählen.
-- Datapoint: Auswahl vom Datenpunkt in dem eine Webadresse hinterlegt ist. Durch Änderung vom Datenpunkt wird aktualisiert bzw. die Adresse aus dem Datenpunkt verwendet.
-- Height: Die Höhe vom Widget. Wird zu klein gewählt, kann die Website abgeschnitten sein.
-- Javascript enabled: Erlaubt das ausführen von Javascripts
+![webview](img/../../de/img/app_create_web.png)
 
-![webview](../de/img/app_create_web.png)
+- Then press save.
 
-- Danach speichern drücken.
+![webview](img/../../de/img/app_create_web_done.png)
 
-![webview](../de/img/app_create_web_done.png)
+- Add the widget to a screen.
 
-- Das Widget einem Screen hinzufügen.
+![webview](img/../../de/img/app_create_web_screen.png)
 
-![webview](../de/img/app_create_web_screen.png)
-
-
--   [Button erstellen](button.md)
--   [Value erstellen](value.md)
--   [Advanced erstellen](advanced.md)
--   [Switch with Slider erstellen](switch_w_slider.md)
--   [Division Line erstellen](division.md)
--   [Table erstellen](table.md)
--   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Create Button](button.md)
+-   [Create Value](value.md)
+-   [Create Advanced](advanced.md)
+-   [Create Switch with Slider](switch_w_slider.md)
+-   [Create Division Line](division.md)
+-   [Create Table](table.md)
+-   [Create Graph (only sql Adapter)](graph.md)

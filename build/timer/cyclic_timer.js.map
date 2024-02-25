@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/timer/cyclic_timer.ts"],
+  "sourcesContent": ["export class CyclicTimer {}\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,MAAM,YAAY;AAAC;",
+  "names": []
+}

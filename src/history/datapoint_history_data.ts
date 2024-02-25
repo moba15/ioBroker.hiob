@@ -2,11 +2,11 @@ import { HistoryBound } from "./history_bound"
 import { HistoryMethod } from "./history_method"
 
 export class DatapointHistoryData {
-    datapoint: string
-    method: HistoryMethod
-    lastUpdated: number
-    lowerBound: HistoryBound
-    upperBound: HistoryBound
+    datapoint: string;
+    method: HistoryMethod;
+    lastUpdated: number;
+    lowerBound: HistoryBound;
+    upperBound: HistoryBound;
 
     constructor(datapoint: string, method: HistoryMethod, lastUpadted: number, lowerBound: HistoryBound, upperBound: HistoryBound) {
         this.datapoint = datapoint;
@@ -15,5 +15,4 @@ export class DatapointHistoryData {
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
     }
-
 }

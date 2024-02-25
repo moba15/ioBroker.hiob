@@ -5,25 +5,25 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 import * as utils from "@iobroker/adapter-core";
-import {Server} from "./server/server";
-import {Listener} from "./listener/listener";
-import {LoginManager} from "./login/loginmanager";
-import {Client} from "./server/client";
-import {StateChangedDataPack} from "./server/datapacks";
-import {TemplateManager} from "./template/template_manager";
-import {NotificationManager} from "./notification/notification_manager";
+import { Server } from "./server/server";
+import { Listener } from "./listener/listener";
+import { LoginManager } from "./login/loginmanager";
+import { Client } from "./server/client";
+import { StateChangedDataPack } from "./server/datapacks";
+import { TemplateManager } from "./template/template_manager";
+import { NotificationManager } from "./notification/notification_manager";
 
 // Load your modules here, e.g.:
 // import * as fs from "fs";
 export class SamartHomeHandyBis extends utils.Adapter {
     server?: Server;
-    listener: Listener
-    loginManager: LoginManager
+    listener: Listener;
+    loginManager: LoginManager;
     port: number = 8095;
     keyPath: string = "";
     certPath: string = "";
-    useCer: boolean = false
-    templateManager: TemplateManager
+    useCer: boolean = false;
+    templateManager: TemplateManager;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -40,7 +40,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
         // this.on("objectChange", this.onObjectChange.bind(this));
         // this.on("message", this.onMessage.bind(this));
         this.on("unload", this.onUnload.bind(this));
-
+        this.server = undefined;
     }
 
     /**
@@ -51,13 +51,38 @@ export class SamartHomeHandyBis extends utils.Adapter {
         // Reset the connection indicator during startup
         this.setState("info.connection", true, true);
 
+        if (this.config.port < 1025) {
+            this.log.warn(`Port is automatically changed because it is less than 1025 - ${this.config.port}`);
+            this.config.port = 8095;
+        } else if (this.config.port > 65535) {
+            this.log.warn(`Port will be changed automatically as it is greater than 65535 - ${this.config.port}`);
+            this.config.port = 8095;
+        }
+
+        const check_port = await this.getPortAsync(this.config.port);
+        if (check_port != this.config.port) {
+            this.log.warn(`Port ${this.config.port} is used!! Change to port ${check_port}.`);
+            this.config.port = check_port;
+        }
 
         await this.setObjectNotExistsAsync("approveNextLogins", {
             type: "state",
             common: {
-                name: "Connected",
+                name: {
+                    en: "Connected",
+                    de: "Verbunden",
+                    ru: "Соединение",
+                    pt: "Conectado",
+                    nl: "Verbonden",
+                    fr: "Connecté",
+                    it: "Collegato",
+                    es: "Conectado",
+                    pl: "Połączone",
+                    uk: "Зв'язатися",
+                    "zh-cn": "已连接",
+                },
                 type: "boolean",
-                role: "indicator.approve",
+                role: "button",
                 def: false,
                 read: true,
                 write: true,
@@ -71,12 +96,10 @@ export class SamartHomeHandyBis extends utils.Adapter {
     }
 
     private loadConfigs(): void {
-        this.port = Number(this.config.port)
+        this.port = Number(this.config.port);
         this.certPath = this.config.certPath;
-        this.useCer = this.config.useCert
-        this.keyPath = this.config.keyPath
-
-
+        this.useCer = this.config.useCert;
+        this.keyPath = this.config.keyPath;
     }
 
     private initServer(): void {
@@ -84,18 +107,19 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.server.startServer();
     }
 
-
-    public async getEnumListJSON(id: string): Promise<{
-        id: string;
-        name: ioBroker.StringOrTranslated;
-        icon: string | undefined;
-        dataPointMembers: {
-            name: any;
-            id: any;
-            role: any;
-            otherDetails: any;
-        }[];
-    }[]> {
+    public async getEnumListJSON(id: string): Promise<
+        {
+            id: string;
+            name: ioBroker.StringOrTranslated;
+            icon: string | undefined;
+            dataPointMembers: {
+                name: any;
+                id: any;
+                role: any;
+                otherDetails: any;
+            }[];
+        }[]
+    > {
         const list: {
             id: string;
             name: ioBroker.StringOrTranslated;
@@ -108,46 +132,43 @@ export class SamartHomeHandyBis extends utils.Adapter {
             }[];
         }[] = [];
 
-
         const enumDevices = await this.getForeignObjectsAsync(id, "enum");
 
         for (const i in enumDevices) {
-            const members : string[] | undefined = enumDevices[i].common.members;
-            if(!members) {
+            const members: string[] | undefined = enumDevices[i].common.members;
+            if (!members) {
                 continue;
             }
-            const dataPoints : any[] = [];
+            const dataPoints: any[] = [];
             if (!dataPoints) {
-                continue
+                continue;
             }
             for (const z of members) {
                 const dataPoint = await this.getForeignObjectAsync(z);
-                if (!dataPoint)
-                    continue;
+                if (!dataPoint) continue;
                 dataPoints.push({
-                    "name": dataPoint!.common.name,
-                    "id": z,
-                    "role": dataPoint!.common.role,
-                    "otherDetails": dataPoint!.common.custom,
+                    name: dataPoint!.common.name,
+                    id: z,
+                    role: dataPoint!.common.role,
+                    otherDetails: dataPoint!.common.custom,
                 });
             }
             const map = {
-                "id": enumDevices[i]._id,
-                "name": enumDevices[i].common.name,
-                "icon": enumDevices[i].common.icon,
-                "dataPointMembers": dataPoints,
+                id: enumDevices[i]._id,
+                name: enumDevices[i].common.name,
+                icon: enumDevices[i].common.icon,
+                dataPointMembers: dataPoints,
             };
             list.push(map);
         }
 
-
         return list;
     }
 
-    public async subscribeToDataPoints(dataPoints: { [x: string]: any; }, client: Client): Promise<void> {
+    public async subscribeToDataPoints(dataPoints: { [x: string]: any }, client: Client): Promise<void> {
         this.log.debug(JSON.stringify(dataPoints));
         for (const i in dataPoints) {
-            if(!(await this.foreignObjectExists(dataPoints[i]))) {
+            if (!(await this.foreignObjectExists(dataPoints[i]))) {
                 this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
                 continue;
             }
@@ -155,7 +176,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
             if (state) {
                 //this.log.info("sub to " + dataPoints[i]);
                 this.subscribeForeignStates(dataPoints[i]);
-                client.sendMSG(new StateChangedDataPack(dataPoints[i], state.val).toJSON(), true);
+                client.sendMSG(new StateChangedDataPack(dataPoints[i], state.val, state.ack).toJSON(), true);
             }
         }
     }
@@ -165,12 +186,9 @@ export class SamartHomeHandyBis extends utils.Adapter {
      */
     private onUnload(callback: () => void): void {
         try {
-            // Here you must clear all timeouts or intervals that may still be active
-            // clearTimeout(timeout1);
-            // clearTimeout(timeout2);
-            // ...
-            // clearInterval(interval1);
-
+            // Stop ws Server and Timeouts
+            this.server && this.server.stop();
+            this.server = undefined;
             callback();
         } catch (e) {
             callback();
@@ -195,15 +213,15 @@ export class SamartHomeHandyBis extends utils.Adapter {
     /**
      * Is called if a subscribed state changes
      */
-    private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
-        if (state) {
-            // The state was changed
-            this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-        } else {
-            // The state was deleted
-            this.log.info(`state ${id} deleted`);
-        }
-    }
+    //private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
+    //    if (state) {
+    //        // The state was changed
+    //        this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+    //    } else {
+    //        // The state was deleted
+    //        this.log.info(`state ${id} deleted`);
+    //    }
+    //}
 
     // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
     // /**
@@ -221,7 +239,6 @@ export class SamartHomeHandyBis extends utils.Adapter {
     // 		}
     // 	}
     // }
-
 }
 
 if (require.main !== module) {
