@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/history/history_bound.ts"],
+  "sourcesContent": ["export enum HistoryBound {\n    now = Date.now(),\n    end_of_month = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getMilliseconds(),\n    start_of_month = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getMilliseconds(),\n}\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,IAAK,gBAAL,CAAKA,kBAAL;AACH,EAAAA,4BAAA,SAAM,KAAK,IAAI,KAAf;AACA,EAAAA,4BAAA,kBAAe,IAAI,KAAK,IAAI,KAAK,EAAE,YAAY,GAAG,IAAI,KAAK,EAAE,SAAS,IAAI,GAAG,CAAC,EAAE,gBAAgB,KAAhG;AACA,EAAAA,4BAAA,oBAAiB,IAAI,KAAK,IAAI,KAAK,EAAE,YAAY,GAAG,IAAI,KAAK,EAAE,SAAS,GAAG,CAAC,EAAE,gBAAgB,KAA9F;AAHQ,SAAAA;AAAA,GAAA;",
+  "names": ["HistoryBound"]
+}
