@@ -9,7 +9,7 @@ import { Server } from "./server/server";
 import { Listener } from "./listener/listener";
 import { LoginManager } from "./login/loginmanager";
 import { Client } from "./server/client";
-import { StateChangedDataPack } from "./server/datapacks";
+import { AnswerSubscribeToDataPointsPack } from "./server/datapacks";
 import { TemplateManager } from "./template/template_manager";
 import { NotificationManager } from "./notification/notification_manager";
 
@@ -171,6 +171,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
 
     public async subscribeToDataPoints(dataPoints: { [x: string]: any }, client: Client): Promise<void> {
         this.log.debug(JSON.stringify(dataPoints));
+        const all_dp = [];
         for (const i in dataPoints) {
             let state = null;
             try {
@@ -195,11 +196,19 @@ export class SamartHomeHandyBis extends utils.Adapter {
                     this.valueDatapoints[dataPoints[i]].ack = state.ack;
                 }
                 //this.log.info("sub to " + dataPoints[i]);
+                const map = {
+                    objectID: dataPoints[i],
+                    value: state.val,
+                    ack: state.ack,
+                };
+                all_dp.push(map);
                 this.subscribeForeignStates(dataPoints[i]);
-                client.sendMSG(new StateChangedDataPack(dataPoints[i], state.val, state.ack).toJSON(), true);
             } else {
                 this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
             }
+        }
+        if (all_dp.length > 0) {
+            client.sendMSG(new AnswerSubscribeToDataPointsPack(all_dp).toJSON(), true);
         }
     }
 
