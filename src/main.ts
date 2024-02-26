@@ -25,6 +25,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     useCer: boolean = false;
     templateManager: TemplateManager;
     clientinfo: any = {};
+    valueDatapoints: any = {};
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -43,6 +44,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.on("unload", this.onUnload.bind(this));
         this.server = undefined;
         this.clientinfo = {};
+        this.valueDatapoints = {};
     }
 
     /**
@@ -172,12 +174,26 @@ export class SamartHomeHandyBis extends utils.Adapter {
         for (const i in dataPoints) {
             let state = null;
             try {
-                state = await this.getForeignStateAsync(dataPoints[i]);
+                if (this.valueDatapoints[dataPoints[i]] == null) {
+                    this.valueDatapoints[dataPoints[i]] = {};
+                    state = await this.getForeignStateAsync(dataPoints[i]);
+                    this.log.debug("Use getForeignStateAsync");
+                } else {
+                    this.log.debug("Use memory");
+                    state = {
+                        val: this.valueDatapoints[dataPoints[i]].val,
+                        ack: this.valueDatapoints[dataPoints[i]].ack,
+                    };
+                }
             } catch (e) {
                 this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
                 continue;
             }
             if (state) {
+                if (state.ts != null) {
+                    this.valueDatapoints[dataPoints[i]].val = state.val;
+                    this.valueDatapoints[dataPoints[i]].ack = state.ack;
+                }
                 //this.log.info("sub to " + dataPoints[i]);
                 this.subscribeForeignStates(dataPoints[i]);
                 client.sendMSG(new StateChangedDataPack(dataPoints[i], state.val, state.ack).toJSON(), true);
