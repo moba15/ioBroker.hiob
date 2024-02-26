@@ -24,6 +24,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     certPath: string = "";
     useCer: boolean = false;
     templateManager: TemplateManager;
+    clientinfo: any = {};
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -41,6 +42,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
         // this.on("message", this.onMessage.bind(this));
         this.on("unload", this.onUnload.bind(this));
         this.server = undefined;
+        this.clientinfo = {};
     }
 
     /**
