@@ -15,13 +15,13 @@ export class TemplateManager {
         _client: Client,
     ): Promise<void> {
         if (devices != null) {
-            await this.adapter.setStateAsync("settings." + name + ".devices", devices);
+            await this.adapter.setStateAsync("settings." + name + ".devices", devices, true);
         }
         if (screens != null) {
-            await this.adapter.setStateAsync("settings." + name + ".screens", screens);
+            await this.adapter.setStateAsync("settings." + name + ".screens", screens, true);
         }
         if (widgets != null) {
-            await this.adapter.setStateAsync("settings." + name + ".widgets", widgets);
+            await this.adapter.setStateAsync("settings." + name + ".widgets", widgets, true);
         }
     }
 
@@ -79,7 +79,7 @@ export class TemplateManager {
             common: {
                 name: templateSettings.name + " devices",
                 type: "string",
-                role: "indicator.json",
+                role: "json",
                 def: "{}",
                 read: true,
                 write: true,
@@ -92,7 +92,7 @@ export class TemplateManager {
             common: {
                 name: templateSettings.name + " widgets",
                 type: "string",
-                role: "indicator.json",
+                role: "json",
                 def: "{}",
                 read: true,
                 write: true,
@@ -105,7 +105,7 @@ export class TemplateManager {
             common: {
                 name: templateSettings.name + " screens",
                 type: "string",
-                role: "indicator.json",
+                role: "json",
                 def: "{}",
                 read: true,
                 write: true,
