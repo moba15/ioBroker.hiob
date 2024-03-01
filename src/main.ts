@@ -9,10 +9,16 @@ import { Server } from "./server/server";
 import { Listener } from "./listener/listener";
 import { LoginManager } from "./login/loginmanager";
 import { Client } from "./server/client";
-import { StateChangedDataPack } from "./server/datapacks";
+import { AnswerSubscribeToDataPointsPack } from "./server/datapacks";
 import { TemplateManager } from "./template/template_manager";
 import { NotificationManager } from "./notification/notification_manager";
-
+type DatapointState = {
+    val?: any,
+    ack?: boolean
+};
+type ClientInfo = {
+    firstload?: boolean
+};
 // Load your modules here, e.g.:
 // import * as fs from "fs";
 export class SamartHomeHandyBis extends utils.Adapter {
@@ -24,13 +30,14 @@ export class SamartHomeHandyBis extends utils.Adapter {
     certPath: string = "";
     useCer: boolean = false;
     templateManager: TemplateManager;
+    clientinfos: {[key: string]: ClientInfo} = {};
+    valueDatapoints: {[key: string]: DatapointState} = {};
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
             ...options,
             name: "hiob",
         });
-
         this.templateManager = new TemplateManager(this);
         this.listener = new Listener(this);
         new NotificationManager(this);
@@ -167,17 +174,44 @@ export class SamartHomeHandyBis extends utils.Adapter {
 
     public async subscribeToDataPoints(dataPoints: { [x: string]: any }, client: Client): Promise<void> {
         this.log.debug(JSON.stringify(dataPoints));
+        const all_dp = [];
         for (const i in dataPoints) {
-            if (!(await this.foreignObjectExists(dataPoints[i]))) {
+            let state = null;
+            try {
+                if (this.valueDatapoints[dataPoints[i]] == null) {
+                    this.valueDatapoints[dataPoints[i]] = {};
+                    state = await this.getForeignStateAsync(dataPoints[i]);
+                    this.log.debug("Use getForeignStateAsync");
+                } else {
+                    this.log.debug("Use memory");
+                    state = {
+                        val: this.valueDatapoints[dataPoints[i]].val,
+                        ack: this.valueDatapoints[dataPoints[i]].ack,
+                    };
+                }
+            } catch (e) {
                 this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
                 continue;
             }
-            const state = await this.getForeignStateAsync(dataPoints[i]);
             if (state) {
+                if (state.ts != null) {
+                    this.valueDatapoints[dataPoints[i]].val = state.val;
+                    this.valueDatapoints[dataPoints[i]].ack = state.ack;
+                }
                 //this.log.info("sub to " + dataPoints[i]);
+                const map = {
+                    objectID: dataPoints[i],
+                    value: state.val,
+                    ack: state.ack,
+                };
+                all_dp.push(map);
                 this.subscribeForeignStates(dataPoints[i]);
-                client.sendMSG(new StateChangedDataPack(dataPoints[i], state.val, state.ack).toJSON(), true);
+            } else {
+                this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
             }
+        }
+        if (all_dp.length > 0) {
+            client.sendMSG(new AnswerSubscribeToDataPointsPack(all_dp).toJSON(), true);
         }
     }
 

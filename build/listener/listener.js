@@ -44,6 +44,11 @@ class Listener extends import_events.default {
     var _a;
     if (state != null) {
       if (!id.startsWith("hiob.")) {
+        if (this.adapter.valueDatapoints[id] == null) {
+          this.adapter.valueDatapoints[id] = {};
+        }
+        this.adapter.valueDatapoints[id].val = state.val;
+        this.adapter.valueDatapoints[id].ack = state.ack;
         (_a = this.adapter.server) == null ? void 0 : _a.broadcastMsg(new import_datapacks.StateChangedDataPack(id, state.val, state.ack).toJSON(), false);
       }
       this.emit("stateChanged" /* StateChange */, new StateChangeEvent(id, state.val, state.ack));

@@ -28,13 +28,13 @@ class TemplateManager {
   }
   async uploadTemplateSetting(name, devices, screens, widgets, _client) {
     if (devices != null) {
-      await this.adapter.setStateAsync("settings." + name + ".devices", devices);
+      await this.adapter.setStateAsync("settings." + name + ".devices", devices, true);
     }
     if (screens != null) {
-      await this.adapter.setStateAsync("settings." + name + ".screens", screens);
+      await this.adapter.setStateAsync("settings." + name + ".screens", screens, true);
     }
     if (widgets != null) {
-      await this.adapter.setStateAsync("settings." + name + ".widgets", widgets);
+      await this.adapter.setStateAsync("settings." + name + ".widgets", widgets, true);
     }
   }
   async getTemplateSettings(name) {
@@ -84,7 +84,7 @@ class TemplateManager {
       common: {
         name: templateSettings.name + " devices",
         type: "string",
-        role: "indicator.json",
+        role: "json",
         def: "{}",
         read: true,
         write: true
@@ -96,7 +96,7 @@ class TemplateManager {
       common: {
         name: templateSettings.name + " widgets",
         type: "string",
-        role: "indicator.json",
+        role: "json",
         def: "{}",
         read: true,
         write: true
@@ -108,7 +108,7 @@ class TemplateManager {
       common: {
         name: templateSettings.name + " screens",
         type: "string",
-        role: "indicator.json",
+        role: "json",
         def: "{}",
         read: true,
         write: true

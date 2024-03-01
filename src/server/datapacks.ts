@@ -320,3 +320,19 @@ export class NotificationPack extends DataPack {
         return map;
     }
 }
+
+export class AnswerSubscribeToDataPointsPack extends DataPack {
+    dataValues;
+    constructor(dataValues: any) {
+        super("answerSubscribeToDataPoints");
+        this.dataValues = dataValues;
+    }
+
+    toJSON(): any {
+        const map = {
+            type: this.type,
+            value: this.dataValues,
+        };
+        return map;
+    }
+}
