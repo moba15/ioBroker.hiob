@@ -54,7 +54,7 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS
+### **WORK IN PROGRESS**
 - (Lucky-ESA) Preperation of lastest request
 - (moba15) fixed some smaller issues
 
