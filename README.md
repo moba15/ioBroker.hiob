@@ -54,6 +54,10 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS
+- (Lucky-ESA) Preperation of lastest request
+- (moba15) fixed some smaller issues
+
 ### 0.0.60 (2024-02-25)
 
 -   (Lucky-ESA) Added simple AES encryption
