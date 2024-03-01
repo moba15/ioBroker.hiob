@@ -163,18 +163,18 @@ export class LoginManager {
         let deviceIDRep = loginRequestData.deviceID.replace(".", "-");
         while (deviceIDRep.includes(".")) {
             deviceIDRep = deviceIDRep.replace(".", "-");
-        }
-        client.id = deviceIDRep;
+        }client.id = deviceIDRep;
         if (!this.adapter.clientinfos[deviceIDRep] || !this.adapter.clientinfos[deviceIDRep].firstload) {
-            await this.createObjects(
-                client,
-                deviceIDRep,
-                loginRequestData.deviceName,
-                loginRequestData.key,
-                loginRequestData.version,
-            );
             this.adapter.clientinfos[deviceIDRep] = {};
         }
+        //!Quick fix
+        await this.createObjects(
+            client,
+            deviceIDRep,
+            loginRequestData.deviceName,
+            loginRequestData.key,
+            loginRequestData.version,
+        );
         this.adapter.clientinfos[deviceIDRep].firstload = true;
         this.adapter.subscribeStatesAsync("devices." + deviceIDRep + ".approved");
         this.adapter.setStateAsync("devices." + deviceIDRep + ".connected", true, true);
