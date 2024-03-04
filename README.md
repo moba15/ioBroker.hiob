@@ -54,6 +54,8 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (moba15) fixed bug, where broadcasted messages where sent without type
 ### 0.0.61 (2024-03-04)
  - (moba15) fixed secure connection bug (#20)
 
