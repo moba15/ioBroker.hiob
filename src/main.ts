@@ -13,11 +13,11 @@ import { AnswerSubscribeToDataPointsPack } from "./server/datapacks";
 import { TemplateManager } from "./template/template_manager";
 import { NotificationManager } from "./notification/notification_manager";
 type DatapointState = {
-    val?: any,
-    ack?: boolean
+    val?: any;
+    ack?: boolean;
 };
 type ClientInfo = {
-    firstload?: boolean
+    firstload?: boolean;
 };
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -30,8 +30,8 @@ export class SamartHomeHandyBis extends utils.Adapter {
     certPath: string = "";
     useCer: boolean = false;
     templateManager: TemplateManager;
-    clientinfos: {[key: string]: ClientInfo} = {};
-    valueDatapoints: {[key: string]: DatapointState} = {};
+    clientinfos: { [key: string]: ClientInfo } = {};
+    valueDatapoints: { [key: string]: DatapointState } = {};
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
