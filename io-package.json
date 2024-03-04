@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.61",
+    "version": "0.0.62",
     "news": {
+      "0.0.62": {
+        "en": "fixed bug, where broadcasted messages where sent without type",
+        "de": "fehler behoben, wo gesendete nachrichten ohne typ gesendet",
+        "ru": "фиксированная ошибка, где транслируются сообщения, куда отправляют без типа",
+        "pt": "bug fixo, onde mensagens transmitidas onde enviado sem tipo",
+        "nl": "vaste bug, waar uitgezonden berichten waar verzonden zonder type",
+        "fr": "bug fixe, où les messages diffusés sont envoyés sans type",
+        "it": "bug fisso, dove messaggi trasmessi dove inviati senza tipo",
+        "es": "bug fijo, donde se transmiten mensajes donde se envía sin tipo",
+        "pl": "stały błąd, gdzie transmitowane wiadomości, gdy wysyłane bez typu",
+        "uk": "виправлена помилка, де транслювалися повідомлення, де відправлено без типу",
+        "zh-cn": "固定错误, 无类型发送的已广播信件"
+      },
       "0.0.61": {
         "en": "fixed secure connection bug (#20)",
         "de": "fixed secure connection bug (#20)",
