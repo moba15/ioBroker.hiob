@@ -54,8 +54,9 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.61 (2024-03-04)
  - (moba15) fixed secure connection bug (#20)
+
 ### 0.0.61-beta.0 (2024-03-01)
 - (Lucky-ESA) Preperation of lastest request
 - (moba15) fixed some smaller issues

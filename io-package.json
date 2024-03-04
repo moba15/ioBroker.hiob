@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.61-beta.0",
+    "version": "0.0.61",
     "news": {
+      "0.0.61": {
+        "en": "fixed secure connection bug (#20)",
+        "de": "fixed secure connection bug (#20)",
+        "ru": "фиксированное безопасное соединение (#20)",
+        "pt": "bug de conexão segura fixa (#20)",
+        "nl": "vaste beveiligde verbinding fout (#20)",
+        "fr": "bug de connexion sécurisé corrigé (#20)",
+        "it": "bug di connessione sicuro fisso (#20)",
+        "es": "error de conexión seguro fijo (#20)",
+        "pl": "ustawiony błąd bezpiecznego połączenia (# 20)",
+        "uk": "виправлено помилку безпечного з'єднання (#20)",
+        "zh-cn": "固定的安全连接错误 (# 20)"
+      },
       "0.0.61-beta.0": {
         "en": "Preperation of lastest request\nfixed some smaller issues",
         "de": "Vorbereitung der letzten Anfrage\neinige kleinere probleme behoben",
