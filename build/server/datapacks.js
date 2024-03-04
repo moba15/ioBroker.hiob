@@ -18,6 +18,7 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var datapacks_exports = {};
 __export(datapacks_exports, {
+  AnswerSubscribeToDataPointsPack: () => AnswerSubscribeToDataPointsPack,
   DataPack: () => DataPack,
   EnumUpdatePack: () => EnumUpdatePack,
   EnumUpdateRequestPack: () => EnumUpdateRequestPack,
@@ -293,8 +294,22 @@ class NotificationPack extends DataPack {
     return map;
   }
 }
+class AnswerSubscribeToDataPointsPack extends DataPack {
+  constructor(dataValues) {
+    super("answerSubscribeToDataPoints");
+    this.dataValues = dataValues;
+  }
+  toJSON() {
+    const map = {
+      type: this.type,
+      value: this.dataValues
+    };
+    return map;
+  }
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  AnswerSubscribeToDataPointsPack,
   DataPack,
   EnumUpdatePack,
   EnumUpdateRequestPack,

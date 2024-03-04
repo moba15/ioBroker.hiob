@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.60",
+    "version": "0.0.61-beta.0",
     "news": {
+      "0.0.61-beta.0": {
+        "en": "Preperation of lastest request\nfixed some smaller issues",
+        "de": "Vorbereitung der letzten Anfrage\neinige kleinere probleme behoben",
+        "ru": "Превосходство последнего запроса\nисправить некоторые небольшие проблемы",
+        "pt": "Preperação do último pedido\ncorrigiu alguns problemas menores",
+        "nl": "Voorbereiding van laatste verzoek\nenkele kleinere problemen opgelost",
+        "fr": "Préperation de la dernière demande\ncorrigé quelques petits problèmes",
+        "it": "Preperazione dell'ultima richiesta\nrisolto alcuni problemi più piccoli",
+        "es": "Preperación de la solicitud láser\narreglar algunas cuestiones más pequeñas",
+        "pl": "Preperacja ostatniego wniosku\nnaprawiono kilka mniejszych problemów",
+        "uk": "Переробка останнього запиту\nвиправлено деякі менші проблеми",
+        "zh-cn": "最后请求的先验\n确定一些较小的问题"
+      },
       "0.0.60": {
         "en": "Added simple AES encryption\nPreperation for latest request\nFixed login errors if AES encryption is disabled",
         "de": "Einfache AES-Verschlüsselung\nVorbereitung auf neueste Anfrage\nFehler behoben, wenn AES-Verschlüsselung deaktiviert ist",

@@ -163,8 +163,11 @@ export class LoginManager {
         let deviceIDRep = loginRequestData.deviceID.replace(".", "-");
         while (deviceIDRep.includes(".")) {
             deviceIDRep = deviceIDRep.replace(".", "-");
+        }client.id = deviceIDRep;
+        if (!this.adapter.clientinfos[deviceIDRep] || !this.adapter.clientinfos[deviceIDRep].firstload) {
+            this.adapter.clientinfos[deviceIDRep] = {};
         }
-        client.id = deviceIDRep;
+        //!Quick fix
         await this.createObjects(
             client,
             deviceIDRep,
@@ -172,6 +175,7 @@ export class LoginManager {
             loginRequestData.key,
             loginRequestData.version,
         );
+        this.adapter.clientinfos[deviceIDRep].firstload = true;
         this.adapter.subscribeStatesAsync("devices." + deviceIDRep + ".approved");
         this.adapter.setStateAsync("devices." + deviceIDRep + ".connected", true, true);
         client.setID(deviceIDRep);
@@ -179,11 +183,11 @@ export class LoginManager {
             this.loginDeclined(client);
             return false;
         }
-        this.pendingClients = this.pendingClients.filter((cl, i) => cl != client);
+        this.pendingClients = this.pendingClients.filter((cl, ) => cl != client);
         await this.setAesStatus(deviceIDRep, client);
         client.onApprove();
         const version = this.adapter.version != null ? this.adapter.version.toString() : "";
-        client.sendMSG(new LoginApprovedPacket(version).toJSON(), false)
+        client.sendMSG(new LoginApprovedPacket(version).toJSON(), false);
         return true;
     }
 

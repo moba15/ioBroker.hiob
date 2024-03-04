@@ -44,6 +44,8 @@ class SamartHomeHandyBis extends utils.Adapter {
     this.keyPath = "";
     this.certPath = "";
     this.useCer = false;
+    this.clientinfos = {};
+    this.valueDatapoints = {};
     this.templateManager = new import_template_manager.TemplateManager(this);
     this.listener = new import_listener.Listener(this);
     new import_notification_manager.NotificationManager(this);
@@ -141,16 +143,43 @@ class SamartHomeHandyBis extends utils.Adapter {
   }
   async subscribeToDataPoints(dataPoints, client) {
     this.log.debug(JSON.stringify(dataPoints));
+    const all_dp = [];
     for (const i in dataPoints) {
-      if (!await this.foreignObjectExists(dataPoints[i])) {
+      let state = null;
+      try {
+        if (this.valueDatapoints[dataPoints[i]] == null) {
+          this.valueDatapoints[dataPoints[i]] = {};
+          state = await this.getForeignStateAsync(dataPoints[i]);
+          this.log.debug("Use getForeignStateAsync");
+        } else {
+          this.log.debug("Use memory");
+          state = {
+            val: this.valueDatapoints[dataPoints[i]].val,
+            ack: this.valueDatapoints[dataPoints[i]].ack
+          };
+        }
+      } catch (e) {
         this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
         continue;
       }
-      const state = await this.getForeignStateAsync(dataPoints[i]);
       if (state) {
+        if (state.ts != null) {
+          this.valueDatapoints[dataPoints[i]].val = state.val;
+          this.valueDatapoints[dataPoints[i]].ack = state.ack;
+        }
+        const map = {
+          objectID: dataPoints[i],
+          value: state.val,
+          ack: state.ack
+        };
+        all_dp.push(map);
         this.subscribeForeignStates(dataPoints[i]);
-        client.sendMSG(new import_datapacks.StateChangedDataPack(dataPoints[i], state.val, state.ack).toJSON(), true);
+      } else {
+        this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
       }
+    }
+    if (all_dp.length > 0) {
+      client.sendMSG(new import_datapacks.AnswerSubscribeToDataPointsPack(all_dp).toJSON(), true);
     }
   }
   onUnload(callback) {

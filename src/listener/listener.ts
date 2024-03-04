@@ -19,6 +19,11 @@ export class Listener extends EventEmitter {
             //this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
             //Check if notification
             if (!id.startsWith("hiob.")) {
+                if (this.adapter.valueDatapoints[id] == null) {
+                    this.adapter.valueDatapoints[id] = {};
+                }
+                this.adapter.valueDatapoints[id].val = state.val;
+                this.adapter.valueDatapoints[id].ack = state.ack;
                 this.adapter.server?.broadcastMsg(new StateChangedDataPack(id, state.val, state.ack).toJSON(), false);
             }
             this.emit(Events.StateChange, new StateChangeEvent(id, state.val, state.ack));

@@ -50,7 +50,7 @@ class Server {
         key: fs.readFileSync(this.keyPath)
       });
       this.adapter.log.info("[Server] Starting secure server...");
-      this.socket = new ws.Server({ server, port: this.port });
+      this.socket = new ws.Server({ server });
     } else {
       this.adapter.log.info("[Server] Starting server...");
       this.socket = new ws.Server({ port: this.port });
