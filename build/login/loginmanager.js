@@ -192,7 +192,7 @@ class LoginManager {
       this.loginDeclined(client);
       return false;
     }
-    this.pendingClients = this.pendingClients.filter((cl, i) => cl != client);
+    this.pendingClients = this.pendingClients.filter((cl) => cl != client);
     await this.setAesStatus(deviceIDRep, client);
     client.onApprove();
     const version = this.adapter.version != null ? this.adapter.version.toString() : "";
