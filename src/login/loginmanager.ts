@@ -276,6 +276,23 @@ export class LoginManager {
         key: string,
         version: string,
     ): Promise<void> {
+        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}`, {
+            type: "channel",
+            common: {
+                name: deviceName,
+                desc: "Created by Adapter",
+            },
+            native: {},
+        });
+        // Delete setObjectAsync after first latest release
+        await this.adapter.setObjectAsync(`devices.${deviceIDRep}`, {
+            type: "channel",
+            common: {
+                name: deviceName,
+                desc: "Created by Adapter",
+            },
+            native: {},
+        });
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.connected`, {
             type: "state",
             common: {
@@ -327,14 +344,6 @@ export class LoginManager {
             native: {},
         });
         await this.adapter.setStateAsync(`devices.${deviceIDRep}.app_version`, version, true);
-        await this.adapter.setObjectAsync(`devices.${deviceIDRep}`, {
-            type: "channel",
-            common: {
-                name: deviceName,
-                desc: "Created by Adapter",
-            },
-            native: {},
-        });
         await this.adapter.setObjectAsync(`devices.${deviceIDRep}.name`, {
             type: "state",
             common: {
