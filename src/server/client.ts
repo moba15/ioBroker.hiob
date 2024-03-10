@@ -52,7 +52,11 @@ export class Client {
             this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
             return false;
         }
-        this.adapter.log.debug("Send MSG( " + JSON.stringify(msg) + ") to Client(" + this.toString() + ")");
+        if (msg["type"] === "loginKey") {
+            this.adapter.log.debug("Send MSG( LoginKey ) to Client(" + this.toString() + ")");
+        } else {
+            this.adapter.log.debug("Send MSG( " + JSON.stringify(msg) + ") to Client(" + this.toString() + ")");
+        }
         const send = {
             type: msg["type"],
             content: "",
@@ -62,14 +66,15 @@ export class Client {
             Object.keys(msg).length > 1 &&
             (await this.adapter.getStateAsync("devices." + this.id + ".aesKey_active"))?.val
         ) {
-            this.adapter.log.debug(`ENCRYPT KEY: ${this.aesKey}`);
             const aes = `${this.aesKey}${msg["type"]}`;
             send["content"] = CryptoJS.AES.encrypt(JSON.stringify(msg), aes).toString();
         } else {
             send["content"] = msg;
         }
         this.socket.send(JSON.stringify(send).toString());
-        this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
+        if (msg["type"] != "loginKey") {
+            this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
+        }
         return false;
     }
 
@@ -86,7 +91,6 @@ export class Client {
             const map = JSON.parse(data);
             if (map && map["content"] != null && typeof map["content"] === "string") {
                 if (this.aesKey != "" || map["type"] === "requestLogin") {
-                    this.adapter.log.debug(`KEY: ${this.aesKey}`);
                     let aes = "";
                     if (map["type"] === "requestLogin") {
                         aes = `tH8Lm-${map["type"]}`; // Dummy Key
@@ -96,7 +100,6 @@ export class Client {
                     try {
                         const bytes = CryptoJS.AES.decrypt(map["content"], aes);
                         map["content"] = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)) ?? {};
-                        this.adapter.log.debug("Client(" + this.toString() + ") decrypt: " + JSON.stringify(map));
                     } catch (error) {
                         this.onWrongAesKey();
                         this.adapter.log.warn(`Wrong AES Key - ${error}`);
@@ -111,7 +114,11 @@ export class Client {
                 }
             }
             const content = map["content"] ?? {};
-            this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + " type: " + map["type"]);
+            if (map["type"] === "requestLogin") {
+                this.adapter.log.debug("Client(" + this.toString() + ") send requestLogin");
+            } else {
+                this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + " type: " + map["type"]);
+            }
             switch (map["type"]) {
                 case "iobStateChangeRequest":
                     if (this.approved)

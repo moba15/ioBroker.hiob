@@ -53,7 +53,11 @@ class Client {
       this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
       return false;
     }
-    this.adapter.log.debug("Send MSG( " + JSON.stringify(msg) + ") to Client(" + this.toString() + ")");
+    if (msg["type"] === "loginKey") {
+      this.adapter.log.debug("Send MSG( LoginKey ) to Client(" + this.toString() + ")");
+    } else {
+      this.adapter.log.debug("Send MSG( " + JSON.stringify(msg) + ") to Client(" + this.toString() + ")");
+    }
     const send = {
       type: msg["type"],
       content: ""
@@ -66,7 +70,9 @@ class Client {
       send["content"] = msg;
     }
     this.socket.send(JSON.stringify(send).toString());
-    this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
+    if (msg["type"] != "loginKey") {
+      this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
+    }
     return false;
   }
   setAESKey(aesKey) {
@@ -81,7 +87,6 @@ class Client {
       const map = JSON.parse(data);
       if (map && map["content"] != null && typeof map["content"] === "string") {
         if (this.aesKey != "" || map["type"] === "requestLogin") {
-          this.adapter.log.debug(`KEY: ${this.aesKey}`);
           let aes = "";
           if (map["type"] === "requestLogin") {
             aes = `tH8Lm-${map["type"]}`;
@@ -91,7 +96,6 @@ class Client {
           try {
             const bytes = CryptoJS.AES.decrypt(map["content"], aes);
             map["content"] = (_a = JSON.parse(bytes.toString(CryptoJS.enc.Utf8))) != null ? _a : {};
-            this.adapter.log.debug("Client(" + this.toString() + ") decrypt: " + JSON.stringify(map));
           } catch (error) {
             this.onWrongAesKey();
             this.adapter.log.warn(`Wrong AES Key - ${error}`);
@@ -106,7 +110,11 @@ class Client {
         }
       }
       const content = (_b = map["content"]) != null ? _b : {};
-      this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + " type: " + map["type"]);
+      if (map["type"] === "requestLogin") {
+        this.adapter.log.debug("Client(" + this.toString() + ") send requestLogin");
+      } else {
+        this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + " type: " + map["type"]);
+      }
       switch (map["type"]) {
         case "iobStateChangeRequest":
           if (this.approved)
