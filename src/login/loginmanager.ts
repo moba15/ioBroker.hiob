@@ -1,3 +1,4 @@
+import { AnyARecord } from "dns";
 import { Events, StateChangeEvent } from "../listener/listener";
 import { SamartHomeHandyBis } from "../main";
 import { Client } from "../server/client";
@@ -88,22 +89,27 @@ export class LoginManager {
                     this.adapter.setStateAsync(event.objectID, {ack: true});
                 }
             } else if (splited[2] == "approveNextLogins") {
-                if (event.value) {
-                    if (this.approveLoginsTimeout) {
-                        this.adapter.clearTimeout(this.approveLoginsTimeout);
-                        this.approveLoginsTimeout = undefined;
-                    }
-                    this.approveLogins = true;
-                    this.approveLoginsTimeout = this.adapter.setTimeout(() => {
-                        this.approveLogins = false;
-                        this.approveLoginsTimeout = undefined;
-                    this.adapter.setStateAsync("approveNextLogins", false, true);
-                    }, 1000 * 60);
-                } else {
-                    this.approveLogins = false;
-                    this.adapter.setStateAsync("approveNextLogins", {ack: true});
-                }
+                this.setApproveNextLogins(event.value);
             }
+        }
+    }
+
+    private setApproveNextLogins(value: boolean): void {
+        if (value) {
+            if (this.approveLoginsTimeout) {
+                this.adapter.clearTimeout(this.approveLoginsTimeout);
+                this.approveLoginsTimeout = undefined;
+            }
+            this.approveLogins = true;
+            // Start timer without set ack flag true
+            this.approveLoginsTimeout = this.adapter.setTimeout(() => {
+                this.approveLogins = false;
+                this.approveLoginsTimeout = undefined;
+            this.adapter.setStateAsync("approveNextLogins", false, true);
+            }, 1000 * 60);
+        } else {
+            this.approveLogins = false;
+            this.adapter.setStateAsync("approveNextLogins", {ack: true});
         }
     }
 

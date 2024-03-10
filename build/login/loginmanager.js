@@ -102,22 +102,25 @@ class LoginManager {
           this.adapter.setStateAsync(event.objectID, { ack: true });
         }
       } else if (splited[2] == "approveNextLogins") {
-        if (event.value) {
-          if (this.approveLoginsTimeout) {
-            this.adapter.clearTimeout(this.approveLoginsTimeout);
-            this.approveLoginsTimeout = void 0;
-          }
-          this.approveLogins = true;
-          this.approveLoginsTimeout = this.adapter.setTimeout(() => {
-            this.approveLogins = false;
-            this.approveLoginsTimeout = void 0;
-            this.adapter.setStateAsync("approveNextLogins", false, true);
-          }, 1e3 * 60);
-        } else {
-          this.approveLogins = false;
-          this.adapter.setStateAsync("approveNextLogins", { ack: true });
-        }
+        this.setApproveNextLogins(event.value);
       }
+    }
+  }
+  setApproveNextLogins(value) {
+    if (value) {
+      if (this.approveLoginsTimeout) {
+        this.adapter.clearTimeout(this.approveLoginsTimeout);
+        this.approveLoginsTimeout = void 0;
+      }
+      this.approveLogins = true;
+      this.approveLoginsTimeout = this.adapter.setTimeout(() => {
+        this.approveLogins = false;
+        this.approveLoginsTimeout = void 0;
+        this.adapter.setStateAsync("approveNextLogins", false, true);
+      }, 1e3 * 60);
+    } else {
+      this.approveLogins = false;
+      this.adapter.setStateAsync("approveNextLogins", { ack: true });
     }
   }
   async viewAesKey(deviceID) {
