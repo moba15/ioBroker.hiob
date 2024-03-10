@@ -200,7 +200,7 @@ class SamartHomeHandyBis extends utils.Adapter {
   }
   onUnload(callback) {
     try {
-      this.server && this.server.stop();
+      this.loginManager.stop();
       this.server = void 0;
       callback();
     } catch (e) {

@@ -44,9 +44,6 @@ class Client {
     socket.on("close", this.onEnd.bind(this));
     socket.onerror = this.onError.bind(this);
   }
-  stop() {
-    this.stop;
-  }
   close() {
     this.socket.pause();
   }

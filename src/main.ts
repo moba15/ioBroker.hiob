@@ -238,7 +238,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     private onUnload(callback: () => void): void {
         try {
             // Stop ws Server and Timeouts
-            this.server && this.server.stop();
+            this.loginManager.stop();
             this.server = undefined;
             callback();
         } catch (e) {

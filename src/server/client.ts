@@ -43,10 +43,6 @@ export class Client {
         socket.onerror = this.onError.bind(this);
     }
 
-    stop(): void {
-        this.stop;
-    }
-
     close(): void {
         this.socket.pause();
     }
