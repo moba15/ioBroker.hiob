@@ -98,6 +98,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
         });
         await this.setStateAsync("approveNextLogins", false, true);
         this.subscribeStates("approveNextLogins");
+        this.check_aes_key();
         this.loadConfigs();
         this.initServer();
     }
@@ -107,6 +108,22 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.certPath = this.config.certPath;
         this.useCer = this.config.useCert;
         this.keyPath = this.config.keyPath;
+    }
+
+    private async check_aes_key(): Promise<void> {
+        const channels = await this.getChannelsAsync();
+        for (const element of channels) {
+            const id = `${this.namespace}.devices`
+            if (element["_id"].startsWith(id)) {
+                const state = await this.getStateAsync(`${element["_id"]}.aesKey`);
+                if (state != null && state.val != null) {
+                    if (state.val.toString().length === 6) {
+                        const shaAes = this.encrypt(state.val.toString());
+                        await this.setStateAsync(`${element["_id"]}.aesKey`, shaAes, true);
+                    }
+                }
+            }
+        }
     }
 
     private initServer(): void {
