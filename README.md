@@ -34,6 +34,7 @@
 -   Samsung Android Phones
 -   Google Pixel Android Phones
 -   Sony Pixel Android Phones
+-   Xiaomi Node Android Phones
 
 ## APP Code
 
