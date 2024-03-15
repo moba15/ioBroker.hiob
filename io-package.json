@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.63",
+    "version": "0.0.64",
     "news": {
+      "0.0.64": {
+        "en": "changed icon\nfixed code linter problems",
+        "de": "geändertes symbol\nfestcode linter probleme",
+        "ru": "измененная икона\nпроблемы linter кода",
+        "pt": "ícone alterado\nproblemas de forro de código fixo",
+        "nl": "veranderd pictogram\nvaste code linter problemen",
+        "fr": "icône modifiée\nproblèmes de code fixe linter",
+        "it": "icona modificata\nproblemi di codice fisso",
+        "es": "icono cambiado\ncódigo fijo problemas de interfono",
+        "pl": "zmieniona ikona\nstałe problemy z linterem kodowym",
+        "uk": "змінена ікона\nвиправлений код linter проблеми",
+        "zh-cn": "已更改图标\n固定代码插件问题"
+      },
       "0.0.63": {
         "en": "changed icon\nfixed code linter problems",
         "de": "geändertes symbol\nfestcode linter probleme",
@@ -80,19 +93,6 @@
         "pl": "Stała awaria adaptera, jeśli punkt danych nie istnieje\nNaprawiono pewne błędy logowania\n",
         "uk": "Виправлено помилку адаптера, якщо точка даних не існує\nВиправлено помилки входу\n",
         "zh-cn": "如果数据点不存在, 固定适配器崩溃\n修正一些登录错误\n"
-      },
-      "0.0.54": {
-        "en": "Added secure login\nAdded secure connetion\nAutomatic acceptance of incoming connections for 60 seconds\n",
-        "de": "Zusätzlicher sicherer Login\nHinzugefügt sichere connetion\nAutomatische Akzeptanz von eingehenden Verbindungen für 60 Sekunden\n",
-        "ru": "Добавить безопасный логин\nДобавлено безопасное соединение\nАвтоматическое принятие входящих соединений в течение 60 секунд\n",
-        "pt": "Adicionado login seguro\nAdicionado connetion seguro\nAceitação automática de conexões recebidas por 60 segundos\n",
-        "nl": "Veilig aanmelden toegevoegd\nToegevoegd beveiligde connetion\nAutomatische aanvaarding van inkomende verbindingen gedurende 60 seconden\n",
-        "fr": "Ajout d'une connexion sécurisée\nAjout d'une connexion sécurisée\nAcceptation automatique des connexions entrantes pendant 60 secondes\n",
-        "it": "Aggiunto il login sicuro\nAggiunto sicuro connetion\nAccettazione automatica delle connessioni in entrata per 60 secondi\n",
-        "es": "Acceso seguro\nConneción segura\nAceptación automática de las conexiones entrantes durante 60 segundos\n",
-        "pl": "Dodano bezpieczne logowanie\nDodano bezpieczne połączenie\nAutomatyczna akceptacja połączeń przychodzących przez 60 sekund\n",
-        "uk": "Додати безпечний логін\nДодано безпечне з'єднання\nАвтоматичне прийняття вхідних з'єднань протягом 60 секунд\n",
-        "zh-cn": "添加安全登录\n添加安全连接\n自动接收60秒的连接\n"
       }
     },
     "titleLang": {
