@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.62",
+    "version": "0.0.63",
     "news": {
+      "0.0.63": {
+        "en": "changed icon",
+        "de": "geändertes symbol",
+        "ru": "измененная икона",
+        "pt": "ícone alterado",
+        "nl": "veranderd pictogram",
+        "fr": "icône modifiée",
+        "it": "icona modificata",
+        "es": "icono cambiado",
+        "pl": "zmieniona ikona",
+        "uk": "змінена ікона",
+        "zh-cn": "已更改图标"
+      },
       "0.0.62": {
         "en": "fixed bug, where broadcasted messages where sent without type",
         "de": "fehler behoben, wo gesendete nachrichten ohne typ gesendet",
@@ -80,19 +93,6 @@
         "pl": "Dodano bezpieczne logowanie\nDodano bezpieczne połączenie\nAutomatyczna akceptacja połączeń przychodzących przez 60 sekund\n",
         "uk": "Додати безпечний логін\nДодано безпечне з'єднання\nАвтоматичне прийняття вхідних з'єднань протягом 60 секунд\n",
         "zh-cn": "添加安全登录\n添加安全连接\n自动接收60秒的连接\n"
-      },
-      "0.0.1": {
-        "en": "initial release",
-        "de": "erstausstrahlung",
-        "ru": "первоначальный выпуск",
-        "pt": "lançamento inicial",
-        "nl": "eerste release",
-        "fr": "libération initiale",
-        "it": "rilascio iniziale",
-        "es": "liberación inicial",
-        "pl": "początkowe zwolnienie",
-        "uk": "початковий реліз",
-        "zh-cn": "初步释放"
       }
     },
     "titleLang": {

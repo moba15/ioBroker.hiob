@@ -58,8 +58,9 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.0.63 (2024-03-15)
 - (moba15) changed icon
+
 ### 0.0.62 (2024-03-04)
 - (moba15) fixed bug, where broadcasted messages where sent without type
 
