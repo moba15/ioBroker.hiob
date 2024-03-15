@@ -1,21 +1,8 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.63",
+    "version": "0.0.62",
     "news": {
-      "0.0.63": {
-        "en": "changed icon",
-        "de": "geändertes symbol",
-        "ru": "измененная икона",
-        "pt": "ícone alterado",
-        "nl": "veranderd pictogram",
-        "fr": "icône modifiée",
-        "it": "icona modificata",
-        "es": "icono cambiado",
-        "pl": "zmieniona ikona",
-        "uk": "змінена ікона",
-        "zh-cn": "已更改图标"
-      },
       "0.0.62": {
         "en": "fixed bug, where broadcasted messages where sent without type",
         "de": "fehler behoben, wo gesendete nachrichten ohne typ gesendet",

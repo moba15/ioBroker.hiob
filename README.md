@@ -58,8 +58,9 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 0.0.63 (2024-03-15)
+### **WORK IN PROGRESS** 
 - (moba15) changed icon
+- fixed code linter problems
 
 ### 0.0.62 (2024-03-04)
 - (moba15) fixed bug, where broadcasted messages where sent without type
@@ -85,7 +86,7 @@
 ### 0.0.54 (2023-12-31)
 
 -   (moba15) Added secure login
--   (moba15) Added secure connetion
+-   (moba15) Added secure connection
 -   (moba15) Automatic acceptance of incoming connections for 60 seconds
 
 ### 0.0.1 (2023-03-26)
