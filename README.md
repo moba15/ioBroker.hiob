@@ -58,10 +58,9 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.0.65 (2024-03-15)
  - (moba15) fixed linter
- 
+
 ### 0.0.64 (2024-03-15) 
 - (moba15) changed icon
 - fixed code linter problems

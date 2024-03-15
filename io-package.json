@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.64",
+    "version": "0.0.65",
     "news": {
+      "0.0.65": {
+        "en": "fixed linter",
+        "de": "fester linter",
+        "ru": "фиксированный linter",
+        "pt": "forro fixo",
+        "nl": "vaste linter",
+        "fr": "linter fixe",
+        "it": "interessi fissi",
+        "es": "invierno fijo",
+        "pl": "łącznik stały",
+        "uk": "фіксований linter",
+        "zh-cn": "固定线条"
+      },
       "0.0.64": {
         "en": "changed icon\nfixed code linter problems",
         "de": "geändertes symbol\nfestcode linter probleme",
@@ -80,19 +93,6 @@
         "pl": "Dodano proste szyfrowanie AES\nPreperacja do ostatniego wniosku\nNaprawiono błędy logowania w przypadku wyłączenia szyfrowania AES",
         "uk": "Додано простий шифрування AES\nПопереднє замовлення для останнього запиту\nВиправлені помилки в логіні, якщо шифрування AES вимкнено",
         "zh-cn": "添加简单的 AES 加密\n最新请求的预览\n如果禁用 AES 加密, 则固定登录错误"
-      },
-      "0.0.55": {
-        "en": "Fixed Adapter crash if data point does not exist\nFixed some login errors\n",
-        "de": "Fixed Adapter Crash, wenn Datenpunkt nicht vorhanden ist\nBehoben einige Login-Fehler\n",
-        "ru": "Сбой фиксированного адаптера, если точки данных не существует\nИсправлены некоторые ошибки входа\n",
-        "pt": "Fixed Adapter crash se o ponto de dados não existir\nCorrigido alguns erros de login\n",
-        "nl": "Fixed Adapter crash als datapoint niet bestaat\nEnkele aanmeldfouten hersteld\n",
-        "fr": "Correction du crash de l'adaptateur si le point de données n'existe pas\nCorrection de certaines erreurs de connexion\n",
-        "it": "Corretto crash dell'adattatore se il punto di dati non esiste\nRisolto alcuni errori di login\n",
-        "es": "Accidente de adaptador fijo si el punto de datos no existe\nArreglado algunos errores de inicio de sesión\n",
-        "pl": "Stała awaria adaptera, jeśli punkt danych nie istnieje\nNaprawiono pewne błędy logowania\n",
-        "uk": "Виправлено помилку адаптера, якщо точка даних не існує\nВиправлено помилки входу\n",
-        "zh-cn": "如果数据点不存在, 固定适配器崩溃\n修正一些登录错误\n"
       }
     },
     "titleLang": {
