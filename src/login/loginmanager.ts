@@ -44,7 +44,7 @@ export class LoginManager {
                             this.adapter.log.debug("No pending client found");
                         }
                     }
-                    this.adapter.setStateAsync(event.objectID, {ack: true});
+                    this.adapter.setStateAsync(event.objectID, { ack: true });
                 } else if (splited[4] == "aesKey_active") {
                     const cl = this.pendingClients.find((e) => e.id == deviceID);
                     if (cl) {
@@ -63,7 +63,7 @@ export class LoginManager {
                             this.adapter.log.debug("No pending client found");
                         }
                     }
-                    this.adapter.setStateAsync(event.objectID, {ack: true});
+                    this.adapter.setStateAsync(event.objectID, { ack: true });
                 } else if (splited[4] == "aesKey_new") {
                     const cl = this.pendingClients.find((e) => e.id == deviceID);
                     if (cl) {
@@ -81,7 +81,7 @@ export class LoginManager {
                     }
                     this.adapter.setStateAsync(event.objectID, false, true);
                 } else if (splited[4] == "noPwdAllowed") {
-                    this.adapter.setStateAsync(event.objectID, {ack: true});
+                    this.adapter.setStateAsync(event.objectID, { ack: true });
                 }
             } else if (splited[2] == "approveNextLogins") {
                 if (event.value) {
@@ -93,11 +93,11 @@ export class LoginManager {
                     this.approveLoginsTimeout = this.adapter.setTimeout(() => {
                         this.approveLogins = false;
                         this.approveLoginsTimeout = undefined;
-                    this.adapter.setStateAsync("approveNextLogins", false, true);
+                        this.adapter.setStateAsync("approveNextLogins", false, true);
                     }, 1000 * 60);
                 } else {
                     this.approveLogins = false;
-                    this.adapter.setStateAsync("approveNextLogins", {ack: true});
+                    this.adapter.setStateAsync("approveNextLogins", { ack: true });
                 }
             }
         }
@@ -163,7 +163,8 @@ export class LoginManager {
         let deviceIDRep = loginRequestData.deviceID.replace(".", "-");
         while (deviceIDRep.includes(".")) {
             deviceIDRep = deviceIDRep.replace(".", "-");
-        }client.id = deviceIDRep;
+        }
+        client.id = deviceIDRep;
         if (!this.adapter.clientinfos[deviceIDRep] || !this.adapter.clientinfos[deviceIDRep].firstload) {
             this.adapter.clientinfos[deviceIDRep] = {};
         }
@@ -183,7 +184,7 @@ export class LoginManager {
             this.loginDeclined(client);
             return false;
         }
-        this.pendingClients = this.pendingClients.filter((cl, ) => cl != client);
+        this.pendingClients = this.pendingClients.filter((cl) => cl != client);
         await this.setAesStatus(deviceIDRep, client);
         client.onApprove();
         const version = this.adapter.version != null ? this.adapter.version.toString() : "";
