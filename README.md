@@ -27,7 +27,7 @@
 ## Requirements
 
 -   Node >= 16
--   Android Phone
+-   Android Phone, Linux or Windows
 
 ## Tested with
 
@@ -35,6 +35,9 @@
 -   Google Pixel Android Phones
 -   Sony Pixel Android Phones
 -   Xiaomi Node Android Phones
+-   Windows 10
+-   Arch Linux
+-   Ubuntu
 
 ## APP Code
 
@@ -55,6 +58,8 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (moba15) changed icon
 ### 0.0.62 (2024-03-04)
 - (moba15) fixed bug, where broadcasted messages where sent without type
 
