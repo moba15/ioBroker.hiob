@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.62",
+    "version": "0.0.63",
     "news": {
+      "0.0.63": {
+        "en": "changed icon\nfixed code linter problems",
+        "de": "geändertes symbol\nfestcode linter probleme",
+        "ru": "измененная икона\nпроблемы linter кода",
+        "pt": "ícone alterado\nproblemas de forro de código fixo",
+        "nl": "veranderd pictogram\nvaste code linter problemen",
+        "fr": "icône modifiée\nproblèmes de code fixe linter",
+        "it": "icona modificata\nproblemi di codice fisso",
+        "es": "icono cambiado\ncódigo fijo problemas de interfono",
+        "pl": "zmieniona ikona\nstałe problemy z linterem kodowym",
+        "uk": "змінена ікона\nвиправлений код linter проблеми",
+        "zh-cn": "已更改图标\n固定代码插件问题"
+      },
       "0.0.62": {
         "en": "fixed bug, where broadcasted messages where sent without type",
         "de": "fehler behoben, wo gesendete nachrichten ohne typ gesendet",
