@@ -64,10 +64,8 @@ class Client {
     if (this.aesKey != "" && Object.keys(msg).length > 1 && ((_a = await this.adapter.getStateAsync("devices." + this.id + ".aesKey_active")) == null ? void 0 : _a.val)) {
       this.adapter.log.debug(`ENCRYPT KEY: ${this.aesKey}`);
       const aes = `${this.aesKey}${msg["type"]}`;
-      delete msg["type"];
       send["content"] = CryptoJS.AES.encrypt(JSON.stringify(msg), aes).toString();
     } else {
-      delete msg["type"];
       send["content"] = msg;
     }
     this.socket.send(JSON.stringify(send).toString());
@@ -127,14 +125,30 @@ class Client {
           break;
         case "subscribeHistory":
           if (this.approved)
-            this.onSubscribeToHistory(new import_datapacks.SubscribeToDataPointsHistory(content["dataPoint"], content["end"], content["start"], content["interval"]));
+            this.onSubscribeToHistory(
+              new import_datapacks.SubscribeToDataPointsHistory(
+                content["dataPoint"],
+                content["end"],
+                content["start"],
+                content["interval"]
+              )
+            );
           break;
         case "requestLogin":
           if (!content["version"]) {
             this.adapter.log.warn(`Please update the HioB APP!`);
             return;
           }
-          this.onLoginRequest(new import_datapacks.RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["version"], content["user"], content["password"]));
+          this.onLoginRequest(
+            new import_datapacks.RequestLoginPacket(
+              content["deviceName"],
+              content["deviceID"],
+              content["key"],
+              content["version"],
+              content["user"],
+              content["password"]
+            )
+          );
           break;
         case "templateSettingCreate":
           this.adapter.log.debug(JSON.stringify(content["name"]));
@@ -146,14 +160,23 @@ class Client {
           break;
         case "uploadTemplateSetting":
           this.adapter.log.debug("uploadTemplateSetting");
-          this.onTemplateUpload(new import_datapacks.TemplateSettingUploadPack(content["name"], content["devices"], content["screens"], content["widgets"]));
+          this.onTemplateUpload(
+            new import_datapacks.TemplateSettingUploadPack(
+              content["name"],
+              content["devices"],
+              content["screens"],
+              content["widgets"]
+            )
+          );
           break;
         case "getTemplatesSetting":
           this.adapter.log.debug("getTemplatesSetting");
           this.getTemplatesSetting(content["name"], content["device"], content["screen"], content["widget"]);
           break;
         case "notification":
-          this.onNotification(new import_datapacks.NotificationPack(content["onlySendNotification"], content["content"], content["date"]));
+          this.onNotification(
+            new import_datapacks.NotificationPack(content["onlySendNotification"], content["content"], content["date"])
+          );
           break;
       }
     } catch (e) {
@@ -210,17 +233,33 @@ class Client {
   }
   async onTemplateSettingCreate(templateSettingCreatePack) {
     this.adapter.log.debug("OnTemplateSettingCreate: " + templateSettingCreatePack.name);
-    await this.adapter.templateManager.createNewTemplateSetting(new import_template_manager.TemplateSettings(templateSettingCreatePack.name), this);
+    await this.adapter.templateManager.createNewTemplateSetting(
+      new import_template_manager.TemplateSettings(templateSettingCreatePack.name),
+      this
+    );
     this.sendMSG(new import_datapacks.TemplateSettingCreatePack(templateSettingCreatePack.name).toJSON(), true);
   }
   async onTemplateUpload(uploadTemplateSettingPack) {
-    await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets, this);
+    await this.adapter.templateManager.uploadTemplateSetting(
+      uploadTemplateSettingPack.name,
+      uploadTemplateSettingPack.devices,
+      uploadTemplateSettingPack.screens,
+      uploadTemplateSettingPack.widgets,
+      this
+    );
     this.sendMSG(new import_datapacks.TemplateSettingUploadSuccessPack().toJSON(), true);
   }
   async getTemplatesSetting(name, device, screen, widget) {
     this.adapter.log.debug("NAME: " + name);
     const map = await this.adapter.templateManager.getTemplateSettings(name);
-    this.sendMSG(new import_datapacks.GetTemplateSettingPack(device ? map["devices"] : null, screen ? map["screens"] : null, widget ? map["widgets"] : null).toJSON(), true);
+    this.sendMSG(
+      new import_datapacks.GetTemplateSettingPack(
+        device ? map["devices"] : null,
+        screen ? map["screens"] : null,
+        widget ? map["widgets"] : null
+      ).toJSON(),
+      true
+    );
   }
   onNotification(pack) {
     if (pack.onlySendNotification != void 0) {
