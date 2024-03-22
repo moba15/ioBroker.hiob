@@ -78,8 +78,10 @@ class Server {
   isConnected(deviceID) {
     return this.conClients.some((c) => c.isConnected && c.id == deviceID);
   }
-  getClient(deviceID) {
-    return this.conClients.find((c) => c.isConnected && c.id == deviceID);
+  getClient(deviceID, onlySendNotificationClient = false) {
+    return this.conClients.find(
+      (c) => c.isConnected && c.id == deviceID && c.onlySendNotification == onlySendNotificationClient
+    );
   }
   stop() {
     var _a;
