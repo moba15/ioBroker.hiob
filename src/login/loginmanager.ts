@@ -139,7 +139,7 @@ export class LoginManager {
 
     private async setAesNewAndSentInfo(deviceID: string, cl: Client): Promise<void> {
         const random_key = this.genRandomString(6, true);
-        await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, random_key, true);
+        await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
         cl.aesKey = random_key;
         cl.setAESKey(random_key);
         cl.sendMSG(new NewAesPacket().toJSON(), false);
@@ -631,7 +631,7 @@ export class LoginManager {
         const get_aes = await this.adapter.getStateAsync(`devices.${deviceIDRep}.aesKey`);
         const random_key = this.genRandomString(6, true);
         if (!get_aes || get_aes.val == null || get_aes.val == "") {
-            await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, random_key, true);
+            await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
             client.aesKey = random_key;
         } else if (get_aes != null && typeof get_aes.val === "string") {
             client.aesKey = get_aes.val;
