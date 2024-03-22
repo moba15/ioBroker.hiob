@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.65",
+    "version": "0.0.66-beta.0",
     "news": {
+      "0.0.66-beta.0": {
+        "en": "First implementation of notifications",
+        "de": "Erste Umsetzung von Meldungen",
+        "ru": "Первая реализация уведомлений",
+        "pt": "Primeira execução das notificações",
+        "nl": "Eerste uitvoering van kennisgevingen",
+        "fr": "Première mise en œuvre des notifications",
+        "it": "Prima esecuzione delle notifiche",
+        "es": "Primera aplicación de las notificaciones",
+        "pl": "Pierwsze wdrożenie powiadomień",
+        "uk": "Перша реалізація повідомлень",
+        "zh-cn": "通知的首次执行"
+      },
       "0.0.65": {
         "en": "fixed linter",
         "de": "fester linter",
@@ -80,19 +93,6 @@
         "pl": "Preperacja ostatniego wniosku\nnaprawiono kilka mniejszych problemów",
         "uk": "Переробка останнього запиту\nвиправлено деякі менші проблеми",
         "zh-cn": "最后请求的先验\n确定一些较小的问题"
-      },
-      "0.0.60": {
-        "en": "Added simple AES encryption\nPreperation for latest request\nFixed login errors if AES encryption is disabled",
-        "de": "Einfache AES-Verschlüsselung\nVorbereitung auf neueste Anfrage\nFehler behoben, wenn AES-Verschlüsselung deaktiviert ist",
-        "ru": "Добавлено простое шифрование AES\nПревосходность для последнего запроса\nИсправленные ошибки входа, если отключено шифрование AES",
-        "pt": "Adicionado simples criptografia AES\nPreperação para pedido mais recente\nErros de login fixos se a criptografia AES está desativada",
-        "nl": "Eenvoudige AES-versleuteling toegevoegd\nVoorbereiding voor laatste verzoek\nVaste login fouten als AES-encryptie is uitgeschakeld",
-        "fr": "Ajout d'un chiffrement simple AES\nPréperation pour la dernière demande\nErreurs de connexion corrigées si le chiffrement AES est désactivé",
-        "it": "Aggiunto semplice crittografia AES\nPreperazione per l'ultima richiesta\nErrori di login corretti se la crittografia AES è disabilitata",
-        "es": "Cifrado simple AES\nPreperación para la última solicitud\nErrores de inicio de sesión fijos si el cifrado AES está deshabilitado",
-        "pl": "Dodano proste szyfrowanie AES\nPreperacja do ostatniego wniosku\nNaprawiono błędy logowania w przypadku wyłączenia szyfrowania AES",
-        "uk": "Додано простий шифрування AES\nПопереднє замовлення для останнього запиту\nВиправлені помилки в логіні, якщо шифрування AES вимкнено",
-        "zh-cn": "添加简单的 AES 加密\n最新请求的预览\n如果禁用 AES 加密, 则固定登录错误"
       }
     },
     "titleLang": {
