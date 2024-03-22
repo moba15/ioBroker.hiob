@@ -70,8 +70,10 @@ export class Server {
         return this.conClients.some((c) => c.isConnected && c.id == deviceID);
     }
 
-    getClient(deviceID: string): Client | undefined {
-        return this.conClients.find((c) => c.isConnected && c.id == deviceID);
+    getClient(deviceID: string, onlySendNotificationClient = false): Client | undefined {
+        return this.conClients.find(
+            (c) => c.isConnected && c.id == deviceID && c.onlySendNotification == onlySendNotificationClient,
+        );
     }
 
     stop(): void {

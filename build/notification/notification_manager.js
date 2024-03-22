@@ -37,7 +37,7 @@ class NotificationManager {
     const match = event.objectID.match("(hiob.\\d*.devices.)(.*)(.sendNotification)");
     if (match && match[2] && !event.ack) {
       const deviceID = match[2];
-      const client = (_a = this.adapter.server) == null ? void 0 : _a.getClient(deviceID);
+      const client = (_a = this.adapter.server) == null ? void 0 : _a.getClient(deviceID, true);
       if (client == null ? void 0 : client.isConnected) {
         this.sendNotificationLocal(client, event.value);
       } else {
@@ -51,7 +51,7 @@ class NotificationManager {
     }
   }
   sendNotificationLocal(client, notification) {
-    client.sendMSG(new import_datapacks.NotificationPack(false, notification, new Date()).toJSON(), true);
+    client.sendMSG(new import_datapacks.NotificationPack(false, notification, new Date()).toJSON());
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

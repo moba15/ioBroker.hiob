@@ -20,7 +20,7 @@ export class NotificationManager {
         const match: RegExpMatchArray | null = event.objectID.match("(hiob.\\d*.devices.)(.*)(.sendNotification)");
         if (match && match[2] && !event.ack) {
             const deviceID = match[2];
-            const client = this.adapter.server?.getClient(deviceID);
+            const client = this.adapter.server?.getClient(deviceID, true);
             //Check if client is connected
             if (client?.isConnected) {
                 this.sendNotificationLocal(client, event.value);
@@ -37,6 +37,6 @@ export class NotificationManager {
     }
 
     private sendNotificationLocal(client: Client, notification: string): void {
-        client.sendMSG(new NotificationPack(false, notification, new Date()).toJSON(), true);
+        client.sendMSG(new NotificationPack(false, notification, new Date()).toJSON());
     }
 }
