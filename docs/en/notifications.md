@@ -19,4 +19,38 @@
 - Set the data point to any text -> message is sent
 
 ### Custom notifications
-**Incoming**
+#### Schema
+
+```JSON
+{
+	"$schema": "https://json-schema.org/draft/2019-09/schema",
+    "type": "object",
+    "properties": {
+      "title": {
+      	"type": "string",
+        "descreption": "The title of your notification",
+        "exclusiveMinimum": 0
+      },
+      "body": {
+      	"type": "string",
+        "descreption": "The body of your notification",
+        "exclusiveMinimum": 0
+      },
+      "colorARGB": {
+      	"type": "string",
+        "descreption": "ARGB Color Hex code ",
+        "exclusiveMinimum": 0
+      }
+   
+    }
+}
+```
+#### Example
+```JSON
+{
+  "title": "Bewegung",
+  "body": "Es wurde eine Bewungung in der Küche erkannt",
+  "locked": false,
+  "colorARGB": "FFFF0000"
+}
+```
