@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.66-beta.0",
+    "version": "0.0.66",
     "news": {
+      "0.0.66": {
+        "en": "Added some docs",
+        "de": "Einige Docs hinzugefügt",
+        "ru": "Добавлено несколько док",
+        "pt": "Adicionado alguns documentos",
+        "nl": "Toegevoegd enkele documenten",
+        "fr": "Ajout de quelques docs",
+        "it": "Aggiunto alcuni docs",
+        "es": "Añadido algunos docs",
+        "pl": "Dodano kilka dokumentów",
+        "uk": "Додати деякі docs",
+        "zh-cn": "添加了一些文件"
+      },
       "0.0.66-beta.0": {
         "en": "First implementation of notifications",
         "de": "Erste Umsetzung von Meldungen",
@@ -80,19 +93,6 @@
         "pl": "ustawiony błąd bezpiecznego połączenia (# 20)",
         "uk": "виправлено помилку безпечного з'єднання (#20)",
         "zh-cn": "固定的安全连接错误 (# 20)"
-      },
-      "0.0.61-beta.0": {
-        "en": "Preperation of lastest request\nfixed some smaller issues",
-        "de": "Vorbereitung der letzten Anfrage\neinige kleinere probleme behoben",
-        "ru": "Превосходство последнего запроса\nисправить некоторые небольшие проблемы",
-        "pt": "Preperação do último pedido\ncorrigiu alguns problemas menores",
-        "nl": "Voorbereiding van laatste verzoek\nenkele kleinere problemen opgelost",
-        "fr": "Préperation de la dernière demande\ncorrigé quelques petits problèmes",
-        "it": "Preperazione dell'ultima richiesta\nrisolto alcuni problemi più piccoli",
-        "es": "Preperación de la solicitud láser\narreglar algunas cuestiones más pequeñas",
-        "pl": "Preperacja ostatniego wniosku\nnaprawiono kilka mniejszych problemów",
-        "uk": "Переробка останнього запиту\nвиправлено деякі менші проблеми",
-        "zh-cn": "最后请求的先验\n确定一些较小的问题"
       }
     },
     "titleLang": {
