@@ -58,6 +58,8 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- Added some docs
 ### 0.0.66-beta.0 (2024-03-22)
 - First implementation of notifications
 
