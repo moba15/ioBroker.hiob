@@ -54,3 +54,13 @@
   "colorARGB": "FFFF0000"
 }
 ```
+#### Blockly sendTo Example
+It is also possible to send notifications via Blockly using the sendTo function:
+- Parameters
+  - **uuid**: The id of the device. Can be found at hiob.x.devices
+  - **notification**: The notification to be sent: Object scheme see above
+- **Example** <br>
+![Example](img/sendToExample.png)
+```JS
+sendTo('hiob.0', 'send', { 'uuid': '52e34cca-c85a-423a-a07b-c711a0d1575a', 'notification': { 'title': 'Title', 'body': 'Bewegung erkannt' } });
+```

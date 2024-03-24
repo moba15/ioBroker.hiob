@@ -49,10 +49,11 @@ class SamartHomeHandyBis extends utils.Adapter {
     this.lang = "de";
     this.templateManager = new import_template_manager.TemplateManager(this);
     this.listener = new import_listener.Listener(this);
-    new import_notification_manager.NotificationManager(this);
+    this.notificationManager = new import_notification_manager.NotificationManager(this);
     this.loginManager = new import_loginmanager.LoginManager(this);
     this.on("ready", this.onReady.bind(this));
     this.on("stateChange", this.listener.onStateChange.bind(this.listener));
+    this.on("message", this.onMessage.bind(this));
     this.on("unload", this.onUnload.bind(this));
     this.server = void 0;
   }
@@ -218,6 +219,21 @@ class SamartHomeHandyBis extends utils.Adapter {
       callback();
     } catch (e) {
       callback();
+    }
+  }
+  onMessage(obj) {
+    var _a;
+    if (typeof obj === "object" && obj.message) {
+      if (obj.command === "send") {
+        this.log.debug("send command");
+        const message = obj.message;
+        if ("notification" in message && "uuid" in message) {
+          const cl = (_a = this.server) == null ? void 0 : _a.getClient(message["uuid"]);
+          if (cl) {
+            this.notificationManager.sendNotificationLocal(cl, JSON.stringify(message["notification"]));
+          }
+        }
+      }
     }
   }
 }
