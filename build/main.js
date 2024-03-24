@@ -46,6 +46,7 @@ class SamartHomeHandyBis extends utils.Adapter {
     this.useCer = false;
     this.clientinfos = {};
     this.valueDatapoints = {};
+    this.lang = "de";
     this.templateManager = new import_template_manager.TemplateManager(this);
     this.listener = new import_listener.Listener(this);
     new import_notification_manager.NotificationManager(this);
@@ -97,6 +98,13 @@ class SamartHomeHandyBis extends utils.Adapter {
     this.subscribeStates("approveNextLogins");
     this.loadConfigs();
     this.initServer();
+    const obj = await this.getForeignObjectAsync("system.config");
+    if (obj && obj.common && obj.common.language) {
+      try {
+        this.lang = obj.common.language === this.lang ? this.lang : obj.common.language;
+      } catch (e) {
+      }
+    }
   }
   loadConfigs() {
     this.port = Number(this.config.port);
@@ -124,12 +132,33 @@ class SamartHomeHandyBis extends utils.Adapter {
         const dataPoint = await this.getForeignObjectAsync(z);
         if (!dataPoint)
           continue;
-        dataPoints.push({
-          name: dataPoint.common.name,
-          id: z,
-          role: dataPoint.common.role,
-          otherDetails: dataPoint.common.custom
-        });
+        const name = dataPoint.common.name;
+        if (typeof name == "object") {
+          const translated = name;
+          const translatedString = translated[this.lang];
+          if (translatedString) {
+            dataPoints.push({
+              name: translatedString,
+              id: z,
+              role: dataPoint.common.role,
+              otherDetails: dataPoint.common.custom
+            });
+          } else {
+            dataPoints.push({
+              name,
+              id: z,
+              role: dataPoint.common.role,
+              otherDetails: dataPoint.common.custom
+            });
+          }
+        } else {
+          dataPoints.push({
+            name,
+            id: z,
+            role: dataPoint.common.role,
+            otherDetails: dataPoint.common.custom
+          });
+        }
       }
       const map = {
         id: enumDevices[i]._id,
