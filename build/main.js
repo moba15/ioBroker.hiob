@@ -200,7 +200,9 @@ class SamartHomeHandyBis extends utils.Adapter {
         const map = {
           objectID: dataPoints[i],
           value: state.val,
-          ack: state.ack
+          ack: state.ack,
+          ts: state.ts,
+          lc: state.lc
         };
         all_dp.push(map);
         this.subscribeForeignStates(dataPoints[i]);

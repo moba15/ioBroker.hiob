@@ -66,18 +66,22 @@ class StateChangeRequestPack extends DataPack {
   }
 }
 class StateChangedDataPack extends DataPack {
-  constructor(objectID, value, ack) {
+  constructor(objectID, value, ack, lc, ts) {
     super("iobStateChanged");
     this.objectID = objectID;
     this.value = value;
     this.ack = ack;
+    this.lc = lc;
+    this.ts = ts;
   }
   toJSON() {
     const map = {
       type: this.type,
       objectID: this.objectID,
       value: this.value,
-      ack: this.ack
+      ack: this.ack,
+      ts: this.ts,
+      lc: this.lc
     };
     return map;
   }

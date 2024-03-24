@@ -49,7 +49,10 @@ class Listener extends import_events.default {
         }
         this.adapter.valueDatapoints[id].val = state.val;
         this.adapter.valueDatapoints[id].ack = state.ack;
-        (_a = this.adapter.server) == null ? void 0 : _a.broadcastMsg(new import_datapacks.StateChangedDataPack(id, state.val, state.ack).toJSON(), false);
+        (_a = this.adapter.server) == null ? void 0 : _a.broadcastMsg(
+          new import_datapacks.StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON(),
+          false
+        );
       }
       this.emit("stateChanged" /* StateChange */, new StateChangeEvent(id, state.val, state.ack));
     } else {
