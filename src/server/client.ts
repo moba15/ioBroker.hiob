@@ -47,9 +47,11 @@ export class Client {
         this.socket.pause();
     }
 
-    async sendMSG(msg: any, needAproval: boolean = false): Promise<boolean> {
+    async sendMSG(msg: any, needAproval: boolean = false, log : boolean = true): Promise<boolean> {
         if (needAproval && !this.approved) {
-            this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
+            if(log) {
+                this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
+            }
             return false;
         }
         if (msg["type"] === "loginKey") {
