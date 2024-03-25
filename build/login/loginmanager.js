@@ -177,11 +177,10 @@ class LoginManager {
     } else {
       cl.setAESKey("");
     }
-    const shaKey = keys[1] != null ? this.adapter.encrypt(keys[1]) : null;
-    await this.adapter.setStateAsync("devices." + deviceID + ".key", shaKey, true);
+    await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[0], true);
     for (const current of this.pendingClients) {
       if (current.id == cl.id) {
-        current.sendMSG(new import_datapacks.LoginKeyPacket(keys[0]).toJSON(), false);
+        current.sendMSG(new import_datapacks.LoginKeyPacket(keys[0]).toJSON(), false, false);
       }
     }
   }
@@ -263,9 +262,6 @@ class LoginManager {
     }
     if (loginRequestData.key == null) {
       apr = false;
-    }
-    if (keyState != null && keyState.val != null) {
-      keyState.val = this.adapter.decrypt(keyState.val.toString());
     }
     if (keyState != null && keyState.val != null && loginRequestData.key && !await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
       this.adapter.log.debug(

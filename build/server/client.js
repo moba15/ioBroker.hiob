@@ -47,10 +47,12 @@ class Client {
   close() {
     this.socket.pause();
   }
-  async sendMSG(msg, needAproval = false) {
+  async sendMSG(msg, needAproval = false, log = true) {
     var _a;
     if (needAproval && !this.approved) {
-      this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
+      if (log) {
+        this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
+      }
       return false;
     }
     if (msg["type"] === "loginKey") {
