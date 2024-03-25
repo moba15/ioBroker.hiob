@@ -63,7 +63,6 @@ class Client {
       content: ""
     };
     if (this.aesKey != "" && Object.keys(msg).length > 1 && ((_a = await this.adapter.getStateAsync("devices." + this.id + ".aesKey_active")) == null ? void 0 : _a.val)) {
-      this.adapter.log.debug(`ENCRYPT KEY: ${this.aesKey}`);
       const aes = `${this.aesKey}${msg["type"]}`;
       send["content"] = CryptoJS.AES.encrypt(JSON.stringify(msg), aes).toString();
     } else {
