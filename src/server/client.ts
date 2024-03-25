@@ -175,6 +175,7 @@ export class Client {
 
     onApprove(): void {
         this.approved = true;
+        this.adapter.notificationManager.sendBacklog(this);
     }
 
     filter(value: Client): boolean {

@@ -1,7 +1,7 @@
 ## Notifications
 
 ❗**Important** ❗: This feature is still in the beta phase:
-- If the app has **no** active connection to the ioBroker, all messages sent within the period will be **lost**
+- If the app has **no** active connection to the ioBroker, up to **maximum** 250 messages are stored. And sent when reconnected
 - There is **no** guarantee that notifications will be received
 - There may be **considerable** battery consumption
 - The app can **lose** the connection to the server **at any time** if it is in the background

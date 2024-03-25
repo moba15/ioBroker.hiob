@@ -177,7 +177,7 @@ class LoginManager {
     } else {
       cl.setAESKey("");
     }
-    await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[0], true);
+    await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[1], true);
     for (const current of this.pendingClients) {
       if (current.id == cl.id) {
         current.sendMSG(new import_datapacks.LoginKeyPacket(keys[0]).toJSON(), false, false);
@@ -518,6 +518,31 @@ class LoginManager {
         def: "",
         read: true,
         write: true
+      },
+      native: {}
+    });
+    await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notificationBacklog`, {
+      type: "state",
+      common: {
+        name: {
+          en: "Notification Backlog",
+          de: "R\xFCckstand bei der Benachrichtigung",
+          ru: "\u0423\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u044F",
+          pt: "Atraso de notifica\xE7\xE3o",
+          nl: "Kennisgeving Achterstand",
+          fr: "Carnet de notifications",
+          it: "Arretrati di notifica",
+          es: "Notificaciones atrasadas",
+          pl: "Zaleg\u0142o\u015Bci w powiadomieniach",
+          uk: "\u0412\u0456\u0434\u0441\u0442\u0430\u0432\u0430\u043D\u043D\u044F \u0441\u043F\u043E\u0432\u0456\u0449\u0435\u043D\u044C",
+          "zh-cn": "\u901A\u77E5\u79EF\u538B"
+        },
+        type: "array",
+        role: "state",
+        desc: "Created by Adapter",
+        def: "",
+        read: true,
+        write: false
       },
       native: {}
     });

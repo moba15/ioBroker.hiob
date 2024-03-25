@@ -2,7 +2,7 @@
 
 ❗**Wichtig** ❗: Dieses Feature ist noch in der beta Phase. Das bedeutet:
 
-- Wenn die App **keine** aktive Verbindung zum ioBroker hat, so werden gehen alle gesendeten Nachrichten innerhalb des Zeitraums **verloren**
+- Wenn die App **keine** aktive Verbindung zum ioBroker hat, so werden bis zu **maximal** 250 Nachrichten gespeichert. Und bei neu Verbindung gesendet
 - Es gibt **keine** Garantie, dass Benachrichtigungen empfangen werden
 - Es kann zu einem **erheblichen** Akku verbrauch kommen
 - Die App kann **jederzeit** die Verbindung zum Server **verlieren**, wenn diese im Hintergrund ist

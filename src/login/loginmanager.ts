@@ -170,7 +170,7 @@ export class LoginManager {
         } else {
             cl.setAESKey("");
         }
-        await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[0], true);
+        await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[1], true);
         for (const current of this.pendingClients) {
             if (current.id == cl.id) {
                 current.sendMSG(new LoginKeyPacket(keys[0]).toJSON(), false, false);
@@ -566,6 +566,31 @@ export class LoginManager {
                 def: "",
                 read: true,
                 write: true,
+            },
+            native: {},
+        });
+        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notificationBacklog`, {
+            type: "state",
+            common: {
+                name: {
+                    en: "Notification Backlog",
+                    de: "Rückstand bei der Benachrichtigung",
+                    ru: "Уведомления",
+                    pt: "Atraso de notificação",
+                    nl: "Kennisgeving Achterstand",
+                    fr: "Carnet de notifications",
+                    it: "Arretrati di notifica",
+                    es: "Notificaciones atrasadas",
+                    pl: "Zaległości w powiadomieniach",
+                    uk: "Відставання сповіщень",
+                    "zh-cn": "通知积压",
+                },
+                type: "array",
+                role: "state",
+                desc: "Created by Adapter",
+                def: "",
+                read: true,
+                write: false,
             },
             native: {},
         });

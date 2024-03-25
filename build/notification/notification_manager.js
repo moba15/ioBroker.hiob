@@ -32,26 +32,52 @@ class NotificationManager {
   init() {
     this.adapter.listener.on(import_listener.Events.StateChange, this.onStateChange.bind(this));
   }
-  onStateChange(event) {
+  async onStateChange(event) {
     var _a;
     const match = event.objectID.match("(hiob.\\d*.devices.)(.*)(.sendNotification)");
     if (match && match[2] && !event.ack) {
       const deviceID = match[2];
       const client = (_a = this.adapter.server) == null ? void 0 : _a.getClient(deviceID);
-      if (client == null ? void 0 : client.isConnected) {
-        this.sendNotificationLocal(client, event.value);
-      } else {
-        if (this.backlog[deviceID]) {
-          this.backlog[deviceID].push(event.value);
-        } else {
-          this.backlog[deviceID] = [event.value];
-        }
-      }
+      this.sendNotificationLocal(client, deviceID, event.value);
       this.adapter.setState(event.objectID, { ack: true });
     }
   }
-  sendNotificationLocal(client, notification) {
-    client.sendMSG(new import_datapacks.NotificationPack(false, notification, new Date()).toJSON(), true);
+  async sendNotificationLocal(client, deviceID, notification) {
+    if (client != void 0 && (client == null ? void 0 : client.isConnected)) {
+      client.sendMSG(new import_datapacks.NotificationPack(false, notification, new Date()).toJSON(), true);
+    } else {
+      const currentBacklogState = await this.adapter.getStateAsync("devices." + deviceID + ".notificationBacklog");
+      if (currentBacklogState) {
+        let currentBacklogRaw = currentBacklogState.val;
+        if (currentBacklogRaw != void 0 && currentBacklogRaw === "") {
+          currentBacklogRaw = "[]";
+        }
+        const currentBacklogArray = JSON.parse(currentBacklogRaw);
+        currentBacklogArray.push(notification);
+        if (currentBacklogArray.length > 250) {
+          currentBacklogArray.shift();
+        }
+        await this.adapter.setStateAsync("devices." + deviceID + ".notificationBacklog", JSON.stringify(currentBacklogArray));
+      }
+    }
+  }
+  async sendBacklog(client) {
+    if (client) {
+      if (client.isConnected) {
+        const currentBacklogState = await this.adapter.getStateAsync("devices." + client.id + ".notificationBacklog");
+        if (currentBacklogState) {
+          let currentBacklogRaw = currentBacklogState.val;
+          if (currentBacklogRaw != void 0 && currentBacklogRaw === "") {
+            currentBacklogRaw = "[]";
+          }
+          const currentBacklogArray = JSON.parse(currentBacklogRaw);
+          for (const i of currentBacklogArray) {
+            client.sendMSG(new import_datapacks.NotificationPack(false, i, new Date()).toJSON(), true);
+          }
+          await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]));
+        }
+      }
+    }
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

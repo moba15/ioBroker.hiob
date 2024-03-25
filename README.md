@@ -56,6 +56,8 @@
 -->
 ### **WORK IN PROGRESS**
  - (moba15) fixed icon
+ - (moba15) added notifications backlog, if client is not connected (up to 250 messages)
+ - (moba15) fixed login
 ### 0.0.67-beta.1 (2024-03-25)
  - (moba15) Fixed missing io-package config due to missing commit
 

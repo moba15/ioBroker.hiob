@@ -168,6 +168,7 @@ class Client {
   }
   onApprove() {
     this.approved = true;
+    this.adapter.notificationManager.sendBacklog(this);
   }
   filter(value) {
     return value.isConnected == true;

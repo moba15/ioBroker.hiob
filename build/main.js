@@ -97,6 +97,7 @@ class SamartHomeHandyBis extends utils.Adapter {
     });
     await this.setStateAsync("approveNextLogins", false, true);
     this.subscribeStates("approveNextLogins");
+    this.subscribeStates("*");
     this.check_aes_key();
     this.loadConfigs();
     this.initServer();
@@ -245,9 +246,7 @@ class SamartHomeHandyBis extends utils.Adapter {
         const message = obj.message;
         if ("notification" in message && "uuid" in message) {
           const cl = (_a = this.server) == null ? void 0 : _a.getClient(message["uuid"]);
-          if (cl) {
-            this.notificationManager.sendNotificationLocal(cl, JSON.stringify(message["notification"]));
-          }
+          this.notificationManager.sendNotificationLocal(cl, message["uuid"], JSON.stringify(message["notification"]));
         }
       }
     }
