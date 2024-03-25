@@ -36,10 +36,19 @@
         "descreption": "The body of your notification",
         "exclusiveMinimum": 0
       },
+      "locked": {
+      	"type": "boolean",
+        "descreption": "Wether it should be dissmisable ",
+      },
       "colorARGB": {
       	"type": "string",
         "descreption": "ARGB Color Hex code ",
         "exclusiveMinimum": 0
+      },
+      "id": {
+      	"type": "number",
+        "descreption": "Notification ID. If you do not want to send a new notification, give it the same ID and the old one will be overwritten",
+
       }
    
     }
@@ -64,3 +73,9 @@ It is also possible to send notifications via Blockly using the sendTo function:
 ```JS
 sendTo('hiob.0', 'send', { 'uuid': '52e34cca-c85a-423a-a07b-c711a0d1575a', 'notification': { 'title': 'Title', 'body': 'Bewegung erkannt' } });
 ```
+
+#### Example of using the same id
+**Blockly** <br>
+![Example](img/notificationBlockly2.png) <br>
+**Notification** <br>
+![Example](img/notificationIDExample.gif)
