@@ -3,7 +3,6 @@ import * as fs from "fs";
 import { createServer } from "https";
 import * as m from "../main";
 import { Client } from "./client";
-import { IncomingMessage } from "http";
 import { FirstPingPack } from "./datapacks";
 export class Server {
     certPath: string;
@@ -57,6 +56,7 @@ export class Server {
         this.stoped = false;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     broadcastMsg(msg: string, notification: boolean): void {
         //this.webSocketServer.clients.forEach((e) => {});
         this.conClients
