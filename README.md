@@ -27,17 +27,13 @@
 ## Requirements
 
 -   Node >= 16
--   Android Phone, Linux or Windows
+-   Android Phone
 
 ## Tested with
 
 -   Samsung Android Phones
 -   Google Pixel Android Phones
 -   Sony Pixel Android Phones
--   Xiaomi Node Android Phones
--   Windows 10
--   Arch Linux
--   Ubuntu
 
 ## APP Code
 
@@ -58,6 +54,18 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+ - (moba15) fixed icon
+ - (moba15) added notifications backlog, if client is not connected (up to 250 messages)
+ - (moba15) fixed login
+### 0.0.67-beta.1 (2024-03-25)
+ - (moba15) Fixed missing io-package config due to missing commit
+
+### 0.0.67-beta.0 (2024-03-25)
+ - (moba15) Fixed #25
+ - (moba15) sendTo support for notifications
+ - (Lucky-ESA) Handling sensitive data & timeouts #22
+
 ### 0.0.66 (2024-03-23)
 - Added some docs
 
@@ -74,8 +82,11 @@
 ### 0.0.62 (2024-03-04)
 - (moba15) fixed bug, where broadcasted messages where sent without type
 
+### 0.0.62 (2024-03-04)
+- (moba15) fixed bug, where broadcasted messages where sent without type
+
 ### 0.0.61 (2024-03-04)
- - (moba15) fixed secure connection bug (#20)
+- (moba15) fixed secure connection bug (#20)
 
 ### 0.0.61-beta.0 (2024-03-01)
 - (Lucky-ESA) Preperation of lastest request
@@ -95,7 +106,7 @@
 ### 0.0.54 (2023-12-31)
 
 -   (moba15) Added secure login
--   (moba15) Added secure connection
+-   (moba15) Added secure connetion
 -   (moba15) Automatic acceptance of incoming connections for 60 seconds
 
 ### 0.0.1 (2023-03-26)

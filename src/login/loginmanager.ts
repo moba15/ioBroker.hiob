@@ -1,3 +1,4 @@
+import { AnyARecord } from "dns";
 import { Events, StateChangeEvent } from "../listener/listener";
 import { SamartHomeHandyBis } from "../main";
 import { Client } from "../server/client";
@@ -16,6 +17,7 @@ export class LoginManager {
     pendingClients: Client[];
     approveLogins: boolean = false;
     approveLoginsTimeout: any;
+    aesViewTimeout: { [deviceID: string]: any } = {};
     constructor(adapter: SamartHomeHandyBis) {
         this.adapter = adapter;
         this.adapter.listener.on(Events.StateChange, this.onStateChange.bind(this));
@@ -44,7 +46,7 @@ export class LoginManager {
                             this.adapter.log.debug("No pending client found");
                         }
                     }
-                    this.adapter.setStateAsync(event.objectID, { ack: true });
+                    this.adapter.setStateAsync(event.objectID, {ack: true});
                 } else if (splited[4] == "aesKey_active") {
                     const cl = this.pendingClients.find((e) => e.id == deviceID);
                     if (cl) {
@@ -63,7 +65,10 @@ export class LoginManager {
                             this.adapter.log.debug("No pending client found");
                         }
                     }
-                    this.adapter.setStateAsync(event.objectID, { ack: true });
+                    this.adapter.setStateAsync(event.objectID, {ack: true});
+                } else if (splited[4] == "aesKey_view") {
+                    this.viewAesKey(deviceID);
+                    this.adapter.setStateAsync(event.objectID, false, true);
                 } else if (splited[4] == "aesKey_new") {
                     const cl = this.pendingClients.find((e) => e.id == deviceID);
                     if (cl) {
@@ -81,31 +86,60 @@ export class LoginManager {
                     }
                     this.adapter.setStateAsync(event.objectID, false, true);
                 } else if (splited[4] == "noPwdAllowed") {
-                    this.adapter.setStateAsync(event.objectID, { ack: true });
+                    this.adapter.setStateAsync(event.objectID, {ack: true});
                 }
             } else if (splited[2] == "approveNextLogins") {
-                if (event.value) {
-                    if (this.approveLoginsTimeout) {
-                        this.adapter.clearTimeout(this.approveLoginsTimeout);
-                        this.approveLoginsTimeout = undefined;
-                    }
-                    this.approveLogins = true;
-                    this.approveLoginsTimeout = this.adapter.setTimeout(() => {
-                        this.approveLogins = false;
-                        this.approveLoginsTimeout = undefined;
-                        this.adapter.setStateAsync("approveNextLogins", false, true);
-                    }, 1000 * 60);
-                } else {
-                    this.approveLogins = false;
-                    this.adapter.setStateAsync("approveNextLogins", { ack: true });
-                }
+                this.setApproveNextLogins(event.value);
             }
+        }
+    }
+
+    private setApproveNextLogins(value: boolean): void {
+        if (value) {
+            if (this.approveLoginsTimeout) {
+                this.adapter.clearTimeout(this.approveLoginsTimeout);
+                this.approveLoginsTimeout = undefined;
+            }
+            this.approveLogins = true;
+            // Start timer without set ack flag true
+            this.approveLoginsTimeout = this.adapter.setTimeout(() => {
+                this.approveLogins = false;
+                this.approveLoginsTimeout = undefined;
+            this.adapter.setStateAsync("approveNextLogins", false, true);
+            }, 1000 * 60);
+        } else {
+            this.approveLogins = false;
+            this.adapter.setStateAsync("approveNextLogins", {ack: true});
+        }
+    }
+
+    private async viewAesKey(deviceID: string): Promise<void> {
+        if (!this.aesViewTimeout[deviceID]) {
+            const state = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
+            if (state != null && state.val != null) {
+                if (state.val.toString().length > 6) {
+                    const dec_shaAes = this.adapter.decrypt(state.val.toString());
+                    await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, dec_shaAes, true);
+                }
+            } else {
+                return;
+            }
+            this.aesViewTimeout[deviceID] = this.adapter.setTimeout( async () => {
+                const state = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
+                if (state != null && state.val != null) {
+                    if (state.val.toString().length === 6) {
+                        const shaAes = this.adapter.encrypt(state.val.toString());
+                        await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, shaAes, true);
+                    }
+                }
+                this.aesViewTimeout[deviceID] = undefined;
+            }, 1000 * 60);
         }
     }
 
     private async setAesNewAndSentInfo(deviceID: string, cl: Client): Promise<void> {
         const random_key = this.genRandomString(6, true);
-        await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, random_key, true);
+        await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
         cl.aesKey = random_key;
         cl.setAESKey(random_key);
         cl.sendMSG(new NewAesPacket().toJSON(), false);
@@ -139,7 +173,7 @@ export class LoginManager {
         await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[1], true);
         for (const current of this.pendingClients) {
             if (current.id == cl.id) {
-                current.sendMSG(new LoginKeyPacket(keys[0]).toJSON(), false);
+                current.sendMSG(new LoginKeyPacket(keys[0]).toJSON(), false, false);
             }
         }
     }
@@ -147,6 +181,12 @@ export class LoginManager {
     public async stop(): Promise<boolean> {
         this.approveLoginsTimeout && this.adapter.clearTimeout(this.approveLoginsTimeout);
         this.approveLoginsTimeout = undefined;
+        if (this.aesViewTimeout && Object.keys(this.aesViewTimeout).length > 0) {
+            for (const cl in this.aesViewTimeout) {
+                this.aesViewTimeout[cl] && this.adapter.clearTimeout(this.aesViewTimeout[cl]);
+                this.aesViewTimeout[cl] = undefined;
+            }
+        }
         return false;
     }
 
@@ -163,8 +203,7 @@ export class LoginManager {
         let deviceIDRep = loginRequestData.deviceID.replace(".", "-");
         while (deviceIDRep.includes(".")) {
             deviceIDRep = deviceIDRep.replace(".", "-");
-        }
-        client.id = deviceIDRep;
+        }client.id = deviceIDRep;
         if (!this.adapter.clientinfos[deviceIDRep] || !this.adapter.clientinfos[deviceIDRep].firstload) {
             this.adapter.clientinfos[deviceIDRep] = {};
         }
@@ -184,7 +223,7 @@ export class LoginManager {
             this.loginDeclined(client);
             return false;
         }
-        this.pendingClients = this.pendingClients.filter((cl) => cl != client);
+        this.pendingClients = this.pendingClients.filter((cl, ) => cl != client);
         await this.setAesStatus(deviceIDRep, client);
         client.onApprove();
         const version = this.adapter.version != null ? this.adapter.version.toString() : "";
@@ -277,6 +316,23 @@ export class LoginManager {
         key: string,
         version: string,
     ): Promise<void> {
+        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}`, {
+            type: "channel",
+            common: {
+                name: deviceName,
+                desc: "Created by Adapter",
+            },
+            native: {},
+        });
+        // Delete setObjectAsync after first latest release
+        await this.adapter.setObjectAsync(`devices.${deviceIDRep}`, {
+            type: "channel",
+            common: {
+                name: deviceName,
+                desc: "Created by Adapter",
+            },
+            native: {},
+        });
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.connected`, {
             type: "state",
             common: {
@@ -328,14 +384,6 @@ export class LoginManager {
             native: {},
         });
         await this.adapter.setStateAsync(`devices.${deviceIDRep}.app_version`, version, true);
-        await this.adapter.setObjectAsync(`devices.${deviceIDRep}`, {
-            type: "channel",
-            common: {
-                name: deviceName,
-                desc: "Created by Adapter",
-            },
-            native: {},
-        });
         await this.adapter.setObjectAsync(`devices.${deviceIDRep}.name`, {
             type: "state",
             common: {
@@ -521,7 +569,58 @@ export class LoginManager {
             },
             native: {},
         });
+        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notificationBacklog`, {
+            type: "state",
+            common: {
+                name: {
+                    en: "Notification Backlog",
+                    de: "Rückstand bei der Benachrichtigung",
+                    ru: "Уведомления",
+                    pt: "Atraso de notificação",
+                    nl: "Kennisgeving Achterstand",
+                    fr: "Carnet de notifications",
+                    it: "Arretrati di notifica",
+                    es: "Notificaciones atrasadas",
+                    pl: "Zaległości w powiadomieniach",
+                    uk: "Відставання сповіщень",
+                    "zh-cn": "通知积压",
+                },
+                type: "array",
+                role: "state",
+                desc: "Created by Adapter",
+                def: "",
+                read: true,
+                write: false,
+            },
+            native: {},
+        });
         await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.sendNotification`);
+        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_view`, {
+            type: "state",
+            common: {
+                name: {
+                    "en": "decrypt AES key for 30 seconds.",
+                    "de": "AES Schlüssel für 30 Sekunden entschlüsseln.",
+                    "ru": "расшифровать ключ AES в течение 30 секунд.",
+                    "pt": "descriptografar AES chave por 30 segundos.",
+                    "nl": "decodeer AES sleutel gedurende 30 seconden.",
+                    "fr": "déchiffrer la clé AES pendant 30 secondes.",
+                    "it": "decifrare la chiave AES per 30 secondi.",
+                    "es": "descifrar la tecla AES durante 30 segundos.",
+                    "pl": "odszyfrować klucz AES przez 30 sekund.",
+                    "uk": "розшифрувати ключ AES на 30 секунд.",
+                    "zh-cn": "解密AES密钥30秒."
+                },
+                type: "boolean",
+                role: "button",
+                desc: "Created by Adapter",
+                def: false,
+                read: true,
+                write: true,
+            },
+            native: {},
+        });
+        await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.aesKey_view`);
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey`, {
             type: "state",
             common: {
@@ -550,7 +649,7 @@ export class LoginManager {
         const get_aes = await this.adapter.getStateAsync(`devices.${deviceIDRep}.aesKey`);
         const random_key = this.genRandomString(6, true);
         if (!get_aes || get_aes.val == null || get_aes.val == "") {
-            await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, random_key, true);
+            await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
             client.aesKey = random_key;
         } else if (get_aes != null && typeof get_aes.val === "string") {
             client.aesKey = get_aes.val;
