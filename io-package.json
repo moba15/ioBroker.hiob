@@ -144,6 +144,7 @@
     "connectionType": "local",
     "dataSource": "push",
     "materialize": false,
+    "messagebox": true,
     "adminUI": {
       "config": "json"
     },
