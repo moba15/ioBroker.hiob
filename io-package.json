@@ -3,6 +3,58 @@
     "name": "hiob",
     "version": "0.0.62",
     "news": {
+      "0.0.66-beta.0": {
+        "en": "First implementation of notifications",
+        "de": "Erste Umsetzung von Meldungen",
+        "ru": "Первая реализация уведомлений",
+        "pt": "Primeira execução das notificações",
+        "nl": "Eerste uitvoering van kennisgevingen",
+        "fr": "Première mise en œuvre des notifications",
+        "it": "Prima esecuzione delle notifiche",
+        "es": "Primera aplicación de las notificaciones",
+        "pl": "Pierwsze wdrożenie powiadomień",
+        "uk": "Перша реалізація повідомлень",
+        "zh-cn": "通知的首次执行"
+      },
+      "0.0.65": {
+        "en": "fixed linter",
+        "de": "fester linter",
+        "ru": "фиксированный linter",
+        "pt": "forro fixo",
+        "nl": "vaste linter",
+        "fr": "linter fixe",
+        "it": "interessi fissi",
+        "es": "invierno fijo",
+        "pl": "łącznik stały",
+        "uk": "фіксований linter",
+        "zh-cn": "固定线条"
+      },
+      "0.0.64": {
+        "en": "changed icon\nfixed code linter problems",
+        "de": "geändertes symbol\nfestcode linter probleme",
+        "ru": "измененная икона\nпроблемы linter кода",
+        "pt": "ícone alterado\nproblemas de forro de código fixo",
+        "nl": "veranderd pictogram\nvaste code linter problemen",
+        "fr": "icône modifiée\nproblèmes de code fixe linter",
+        "it": "icona modificata\nproblemi di codice fisso",
+        "es": "icono cambiado\ncódigo fijo problemas de interfono",
+        "pl": "zmieniona ikona\nstałe problemy z linterem kodowym",
+        "uk": "змінена ікона\nвиправлений код linter проблеми",
+        "zh-cn": "已更改图标\n固定代码插件问题"
+      },
+      "0.0.63": {
+        "en": "changed icon\nfixed code linter problems",
+        "de": "geändertes symbol\nfestcode linter probleme",
+        "ru": "измененная икона\nпроблемы linter кода",
+        "pt": "ícone alterado\nproblemas de forro de código fixo",
+        "nl": "veranderd pictogram\nvaste code linter problemen",
+        "fr": "icône modifiée\nproblèmes de code fixe linter",
+        "it": "icona modificata\nproblemi di codice fisso",
+        "es": "icono cambiado\ncódigo fijo problemas de interfono",
+        "pl": "zmieniona ikona\nstałe problemy z linterem kodowym",
+        "uk": "змінена ікона\nвиправлений код linter проблеми",
+        "zh-cn": "已更改图标\n固定代码插件问题"
+      },
       "0.0.62": {
         "en": "fixed bug, where broadcasted messages where sent without type",
         "de": "fehler behoben, wo gesendete nachrichten ohne typ gesendet",
