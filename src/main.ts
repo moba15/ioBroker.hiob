@@ -111,7 +111,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
                 // Nothing
             }
         }
-        
+
     }
 
     private loadConfigs(): void {
