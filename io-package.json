@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.62",
+    "version": "0.0.66-beta.0",
     "news": {
       "0.0.66-beta.0": {
         "en": "First implementation of notifications",
