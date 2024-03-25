@@ -31,15 +31,11 @@ export class StateChangedDataPack extends DataPack {
     objectID;
     value;
     ack;
-    lc;
-    ts;
-    constructor(objectID: string, value: any, ack: boolean, lc: number, ts: number) {
+    constructor(objectID: string, value: any, ack: boolean) {
         super("iobStateChanged");
         this.objectID = objectID;
         this.value = value;
         this.ack = ack;
-        this.lc = lc;
-        this.ts = ts;
     }
 
     toJSON(): any {
@@ -48,8 +44,6 @@ export class StateChangedDataPack extends DataPack {
             objectID: this.objectID,
             value: this.value,
             ack: this.ack,
-            ts: this.ts,
-            lc: this.lc,
         };
         return map;
     }

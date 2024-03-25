@@ -51,7 +51,7 @@ class NotificationManager {
     }
   }
   sendNotificationLocal(client, notification) {
-    client.sendMSG(new import_datapacks.NotificationPack(false, notification, new Date()).toJSON());
+    client.sendMSG(new import_datapacks.NotificationPack(false, notification, new Date()).toJSON(), true);
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

@@ -19,4 +19,3 @@
 # Custom Settings
 
 -   [Custom Theme Settings](custom.md)
--   [Notifications](notifications.md)

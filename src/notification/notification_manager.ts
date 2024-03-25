@@ -36,7 +36,7 @@ export class NotificationManager {
         }
     }
 
-    public sendNotificationLocal(client: Client, notification: string): void {
-        client.sendMSG(new NotificationPack(false, notification, new Date()).toJSON());
+    private sendNotificationLocal(client: Client, notification: string): void {
+        client.sendMSG(new NotificationPack(false, notification, new Date()).toJSON(), true);
     }
 }
