@@ -29,6 +29,19 @@
         "uk": "Виправлено #25\nвідправити\nОбробка конфіденційних даних та часів #22",
         "zh-cn": "25号固定\n发送到支持通知\n处理敏感数据及超时22"
       },
+      "0.0.66": {
+        "en": "Added some docs",
+        "de": "Einige Docs hinzugefügt",
+        "ru": "Добавлено несколько док",
+        "pt": "Adicionado alguns documentos",
+        "nl": "Toegevoegd enkele documenten",
+        "fr": "Ajout de quelques docs",
+        "it": "Aggiunto alcuni docs",
+        "es": "Añadido algunos docs",
+        "pl": "Dodano kilka dokumentów",
+        "uk": "Додати деякі docs",
+        "zh-cn": "添加了一些文件"
+      },
       "0.0.66-beta.0": {
         "en": "First implementation of notifications",
         "de": "Erste Umsetzung von Meldungen",
@@ -93,6 +106,19 @@
         "pl": "stały błąd, gdzie transmitowane wiadomości, gdy wysyłane bez typu",
         "uk": "виправлена помилка, де транслювалися повідомлення, де відправлено без типу",
         "zh-cn": "固定错误, 无类型发送的已广播信件"
+      },
+      "0.0.61": {
+        "en": "fixed secure connection bug (#20)",
+        "de": "fixed secure connection bug (#20)",
+        "ru": "фиксированное безопасное соединение (#20)",
+        "pt": "bug de conexão segura fixa (#20)",
+        "nl": "vaste beveiligde verbinding fout (#20)",
+        "fr": "bug de connexion sécurisé corrigé (#20)",
+        "it": "bug di connessione sicuro fisso (#20)",
+        "es": "error de conexión seguro fijo (#20)",
+        "pl": "ustawiony błąd bezpiecznego połączenia (# 20)",
+        "uk": "виправлено помилку безпечного з'єднання (#20)",
+        "zh-cn": "固定的安全连接错误 (# 20)"
       }
     },
     "titleLang": {

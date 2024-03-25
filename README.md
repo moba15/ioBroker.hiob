@@ -66,6 +66,9 @@
  - (moba15) sendTo support for notifications
  - (Lucky-ESA) Handling sensitive data & timeouts #22
 
+### 0.0.66 (2024-03-23)
+- Added some docs
+
 ### 0.0.66-beta.0 (2024-03-22)
 - First implementation of notifications
 
