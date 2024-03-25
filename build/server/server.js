@@ -83,9 +83,6 @@ class Server {
   }
   stop() {
     var _a;
-    for (const client of this.conClients) {
-      client.stop();
-    }
     (_a = this.socket) == null ? void 0 : _a.close();
     this.adapter.log.info("Server stoped");
     this.stoped = true;

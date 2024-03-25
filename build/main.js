@@ -46,14 +46,12 @@ class SamartHomeHandyBis extends utils.Adapter {
     this.useCer = false;
     this.clientinfos = {};
     this.valueDatapoints = {};
-    this.lang = "de";
     this.templateManager = new import_template_manager.TemplateManager(this);
     this.listener = new import_listener.Listener(this);
-    this.notificationManager = new import_notification_manager.NotificationManager(this);
+    new import_notification_manager.NotificationManager(this);
     this.loginManager = new import_loginmanager.LoginManager(this);
     this.on("ready", this.onReady.bind(this));
     this.on("stateChange", this.listener.onStateChange.bind(this.listener));
-    this.on("message", this.onMessage.bind(this));
     this.on("unload", this.onUnload.bind(this));
     this.server = void 0;
   }
@@ -97,21 +95,30 @@ class SamartHomeHandyBis extends utils.Adapter {
     });
     await this.setStateAsync("approveNextLogins", false, true);
     this.subscribeStates("approveNextLogins");
+    this.check_aes_key();
     this.loadConfigs();
     this.initServer();
-    const obj = await this.getForeignObjectAsync("system.config");
-    if (obj && obj.common && obj.common.language) {
-      try {
-        this.lang = obj.common.language === this.lang ? this.lang : obj.common.language;
-      } catch (e) {
-      }
-    }
   }
   loadConfigs() {
     this.port = Number(this.config.port);
     this.certPath = this.config.certPath;
     this.useCer = this.config.useCert;
     this.keyPath = this.config.keyPath;
+  }
+  async check_aes_key() {
+    const channels = await this.getChannelsAsync();
+    for (const element of channels) {
+      const id = `${this.namespace}.devices`;
+      if (element["_id"].startsWith(id)) {
+        const state = await this.getStateAsync(`${element["_id"]}.aesKey`);
+        if (state != null && state.val != null) {
+          if (state.val.toString().length === 6) {
+            const shaAes = this.encrypt(state.val.toString());
+            await this.setStateAsync(`${element["_id"]}.aesKey`, shaAes, true);
+          }
+        }
+      }
+    }
   }
   initServer() {
     this.server = new import_server.Server(this.port, this.keyPath, this.certPath, this, this.useCer);
@@ -133,33 +140,12 @@ class SamartHomeHandyBis extends utils.Adapter {
         const dataPoint = await this.getForeignObjectAsync(z);
         if (!dataPoint)
           continue;
-        const name = dataPoint.common.name;
-        if (typeof name == "object") {
-          const translated = name;
-          const translatedString = translated[this.lang];
-          if (translatedString) {
-            dataPoints.push({
-              name: translatedString,
-              id: z,
-              role: dataPoint.common.role,
-              otherDetails: dataPoint.common.custom
-            });
-          } else {
-            dataPoints.push({
-              name,
-              id: z,
-              role: dataPoint.common.role,
-              otherDetails: dataPoint.common.custom
-            });
-          }
-        } else {
-          dataPoints.push({
-            name,
-            id: z,
-            role: dataPoint.common.role,
-            otherDetails: dataPoint.common.custom
-          });
-        }
+        dataPoints.push({
+          name: dataPoint.common.name,
+          id: z,
+          role: dataPoint.common.role,
+          otherDetails: dataPoint.common.custom
+        });
       }
       const map = {
         id: enumDevices[i]._id,
@@ -200,9 +186,7 @@ class SamartHomeHandyBis extends utils.Adapter {
         const map = {
           objectID: dataPoints[i],
           value: state.val,
-          ack: state.ack,
-          ts: state.ts,
-          lc: state.lc
+          ack: state.ack
         };
         all_dp.push(map);
         this.subscribeForeignStates(dataPoints[i]);
@@ -216,26 +200,11 @@ class SamartHomeHandyBis extends utils.Adapter {
   }
   onUnload(callback) {
     try {
-      this.server && this.server.stop();
+      this.loginManager.stop();
       this.server = void 0;
       callback();
     } catch (e) {
       callback();
-    }
-  }
-  onMessage(obj) {
-    var _a;
-    if (typeof obj === "object" && obj.message) {
-      if (obj.command === "send") {
-        this.log.debug("send command");
-        const message = obj.message;
-        if ("notification" in message && "uuid" in message) {
-          const cl = (_a = this.server) == null ? void 0 : _a.getClient(message["uuid"]);
-          if (cl) {
-            this.notificationManager.sendNotificationLocal(cl, JSON.stringify(message["notification"]));
-          }
-        }
-      }
     }
   }
 }
