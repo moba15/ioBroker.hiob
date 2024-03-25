@@ -54,6 +54,22 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+ ### **WORK IN PROGRESS**
+ - (moba15) Fixed #25
+ - (moba15) sendTo support for notifications
+
+### 0.0.66-beta.0 (2024-03-22)
+- First implementation of notifications
+
+### 0.0.65 (2024-03-15)
+ - (moba15) fixed linter
+
+### 0.0.64 (2024-03-15) 
+- (moba15) changed icon
+- fixed code linter problems
+
+### 0.0.62 (2024-03-04)
+- (moba15) fixed bug, where broadcasted messages where sent without type
 ### 0.0.62 (2024-03-04)
 - (moba15) fixed bug, where broadcasted messages where sent without type
 
