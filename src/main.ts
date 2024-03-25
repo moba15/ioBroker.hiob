@@ -32,6 +32,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     templateManager: TemplateManager;
     clientinfos: {[key: string]: ClientInfo} = {};
     valueDatapoints: {[key: string]: DatapointState} = {};
+    lang: string = "de";
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -101,6 +102,15 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.check_aes_key();
         this.loadConfigs();
         this.initServer();
+        const obj = await this.getForeignObjectAsync("system.config");
+        if (obj && obj.common && obj.common.language) {
+            try {
+                this.lang = obj.common.language === this.lang ? this.lang : obj.common.language;
+            } catch (e) {
+                // Nothing
+            }
+        }
+        
     }
 
     private loadConfigs(): void {
@@ -170,12 +180,36 @@ export class SamartHomeHandyBis extends utils.Adapter {
             for (const z of members) {
                 const dataPoint = await this.getForeignObjectAsync(z);
                 if (!dataPoint) continue;
-                dataPoints.push({
-                    name: dataPoint!.common.name,
-                    id: z,
-                    role: dataPoint!.common.role,
-                    otherDetails: dataPoint!.common.custom,
-                });
+                const name: ioBroker.Translated | string | undefined = dataPoint!.common.name;
+                if (typeof name == "object") {
+                    /**
+                     * Translation
+                     */
+                    const translated: ioBroker.Translated = name as ioBroker.Translated;
+                    const translatedString = translated[this.lang as ioBroker.Languages];
+                    if (translatedString) {
+                        dataPoints.push({
+                            name: translatedString,
+                            id: z,
+                            role: dataPoint!.common.role,
+                            otherDetails: dataPoint!.common.custom,
+                        });
+                    } else {
+                        dataPoints.push({
+                            name: name,
+                            id: z,
+                            role: dataPoint!.common.role,
+                            otherDetails: dataPoint!.common.custom,
+                        });
+                    }
+                } else {
+                    dataPoints.push({
+                        name: name,
+                        id: z,
+                        role: dataPoint!.common.role,
+                        otherDetails: dataPoint!.common.custom,
+                    });
+                }
             }
             const map = {
                 id: enumDevices[i]._id,
