@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.67-beta.1",
+    "version": "0.0.67",
     "news": {
+      "0.0.67": {
+        "en": "fixed icon\nadded notifications backlog, if client is not connected (up to 250 messages)\nfixed login",
+        "de": "feste ikone\nzusätzliche benachrichtigungen backlog, wenn client nicht angeschlossen ist (bis zu 250 nachrichten)\nfeste anmeldung",
+        "ru": "значок\nдобавленное отставание уведомлений, если клиент не подключен (до 250 сообщений)\nфиксированный вход",
+        "pt": "ícone fixo\nnotificações adicionais backlog, se o cliente não estiver conectado (até 250 mensagens)\nlogin fixo",
+        "nl": "vast pictogram\ntoegevoegde meldingen achterstand, als client niet verbonden is (tot 250 berichten)\nvaste login",
+        "fr": "icône fixe\nl'arriéré de notifications ajouté, si le client n'est pas connecté (jusqu'à 250 messages)\nconnexion fixe",
+        "it": "icona fissa\nbacklog, se il client non è connesso (fino a 250 messaggi)\nlogin fisso",
+        "es": "icono fijo\nnotificaciones agregadas atraso, si el cliente no está conectado (hasta 250 mensajes)\nlogin fijo",
+        "pl": "ikona stała\ndodany backlog powiadomień, jeśli klient nie jest podłączony (do 250 wiadomości)\nstałe logowanie",
+        "uk": "фіксована ікона\nдодано повідомлення backlog, якщо клієнт не підключений (до 250 повідомлень)\nувійти",
+        "zh-cn": "固定图标\n如果客户端没有连接, 则添加通知积压( 最多250条消息)\n固定登录"
+      },
       "0.0.67-beta.1": {
         "en": "Fixed missing io-package config due to missing commit",
         "de": "Behobene fehlende io-package config aufgrund fehlender Verpflichtung",
@@ -80,45 +93,6 @@
         "pl": "zmieniona ikona\nstałe problemy z linterem kodowym",
         "uk": "змінена ікона\nвиправлений код linter проблеми",
         "zh-cn": "已更改图标\n固定代码插件问题"
-      },
-      "0.0.63": {
-        "en": "changed icon\nfixed code linter problems",
-        "de": "geändertes symbol\nfestcode linter probleme",
-        "ru": "измененная икона\nпроблемы linter кода",
-        "pt": "ícone alterado\nproblemas de forro de código fixo",
-        "nl": "veranderd pictogram\nvaste code linter problemen",
-        "fr": "icône modifiée\nproblèmes de code fixe linter",
-        "it": "icona modificata\nproblemi di codice fisso",
-        "es": "icono cambiado\ncódigo fijo problemas de interfono",
-        "pl": "zmieniona ikona\nstałe problemy z linterem kodowym",
-        "uk": "змінена ікона\nвиправлений код linter проблеми",
-        "zh-cn": "已更改图标\n固定代码插件问题"
-      },
-      "0.0.62": {
-        "en": "fixed bug, where broadcasted messages where sent without type",
-        "de": "fehler behoben, wo gesendete nachrichten ohne typ gesendet",
-        "ru": "фиксированная ошибка, где транслируются сообщения, куда отправляют без типа",
-        "pt": "bug fixo, onde mensagens transmitidas onde enviado sem tipo",
-        "nl": "vaste bug, waar uitgezonden berichten waar verzonden zonder type",
-        "fr": "bug fixe, où les messages diffusés sont envoyés sans type",
-        "it": "bug fisso, dove messaggi trasmessi dove inviati senza tipo",
-        "es": "bug fijo, donde se transmiten mensajes donde se envía sin tipo",
-        "pl": "stały błąd, gdzie transmitowane wiadomości, gdy wysyłane bez typu",
-        "uk": "виправлена помилка, де транслювалися повідомлення, де відправлено без типу",
-        "zh-cn": "固定错误, 无类型发送的已广播信件"
-      },
-      "0.0.61": {
-        "en": "fixed secure connection bug (#20)",
-        "de": "fixed secure connection bug (#20)",
-        "ru": "фиксированное безопасное соединение (#20)",
-        "pt": "bug de conexão segura fixa (#20)",
-        "nl": "vaste beveiligde verbinding fout (#20)",
-        "fr": "bug de connexion sécurisé corrigé (#20)",
-        "it": "bug di connessione sicuro fisso (#20)",
-        "es": "error de conexión seguro fijo (#20)",
-        "pl": "ustawiony błąd bezpiecznego połączenia (# 20)",
-        "uk": "виправлено помилку безпечного з'єднання (#20)",
-        "zh-cn": "固定的安全连接错误 (# 20)"
       }
     },
     "titleLang": {
