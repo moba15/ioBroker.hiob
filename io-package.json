@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.66",
+    "version": "0.0.67-beta.0",
     "news": {
+      "0.0.67-beta.0": {
+        "en": "Fixed #25\nsendTo support for notifications\nHandling sensitive data & timeouts #22",
+        "de": "Feste #25\nsendTo Unterstützung für Benachrichtigungen\nUmgang mit sensiblen Daten & Timeouts #22",
+        "ru": "#25\nsendTo поддержка уведомлений\nОбработка чувствительных данных и таймаутов #22",
+        "pt": "Fixo #25\nsuporte para notificações\nManipulação de dados e timeouts sensíveis #22",
+        "nl": "Vast #25\nsendTo support for notifications\nBehandeling van gevoelige gegevens en time-outs #22",
+        "fr": "Correction n°25\nsendTo support pour les notifications\nTraitement des données sensibles et des délais #22",
+        "it": "Fisso #25\nsendTo supporto per le notifiche\nGestione di dati e timeout sensibili #22",
+        "es": "Arreglado #25\nenviarA soporte para notificaciones\nManejo de datos sensibles \" timeouts \" #22",
+        "pl": "Naprawiono # 25\nsendTo support for notification\nObsługa wrażliwych danych i timeout # 22",
+        "uk": "Виправлено #25\nвідправити\nОбробка конфіденційних даних та часів #22",
+        "zh-cn": "25号固定\n发送到支持通知\n处理敏感数据及超时22"
+      },
       "0.0.66-beta.0": {
         "en": "First implementation of notifications",
         "de": "Erste Umsetzung von Meldungen",
@@ -80,71 +93,6 @@
         "pl": "ustawiony błąd bezpiecznego połączenia (# 20)",
         "uk": "виправлено помилку безпечного з'єднання (#20)",
         "zh-cn": "固定的安全连接错误 (# 20)"
-      },
-      "0.0.61-beta.0": {
-        "en": "Preperation of lastest request\nfixed some smaller issues",
-        "de": "Vorbereitung der letzten Anfrage\neinige kleinere probleme behoben",
-        "ru": "Превосходство последнего запроса\nисправить некоторые небольшие проблемы",
-        "pt": "Preperação do último pedido\ncorrigiu alguns problemas menores",
-        "nl": "Voorbereiding van laatste verzoek\nenkele kleinere problemen opgelost",
-        "fr": "Préperation de la dernière demande\ncorrigé quelques petits problèmes",
-        "it": "Preperazione dell'ultima richiesta\nrisolto alcuni problemi più piccoli",
-        "es": "Preperación de la solicitud láser\narreglar algunas cuestiones más pequeñas",
-        "pl": "Preperacja ostatniego wniosku\nnaprawiono kilka mniejszych problemów",
-        "uk": "Переробка останнього запиту\nвиправлено деякі менші проблеми",
-        "zh-cn": "最后请求的先验\n确定一些较小的问题"
-      },
-      "0.0.60": {
-        "en": "Added simple AES encryption\nPreperation for latest request\nFixed login errors if AES encryption is disabled",
-        "de": "Einfache AES-Verschlüsselung\nVorbereitung auf neueste Anfrage\nFehler behoben, wenn AES-Verschlüsselung deaktiviert ist",
-        "ru": "Добавлено простое шифрование AES\nПревосходность для последнего запроса\nИсправленные ошибки входа, если отключено шифрование AES",
-        "pt": "Adicionado simples criptografia AES\nPreperação para pedido mais recente\nErros de login fixos se a criptografia AES está desativada",
-        "nl": "Eenvoudige AES-versleuteling toegevoegd\nVoorbereiding voor laatste verzoek\nVaste login fouten als AES-encryptie is uitgeschakeld",
-        "fr": "Ajout d'un chiffrement simple AES\nPréperation pour la dernière demande\nErreurs de connexion corrigées si le chiffrement AES est désactivé",
-        "it": "Aggiunto semplice crittografia AES\nPreperazione per l'ultima richiesta\nErrori di login corretti se la crittografia AES è disabilitata",
-        "es": "Cifrado simple AES\nPreperación para la última solicitud\nErrores de inicio de sesión fijos si el cifrado AES está deshabilitado",
-        "pl": "Dodano proste szyfrowanie AES\nPreperacja do ostatniego wniosku\nNaprawiono błędy logowania w przypadku wyłączenia szyfrowania AES",
-        "uk": "Додано простий шифрування AES\nПопереднє замовлення для останнього запиту\nВиправлені помилки в логіні, якщо шифрування AES вимкнено",
-        "zh-cn": "添加简单的 AES 加密\n最新请求的预览\n如果禁用 AES 加密, 则固定登录错误"
-      },
-      "0.0.55": {
-        "en": "Fixed Adapter crash if data point does not exist\nFixed some login errors\n",
-        "de": "Fixed Adapter Crash, wenn Datenpunkt nicht vorhanden ist\nBehoben einige Login-Fehler\n",
-        "ru": "Сбой фиксированного адаптера, если точки данных не существует\nИсправлены некоторые ошибки входа\n",
-        "pt": "Fixed Adapter crash se o ponto de dados não existir\nCorrigido alguns erros de login\n",
-        "nl": "Fixed Adapter crash als datapoint niet bestaat\nEnkele aanmeldfouten hersteld\n",
-        "fr": "Correction du crash de l'adaptateur si le point de données n'existe pas\nCorrection de certaines erreurs de connexion\n",
-        "it": "Corretto crash dell'adattatore se il punto di dati non esiste\nRisolto alcuni errori di login\n",
-        "es": "Accidente de adaptador fijo si el punto de datos no existe\nArreglado algunos errores de inicio de sesión\n",
-        "pl": "Stała awaria adaptera, jeśli punkt danych nie istnieje\nNaprawiono pewne błędy logowania\n",
-        "uk": "Виправлено помилку адаптера, якщо точка даних не існує\nВиправлено помилки входу\n",
-        "zh-cn": "如果数据点不存在, 固定适配器崩溃\n修正一些登录错误\n"
-      },
-      "0.0.54": {
-        "en": "Added secure login\nAdded secure connetion\nAutomatic acceptance of incoming connections for 60 seconds\n",
-        "de": "Zusätzlicher sicherer Login\nHinzugefügt sichere connetion\nAutomatische Akzeptanz von eingehenden Verbindungen für 60 Sekunden\n",
-        "ru": "Добавить безопасный логин\nДобавлено безопасное соединение\nАвтоматическое принятие входящих соединений в течение 60 секунд\n",
-        "pt": "Adicionado login seguro\nAdicionado connetion seguro\nAceitação automática de conexões recebidas por 60 segundos\n",
-        "nl": "Veilig aanmelden toegevoegd\nToegevoegd beveiligde connetion\nAutomatische aanvaarding van inkomende verbindingen gedurende 60 seconden\n",
-        "fr": "Ajout d'une connexion sécurisée\nAjout d'une connexion sécurisée\nAcceptation automatique des connexions entrantes pendant 60 secondes\n",
-        "it": "Aggiunto il login sicuro\nAggiunto sicuro connetion\nAccettazione automatica delle connessioni in entrata per 60 secondi\n",
-        "es": "Acceso seguro\nConneción segura\nAceptación automática de las conexiones entrantes durante 60 segundos\n",
-        "pl": "Dodano bezpieczne logowanie\nDodano bezpieczne połączenie\nAutomatyczna akceptacja połączeń przychodzących przez 60 sekund\n",
-        "uk": "Додати безпечний логін\nДодано безпечне з'єднання\nАвтоматичне прийняття вхідних з'єднань протягом 60 секунд\n",
-        "zh-cn": "添加安全登录\n添加安全连接\n自动接收60秒的连接\n"
-      },
-      "0.0.1": {
-        "en": "initial release",
-        "de": "erstausstrahlung",
-        "ru": "первоначальный выпуск",
-        "pt": "lançamento inicial",
-        "nl": "eerste release",
-        "fr": "libération initiale",
-        "it": "rilascio iniziale",
-        "es": "liberación inicial",
-        "pl": "początkowe zwolnienie",
-        "uk": "початковий реліз",
-        "zh-cn": "初步释放"
       }
     },
     "titleLang": {
