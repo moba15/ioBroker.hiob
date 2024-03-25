@@ -25,6 +25,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     server?: Server;
     listener: Listener;
     loginManager: LoginManager;
+    notificationManager: NotificationManager;
     port: number = 8095;
     keyPath: string = "";
     certPath: string = "";
@@ -41,12 +42,12 @@ export class SamartHomeHandyBis extends utils.Adapter {
         });
         this.templateManager = new TemplateManager(this);
         this.listener = new Listener(this);
-        new NotificationManager(this);
+        this.notificationManager = new NotificationManager(this);
         this.loginManager = new LoginManager(this);
         this.on("ready", this.onReady.bind(this));
         this.on("stateChange", this.listener.onStateChange.bind(this.listener));
         // this.on("objectChange", this.onObjectChange.bind(this));
-        // this.on("message", this.onMessage.bind(this));
+        this.on("message", this.onMessage.bind(this));
         this.on("unload", this.onUnload.bind(this));
         this.server = undefined;
     }
@@ -313,17 +314,23 @@ export class SamartHomeHandyBis extends utils.Adapter {
     //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
     //  */
-    // private onMessage(obj: ioBroker.Message): void {
-    // 	if (typeof obj === "object" && obj.message) {
-    // 		if (obj.command === "send") {
-    // 			// e.g. send email or pushover or whatever
-    // 			this.log.info("send command");
+    private onMessage(obj: ioBroker.Message): void {
+        if (typeof obj === "object" && obj.message) {
+            if (obj.command === "send") {
+                this.log.debug("send command");
+                const message = obj.message;
+                if ("notification" in message && "uuid" in message) {
+                    //Send Not.
+                    const cl: Client | undefined = this.server?.getClient(message["uuid"]);
+                    if (cl) {
+                        this.notificationManager.sendNotificationLocal(cl, JSON.stringify(message["notification"]));
+                    }
+                }
 
-    // 			// Send response in callback if required
-    // 			if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
-    // 		}
-    // 	}
-    // }
+                //if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
+            }
+        }
+    }
 }
 
 if (require.main !== module) {
