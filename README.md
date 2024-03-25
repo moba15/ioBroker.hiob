@@ -54,6 +54,8 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+ - (moba15) fixed icon
 ### 0.0.67-beta.1 (2024-03-25)
  - (moba15) Fixed missing io-package config due to missing commit
 
