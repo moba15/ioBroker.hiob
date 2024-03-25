@@ -54,9 +54,10 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
- ### **WORK IN PROGRESS**
+### **WORK IN PROGRESS**
  - (moba15) Fixed #25
  - (moba15) sendTo support for notifications
+ - (Lucky-ESA) Handling sensitive data & timeouts #22
 
 ### 0.0.66-beta.0 (2024-03-22)
 - First implementation of notifications
@@ -75,7 +76,7 @@
 - (moba15) fixed bug, where broadcasted messages where sent without type
 
 ### 0.0.61 (2024-03-04)
- - (moba15) fixed secure connection bug (#20)
+- (moba15) fixed secure connection bug (#20)
 
 ### 0.0.61-beta.0 (2024-03-01)
 - (Lucky-ESA) Preperation of lastest request
