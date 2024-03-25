@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.67-beta.0",
+    "version": "0.0.67-beta.1",
     "news": {
+      "0.0.67-beta.1": {
+        "en": "Fixed missing io-package config due to missing commit",
+        "de": "Behobene fehlende io-package config aufgrund fehlender Verpflichtung",
+        "ru": "Исправленная недостающая настройка io-package из-за отсутствия фиксации",
+        "pt": "Corrigido falta io-package config devido a falta de commit",
+        "nl": "Fixed io-package config wegens ontbrekende commit",
+        "fr": "Correction de la configuration io-package manquante en raison de la disparition du commit",
+        "it": "Fisso di configurazione di io-package mancante a causa del commit mancante",
+        "es": "Fig de io-paquete fijo por falta de compromiso",
+        "pl": "Naprawiono brakującą konfigurację pakietu jo- z powodu braku commit",
+        "uk": "Виправлено відсутні налаштування io-package через відсутній коміт",
+        "zh-cn": "失踪造成的固定的氧化包装配置"
+      },
       "0.0.67-beta.0": {
         "en": "Fixed #25\nsendTo support for notifications\nHandling sensitive data & timeouts #22",
         "de": "Feste #25\nsendTo Unterstützung für Benachrichtigungen\nUmgang mit sensiblen Daten & Timeouts #22",
@@ -80,19 +93,6 @@
         "pl": "stały błąd, gdzie transmitowane wiadomości, gdy wysyłane bez typu",
         "uk": "виправлена помилка, де транслювалися повідомлення, де відправлено без типу",
         "zh-cn": "固定错误, 无类型发送的已广播信件"
-      },
-      "0.0.61": {
-        "en": "fixed secure connection bug (#20)",
-        "de": "fixed secure connection bug (#20)",
-        "ru": "фиксированное безопасное соединение (#20)",
-        "pt": "bug de conexão segura fixa (#20)",
-        "nl": "vaste beveiligde verbinding fout (#20)",
-        "fr": "bug de connexion sécurisé corrigé (#20)",
-        "it": "bug di connessione sicuro fisso (#20)",
-        "es": "error de conexión seguro fijo (#20)",
-        "pl": "ustawiony błąd bezpiecznego połączenia (# 20)",
-        "uk": "виправлено помилку безпечного з'єднання (#20)",
-        "zh-cn": "固定的安全连接错误 (# 20)"
       }
     },
     "titleLang": {
