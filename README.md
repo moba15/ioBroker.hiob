@@ -70,6 +70,7 @@
 
 ### 0.0.62 (2024-03-04)
 - (moba15) fixed bug, where broadcasted messages where sent without type
+
 ### 0.0.62 (2024-03-04)
 - (moba15) fixed bug, where broadcasted messages where sent without type
 
