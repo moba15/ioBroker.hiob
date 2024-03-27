@@ -7,11 +7,17 @@
     "email": "moritz@bachmaiers.de"
   },
   "homepage": "https://github.com/moba15/ioBroker.hiob.git",
-  "license": "MIT",
+  "licenseInformation": {
+    "license": "MIT",
+    "type": "free"
+  },
+  "tier": 2,
   "keywords": [
-    "ioBroker",
-    "template",
-    "Smart Home",
+    "Android",
+    "Visualization",
+    "APP",
+    "Widgets",
+    "Templates",
     "home automation"
   ],
   "repository": {

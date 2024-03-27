@@ -11,7 +11,7 @@
 - Hier können nun Screens für den Header erstellt werden und diesen kann man Widgets hinzufügen. Widgets können in Sceerns nicht doppelt hinzugefügt werden.
 - Nach links wischen um ein Screen zu löschen. Wenn der letzte Screen gelöscht wird, erscheint automatisch ein neuer mit dem Namen Template.
 
-- Rechts unten das Pluszeichen drücken um ein neuen Screnn zu erstellen oder auf `Template` klicken um den Namen zu ändern.
+- Rechts unten das Pluszeichen drücken um ein neuen Screen zu erstellen oder auf `Template` klicken um den Namen zu ändern.
 
 ![app_create_screen.png](img/app_create_screen.png)
 

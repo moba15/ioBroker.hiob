@@ -1,3 +1,7 @@
+![Logo](../../admin/hiob.png)
+
+-   [Zurück zur Beschreibung](/docs/de/README.md)
+
 ## Notifications
 
 ❗**Wichtig** ❗: Dieses Feature ist noch in der beta Phase. Das bedeutet:
@@ -43,6 +47,10 @@
       	"type": "boolean",
         "descreption": "Wether it should be dissmisable ",
       },
+      "group": {
+      	"type": "boolean",
+        "descreption": "Goups ",
+      },
       "colorARGB": {
       	"type": "string",
         "descreption": "ARGB Color Hex code ",
@@ -50,12 +58,19 @@
       "id": {
       	"type": "number",
         "descreption": "Notification ID. If you do not want to send a new notification, give it the same ID and the old one will be overwritten",
-
       }
-   
     }
 }
 ```
+
+#### Color - color`ARGB`
+
+- `A` ist der Alpha-Wert, wobei 0 transparent und 255 vollständig undurchsichtig ist – Dezimal in Hex umwandeln 255 == FF
+- `R` ist rot, from 0 to 255 - Dezimal in Hex umwandeln 255 == FF
+- `G` ist grün, from 0 to 255 - Dezimal in Hex umwandeln 255 == FF
+- `B` ist blau, from 0 to 255 - Dezimal in Hex umwandeln 255 == FF
+- `ARGB` == FFFFFFFF
+
 #### Beispiel
 ```JSON
 {
@@ -66,7 +81,7 @@
 }
 ```
 
-#### Blockly sendTo Example
+#### Blockly sendTo Beispiel
 Es ist ebenfalls möglich über Blockly mithilfe der sendTo Funktion Benachrichtigungen zu senden:
 - Parameter
   - **uuid**: Die id des Gerätes. Zu finden unter hiob.x.devices
@@ -76,8 +91,13 @@ Es ist ebenfalls möglich über Blockly mithilfe der sendTo Funktion Benachricht
 ```JS
 sendTo('hiob.0', 'send', { 'uuid': '52e34cca-c85a-423a-a07b-c711a0d1575a', 'notification': { 'title': 'Title', 'body': 'Bewegung erkannt' } });
 ```
-#### Example of using the same id
+#### Beispiel für die Verwendung derselben ID - Javascript Adapter >= 7.9.0
 **Blockly** <br>
 ![Example](img/notificationBlockly2.png) <br>
+![Example](img/notificationID.png) <br>
+**Blockly mit Antwort** <br>
+![Example](img/notificationCallback.png) <br>
 **Notification** <br>
 ![Example](img/notificationIDExample.gif)
+
+-   [Zurück zur Beschreibung](/docs/de/README.md)

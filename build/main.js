@@ -247,6 +247,11 @@ class SamartHomeHandyBis extends utils.Adapter {
         if ("notification" in message && "uuid" in message) {
           const cl = (_a = this.server) == null ? void 0 : _a.getClient(message["uuid"]);
           this.notificationManager.sendNotificationLocal(cl, message["uuid"], JSON.stringify(message["notification"]));
+          if (obj.callback)
+            this.sendTo(obj.from, obj.command, "Message received", obj.callback);
+        } else {
+          if (obj.callback)
+            this.sendTo(obj.from, obj.command, "Error received", obj.callback);
         }
       }
     }
