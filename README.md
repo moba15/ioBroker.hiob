@@ -54,7 +54,7 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 0.1.0 (2024-03-27)
+### **WORK IN PROGRESS**
 - (Lucky-ESA) added more docs
 - (moba15) fixed backlog warning
 - (moba15) changed node version to min. 18
