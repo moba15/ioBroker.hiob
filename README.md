@@ -54,6 +54,8 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (moba15) fixed package.json
 ### 0.1.0 (2024-03-27)
 - (Lucky-ESA) added more docs
 - (moba15) fixed backlog warning
