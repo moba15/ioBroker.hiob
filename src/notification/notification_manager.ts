@@ -1,7 +1,7 @@
 import { SamartHomeHandyBis } from "../main";
 import { Events, StateChangeEvent } from "../listener/listener";
 
-import { DataPack, NotificationPack } from "../server/datapacks";
+import {NotificationPack } from "../server/datapacks";
 import { Client } from "../server/client";
 
 export class NotificationManager {
@@ -61,7 +61,7 @@ export class NotificationManager {
                     for(const i of currentBacklogArray) {
                         client.sendMSG(new NotificationPack(false, i, new Date()).toJSON(), true);
                     }
-                    await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]));
+                    await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]), true);
                 }
             }
         }

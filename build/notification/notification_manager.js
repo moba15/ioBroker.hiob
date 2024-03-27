@@ -44,7 +44,7 @@ class NotificationManager {
   }
   async sendNotificationLocal(client, deviceID, notification) {
     if (client != void 0 && (client == null ? void 0 : client.isConnected)) {
-      client.sendMSG(new import_datapacks.NotificationPack(false, notification, new Date()).toJSON(), true);
+      client.sendMSG(new import_datapacks.NotificationPack(false, notification, /* @__PURE__ */ new Date()).toJSON(), true);
     } else {
       const currentBacklogState = await this.adapter.getStateAsync("devices." + deviceID + ".notificationBacklog");
       if (currentBacklogState) {
@@ -72,9 +72,9 @@ class NotificationManager {
           }
           const currentBacklogArray = JSON.parse(currentBacklogRaw);
           for (const i of currentBacklogArray) {
-            client.sendMSG(new import_datapacks.NotificationPack(false, i, new Date()).toJSON(), true);
+            client.sendMSG(new import_datapacks.NotificationPack(false, i, /* @__PURE__ */ new Date()).toJSON(), true);
           }
-          await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]));
+          await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]), true);
         }
       }
     }

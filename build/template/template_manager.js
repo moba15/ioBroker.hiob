@@ -26,7 +26,7 @@ class TemplateManager {
   constructor(adapter) {
     this.adapter = adapter;
   }
-  async uploadTemplateSetting(name, devices, screens, widgets, _client) {
+  async uploadTemplateSetting(name, devices, screens, widgets) {
     if (devices != null) {
       await this.adapter.setStateAsync("settings." + name + ".devices", devices, true);
     }
@@ -69,7 +69,7 @@ class TemplateManager {
     }
     return list;
   }
-  async createNewTemplateSetting(templateSettings, client) {
+  async createNewTemplateSetting(templateSettings) {
     await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name, {
       type: "folder",
       common: {

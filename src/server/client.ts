@@ -221,9 +221,9 @@ export class Client {
         this.adapter.subscribeToDataPoints(sub.dataPoints, this);
     }
 
-    onSubscribeToHistory(sub: SubscribeToDataPointsHistory): void {
+    /* onSubscribeToHistory(sub: SubscribeToDataPointsHistory): void {
         // this.adapter.historyManager.subscribeToHistory(sub.dataPoint, sub.start, sub.end, this, sub.minInterval);
-    }
+    } */
 
     onLoginRequest(requestLoginPacket: RequestLoginPacket): void {
         this.adapter.loginManager.onLoginRequest(this,requestLoginPacket);
