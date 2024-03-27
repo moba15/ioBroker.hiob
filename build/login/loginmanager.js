@@ -147,6 +147,10 @@ class LoginManager {
     }
   }
   async setAesNewAndSentInfo(deviceID, cl) {
+    if (this.aesViewTimeout[deviceID]) {
+      this.adapter.clearTimeout(this.aesViewTimeout[deviceID]);
+      this.aesViewTimeout[deviceID] = void 0;
+    }
     const random_key = this.genRandomString(6, true);
     await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
     cl.aesKey = random_key;
@@ -155,8 +159,11 @@ class LoginManager {
   }
   async setAesStatus(deviceID, cl) {
     const get_aes = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
-    const aes_status = await this.adapter.getStateAsync("devices." + deviceID + ".aesKey_active");
+    const aes_status = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey_active`);
     if (get_aes && get_aes.val && aes_status && aes_status.val) {
+      if (get_aes.val.toString().length > 6) {
+        get_aes.val = this.adapter.decrypt(get_aes.val.toString());
+      }
       cl.setAESKey(get_aes.val.toString());
       this.adapter.log.info(`AES encryption enabled!`);
     } else {
@@ -170,6 +177,9 @@ class LoginManager {
     if (aes_status && aes_status.val) {
       const aes = await this.adapter.getStateAsync("devices." + deviceID + ".aesKey");
       if (aes != null && aes.val != null) {
+        if (aes.val.toString().length > 6) {
+          aes.val = this.adapter.decrypt(aes.val.toString());
+        }
         cl.setAESKey(aes.val.toString());
       } else {
         cl.setAESKey("");
@@ -604,6 +614,9 @@ class LoginManager {
       await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
       client.aesKey = random_key;
     } else if (get_aes != null && typeof get_aes.val === "string") {
+      if (get_aes.val.toString().length > 6) {
+        get_aes.val = this.adapter.decrypt(get_aes.val.toString());
+      }
       client.aesKey = get_aes.val;
     } else {
       this.adapter.log.warn("Cannot find AES Key. Please Restart Adapter!");
