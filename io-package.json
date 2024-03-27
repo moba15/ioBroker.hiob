@@ -1,9 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.67",
+    "version": "0.1.0",
     "news": {
-     
+      "0.1.0": {
+        "en": "added more docs\nfixed backlog warning\nchanged node version to min. 18",
+        "de": "mehr docs\nfeste backlog-warnung\ngeänderte knotenversion in min. 183",
+        "ru": "добавлено больше док\nпредупредить\nизменена версия узла на мин. 18",
+        "pt": "adicionado mais documentos\naviso de backlog fixo\nmudou versão do nó para min. 18",
+        "nl": "meer documenten toevoegen\nwaarschuwing voor vaste achterstand\nveranderde node versie in min. 18",
+        "fr": "plus de docs\nalerte de retard fixe\na changé la version du noeud en min. 18",
+        "it": "aggiunto più documenti\navviso backlog fisso\ncambiato versione nodo a min. 18",
+        "es": "añadido más docs\nalerta fija\ncambió la versión de nodo a min. 18",
+        "pl": "dodano więcej dokumentów\nstałe ostrzeżenie backlog\nzmieniona wersja węzła na min. 18",
+        "uk": "додано більше docs\nвиправлено попередження задньої панелі\nзмінена версія вершини до хв. 18 років",
+        "zh-cn": "添加更多文件\n固定积压警告\n将节点版本改为分钟。 第 18 条"
+      },
       "0.0.67": {
         "en": "fixed icon\nadded notifications backlog, if client is not connected (up to 250 messages)\nfixed login",
         "de": "feste ikone\nzusätzliche benachrichtigungen backlog, wenn client nicht angeschlossen ist (bis zu 250 nachrichten)\nfeste anmeldung",
