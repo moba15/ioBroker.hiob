@@ -7,12 +7,7 @@
     "email": "moritz@bachmaiers.de"
   },
   "homepage": "https://github.com/moba15/ioBroker.hiob.git",
-  "licenseInformation": {
-    "license": "MIT",
-    "type": "free"
-  },
   "license": "MIT",
-  "tier": 2,
   "keywords": [
     "Android",
     "Visualization",

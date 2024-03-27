@@ -130,7 +130,11 @@
       "Smart Home",
       "home automation"
     ],
-    "license": "MIT",
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
+    "tier": 2,
     "platform": "Javascript/Node.js",
     "main": "build/main.js",
     "icon": "hiob.png",
