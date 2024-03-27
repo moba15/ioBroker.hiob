@@ -54,8 +54,9 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.1.2 (2024-03-27)
 - (Lucky-ESA) changed licenseInformation and tier
+
 ### 0.1.1 (2024-03-27)
 - (moba15) fixed package.json
 
