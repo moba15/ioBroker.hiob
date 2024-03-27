@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "news": {
+      "0.1.1": {
+        "en": "fixed package.json",
+        "de": "festpaket.json",
+        "ru": "фиксированный пакет.json",
+        "pt": "pacote fixo.json",
+        "nl": "vast pakket.json",
+        "fr": "paquet fixe.json",
+        "it": "pacchetto fisso.json",
+        "es": "paquete fijo.json",
+        "pl": "stałe package.json",
+        "uk": "фіксований пакет.json",
+        "zh-cn": "固定包裹.json"
+      },
       "0.1.0": {
         "en": "added more docs\nfixed backlog warning\nchanged node version to min. 18",
         "de": "mehr docs\nfeste backlog-warnung\ngeänderte knotenversion in min. 183",
@@ -80,19 +93,6 @@
         "pl": "Pierwsze wdrożenie powiadomień",
         "uk": "Перша реалізація повідомлень",
         "zh-cn": "通知的首次执行"
-      },
-      "0.0.65": {
-        "en": "fixed linter",
-        "de": "fester linter",
-        "ru": "фиксированный linter",
-        "pt": "forro fixo",
-        "nl": "vaste linter",
-        "fr": "linter fixe",
-        "it": "interessi fissi",
-        "es": "invierno fijo",
-        "pl": "łącznik stały",
-        "uk": "фіксований linter",
-        "zh-cn": "固定线条"
       }
     },
     "titleLang": {
