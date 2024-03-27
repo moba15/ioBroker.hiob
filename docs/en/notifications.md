@@ -91,6 +91,8 @@ sendTo('hiob.0', 'send', { 'uuid': '52e34cca-c85a-423a-a07b-c711a0d1575a', 'noti
 **Blockly** <br>
 ![Example](img/notificationBlockly2.png) <br>
 ![Example](img/notificationID.png) <br>
+**Blockly with result** <br>
+![Example](img/notificationCallback.png) <br>
 **Notification** <br>
 ![Example](img/notificationIDExample.gif)
 
