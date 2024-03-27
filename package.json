@@ -11,6 +11,7 @@
     "license": "MIT",
     "type": "free"
   },
+  "tier": 2,
   "keywords": [
     "Android",
     "Visualization",
