@@ -1,7 +1,7 @@
 import { SamartHomeHandyBis } from "../main";
 import { Events, StateChangeEvent } from "../listener/listener";
 
-import { DataPack, NotificationPack } from "../server/datapacks";
+import {NotificationPack } from "../server/datapacks";
 import { Client } from "../server/client";
 
 export class NotificationManager {

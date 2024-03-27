@@ -23,8 +23,8 @@ __export(history_bound_exports, {
 module.exports = __toCommonJS(history_bound_exports);
 var HistoryBound = ((HistoryBound2) => {
   HistoryBound2[HistoryBound2["now"] = Date.now()] = "now";
-  HistoryBound2[HistoryBound2["end_of_month"] = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getMilliseconds()] = "end_of_month";
-  HistoryBound2[HistoryBound2["start_of_month"] = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getMilliseconds()] = "start_of_month";
+  HistoryBound2[HistoryBound2["end_of_month"] = new Date((/* @__PURE__ */ new Date()).getFullYear(), (/* @__PURE__ */ new Date()).getMonth() + 1, 0).getMilliseconds()] = "end_of_month";
+  HistoryBound2[HistoryBound2["start_of_month"] = new Date((/* @__PURE__ */ new Date()).getFullYear(), (/* @__PURE__ */ new Date()).getMonth(), 0).getMilliseconds()] = "start_of_month";
   return HistoryBound2;
 })(HistoryBound || {});
 // Annotate the CommonJS export names for ESM import in node:

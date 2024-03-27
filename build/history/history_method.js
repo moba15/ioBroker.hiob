@@ -22,6 +22,7 @@ __export(history_method_exports, {
 });
 module.exports = __toCommonJS(history_method_exports);
 var HistoryMethod = /* @__PURE__ */ ((HistoryMethod2) => {
+  return HistoryMethod2;
 })(HistoryMethod || {});
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

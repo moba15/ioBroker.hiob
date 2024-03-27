@@ -18,6 +18,10 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
@@ -286,6 +290,11 @@ class LoginManager {
     }
     return apr;
   }
+  /**
+   * This method creates all IoBroker Objects needed for the login request. If they exists this method will not create any
+   * @param deviceIDRep Id of the device
+   * @param deviceName Name of the device
+   */
   async createObjects(client, deviceIDRep, deviceName, key, version) {
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}`, {
       type: "channel",
@@ -524,6 +533,7 @@ class LoginManager {
         },
         type: "string",
         role: "state",
+        //TODO: Indicator
         desc: "Created by Adapter",
         def: "",
         read: true,

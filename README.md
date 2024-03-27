@@ -54,6 +54,14 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### 0.1.1 (2024-03-27)
+- (moba15) fixed package.json
+
+### 0.1.0 (2024-03-27)
+- (Lucky-ESA) added more docs
+- (moba15) fixed backlog warning
+- (moba15) changed node version to min. 18
+
 ### 0.0.67 (2024-03-25)
  - (moba15) fixed icon
  - (moba15) added notifications backlog, if client is not connected (up to 250 messages)

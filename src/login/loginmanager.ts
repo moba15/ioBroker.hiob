@@ -1,4 +1,3 @@
-import { AnyARecord } from "dns";
 import { Events, StateChangeEvent } from "../listener/listener";
 import { SamartHomeHandyBis } from "../main";
 import { Client } from "../server/client";

@@ -24,7 +24,7 @@ export class Client {
     server;
     isConnected;
     req;
-    adapter;
+    adapter : SamartHomeHandyBis;
     approved;
     aesKey?: string;
     onlySendNotification: boolean = false;
@@ -135,7 +135,7 @@ export class Client {
                     break;
                 case "subscribeHistory":
                     if (this.approved)
-                        this.onSubscribeToHistory(new SubscribeToDataPointsHistory(content["dataPoint"], content["end"], content["start"], content["interval"]));
+                        /* this.onSubscribeToHistory(new SubscribeToDataPointsHistory(content["dataPoint"], content["end"], content["start"], content["interval"])); */
                     //TODO:
                     break;
                 case "requestLogin":
@@ -221,9 +221,9 @@ export class Client {
         this.adapter.subscribeToDataPoints(sub.dataPoints, this);
     }
 
-    onSubscribeToHistory(sub: SubscribeToDataPointsHistory): void {
+    /* onSubscribeToHistory(sub: SubscribeToDataPointsHistory): void {
         // this.adapter.historyManager.subscribeToHistory(sub.dataPoint, sub.start, sub.end, this, sub.minInterval);
-    }
+    } */
 
     onLoginRequest(requestLoginPacket: RequestLoginPacket): void {
         this.adapter.loginManager.onLoginRequest(this,requestLoginPacket);
@@ -241,12 +241,12 @@ export class Client {
     async onTemplateSettingCreate(templateSettingCreatePack: TemplateSettingCreatePack): Promise<void> {
         //TODO:
         this.adapter.log.debug("OnTemplateSettingCreate: " + templateSettingCreatePack.name);
-        await this.adapter.templateManager.createNewTemplateSetting(new TemplateSettings(templateSettingCreatePack.name), this);
+        await this.adapter.templateManager.createNewTemplateSetting(new TemplateSettings(templateSettingCreatePack.name));
         this.sendMSG(new TemplateSettingCreatePack(templateSettingCreatePack.name).toJSON(), true);
     }
 
     async onTemplateUpload(uploadTemplateSettingPack: any): Promise<void> {
-        await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets, this);
+        await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets);
         this.sendMSG(new TemplateSettingUploadSuccessPack().toJSON(), true);
     }
 

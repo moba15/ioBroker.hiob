@@ -18,6 +18,10 @@ var __copyProps = (to, from, except, desc) => {
   return to;
 };
 var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
@@ -131,8 +135,7 @@ class Client {
           break;
         case "subscribeHistory":
           if (this.approved)
-            this.onSubscribeToHistory(new import_datapacks.SubscribeToDataPointsHistory(content["dataPoint"], content["end"], content["start"], content["interval"]));
-          break;
+            break;
         case "requestLogin":
           if (!content["version"]) {
             this.adapter.log.warn(`Please update the HioB APP!`);
@@ -201,8 +204,9 @@ class Client {
   onSubscribeToDataPoints(sub) {
     this.adapter.subscribeToDataPoints(sub.dataPoints, this);
   }
-  onSubscribeToHistory(sub) {
-  }
+  /* onSubscribeToHistory(sub: SubscribeToDataPointsHistory): void {
+      // this.adapter.historyManager.subscribeToHistory(sub.dataPoint, sub.start, sub.end, this, sub.minInterval);
+  } */
   onLoginRequest(requestLoginPacket) {
     this.adapter.loginManager.onLoginRequest(this, requestLoginPacket);
   }
@@ -215,11 +219,11 @@ class Client {
   }
   async onTemplateSettingCreate(templateSettingCreatePack) {
     this.adapter.log.debug("OnTemplateSettingCreate: " + templateSettingCreatePack.name);
-    await this.adapter.templateManager.createNewTemplateSetting(new import_template_manager.TemplateSettings(templateSettingCreatePack.name), this);
+    await this.adapter.templateManager.createNewTemplateSetting(new import_template_manager.TemplateSettings(templateSettingCreatePack.name));
     this.sendMSG(new import_datapacks.TemplateSettingCreatePack(templateSettingCreatePack.name).toJSON(), true);
   }
   async onTemplateUpload(uploadTemplateSettingPack) {
-    await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets, this);
+    await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets);
     this.sendMSG(new import_datapacks.TemplateSettingUploadSuccessPack().toJSON(), true);
   }
   async getTemplatesSetting(name, device, screen, widget) {
