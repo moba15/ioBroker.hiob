@@ -4,7 +4,7 @@
 -   [Schritt 1: Installation und APP Einrichtung](app.md)
 -   [Schritt 2: ENUMS erstellen](enum.md)
 -   [Schritt 3: Widgets erstellen](widgets.md)
--   [Schritt 4: Screnns erstellen](sreens.md)
+-   [Schritt 4: Screens erstellen](sreens.md)
 
 ## Backups erstellen `Config Sync`
 
@@ -30,4 +30,4 @@
 -   [Schritt 1: Installation und APP Einrichtung](app.md)
 -   [Schritt 2: ENUMS erstellen](enum.md)
 -   [Schritt 3: Widgets erstellen](widgets.md)
--   [Schritt 4: Screnns erstellen](sreens.md)
+-   [Schritt 4: Screens erstellen](sreens.md)
