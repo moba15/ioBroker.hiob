@@ -48,6 +48,8 @@
 
 🇩🇪 [Fragen](https://forum.iobroker.net/topic/55250/neuer-adapter-hiob-handy-app)
 
+## Known Issues
+- 0.1.2 and 0.1.1 don't work if you use aes encryption, please donwgrade to 0.1.0 or 0.0.67 if you have issues
 ## Changelog
 
 <!--
