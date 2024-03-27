@@ -74,7 +74,7 @@ class NotificationManager {
           for (const i of currentBacklogArray) {
             client.sendMSG(new import_datapacks.NotificationPack(false, i, /* @__PURE__ */ new Date()).toJSON(), true);
           }
-          await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]), true);
+          await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]));
         }
       }
     }

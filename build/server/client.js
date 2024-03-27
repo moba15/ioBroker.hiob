@@ -135,8 +135,7 @@ class Client {
           break;
         case "subscribeHistory":
           if (this.approved)
-            this.onSubscribeToHistory(new import_datapacks.SubscribeToDataPointsHistory(content["dataPoint"], content["end"], content["start"], content["interval"]));
-          break;
+            break;
         case "requestLogin":
           if (!content["version"]) {
             this.adapter.log.warn(`Please update the HioB APP!`);
@@ -220,11 +219,11 @@ class Client {
   }
   async onTemplateSettingCreate(templateSettingCreatePack) {
     this.adapter.log.debug("OnTemplateSettingCreate: " + templateSettingCreatePack.name);
-    await this.adapter.templateManager.createNewTemplateSetting(new import_template_manager.TemplateSettings(templateSettingCreatePack.name), this);
+    await this.adapter.templateManager.createNewTemplateSetting(new import_template_manager.TemplateSettings(templateSettingCreatePack.name));
     this.sendMSG(new import_datapacks.TemplateSettingCreatePack(templateSettingCreatePack.name).toJSON(), true);
   }
   async onTemplateUpload(uploadTemplateSettingPack) {
-    await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets, this);
+    await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets);
     this.sendMSG(new import_datapacks.TemplateSettingUploadSuccessPack().toJSON(), true);
   }
   async getTemplatesSetting(name, device, screen, widget) {
