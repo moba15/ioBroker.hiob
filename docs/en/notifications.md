@@ -1,3 +1,7 @@
+![Logo](../../admin/hiob.png)
+
+-   [Back to Summary](/docs/en/README.md)
+
 ## Notifications
 
 ❗**Important** ❗: This feature is still in the beta phase:
@@ -40,6 +44,10 @@
       	"type": "boolean",
         "descreption": "Wether it should be dissmisable ",
       },
+      "group": {
+      	"type": "boolean",
+        "descreption": "Goups ",
+      },
       "colorARGB": {
       	"type": "string",
         "descreption": "ARGB Color Hex code ",
@@ -48,12 +56,17 @@
       "id": {
       	"type": "number",
         "descreption": "Notification ID. If you do not want to send a new notification, give it the same ID and the old one will be overwritten",
-
       }
-   
     }
 }
 ```
+#### Color - color`ARGB`
+
+- `A` is the alpha value, with 0 being transparent and 255 being fully opaque - Convert decimal to Hex 255 == FF
+- `R` is red, from 0 to 255 - Convert decimal to Hex 255 == FF
+- `G` is green, from 0 to 255 - Convert decimal to Hex 255 == FF
+- `B` is blue, from 0 to 255 - Convert decimal to Hex 255 == FF
+- `ARGB` == FFFFFFFF
 #### Example
 ```JSON
 {
@@ -74,8 +87,11 @@ It is also possible to send notifications via Blockly using the sendTo function:
 sendTo('hiob.0', 'send', { 'uuid': '52e34cca-c85a-423a-a07b-c711a0d1575a', 'notification': { 'title': 'Title', 'body': 'Bewegung erkannt' } });
 ```
 
-#### Example of using the same id
+#### Example of using the same id - Javascript Adapter >= 7.9.0
 **Blockly** <br>
 ![Example](img/notificationBlockly2.png) <br>
+![Example](img/notificationID.png) <br>
 **Notification** <br>
 ![Example](img/notificationIDExample.gif)
+
+-   [Back to Summary](/docs/en/README.md)
