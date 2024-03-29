@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "news": {
+      "0.1.3": {
+        "en": "fixed common.keywords\nupdated dependencies",
+        "de": "fest. schlüsselwörter\naktualisierte abhängigkeiten",
+        "ru": "фиксированная общая. ключевые слова\nобновленные зависимости",
+        "pt": "fixo comum. palavras-chave\ndependências atualizadas",
+        "nl": "vast gemeenschappelijk. zoekwoorden\nbijgewerkte afhankelijkheden",
+        "fr": "commune fixe. mots clés\ndépendances actualisées",
+        "it": "fisso comune. parole chiave\ndipendenze aggiornate",
+        "es": "común fijo. palabras clave\ndependencias actualizadas",
+        "pl": "często. słowa kluczowe\nzaktualizowane zależności",
+        "uk": "фіксований загальний. новини\nоновлені залежності",
+        "zh-cn": "固定常见。 关键词\n更新的依赖关系"
+      },
       "0.1.2": {
         "en": "changed licenseInformation and tier",
         "de": "geänderte LizenzInformation und Tier",
@@ -80,19 +93,6 @@
         "pl": "Naprawiono # 25\nsendTo support for notification\nObsługa wrażliwych danych i timeout # 22",
         "uk": "Виправлено #25\nвідправити\nОбробка конфіденційних даних та часів #22",
         "zh-cn": "25号固定\n发送到支持通知\n处理敏感数据及超时22"
-      },
-      "0.0.66": {
-        "en": "Added some docs",
-        "de": "Einige Docs hinzugefügt",
-        "ru": "Добавлено несколько док",
-        "pt": "Adicionado alguns documentos",
-        "nl": "Toegevoegd enkele documenten",
-        "fr": "Ajout de quelques docs",
-        "it": "Aggiunto alcuni docs",
-        "es": "Añadido algunos docs",
-        "pl": "Dodano kilka dokumentów",
-        "uk": "Додати деякі docs",
-        "zh-cn": "添加了一些文件"
       }
     },
     "titleLang": {
