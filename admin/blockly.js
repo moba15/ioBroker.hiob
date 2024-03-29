@@ -253,7 +253,7 @@ Blockly.Blocks["hiob_notify"] = {
         this.setColour(Blockly.Sendto.HUE);
         this.setTooltip(Blockly.Translate("hiob_tooltip"));
         this.setHelpUrl(Blockly.Translate("hiob_help"));
-
+        this.setMutator(new Blockly.Mutator(['title', 'body']));
         this.titleCount_ = 0;
         this.bodyCount_ = 0;
     },
