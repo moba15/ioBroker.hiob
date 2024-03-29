@@ -6,19 +6,17 @@
 [![GitHub license](https://img.shields.io/github/license/moba15/ioBroker.hiob)](https://github.com/moba15/ioBroker.hiob/blob/main/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/iobroker.hiob.svg)](https://www.npmjs.com/package/iobroker.hiob)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hiob.svg)](https://www.npmjs.com/package/iobroker.hiob)
-![Number of Installations](https://iobroker.live/badges/hiob-installed.svg)
-![GitHub size](https://img.shields.io/github/repo-size/moba15/ioBroker.hiob)</br>
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/moba15/ioBroker.hiob)
+![Number of Installations](https://iobroker.live/badges/hiob-installed.svg)</br>
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/moba15/ioBroker.hiob/latest)
 ![GitHub last commit](https://img.shields.io/github/last-commit/moba15/ioBroker.hiob)
-![GitHub issues](https://img.shields.io/github/issues/moba15/ioBroker.hiob)</br>
+
 **Version:** </br>
 ![Beta](https://img.shields.io/npm/v/iobroker.hiob.svg?color=red&label=beta)
 
 [![NPM](https://nodei.co/npm/iobroker.hiop.png?downloads=true)](https://nodei.co/npm/iobroker.hiob/)
 
 **Tests:** </br>
-![Test and Release](https://github.com/moba15/ioBroker.hiob/workflows/Test%20and%20Release/badge.svg)
+[![Test and Release](https://github.com/moba15/ioBroker.hiob/actions/workflows/test-and-release.yml/badge.svg)](https://github.com/moba15/ioBroker.hiob/actions/workflows/test-and-release.yml)
 
 ## HioB adapter for ioBroker
 
@@ -26,7 +24,7 @@
 
 ## Requirements
 
--   Node >= 16
+-   Node >= 18
 -   Android Phone
 
 ## Tested with
@@ -34,6 +32,8 @@
 -   Samsung Android Phones
 -   Google Pixel Android Phones
 -   Sony Pixel Android Phones
+-   Xiaomi Phones
+-   Android 10/11/13
 
 ## APP Code
 
@@ -56,8 +56,11 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (Lucky-ESA) fixed common.keywords
+- (mob15) updated dependencies
 ### 0.1.2 (2024-03-27)
-- (Lucky-ESA) changed licenseInformation and tier
+- (Lucky-ESA) changed license Information
 
 ### 0.1.1 (2024-03-27)
 - (moba15) fixed package.json
