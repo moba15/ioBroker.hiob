@@ -333,7 +333,7 @@ export class LoginManager {
             },
             native: {},
         });
-        // Delete setObjectAsync after first latest release
+        // Delete setObjectAsync after first latest release -->
         await this.adapter.setObjectAsync(`devices.${deviceIDRep}`, {
             type: "channel",
             common: {
@@ -342,6 +342,7 @@ export class LoginManager {
             },
             native: {},
         });
+        // <-- Delete setObjectAsync after first latest release
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.connected`, {
             type: "state",
             common: {
