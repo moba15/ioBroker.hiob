@@ -74,6 +74,47 @@ export class SamartHomeHandyBis extends utils.Adapter {
             this.config.port = check_port;
         }
 
+        await this.setObjectNotExistsAsync(`devices`, {
+            type: "device",
+            common: {
+                name: {
+                    "en": "Mobile phones",
+                    "de": "Handys",
+                    "ru": "Мобильный телефон",
+                    "pt": "Telefones móveis",
+                    "nl": "Mobiele telefoons",
+                    "fr": "Téléphones mobiles",
+                    "it": "Telefoni cellulari",
+                    "es": "Teléfonos móviles",
+                    "pl": "Telefon komórkowy",
+                    "uk": "Мобільні телефони",
+                    "zh-cn": "移动电话"
+                },
+            },
+            native: {},
+        });
+        // Delete setObjectAsync after first latest release - Add type for all beta testers -->
+        await this.setObjectAsync(`devices`, {
+            type: "device",
+            common: {
+                name: {
+                    "en": "Mobile phones",
+                    "de": "Handys",
+                    "ru": "Мобильный телефон",
+                    "pt": "Telefones móveis",
+                    "nl": "Mobiele telefoons",
+                    "fr": "Téléphones mobiles",
+                    "it": "Telefoni cellulari",
+                    "es": "Teléfonos móviles",
+                    "pl": "Telefon komórkowy",
+                    "uk": "Мобільні телефони",
+                    "zh-cn": "移动电话"
+                }
+            },
+            native: {},
+        });
+        // <-- Delete setObjectAsync after first latest release
+
         await this.setObjectNotExistsAsync("approveNextLogins", {
             type: "state",
             common: {
