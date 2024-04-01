@@ -44,6 +44,11 @@
 🇬🇧 [Description](/docs/en/README.md)</br>
 🇩🇪 [Beschreibung](/docs/de/README.md)
 
+## Examples
+
+🇬🇧 [Examples](/docs/en/example.md)</br>
+🇩🇪 [Beispiele](/docs/de/example.md)
+
 ## Questions
 
 🇩🇪 [Fragen](https://forum.iobroker.net/topic/55250/neuer-adapter-hiob-handy-app)
