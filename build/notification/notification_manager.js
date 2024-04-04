@@ -24,8 +24,9 @@ module.exports = __toCommonJS(notification_manager_exports);
 var import_listener = require("../listener/listener");
 var import_datapacks = require("../server/datapacks");
 class NotificationManager {
+  adapter;
+  backlog = {};
   constructor(adapter) {
-    this.backlog = {};
     this.adapter = adapter;
     this.init();
   }

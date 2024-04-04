@@ -30,6 +30,7 @@ var Events = /* @__PURE__ */ ((Events2) => {
   return Events2;
 })(Events || {});
 class Listener extends import_stream.EventEmitter {
+  adapter;
   constructor(adapter) {
     super();
     this.adapter = adapter;
@@ -55,6 +56,9 @@ class Listener extends import_stream.EventEmitter {
   }
 }
 class StateChangeEvent {
+  objectID;
+  value;
+  ack;
   constructor(objectID, value, ack) {
     this.objectID = objectID;
     this.value = value;

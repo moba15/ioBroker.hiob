@@ -39,18 +39,23 @@ var import_datapacks = require("./server/datapacks");
 var import_template_manager = require("./template/template_manager");
 var import_notification_manager = require("./notification/notification_manager");
 class SamartHomeHandyBis extends utils.Adapter {
+  server;
+  listener;
+  loginManager;
+  notificationManager;
+  port = 8095;
+  keyPath = "";
+  certPath = "";
+  useCer = false;
+  templateManager;
+  clientinfos = {};
+  valueDatapoints = {};
+  lang = "de";
   constructor(options = {}) {
     super({
       ...options,
       name: "hiob"
     });
-    this.port = 8095;
-    this.keyPath = "";
-    this.certPath = "";
-    this.useCer = false;
-    this.clientinfos = {};
-    this.valueDatapoints = {};
-    this.lang = "de";
     this.templateManager = new import_template_manager.TemplateManager(this);
     this.listener = new import_listener.Listener(this);
     this.notificationManager = new import_notification_manager.NotificationManager(this);
