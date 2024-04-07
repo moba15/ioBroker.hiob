@@ -10,7 +10,7 @@
 
 ## Button
 
-### A data point can be set to true using Button
+### A state can be set to true using Button
 
 - Swipe left to delete a widget.
 - Press the plus sign at the bottom right.
@@ -29,7 +29,7 @@
 
 ![botton](img/../../de/img/app_create_button_device.png)
 
-- Datapoint: Selection of data points from the selected list.
+- Datapoint: Selection of states from the selected list.
 
 ![botton](img/../../de/img/app_create_button_dp.png)
 

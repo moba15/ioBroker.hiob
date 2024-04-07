@@ -29,7 +29,7 @@
 
 ![webview](img/../../de/img/app_create_button_device.png)
 
-- Datapoint: Selection of data points from the selected list
+- Datapoint: Selection of states from the selected list
 
 ![webview](img/../../de/img/app_create_button_dp.png)
 
@@ -37,7 +37,7 @@
 
 ![webview](img/../../de/img/app_create_value_done.png)
 
-- Add the widget to a screen and use it to control a data point. Long press on the widget so that the pop-up window opens in which the value can be changed.
+- Add the widget to a screen and use it to control a state. Long press on the widget so that the pop-up window opens in which the value can be changed.
 
 ![webview](img/../../de/img/app_create_value_done.png)
 ![webview](img/../../de/img/app_create_value_done.png)

@@ -35,8 +35,8 @@
 - `Round to`: Round up after the decimal point
 - `Unit (optional)`: Unit of value
 - `Device`: Select the desired enum here
-- `Datapoint`: Selection of data points from the selected enum
-- `Text Rules`: To create a rule click on `add`. Enter the value in `Old Value` when the data point should then be overwritten with `New Value`. Then press `add` and if no new ones are needed press `exit`. When Value reaches 10, the data point is set to 20. Editing is not possible later. The rule can only be deleted with a swipe.
+- `Datapoint`: Selection of states from the selected enum
+- `Text Rules`: To create a rule click on `add`. Enter the value in `Old Value` when the state should then be overwritten with `New Value`. Then press `add` and if no new ones are needed press `exit`. When Value reaches 10, the state is set to 20. Editing is not possible later. The rule can only be deleted with a swipe.
 
 ![app_create_advanced_value_view.png](img/../../de/img/app_create_advanced_value_view.png)
 ![app_create_advanced_value_popup.png](img/../../de/img/app_create_advanced_value_popup.png)
@@ -54,11 +54,11 @@
 ![app_create_multi.png](img/../../de/img/app_create_multi.png)
 
 - `Device`: Select the desired enum here
-- `Datapoint`: Selection of data points from the selected enum
+- `Datapoint`: Selection of states from the selected enum
 
 ![app_create_multi_device.png](img/../../de/img/app_create_multi_device.png)
 
-- `Selections`: To create a list click on `add`. Enter a name for the selection in `Display Value` and enter the value that should be moved into the data point in `File Point Value`. The selections can be sorted later by long pressing. Editing is not possible later. The rule can only be deleted with a swipe.
+- `Selections`: To create a list click on `add`. Enter a name for the selection in `Display Value` and enter the value that should be moved into the state in `File Point Value`. The selections can be sorted later by long pressing. Editing is not possible later. The rule can only be deleted with a swipe.
 - `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
 - Then press save.
 
@@ -75,7 +75,7 @@
 ### Widget `Slider`
 
 - `Device`: Select the desired enum here
-- `Datapoint`: Selection of data points from the selected enum - data point must be number 0-x!
+- `Datapoint`: Selection of states from the selected enum - state must be number 0-x!
 
 ![app_create_advanced_slider.png](img/../../de/img/app_create_advanced_slider.png)
 
@@ -94,12 +94,12 @@
 ### Widget `Handle`
 
 - `Device`: Select the desired enum here
-- `Datapoint`: Selection of data points from the selected enum - data point must be number 0-x!
+- `Datapoint`: Selection of states from the selected enum - state must be number 0-x!
 
 ![app_create_advanced_handle.png](img/../../de/img/app_create_advanced_handle.png)
 
-- `Send if on`: Value that should be set in the data points when ON.
-- `Send if off`: Value that should be set in the data points when OFF.
+- `Send if on`: Value that should be set in the states when ON.
+- `Send if off`: Value that should be set in the states when OFF.
 - `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
 - Then press save.
 
@@ -112,7 +112,7 @@
 ### Widget `Button`
 
 - `Device`: Select the desired enum here
-- `Datapoint`: Selection of data points from the selected enum - data point must be number 0-x!
+- `Datapoint`: Selection of states from the selected enum - state must be number 0-x!
 
 ![app_create_advanced_handle.png](img/../../de/img/app_create_advanced_button.png)
 

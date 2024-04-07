@@ -21,16 +21,16 @@
 ### 4. Make the desired settings
 
 -   `max` Number of logs. Should not be higher than the number in the parser instance settings
--   `datapointname` Name of the data point
+-   `datapointname` Name of the states
 -   `channelname` Name from folder under 0_userdata.0
 -   `debug` Outputs logs from the script
--   `datapoint_logparser` Data point from log parser - default logparser.0.visualization.table0.json
+-   `datapoint_logparser` states from log parser - default logparser.0.visualization.table0.json
 
 ![example_log_blockly.png](img/example_log_blockly.png)
 
 ### 5.   Create Widget Advanced/Flebible
 
--   **Multi Selection and select data point**
+-   **Multi Selection and select state**
 
   ![example_log_app_multi.png](img/example_log_app_multi.png)
 
@@ -40,7 +40,7 @@
 
 ### 6.   Create Widget Table
 
--   **Select table and data point**
+-   **Select table and state**
 
   ![example_log_app_table.png](img/example_log_app_table.png)
 

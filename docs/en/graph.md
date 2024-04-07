@@ -10,7 +10,7 @@
 
 ## Graph (only sql Adapter)
 
-### With Graph you can create graphs of data points recorded by SQL or history adapters.
+### With Graph you can create graphs of states recorded by SQL or history adapters.
 
 - Swipe left to delete a widget.
 - Press the plus sign at the bottom right.
@@ -55,12 +55,12 @@
 - Multiple lines (the diagram) can be created.
 - Name: This name will be displayed in the diagram as a header
 - Device: Select the desired listing.
-- Datapoint: Selection of the data point monitored by SQL.
+- Datapoint: Selection of the state monitored by SQL.
 - Line Type: Select the type of line (see image for options).
 - x axis: Selection of all x axis(s).
 - y axis: Selection of all Y axis(s).
 - Min time for next Update: Time when the update should be updated at the latest. It updates automatically when the app starts.
-- Show datapoint: The data point name is displayed.
+- Show datapoint: The state name is displayed.
 
 ![app_create_graph_line.png](img/../../de/img/app_create_graph_line.png)
 ![app_create_graph_line_type.png](img/../../de/img/app_create_graph_line_type.png)
