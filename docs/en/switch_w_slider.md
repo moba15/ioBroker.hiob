@@ -23,7 +23,7 @@
 - Round to: Places after the decimal point
 - Unit (optional): Unit of value
 - Device: Select the desired listing here.
-- Datapoint: Selection of data points from the selected list - data point must be boolean true/false!
+- Datapoint: Selection of states from the selected list - state must be boolean true/false!
 
 ![Switch with Slider](img/../../de/img/app_create_widget_switch.png)
 
@@ -33,14 +33,14 @@
 - Max: value maximum (default 100).
 - Steps: In which steps changes can be made (standard 10).
 - Device: Select the desired listing.
-- Datapoint: Selection of data points from the selected list - data point must be number!
+- Datapoint: Selection of states from the selected list - state must be number!
 
 ![Switch with Slider](img/../../de/img/app_create_widget_slider.png)
 
-- With Reachable a popup can be created to see a value from a data point.
+- With Reachable a popup can be created to see a value from a state.
 - Reachable Display: Name of the Reachable.
 - Device: Select the desired listing.
-- Datapoint: Selection of data points from the selected list - data point must be boolean true/false!
+- Datapoint: Selection of states from the selected list - state must be boolean true/false!
 
 ![Switch with Slider](img/../../de/img/app_create_widget_reach.png)
 
@@ -48,7 +48,7 @@
 
 ![Switch with Slider](img/../../de/img/app_create_switch_done.png)
 
-- Adds the widget to a screen and uses it to control a data point. Long press the widget to open the popup window. The current switching status can be viewed or a level can be set in the popup.
+- Adds the widget to a screen and uses it to control a state. Long press the widget to open the popup window. The current switching status can be viewed or a level can be set in the popup.
 
 ![Switch with Slider](img/../../de/img/app_create_switch_screen.png)
 ![Switch with Slider](img/../../de/img/app_create_switch_screen_popup.png)

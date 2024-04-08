@@ -2,7 +2,7 @@
 
 -   [Back to summary](/docs/en/README.md)
 
-# Step 1: AES data points
+# Step 1: AES states
 
 - `hiob.0.devices.xxx.aesKey` Enter this key into the APP
 - `hiob.0.devices.xxx.aesKey_active` Set to true for encryption
