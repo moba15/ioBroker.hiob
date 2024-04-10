@@ -23,7 +23,7 @@
 - Elements per Page: How many elements are displayed per page.
 - initial sort: Sorts the array (first element)
 - Device: Select the desired listing.
-- Datapoint: Selection of data points from the selected collection - The value must have an array with JSON element.
+- Datapoint: Selection of states from the selected collection - The value must have an array with JSON element.
 
 ![add_create_table.png](img/../../de/img/add_create_table.png)
 

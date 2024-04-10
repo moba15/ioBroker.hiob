@@ -18,9 +18,10 @@
 4. restart the app once
 
 ### Send notifications
-- To do this, go to the ioBroker objects and select your device under hiob.x.devices
-- There should now also be a "sendNotification" data point here
-- Set the data point to any text -> message is sent
+- `notificationBacklog` Backlog messages
+- `sendNotification` A message as text or JSON
+
+![Example](img/notify_state.png)
 
 ### Custom notifications
 #### Schema
