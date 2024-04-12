@@ -40,9 +40,12 @@
 [APP Code](https://github.com/moba15/hiob_app)
 
 ## Description
+This app allows you to control your ioBroker Smarthome system via the hiob app inside your network. It is an simpler and faster alternative to comparable projects with fewer configuration possibilities. It is mainly intended for Android devices, but also works on Windows and Linux desktops.
+
+## Documentation/Tutorial
 
 🇬🇧 [Description](/docs/en/README.md)</br>
-🇩🇪 [Beschreibung](/docs/de/README.md)
+🇩🇪 [Dokumentation](/docs/de/README.md)
 
 ## Examples
 
@@ -55,6 +58,7 @@
 
 ## Known Issues
 - 0.1.2 and 0.1.1 don't work if you use aes encryption, please donwgrade to 0.1.0 or 0.0.67 if you have issues
+
 ## Changelog
 
 <!--
