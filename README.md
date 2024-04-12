@@ -19,8 +19,7 @@
 [![Test and Release](https://github.com/moba15/ioBroker.hiob/actions/workflows/test-and-release.yml/badge.svg)](https://github.com/moba15/ioBroker.hiob/actions/workflows/test-and-release.yml)
 
 ## HioB adapter for ioBroker
-
--   Data points can be controlled with the HioB APP.
+This app allows you to control your ioBroker Smarthome system via the hiob app inside your network. It is an simpler and faster alternative to comparable projects with fewer configuration possibilities. It is mainly intended for Android devices, but also works on Windows and Linux desktops.
 
 ## Requirements
 
@@ -40,9 +39,6 @@
 [APP Code](https://github.com/moba15/hiob_app)
 
 ## Description
-This app allows you to control your ioBroker Smarthome system via the hiob app inside your network. It is an simpler and faster alternative to comparable projects with fewer configuration possibilities. It is mainly intended for Android devices, but also works on Windows and Linux desktops.
-
-## Documentation/Tutorial
 
 🇬🇧 [Description](/docs/en/README.md)</br>
 🇩🇪 [Dokumentation](/docs/de/README.md)
