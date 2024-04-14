@@ -3,7 +3,7 @@
 -   [Zurück zur Beschreibung](/docs/de/README.md)
 -   [Schritt 1: Installation und APP Einrichtung](app.md)
 -   [Schritt 2: ENUMS erstellen](enum.md)
--   [Schritt 4: Screnns erstellen](sreens.md)
+-   [Schritt 4: Screens erstellen](sreens.md)
 -   [Schritt 5: Backups erstellen](backups.md)
 
 ## Widgets erstellen `Template Settings`

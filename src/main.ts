@@ -13,11 +13,11 @@ import { AnswerSubscribeToDataPointsPack } from "./server/datapacks";
 import { TemplateManager } from "./template/template_manager";
 import { NotificationManager } from "./notification/notification_manager";
 type DatapointState = {
-    val?: any;
-    ack?: boolean;
+    val?: any,
+    ack?: boolean
 };
 type ClientInfo = {
-    firstload?: boolean;
+    firstload?: boolean
 };
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -25,13 +25,15 @@ export class SamartHomeHandyBis extends utils.Adapter {
     server?: Server;
     listener: Listener;
     loginManager: LoginManager;
+    notificationManager: NotificationManager;
     port: number = 8095;
     keyPath: string = "";
     certPath: string = "";
     useCer: boolean = false;
     templateManager: TemplateManager;
-    clientinfos: { [key: string]: ClientInfo } = {};
-    valueDatapoints: { [key: string]: DatapointState } = {};
+    clientinfos: {[key: string]: ClientInfo} = {};
+    valueDatapoints: {[key: string]: DatapointState} = {};
+    lang: string = "de";
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -40,12 +42,12 @@ export class SamartHomeHandyBis extends utils.Adapter {
         });
         this.templateManager = new TemplateManager(this);
         this.listener = new Listener(this);
-        new NotificationManager(this);
+        this.notificationManager = new NotificationManager(this);
         this.loginManager = new LoginManager(this);
         this.on("ready", this.onReady.bind(this));
         this.on("stateChange", this.listener.onStateChange.bind(this.listener));
         // this.on("objectChange", this.onObjectChange.bind(this));
-        // this.on("message", this.onMessage.bind(this));
+        this.on("message", this.onMessage.bind(this));
         this.on("unload", this.onUnload.bind(this));
         this.server = undefined;
     }
@@ -98,8 +100,19 @@ export class SamartHomeHandyBis extends utils.Adapter {
         });
         await this.setStateAsync("approveNextLogins", false, true);
         this.subscribeStates("approveNextLogins");
+        this.subscribeStates("*");
+        this.check_aes_key();
         this.loadConfigs();
         this.initServer();
+        const obj = await this.getForeignObjectAsync("system.config");
+        if (obj && obj.common && obj.common.language) {
+            try {
+                this.lang = obj.common.language === this.lang ? this.lang : obj.common.language;
+            } catch (e) {
+                // Nothing
+            }
+        }
+
     }
 
     private loadConfigs(): void {
@@ -107,6 +120,22 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.certPath = this.config.certPath;
         this.useCer = this.config.useCert;
         this.keyPath = this.config.keyPath;
+    }
+
+    private async check_aes_key(): Promise<void> {
+        const channels = await this.getChannelsAsync();
+        for (const element of channels) {
+            const id = `${this.namespace}.devices`
+            if (element["_id"].startsWith(id)) {
+                const state = await this.getStateAsync(`${element["_id"]}.aesKey`);
+                if (state != null && state.val != null) {
+                    if (state.val.toString().length === 6) {
+                        const shaAes = this.encrypt(state.val.toString());
+                        await this.setStateAsync(`${element["_id"]}.aesKey`, shaAes, true);
+                    }
+                }
+            }
+        }
     }
 
     private initServer(): void {
@@ -153,12 +182,36 @@ export class SamartHomeHandyBis extends utils.Adapter {
             for (const z of members) {
                 const dataPoint = await this.getForeignObjectAsync(z);
                 if (!dataPoint) continue;
-                dataPoints.push({
-                    name: dataPoint!.common.name,
-                    id: z,
-                    role: dataPoint!.common.role,
-                    otherDetails: dataPoint!.common.custom,
-                });
+                const name: ioBroker.Translated | string | undefined = dataPoint!.common.name;
+                if (typeof name == "object") {
+                    /**
+                     * Translation
+                     */
+                    const translated: ioBroker.Translated = name as ioBroker.Translated;
+                    const translatedString = translated[this.lang as ioBroker.Languages];
+                    if (translatedString) {
+                        dataPoints.push({
+                            name: translatedString,
+                            id: z,
+                            role: dataPoint!.common.role,
+                            otherDetails: dataPoint!.common.custom,
+                        });
+                    } else {
+                        dataPoints.push({
+                            name: name,
+                            id: z,
+                            role: dataPoint!.common.role,
+                            otherDetails: dataPoint!.common.custom,
+                        });
+                    }
+                } else {
+                    dataPoints.push({
+                        name: name,
+                        id: z,
+                        role: dataPoint!.common.role,
+                        otherDetails: dataPoint!.common.custom,
+                    });
+                }
             }
             const map = {
                 id: enumDevices[i]._id,
@@ -221,7 +274,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     private onUnload(callback: () => void): void {
         try {
             // Stop ws Server and Timeouts
-            this.server && this.server.stop();
+            this.loginManager.stop();
             this.server = undefined;
             callback();
         } catch (e) {
@@ -262,17 +315,22 @@ export class SamartHomeHandyBis extends utils.Adapter {
     //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
     //  */
-    // private onMessage(obj: ioBroker.Message): void {
-    // 	if (typeof obj === "object" && obj.message) {
-    // 		if (obj.command === "send") {
-    // 			// e.g. send email or pushover or whatever
-    // 			this.log.info("send command");
-
-    // 			// Send response in callback if required
-    // 			if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
-    // 		}
-    // 	}
-    // }
+    private onMessage(obj: ioBroker.Message): void {
+        if (typeof obj === "object" && obj.message) {
+            if (obj.command === "send") {
+                this.log.debug("send command");
+                const message = obj.message;
+                if ("notification" in message && "uuid" in message) {
+                    //Send Not.
+                    const cl: Client | undefined = this.server?.getClient(message["uuid"]);
+                    this.notificationManager.sendNotificationLocal(cl, message["uuid"], JSON.stringify(message["notification"]));
+                    if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
+                } else {
+                    if (obj.callback) this.sendTo(obj.from, obj.command, "Error received", obj.callback);
+                }
+            }
+        }
+    }
 }
 
 if (require.main !== module) {

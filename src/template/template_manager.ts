@@ -1,5 +1,4 @@
 import { SamartHomeHandyBis } from "../main";
-import { Client } from "../server/client";
 
 export class TemplateManager {
     adapter: SamartHomeHandyBis;
@@ -12,7 +11,7 @@ export class TemplateManager {
         devices: string,
         screens: string,
         widgets: string,
-        _client: Client,
+        /* _client: Client, */
     ): Promise<void> {
         if (devices != null) {
             await this.adapter.setStateAsync("settings." + name + ".devices", devices, true);
@@ -63,7 +62,7 @@ export class TemplateManager {
         return list;
     }
 
-    public async createNewTemplateSetting(templateSettings: TemplateSettings, client: Client): Promise<void> {
+    public async createNewTemplateSetting(templateSettings: TemplateSettings): Promise<void> {
         await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name, {
             type: "folder",
             common: {

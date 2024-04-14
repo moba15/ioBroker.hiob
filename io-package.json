@@ -1,98 +1,98 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.0.65",
+    "version": "0.1.3",
     "news": {
-      "0.0.65": {
-        "en": "fixed linter",
-        "de": "fester linter",
-        "ru": "фиксированный linter",
-        "pt": "forro fixo",
-        "nl": "vaste linter",
-        "fr": "linter fixe",
-        "it": "interessi fissi",
-        "es": "invierno fijo",
-        "pl": "łącznik stały",
-        "uk": "фіксований linter",
-        "zh-cn": "固定线条"
+      "0.1.3": {
+        "en": "fixed common.keywords\nupdated dependencies",
+        "de": "fest. schlüsselwörter\naktualisierte abhängigkeiten",
+        "ru": "фиксированная общая. ключевые слова\nобновленные зависимости",
+        "pt": "fixo comum. palavras-chave\ndependências atualizadas",
+        "nl": "vast gemeenschappelijk. zoekwoorden\nbijgewerkte afhankelijkheden",
+        "fr": "commune fixe. mots clés\ndépendances actualisées",
+        "it": "fisso comune. parole chiave\ndipendenze aggiornate",
+        "es": "común fijo. palabras clave\ndependencias actualizadas",
+        "pl": "często. słowa kluczowe\nzaktualizowane zależności",
+        "uk": "фіксований загальний. новини\nоновлені залежності",
+        "zh-cn": "固定常见。 关键词\n更新的依赖关系"
       },
-      "0.0.64": {
-        "en": "changed icon\nfixed code linter problems",
-        "de": "geändertes symbol\nfestcode linter probleme",
-        "ru": "измененная икона\nпроблемы linter кода",
-        "pt": "ícone alterado\nproblemas de forro de código fixo",
-        "nl": "veranderd pictogram\nvaste code linter problemen",
-        "fr": "icône modifiée\nproblèmes de code fixe linter",
-        "it": "icona modificata\nproblemi di codice fisso",
-        "es": "icono cambiado\ncódigo fijo problemas de interfono",
-        "pl": "zmieniona ikona\nstałe problemy z linterem kodowym",
-        "uk": "змінена ікона\nвиправлений код linter проблеми",
-        "zh-cn": "已更改图标\n固定代码插件问题"
+      "0.1.2": {
+        "en": "changed licenseInformation and tier",
+        "de": "geänderte LizenzInformation und Tier",
+        "ru": "измененная лицензияИнформация и уровень",
+        "pt": "licença alteradaInformação e nível",
+        "nl": "veranderd licentieInformatie en niveau",
+        "fr": "changement de licenceInformations et niveau",
+        "it": "licenza modificataInformazioni e livello",
+        "es": "cambio de licenciaInformación y titulación",
+        "pl": "zmieniona licencja Informacje i poziom",
+        "uk": "змінена ліцензіяІнформація та ярус",
+        "zh-cn": "更改许可证信息和等级"
       },
-      "0.0.63": {
-        "en": "changed icon\nfixed code linter problems",
-        "de": "geändertes symbol\nfestcode linter probleme",
-        "ru": "измененная икона\nпроблемы linter кода",
-        "pt": "ícone alterado\nproblemas de forro de código fixo",
-        "nl": "veranderd pictogram\nvaste code linter problemen",
-        "fr": "icône modifiée\nproblèmes de code fixe linter",
-        "it": "icona modificata\nproblemi di codice fisso",
-        "es": "icono cambiado\ncódigo fijo problemas de interfono",
-        "pl": "zmieniona ikona\nstałe problemy z linterem kodowym",
-        "uk": "змінена ікона\nвиправлений код linter проблеми",
-        "zh-cn": "已更改图标\n固定代码插件问题"
+      "0.1.1": {
+        "en": "fixed package.json",
+        "de": "festpaket.json",
+        "ru": "фиксированный пакет.json",
+        "pt": "pacote fixo.json",
+        "nl": "vast pakket.json",
+        "fr": "paquet fixe.json",
+        "it": "pacchetto fisso.json",
+        "es": "paquete fijo.json",
+        "pl": "stałe package.json",
+        "uk": "фіксований пакет.json",
+        "zh-cn": "固定包裹.json"
       },
-      "0.0.62": {
-        "en": "fixed bug, where broadcasted messages where sent without type",
-        "de": "fehler behoben, wo gesendete nachrichten ohne typ gesendet",
-        "ru": "фиксированная ошибка, где транслируются сообщения, куда отправляют без типа",
-        "pt": "bug fixo, onde mensagens transmitidas onde enviado sem tipo",
-        "nl": "vaste bug, waar uitgezonden berichten waar verzonden zonder type",
-        "fr": "bug fixe, où les messages diffusés sont envoyés sans type",
-        "it": "bug fisso, dove messaggi trasmessi dove inviati senza tipo",
-        "es": "bug fijo, donde se transmiten mensajes donde se envía sin tipo",
-        "pl": "stały błąd, gdzie transmitowane wiadomości, gdy wysyłane bez typu",
-        "uk": "виправлена помилка, де транслювалися повідомлення, де відправлено без типу",
-        "zh-cn": "固定错误, 无类型发送的已广播信件"
+      "0.1.0": {
+        "en": "added more docs\nfixed backlog warning\nchanged node version to min. 18",
+        "de": "mehr docs\nfeste backlog-warnung\ngeänderte knotenversion in min. 183",
+        "ru": "добавлено больше док\nпредупредить\nизменена версия узла на мин. 18",
+        "pt": "adicionado mais documentos\naviso de backlog fixo\nmudou versão do nó para min. 18",
+        "nl": "meer documenten toevoegen\nwaarschuwing voor vaste achterstand\nveranderde node versie in min. 18",
+        "fr": "plus de docs\nalerte de retard fixe\na changé la version du noeud en min. 18",
+        "it": "aggiunto più documenti\navviso backlog fisso\ncambiato versione nodo a min. 18",
+        "es": "añadido más docs\nalerta fija\ncambió la versión de nodo a min. 18",
+        "pl": "dodano więcej dokumentów\nstałe ostrzeżenie backlog\nzmieniona wersja węzła na min. 18",
+        "uk": "додано більше docs\nвиправлено попередження задньої панелі\nзмінена версія вершини до хв. 18 років",
+        "zh-cn": "添加更多文件\n固定积压警告\n将节点版本改为分钟。 第 18 条"
       },
-      "0.0.61": {
-        "en": "fixed secure connection bug (#20)",
-        "de": "fixed secure connection bug (#20)",
-        "ru": "фиксированное безопасное соединение (#20)",
-        "pt": "bug de conexão segura fixa (#20)",
-        "nl": "vaste beveiligde verbinding fout (#20)",
-        "fr": "bug de connexion sécurisé corrigé (#20)",
-        "it": "bug di connessione sicuro fisso (#20)",
-        "es": "error de conexión seguro fijo (#20)",
-        "pl": "ustawiony błąd bezpiecznego połączenia (# 20)",
-        "uk": "виправлено помилку безпечного з'єднання (#20)",
-        "zh-cn": "固定的安全连接错误 (# 20)"
+      "0.0.67": {
+        "en": "fixed icon\nadded notifications backlog, if client is not connected (up to 250 messages)\nfixed login",
+        "de": "feste ikone\nzusätzliche benachrichtigungen backlog, wenn client nicht angeschlossen ist (bis zu 250 nachrichten)\nfeste anmeldung",
+        "ru": "значок\nдобавленное отставание уведомлений, если клиент не подключен (до 250 сообщений)\nфиксированный вход",
+        "pt": "ícone fixo\nnotificações adicionais backlog, se o cliente não estiver conectado (até 250 mensagens)\nlogin fixo",
+        "nl": "vast pictogram\ntoegevoegde meldingen achterstand, als client niet verbonden is (tot 250 berichten)\nvaste login",
+        "fr": "icône fixe\nl'arriéré de notifications ajouté, si le client n'est pas connecté (jusqu'à 250 messages)\nconnexion fixe",
+        "it": "icona fissa\nbacklog, se il client non è connesso (fino a 250 messaggi)\nlogin fisso",
+        "es": "icono fijo\nnotificaciones agregadas atraso, si el cliente no está conectado (hasta 250 mensajes)\nlogin fijo",
+        "pl": "ikona stała\ndodany backlog powiadomień, jeśli klient nie jest podłączony (do 250 wiadomości)\nstałe logowanie",
+        "uk": "фіксована ікона\nдодано повідомлення backlog, якщо клієнт не підключений (до 250 повідомлень)\nувійти",
+        "zh-cn": "固定图标\n如果客户端没有连接, 则添加通知积压( 最多250条消息)\n固定登录"
       },
-      "0.0.61-beta.0": {
-        "en": "Preperation of lastest request\nfixed some smaller issues",
-        "de": "Vorbereitung der letzten Anfrage\neinige kleinere probleme behoben",
-        "ru": "Превосходство последнего запроса\nисправить некоторые небольшие проблемы",
-        "pt": "Preperação do último pedido\ncorrigiu alguns problemas menores",
-        "nl": "Voorbereiding van laatste verzoek\nenkele kleinere problemen opgelost",
-        "fr": "Préperation de la dernière demande\ncorrigé quelques petits problèmes",
-        "it": "Preperazione dell'ultima richiesta\nrisolto alcuni problemi più piccoli",
-        "es": "Preperación de la solicitud láser\narreglar algunas cuestiones más pequeñas",
-        "pl": "Preperacja ostatniego wniosku\nnaprawiono kilka mniejszych problemów",
-        "uk": "Переробка останнього запиту\nвиправлено деякі менші проблеми",
-        "zh-cn": "最后请求的先验\n确定一些较小的问题"
+      "0.0.67-beta.1": {
+        "en": "Fixed missing io-package config due to missing commit",
+        "de": "Behobene fehlende io-package config aufgrund fehlender Verpflichtung",
+        "ru": "Исправленная недостающая настройка io-package из-за отсутствия фиксации",
+        "pt": "Corrigido falta io-package config devido a falta de commit",
+        "nl": "Fixed io-package config wegens ontbrekende commit",
+        "fr": "Correction de la configuration io-package manquante en raison de la disparition du commit",
+        "it": "Fisso di configurazione di io-package mancante a causa del commit mancante",
+        "es": "Fig de io-paquete fijo por falta de compromiso",
+        "pl": "Naprawiono brakującą konfigurację pakietu jo- z powodu braku commit",
+        "uk": "Виправлено відсутні налаштування io-package через відсутній коміт",
+        "zh-cn": "失踪造成的固定的氧化包装配置"
       },
-      "0.0.60": {
-        "en": "Added simple AES encryption\nPreperation for latest request\nFixed login errors if AES encryption is disabled",
-        "de": "Einfache AES-Verschlüsselung\nVorbereitung auf neueste Anfrage\nFehler behoben, wenn AES-Verschlüsselung deaktiviert ist",
-        "ru": "Добавлено простое шифрование AES\nПревосходность для последнего запроса\nИсправленные ошибки входа, если отключено шифрование AES",
-        "pt": "Adicionado simples criptografia AES\nPreperação para pedido mais recente\nErros de login fixos se a criptografia AES está desativada",
-        "nl": "Eenvoudige AES-versleuteling toegevoegd\nVoorbereiding voor laatste verzoek\nVaste login fouten als AES-encryptie is uitgeschakeld",
-        "fr": "Ajout d'un chiffrement simple AES\nPréperation pour la dernière demande\nErreurs de connexion corrigées si le chiffrement AES est désactivé",
-        "it": "Aggiunto semplice crittografia AES\nPreperazione per l'ultima richiesta\nErrori di login corretti se la crittografia AES è disabilitata",
-        "es": "Cifrado simple AES\nPreperación para la última solicitud\nErrores de inicio de sesión fijos si el cifrado AES está deshabilitado",
-        "pl": "Dodano proste szyfrowanie AES\nPreperacja do ostatniego wniosku\nNaprawiono błędy logowania w przypadku wyłączenia szyfrowania AES",
-        "uk": "Додано простий шифрування AES\nПопереднє замовлення для останнього запиту\nВиправлені помилки в логіні, якщо шифрування AES вимкнено",
-        "zh-cn": "添加简单的 AES 加密\n最新请求的预览\n如果禁用 AES 加密, 则固定登录错误"
+      "0.0.67-beta.0": {
+        "en": "Fixed #25\nsendTo support for notifications\nHandling sensitive data & timeouts #22",
+        "de": "Feste #25\nsendTo Unterstützung für Benachrichtigungen\nUmgang mit sensiblen Daten & Timeouts #22",
+        "ru": "#25\nsendTo поддержка уведомлений\nОбработка чувствительных данных и таймаутов #22",
+        "pt": "Fixo #25\nsuporte para notificações\nManipulação de dados e timeouts sensíveis #22",
+        "nl": "Vast #25\nsendTo support for notifications\nBehandeling van gevoelige gegevens en time-outs #22",
+        "fr": "Correction n°25\nsendTo support pour les notifications\nTraitement des données sensibles et des délais #22",
+        "it": "Fisso #25\nsendTo supporto per le notifiche\nGestione di dati e timeout sensibili #22",
+        "es": "Arreglado #25\nenviarA soporte para notificaciones\nManejo de datos sensibles \" timeouts \" #22",
+        "pl": "Naprawiono # 25\nsendTo support for notification\nObsługa wrażliwych danych i timeout # 22",
+        "uk": "Виправлено #25\nвідправити\nОбробка конфіденційних даних та часів #22",
+        "zh-cn": "25号固定\n发送到支持通知\n处理敏感数据及超时22"
       }
     },
     "titleLang": {
@@ -125,12 +125,17 @@
       "mor15Euro <moritz@bachmaiers.de>"
     ],
     "keywords": [
-      "ioBroker",
-      "template",
-      "Smart Home",
-      "home automation"
+      "Android",
+      "Visualization",
+      "APP",
+      "Widgets",
+      "Templates"
     ],
-    "license": "MIT",
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
+    "tier": 2,
     "platform": "Javascript/Node.js",
     "main": "build/main.js",
     "icon": "hiob.png",
@@ -144,6 +149,8 @@
     "connectionType": "local",
     "dataSource": "push",
     "materialize": false,
+    "messagebox": true,
+    "blockly": true,
     "adminUI": {
       "config": "json"
     },

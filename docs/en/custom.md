@@ -3,7 +3,7 @@
 -   [Back to Summary](/docs/en/README.md)
 -   [Step 2: Create ENUMS](enum.md)
 -   [Step 3: Create Widgets](widgets.md)
--   [Step 4: Create Screnns](sreens.md)
+-   [Step 4: Create Screens](sreens.md)
 -   [Step 5: Create Backups](backups.md)
 
 ## Custom settings `Custom Theme Settings`
@@ -24,5 +24,5 @@
 -   [Back to Summary](/docs/en/README.md)
 -   [Step 2: Create ENUMS](enum.md)
 -   [Step 3: Create Widgets](widgets.md)
--   [Step 4: Create Screnns](sreens.md)
+-   [Step 4: Create Screens](sreens.md)
 -   [Step 5: Create Backups](backups.md)

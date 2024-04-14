@@ -6,19 +6,17 @@
 [![GitHub license](https://img.shields.io/github/license/moba15/ioBroker.hiob)](https://github.com/moba15/ioBroker.hiob/blob/main/LICENSE)
 [![NPM version](https://img.shields.io/npm/v/iobroker.hiob.svg)](https://www.npmjs.com/package/iobroker.hiob)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hiob.svg)](https://www.npmjs.com/package/iobroker.hiob)
-![Number of Installations](https://iobroker.live/badges/hiob-installed.svg)
-![GitHub size](https://img.shields.io/github/repo-size/moba15/ioBroker.hiob)</br>
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/moba15/ioBroker.hiob)
+![Number of Installations](https://iobroker.live/badges/hiob-installed.svg)</br>
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/moba15/ioBroker.hiob/latest)
 ![GitHub last commit](https://img.shields.io/github/last-commit/moba15/ioBroker.hiob)
-![GitHub issues](https://img.shields.io/github/issues/moba15/ioBroker.hiob)</br>
+
 **Version:** </br>
 ![Beta](https://img.shields.io/npm/v/iobroker.hiob.svg?color=red&label=beta)
 
 [![NPM](https://nodei.co/npm/iobroker.hiop.png?downloads=true)](https://nodei.co/npm/iobroker.hiob/)
 
 **Tests:** </br>
-![Test and Release](https://github.com/moba15/ioBroker.hiob/workflows/Test%20and%20Release/badge.svg)
+[![Test and Release](https://github.com/moba15/ioBroker.hiob/actions/workflows/test-and-release.yml/badge.svg)](https://github.com/moba15/ioBroker.hiob/actions/workflows/test-and-release.yml)
 
 ## HioB adapter for ioBroker
 
@@ -26,18 +24,16 @@
 
 ## Requirements
 
--   Node >= 16
--   Android Phone, Linux or Windows
+-   Node >= 18
+-   Android Phone
 
 ## Tested with
 
 -   Samsung Android Phones
 -   Google Pixel Android Phones
 -   Sony Pixel Android Phones
--   Xiaomi Node Android Phones
--   Windows 10
--   Arch Linux
--   Ubuntu
+-   Xiaomi Phones
+-   Android 10/11/13
 
 ## APP Code
 
@@ -52,12 +48,48 @@
 
 🇩🇪 [Fragen](https://forum.iobroker.net/topic/55250/neuer-adapter-hiob-handy-app)
 
+## Known Issues
+- 0.1.2 and 0.1.1 don't work if you use aes encryption, please donwgrade to 0.1.0 or 0.0.67 if you have issues
 ## Changelog
 
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### 0.1.3 (2024-03-29)
+- (Lucky-ESA) fixed common.keywords
+- (mob15) updated dependencies
+
+### 0.1.2 (2024-03-27)
+- (Lucky-ESA) changed license Information
+
+### 0.1.1 (2024-03-27)
+- (moba15) fixed package.json
+
+### 0.1.0 (2024-03-27)
+- (Lucky-ESA) added more docs
+- (moba15) fixed backlog warning
+- (moba15) changed node version to min. 18
+
+### 0.0.67 (2024-03-25)
+ - (moba15) fixed icon
+ - (moba15) added notifications backlog, if client is not connected (up to 250 messages)
+ - (moba15) fixed login
+
+### 0.0.67-beta.1 (2024-03-25)
+ - (moba15) Fixed missing io-package config due to missing commit
+
+### 0.0.67-beta.0 (2024-03-25)
+ - (moba15) Fixed #25
+ - (moba15) sendTo support for notifications
+ - (Lucky-ESA) Handling sensitive data & timeouts #22
+
+### 0.0.66 (2024-03-23)
+- Added some docs
+
+### 0.0.66-beta.0 (2024-03-22)
+- First implementation of notifications
+
 ### 0.0.65 (2024-03-15)
  - (moba15) fixed linter
 
@@ -68,8 +100,11 @@
 ### 0.0.62 (2024-03-04)
 - (moba15) fixed bug, where broadcasted messages where sent without type
 
+### 0.0.62 (2024-03-04)
+- (moba15) fixed bug, where broadcasted messages where sent without type
+
 ### 0.0.61 (2024-03-04)
- - (moba15) fixed secure connection bug (#20)
+- (moba15) fixed secure connection bug (#20)
 
 ### 0.0.61-beta.0 (2024-03-01)
 - (Lucky-ESA) Preperation of lastest request
@@ -89,7 +124,7 @@
 ### 0.0.54 (2023-12-31)
 
 -   (moba15) Added secure login
--   (moba15) Added secure connection
+-   (moba15) Added secure connetion
 -   (moba15) Automatic acceptance of incoming connections for 60 seconds
 
 ### 0.0.1 (2023-03-26)

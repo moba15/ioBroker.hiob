@@ -3,7 +3,7 @@
 -   [Zurück zur Beschreibung](/docs/de/README.md)
 -   [Schritt 2: ENUMS erstellen](enum.md)
 -   [Schritt 3: Widgets erstellen](widgets.md)
--   [Schritt 4: Screnns erstellen](sreens.md)
+-   [Schritt 4: Screens erstellen](sreens.md)
 -   [Schritt 5: Backups erstellen](backups.md)
 
 ## Installation und APP Einrichtung `ioBroker Settings`
@@ -70,5 +70,5 @@
 -   [Zurück zur Beschreibung](/docs/de/README.md)
 -   [Schritt 2: ENUMS erstellen](enum.md)
 -   [Schritt 3: Widgets erstellen](widgets.md)
--   [Schritt 4: Screnns erstellen](sreens.md)
+-   [Schritt 4: Screens erstellen](sreens.md)
 -   [Schritt 5: Backups erstellen](backups.md)

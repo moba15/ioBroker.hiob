@@ -56,8 +56,7 @@ export class Server {
         this.stoped = false;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    broadcastMsg(msg: string, notification: boolean): void {
+    broadcastMsg(msg: string): void {
         //this.webSocketServer.clients.forEach((e) => {});
         this.conClients
             .filter((e) => !e.onlySendNotification)
@@ -75,9 +74,6 @@ export class Server {
     }
 
     stop(): void {
-        for (const client of this.conClients) {
-            client.stop();
-        }
         this.socket?.close();
         this.adapter.log.info("Server stoped");
         this.stoped = true;

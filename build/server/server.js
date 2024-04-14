@@ -69,7 +69,7 @@ class Server {
     this.adapter.log.info("Server started and is listening on port: " + this.port);
     this.stoped = false;
   }
-  broadcastMsg(msg, notification) {
+  broadcastMsg(msg) {
     this.conClients.filter((e) => !e.onlySendNotification).forEach((element) => {
       if (element.isConnected)
         element.sendMSG(msg, true);
@@ -83,9 +83,6 @@ class Server {
   }
   stop() {
     var _a;
-    for (const client of this.conClients) {
-      client.stop();
-    }
     (_a = this.socket) == null ? void 0 : _a.close();
     this.adapter.log.info("Server stoped");
     this.stoped = true;

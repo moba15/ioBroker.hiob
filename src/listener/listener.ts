@@ -1,4 +1,4 @@
-import EventEmitter from "events";
+import { EventEmitter } from "stream";
 import { SamartHomeHandyBis } from "../main";
 import { StateChangedDataPack } from "../server/datapacks";
 
@@ -24,7 +24,9 @@ export class Listener extends EventEmitter {
                 }
                 this.adapter.valueDatapoints[id].val = state.val;
                 this.adapter.valueDatapoints[id].ack = state.ack;
-                this.adapter.server?.broadcastMsg(new StateChangedDataPack(id, state.val, state.ack).toJSON(), false);
+                this.adapter.server?.broadcastMsg(
+                    new StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON()
+                );
             }
             this.emit(Events.StateChange, new StateChangeEvent(id, state.val, state.ack));
         } else {

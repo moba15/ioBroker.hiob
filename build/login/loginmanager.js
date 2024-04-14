@@ -34,6 +34,7 @@ var crypto = __toESM(require("crypto"));
 class LoginManager {
   constructor(adapter) {
     this.approveLogins = false;
+    this.aesViewTimeout = {};
     this.adapter = adapter;
     this.adapter.listener.on(import_listener.Events.StateChange, this.onStateChange.bind(this));
     this.pendingClients = [];
@@ -78,6 +79,9 @@ class LoginManager {
             }
           }
           this.adapter.setStateAsync(event.objectID, { ack: true });
+        } else if (splited[4] == "aesKey_view") {
+          this.viewAesKey(deviceID);
+          this.adapter.setStateAsync(event.objectID, false, true);
         } else if (splited[4] == "aesKey_new") {
           const cl = this.pendingClients.find((e) => e.id == deviceID);
           if (cl) {
@@ -98,35 +102,68 @@ class LoginManager {
           this.adapter.setStateAsync(event.objectID, { ack: true });
         }
       } else if (splited[2] == "approveNextLogins") {
-        if (event.value) {
-          if (this.approveLoginsTimeout) {
-            this.adapter.clearTimeout(this.approveLoginsTimeout);
-            this.approveLoginsTimeout = void 0;
-          }
-          this.approveLogins = true;
-          this.approveLoginsTimeout = this.adapter.setTimeout(() => {
-            this.approveLogins = false;
-            this.approveLoginsTimeout = void 0;
-            this.adapter.setStateAsync("approveNextLogins", false, true);
-          }, 1e3 * 60);
-        } else {
-          this.approveLogins = false;
-          this.adapter.setStateAsync("approveNextLogins", { ack: true });
-        }
+        this.setApproveNextLogins(event.value);
       }
     }
   }
+  setApproveNextLogins(value) {
+    if (value) {
+      if (this.approveLoginsTimeout) {
+        this.adapter.clearTimeout(this.approveLoginsTimeout);
+        this.approveLoginsTimeout = void 0;
+      }
+      this.approveLogins = true;
+      this.approveLoginsTimeout = this.adapter.setTimeout(() => {
+        this.approveLogins = false;
+        this.approveLoginsTimeout = void 0;
+        this.adapter.setStateAsync("approveNextLogins", false, true);
+      }, 1e3 * 60);
+    } else {
+      this.approveLogins = false;
+      this.adapter.setStateAsync("approveNextLogins", { ack: true });
+    }
+  }
+  async viewAesKey(deviceID) {
+    if (!this.aesViewTimeout[deviceID]) {
+      const state = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
+      if (state != null && state.val != null) {
+        if (state.val.toString().length > 6) {
+          const dec_shaAes = this.adapter.decrypt(state.val.toString());
+          await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, dec_shaAes, true);
+        }
+      } else {
+        return;
+      }
+      this.aesViewTimeout[deviceID] = this.adapter.setTimeout(async () => {
+        const state2 = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
+        if (state2 != null && state2.val != null) {
+          if (state2.val.toString().length === 6) {
+            const shaAes = this.adapter.encrypt(state2.val.toString());
+            await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, shaAes, true);
+          }
+        }
+        this.aesViewTimeout[deviceID] = void 0;
+      }, 1e3 * 60);
+    }
+  }
   async setAesNewAndSentInfo(deviceID, cl) {
+    if (this.aesViewTimeout[deviceID]) {
+      this.adapter.clearTimeout(this.aesViewTimeout[deviceID]);
+      this.aesViewTimeout[deviceID] = void 0;
+    }
     const random_key = this.genRandomString(6, true);
-    await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, random_key, true);
+    await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
     cl.aesKey = random_key;
     cl.setAESKey(random_key);
     cl.sendMSG(new import_datapacks.NewAesPacket().toJSON(), false);
   }
   async setAesStatus(deviceID, cl) {
     const get_aes = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
-    const aes_status = await this.adapter.getStateAsync("devices." + deviceID + ".aesKey_active");
+    const aes_status = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey_active`);
     if (get_aes && get_aes.val && aes_status && aes_status.val) {
+      if (get_aes.val.toString().length > 6) {
+        get_aes.val = this.adapter.decrypt(get_aes.val.toString());
+      }
       cl.setAESKey(get_aes.val.toString());
       this.adapter.log.info(`AES encryption enabled!`);
     } else {
@@ -140,6 +177,9 @@ class LoginManager {
     if (aes_status && aes_status.val) {
       const aes = await this.adapter.getStateAsync("devices." + deviceID + ".aesKey");
       if (aes != null && aes.val != null) {
+        if (aes.val.toString().length > 6) {
+          aes.val = this.adapter.decrypt(aes.val.toString());
+        }
         cl.setAESKey(aes.val.toString());
       } else {
         cl.setAESKey("");
@@ -150,13 +190,19 @@ class LoginManager {
     await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[1], true);
     for (const current of this.pendingClients) {
       if (current.id == cl.id) {
-        current.sendMSG(new import_datapacks.LoginKeyPacket(keys[0]).toJSON(), false);
+        current.sendMSG(new import_datapacks.LoginKeyPacket(keys[0]).toJSON(), false, false);
       }
     }
   }
   async stop() {
     this.approveLoginsTimeout && this.adapter.clearTimeout(this.approveLoginsTimeout);
     this.approveLoginsTimeout = void 0;
+    if (this.aesViewTimeout && Object.keys(this.aesViewTimeout).length > 0) {
+      for (const cl in this.aesViewTimeout) {
+        this.aesViewTimeout[cl] && this.adapter.clearTimeout(this.aesViewTimeout[cl]);
+        this.aesViewTimeout[cl] = void 0;
+      }
+    }
     return false;
   }
   async onWrongAesKey(client) {
@@ -241,6 +287,22 @@ class LoginManager {
     return apr;
   }
   async createObjects(client, deviceIDRep, deviceName, key, version) {
+    await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}`, {
+      type: "channel",
+      common: {
+        name: deviceName,
+        desc: "Created by Adapter"
+      },
+      native: {}
+    });
+    await this.adapter.setObjectAsync(`devices.${deviceIDRep}`, {
+      type: "channel",
+      common: {
+        name: deviceName,
+        desc: "Created by Adapter"
+      },
+      native: {}
+    });
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.connected`, {
       type: "state",
       common: {
@@ -292,14 +354,6 @@ class LoginManager {
       native: {}
     });
     await this.adapter.setStateAsync(`devices.${deviceIDRep}.app_version`, version, true);
-    await this.adapter.setObjectAsync(`devices.${deviceIDRep}`, {
-      type: "channel",
-      common: {
-        name: deviceName,
-        desc: "Created by Adapter"
-      },
-      native: {}
-    });
     await this.adapter.setObjectAsync(`devices.${deviceIDRep}.name`, {
       type: "state",
       common: {
@@ -477,7 +531,58 @@ class LoginManager {
       },
       native: {}
     });
+    await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notificationBacklog`, {
+      type: "state",
+      common: {
+        name: {
+          en: "Notification Backlog",
+          de: "R\xFCckstand bei der Benachrichtigung",
+          ru: "\u0423\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u044F",
+          pt: "Atraso de notifica\xE7\xE3o",
+          nl: "Kennisgeving Achterstand",
+          fr: "Carnet de notifications",
+          it: "Arretrati di notifica",
+          es: "Notificaciones atrasadas",
+          pl: "Zaleg\u0142o\u015Bci w powiadomieniach",
+          uk: "\u0412\u0456\u0434\u0441\u0442\u0430\u0432\u0430\u043D\u043D\u044F \u0441\u043F\u043E\u0432\u0456\u0449\u0435\u043D\u044C",
+          "zh-cn": "\u901A\u77E5\u79EF\u538B"
+        },
+        type: "array",
+        role: "state",
+        desc: "Created by Adapter",
+        def: "",
+        read: true,
+        write: false
+      },
+      native: {}
+    });
     await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.sendNotification`);
+    await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_view`, {
+      type: "state",
+      common: {
+        name: {
+          "en": "decrypt AES key for 30 seconds.",
+          "de": "AES Schl\xFCssel f\xFCr 30 Sekunden entschl\xFCsseln.",
+          "ru": "\u0440\u0430\u0441\u0448\u0438\u0444\u0440\u043E\u0432\u0430\u0442\u044C \u043A\u043B\u044E\u0447 AES \u0432 \u0442\u0435\u0447\u0435\u043D\u0438\u0435 30 \u0441\u0435\u043A\u0443\u043D\u0434.",
+          "pt": "descriptografar AES chave por 30 segundos.",
+          "nl": "decodeer AES sleutel gedurende 30 seconden.",
+          "fr": "d\xE9chiffrer la cl\xE9 AES pendant 30 secondes.",
+          "it": "decifrare la chiave AES per 30 secondi.",
+          "es": "descifrar la tecla AES durante 30 segundos.",
+          "pl": "odszyfrowa\u0107 klucz AES przez 30 sekund.",
+          "uk": "\u0440\u043E\u0437\u0448\u0438\u0444\u0440\u0443\u0432\u0430\u0442\u0438 \u043A\u043B\u044E\u0447 AES \u043D\u0430 30 \u0441\u0435\u043A\u0443\u043D\u0434.",
+          "zh-cn": "\u89E3\u5BC6AES\u5BC6\u94A530\u79D2."
+        },
+        type: "boolean",
+        role: "button",
+        desc: "Created by Adapter",
+        def: false,
+        read: true,
+        write: true
+      },
+      native: {}
+    });
+    await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.aesKey_view`);
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey`, {
       type: "state",
       common: {
@@ -506,9 +611,12 @@ class LoginManager {
     const get_aes = await this.adapter.getStateAsync(`devices.${deviceIDRep}.aesKey`);
     const random_key = this.genRandomString(6, true);
     if (!get_aes || get_aes.val == null || get_aes.val == "") {
-      await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, random_key, true);
+      await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
       client.aesKey = random_key;
     } else if (get_aes != null && typeof get_aes.val === "string") {
+      if (get_aes.val.toString().length > 6) {
+        get_aes.val = this.adapter.decrypt(get_aes.val.toString());
+      }
       client.aesKey = get_aes.val;
     } else {
       this.adapter.log.warn("Cannot find AES Key. Please Restart Adapter!");

@@ -24,7 +24,7 @@ export class Client {
     server;
     isConnected;
     req;
-    adapter;
+    adapter : SamartHomeHandyBis;
     approved;
     aesKey?: string;
     onlySendNotification: boolean = false;
@@ -43,20 +43,22 @@ export class Client {
         socket.onerror = this.onError.bind(this);
     }
 
-    stop(): void {
-        this.stop;
-    }
-
     close(): void {
         this.socket.pause();
     }
 
-    async sendMSG(msg: any, needAproval: boolean = false): Promise<boolean> {
+    async sendMSG(msg: any, needAproval: boolean = false, log : boolean = true): Promise<boolean> {
         if (needAproval && !this.approved) {
-            this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
+            if(log) {
+                this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
+            }
             return false;
         }
-        this.adapter.log.debug("Send MSG( " + JSON.stringify(msg) + ") to Client(" + this.toString() + ")");
+        if (msg["type"] === "loginKey") {
+            this.adapter.log.debug("Send MSG( LoginKey ) to Client(" + this.toString() + ")");
+        } else {
+            this.adapter.log.debug("Send MSG( " + JSON.stringify(msg) + ") to Client(" + this.toString() + ")");
+        }
         const send = {
             type: msg["type"],
             content: "",
@@ -66,14 +68,15 @@ export class Client {
             Object.keys(msg).length > 1 &&
             (await this.adapter.getStateAsync("devices." + this.id + ".aesKey_active"))?.val
         ) {
-            this.adapter.log.debug(`ENCRYPT KEY: ${this.aesKey}`);
             const aes = `${this.aesKey}${msg["type"]}`;
             send["content"] = CryptoJS.AES.encrypt(JSON.stringify(msg), aes).toString();
         } else {
             send["content"] = msg;
         }
         this.socket.send(JSON.stringify(send).toString());
-        this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
+        if (msg["type"] != "loginKey") {
+            this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
+        }
         return false;
     }
 
@@ -90,7 +93,6 @@ export class Client {
             const map = JSON.parse(data);
             if (map && map["content"] != null && typeof map["content"] === "string") {
                 if (this.aesKey != "" || map["type"] === "requestLogin") {
-                    this.adapter.log.debug(`KEY: ${this.aesKey}`);
                     let aes = "";
                     if (map["type"] === "requestLogin") {
                         aes = `tH8Lm-${map["type"]}`; // Dummy Key
@@ -100,7 +102,6 @@ export class Client {
                     try {
                         const bytes = CryptoJS.AES.decrypt(map["content"], aes);
                         map["content"] = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)) ?? {};
-                        this.adapter.log.debug("Client(" + this.toString() + ") decrypt: " + JSON.stringify(map));
                     } catch (error) {
                         this.onWrongAesKey();
                         this.adapter.log.warn(`Wrong AES Key - ${error}`);
@@ -115,7 +116,11 @@ export class Client {
                 }
             }
             const content = map["content"] ?? {};
-            this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + " type: " + map["type"]);
+            if (map["type"] === "requestLogin") {
+                this.adapter.log.debug("Client(" + this.toString() + ") send requestLogin");
+            } else {
+                this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + " type: " + map["type"]);
+            }
             switch (map["type"]) {
                 case "iobStateChangeRequest":
                     if (this.approved)
@@ -130,14 +135,7 @@ export class Client {
                     break;
                 case "subscribeHistory":
                     if (this.approved)
-                        this.onSubscribeToHistory(
-                            new SubscribeToDataPointsHistory(
-                                content["dataPoint"],
-                                content["end"],
-                                content["start"],
-                                content["interval"],
-                            ),
-                        );
+                        /* this.onSubscribeToHistory(new SubscribeToDataPointsHistory(content["dataPoint"], content["end"], content["start"], content["interval"])); */
                     //TODO:
                     break;
                 case "requestLogin":
@@ -146,16 +144,7 @@ export class Client {
                         this.adapter.log.warn(`Please update the HioB APP!`);
                         return;
                     }
-                    this.onLoginRequest(
-                        new RequestLoginPacket(
-                            content["deviceName"],
-                            content["deviceID"],
-                            content["key"],
-                            content["version"],
-                            content["user"],
-                            content["password"],
-                        ),
-                    );
+                    this.onLoginRequest(new RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["version"], content["user"], content["password"]));
                     break;
                 case "templateSettingCreate":
                     this.adapter.log.debug(JSON.stringify(content["name"]));
@@ -167,23 +156,14 @@ export class Client {
                     break;
                 case "uploadTemplateSetting":
                     this.adapter.log.debug("uploadTemplateSetting");
-                    this.onTemplateUpload(
-                        new TemplateSettingUploadPack(
-                            content["name"],
-                            content["devices"],
-                            content["screens"],
-                            content["widgets"],
-                        ),
-                    );
+                    this.onTemplateUpload(new TemplateSettingUploadPack(content["name"], content["devices"], content["screens"], content["widgets"]));
                     break;
                 case "getTemplatesSetting":
                     this.adapter.log.debug("getTemplatesSetting");
                     this.getTemplatesSetting(content["name"], content["device"], content["screen"], content["widget"]);
                     break;
                 case "notification":
-                    this.onNotification(
-                        new NotificationPack(content["onlySendNotification"], content["content"], content["date"]),
-                    );
+                    this.onNotification(new NotificationPack(content["onlySendNotification"], content["content"], content["date"]));
                     break;
             }
         } catch (e) {
@@ -195,6 +175,7 @@ export class Client {
 
     onApprove(): void {
         this.approved = true;
+        this.adapter.notificationManager.sendBacklog(this);
     }
 
     filter(value: Client): boolean {
@@ -240,9 +221,9 @@ export class Client {
         this.adapter.subscribeToDataPoints(sub.dataPoints, this);
     }
 
-    onSubscribeToHistory(sub: SubscribeToDataPointsHistory): void {
+    /* onSubscribeToHistory(sub: SubscribeToDataPointsHistory): void {
         // this.adapter.historyManager.subscribeToHistory(sub.dataPoint, sub.start, sub.end, this, sub.minInterval);
-    }
+    } */
 
     onLoginRequest(requestLoginPacket: RequestLoginPacket): void {
         this.setConnection();
@@ -261,35 +242,20 @@ export class Client {
     async onTemplateSettingCreate(templateSettingCreatePack: TemplateSettingCreatePack): Promise<void> {
         //TODO:
         this.adapter.log.debug("OnTemplateSettingCreate: " + templateSettingCreatePack.name);
-        await this.adapter.templateManager.createNewTemplateSetting(
-            new TemplateSettings(templateSettingCreatePack.name),
-            this,
-        );
+        await this.adapter.templateManager.createNewTemplateSetting(new TemplateSettings(templateSettingCreatePack.name));
         this.sendMSG(new TemplateSettingCreatePack(templateSettingCreatePack.name).toJSON(), true);
     }
 
     async onTemplateUpload(uploadTemplateSettingPack: any): Promise<void> {
-        await this.adapter.templateManager.uploadTemplateSetting(
-            uploadTemplateSettingPack.name,
-            uploadTemplateSettingPack.devices,
-            uploadTemplateSettingPack.screens,
-            uploadTemplateSettingPack.widgets,
-            this,
-        );
+        await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets);
         this.sendMSG(new TemplateSettingUploadSuccessPack().toJSON(), true);
     }
 
     async getTemplatesSetting(name: any, device: any, screen: any, widget: any): Promise<void> {
         this.adapter.log.debug("NAME: " + name);
         const map = await this.adapter.templateManager.getTemplateSettings(name);
-        this.sendMSG(
-            new GetTemplateSettingPack(
-                device ? map["devices"] : null,
-                screen ? map["screens"] : null,
-                widget ? map["widgets"] : null,
-            ).toJSON(),
-            true,
-        );
+        this.sendMSG(new GetTemplateSettingPack(device ? map["devices"]: null, screen ? map["screens"]: null, widget ? map["widgets"] : null).toJSON(), true);
+
     }
 
     onNotification(pack: NotificationPack): any {

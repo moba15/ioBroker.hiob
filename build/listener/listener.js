@@ -1,9 +1,7 @@
 "use strict";
-var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -17,10 +15,6 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var listener_exports = {};
 __export(listener_exports, {
@@ -29,13 +23,13 @@ __export(listener_exports, {
   StateChangeEvent: () => StateChangeEvent
 });
 module.exports = __toCommonJS(listener_exports);
-var import_events = __toESM(require("events"));
+var import_stream = require("stream");
 var import_datapacks = require("../server/datapacks");
 var Events = /* @__PURE__ */ ((Events2) => {
   Events2["StateChange"] = "stateChanged";
   return Events2;
 })(Events || {});
-class Listener extends import_events.default {
+class Listener extends import_stream.EventEmitter {
   constructor(adapter) {
     super();
     this.adapter = adapter;
@@ -49,7 +43,9 @@ class Listener extends import_events.default {
         }
         this.adapter.valueDatapoints[id].val = state.val;
         this.adapter.valueDatapoints[id].ack = state.ack;
-        (_a = this.adapter.server) == null ? void 0 : _a.broadcastMsg(new import_datapacks.StateChangedDataPack(id, state.val, state.ack).toJSON(), false);
+        (_a = this.adapter.server) == null ? void 0 : _a.broadcastMsg(
+          new import_datapacks.StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON()
+        );
       }
       this.emit("stateChanged" /* StateChange */, new StateChangeEvent(id, state.val, state.ack));
     } else {
