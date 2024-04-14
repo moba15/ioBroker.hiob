@@ -192,18 +192,19 @@ class Client {
     return value.isConnected == true;
   }
   onEnd() {
-    this.setConnection();
     this.isConnected = false;
+    this.setConnection();
     this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
     this.server.conClients = this.server.conClients.filter(this.filter.bind(this));
     this.adapter.log.debug("Size: " + this.server.conClients.length.toString());
   }
   onError() {
-    this.setConnection();
     this.isConnected = false;
+    this.setConnection();
     this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
   }
   setConnection() {
+    this.adapter.setStateAsync("devices." + this.id + ".connected", this.isConnected, true);
   }
   onStateChangeRequest(request) {
     try {
@@ -222,6 +223,7 @@ class Client {
   onSubscribeToHistory(sub) {
   }
   onLoginRequest(requestLoginPacket) {
+    this.setConnection();
     this.adapter.loginManager.onLoginRequest(this, requestLoginPacket);
   }
   onWrongAesKey() {
