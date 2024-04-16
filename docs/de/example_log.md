@@ -10,7 +10,7 @@
 
 ![example_log_logparser.png](../en/img/example_log_logparser.png)
 
-### 2.   Eigende Filter setzen (Hier wurde Debug und All hinzugefügt)
+### 2.   Eigenen Filter setzen (Hier wurde Debug und All hinzugefügt)
 
 ![example_log_logparser_instance.png](../en/img/example_log_logparser_instance.png)
 
@@ -28,7 +28,13 @@
 
 ![example_log_blockly.png](../en/img/example_log_blockly.png)
 
-### 5.   Widget Advanced/Flebible erstellen
+### 5.   Aufzählung erstellen
+
+-   Datenpunkte `logparser.0.visualization.table0.selection` und `0_userdata.0.<name>.logparser` hinzufügen
+
+  ![example_log_enum.png](img/example_log_enum.png)
+
+### 6.   Widget Advanced/Flebible erstellen
 
 -   **Multi Selection und Datenpunkt auswählen**
 
@@ -38,7 +44,7 @@
 
   ![example_log_app_multi_add.png](../en/img/example_log_app_multi_add.png)
 
-### 6.   Widget Table erstellen
+### 7.   Widget Table erstellen
 
 -   **Table und Datenpunkt auswählen**
 
@@ -52,7 +58,7 @@
 
   ![example_log_app_widgets.png](../en/img/example_log_app_widgets.png)
 
-### 6.   Screen erstellen
+### 8.   Screen erstellen
 
 -   **Widgets hinzufügen und eine Gruppe anlegen**
 
@@ -62,7 +68,7 @@
 
   ![example_log_app_screen_group.png](../en/img/example_log_app_screen_group.png)
 
-### 6.   Fertig
+### 9.   Fertig
 
   ![example_log_app_screen_ready.png](../en/img/example_log_app_screen_ready.png)
 

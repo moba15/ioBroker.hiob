@@ -28,7 +28,13 @@
 
 ![example_log_blockly.png](img/example_log_blockly.png)
 
-### 5.   Create Widget Advanced/Flebible
+### 5.   Create enum
+
+-   Added State `logparser.0.visualization.table0.selection` and `0_userdata.0.<name>.logparser`
+
+  ![example_log_enum.png](img/example_log_enum.png)
+
+### 6.   Create Widget Advanced/Flebible
 
 -   **Multi Selection and select state**
 
@@ -38,7 +44,7 @@
 
   ![example_log_app_multi_add.png](img/example_log_app_multi_add.png)
 
-### 6.   Create Widget Table
+### 7.   Create Widget Table
 
 -   **Select table and state**
 
@@ -52,7 +58,7 @@
 
   ![example_log_app_widgets.png](img/example_log_app_widgets.png)
 
-### 6.   Create Screen
+### 8.   Create Screen
 
 -   **Add widgets and create a group**
 
@@ -62,7 +68,7 @@
 
   ![example_log_app_screen_group.png](img/example_log_app_screen_group.png)
 
-### 6.   Done
+### 9.   Done
 
   ![example_log_app_screen_ready.png](img/example_log_app_screen_ready.png)
 
