@@ -4,7 +4,7 @@
 
 # Sichere Verbindung
 
-Nachrichten zwischen den Adapter und deinem Handy verschlüsseln?
+Nachrichten zwischen den Adapter und Handy verschlüsseln?
 
 ## Hinweis
 

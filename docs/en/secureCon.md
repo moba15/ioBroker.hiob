@@ -4,7 +4,7 @@
 
 # Secure connection
 
-Encrypt messages between the adapter and your cell phone?
+Encrypt messages between the adapter and cell phone?
 
 ## Notice
 
