@@ -61,6 +61,9 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **Work IN PROGRESS**
+- (Lucky-Esa) added docs and more examples
+
 ### 0.1.3 (2024-03-29)
 - (Lucky-ESA) fixed common.keywords
 - (mob15) updated dependencies
