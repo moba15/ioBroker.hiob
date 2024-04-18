@@ -78,7 +78,7 @@
   ![example_ram_template.png](../en/img/example_ram/example_ram_template.png)</br>
   ![example_ram.gif](../en/img/example_ram/example_ram.gif)
 
--   [Zurück](/docs/de/example.md)
+-   [Back](/docs/en/example.md)
 
 # Import Widgets JSON
 
@@ -270,7 +270,7 @@
 ]
 ```
 
--   [Bach](/docs/en/example.md)
+-   [Back](/docs/en/example.md)
 
 # Blockly Script - Javascript Adapter >= 7.9.0
 ```BLOCKLY
@@ -689,4 +689,4 @@
 </block>
 ```
 
--   [Bach](/docs/en/example.md)
+-   [Back](/docs/en/example.md)
