@@ -18,7 +18,7 @@
 -   `alias_object_name` The name of the object that is created under `alias.0` (channel). Here the states from the <door_states> are then recreated and monitored.
 -   `check_alias_object` If true, the states under <alias_object_name> are checked against <door_states> every day at 2 p.m. If there are states there that are not entered in <door_states>, this appears as a warning in the log. These can be deleted automatically with the setting <auto_delete_object>.
 -   `auto_delete_object` Allow automatic deletion with true.
--   `debug` Outputs logs from the script
+-   `debuggen` Outputs logs from the script
 -   `emoji_open` Outputs when a window is open.
 -   `emoji_closed` Outputs when a window is closed.
 
