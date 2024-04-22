@@ -6,9 +6,9 @@ import { Mutex } from "async-mutex";
 export enum Events {
     StateChange = "stateChanged",
 }
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars 
 export class Listener extends EventEmitter {
-    static subscribtionThresholdPerInstance = 50;
+    static subscribtionThresholdPerInstance = 4;
     adapter;
     busy : boolean = false;
     subsribedStates: Map<string, {overThreshold: boolean, subscribed: Set<string>, pending: Set<string>}> = new Map();
@@ -24,14 +24,19 @@ export class Listener extends EventEmitter {
             //this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
             //Check if notification
             if (!id.startsWith("hiob.")) {
-                if (this.adapter.valueDatapoints[id] == null) {
-                    this.adapter.valueDatapoints[id] = {};
+                const adapaterKey : string = id.split(".")[0] + "." +  id.split(".")[1];
+                if(this.subsribedStates.has(adapaterKey) && this.subsribedStates.get(adapaterKey)!.subscribed.has(id)) {
+                    if (this.adapter.valueDatapoints[id] == null) {
+                        this.adapter.valueDatapoints[id] = {};
+                    }
+                    this.adapter.valueDatapoints[id].val = state.val;
+                    this.adapter.valueDatapoints[id].ack = state.ack;
+                    this.adapter.server?.broadcastMsg(
+                        new StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON()
+                    );
+
                 }
-                this.adapter.valueDatapoints[id].val = state.val;
-                this.adapter.valueDatapoints[id].ack = state.ack;
-                this.adapter.server?.broadcastMsg(
-                    new StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON()
-                );
+               
             }
             this.emit(Events.StateChange, new StateChangeEvent(id, state.val, state.ack));
         } else {
@@ -45,7 +50,9 @@ export class Listener extends EventEmitter {
         const adapaterKey : string = id.split(".")[0] + "." +  id.split(".")[1];
         if(this.subsribedStates.has(adapaterKey)) {
             const t = this.subsribedStates.get(adapaterKey);
-            t?.pending.add(id);
+            if(!t!.subscribed.has(id)) {
+                t?.pending.add(id);
+            }
         } else {
             this.subsribedStates.set(adapaterKey, {overThreshold: false, subscribed: new Set(), pending:  new Set([id])});
         }
@@ -60,6 +67,9 @@ export class Listener extends EventEmitter {
                     } else {
                         const newSubscriptionSize = subsribedStatesStatus.pending.size + subsribedStatesStatus.subscribed.size;
                         if(newSubscriptionSize >  Listener.subscribtionThresholdPerInstance) {
+                            subsribedStatesStatus.pending.forEach((e) => {
+                                subsribedStatesStatus.subscribed.add(e);
+                            });
                             //Unsubscribe to the exesting subscriptions
                             for(const i of subsribedStatesStatus.subscribed) {
                                 this.adapter.unsubscribeForeignStatesAsync(i);
