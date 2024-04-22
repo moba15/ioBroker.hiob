@@ -31,7 +31,7 @@ var Events = /* @__PURE__ */ ((Events2) => {
   return Events2;
 })(Events || {});
 class Listener extends import_stream.EventEmitter {
-  static subscribtionThresholdPerInstance = 4;
+  static subscribtionThresholdPerInstance = 50;
   adapter;
   busy = false;
   subsribedStates = /* @__PURE__ */ new Map();
