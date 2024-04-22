@@ -62,7 +62,11 @@ class Listener extends import_stream.EventEmitter {
       this.adapter.log.info(`state ${id} deleted`);
     }
   }
-  async addPendingSubscribeState(id) {
+  /**
+   * Adds a State id to the pending list
+   * @param id The id of the State you want to subscribe to
+   */
+  addPendingSubscribeState(id) {
     this.mutex.runExclusive(async () => {
       const adapaterKey = id.split(".")[0] + "." + id.split(".")[1];
       if (this.subsribedStates.has(adapaterKey)) {
@@ -75,6 +79,10 @@ class Listener extends import_stream.EventEmitter {
       }
     });
   }
+  /**
+   * Subscribes to all States listed in the pending (see addPendingSubscribeState)
+   * If there are more than 50 subscriptions for one instance it subscribses to all changes inside this instance
+   */
   subscribeToPendingStates() {
     this.mutex.runExclusive(async () => {
       for (const [adapaterKey, subsribedStatesStatus] of this.subsribedStates) {
