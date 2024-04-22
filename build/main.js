@@ -102,25 +102,6 @@ class SamartHomeHandyBis extends utils.Adapter {
       },
       native: {}
     });
-    await this.setObjectAsync(`devices`, {
-      type: "device",
-      common: {
-        name: {
-          "en": "Mobile phones",
-          "de": "Handys",
-          "ru": "\u041C\u043E\u0431\u0438\u043B\u044C\u043D\u044B\u0439 \u0442\u0435\u043B\u0435\u0444\u043E\u043D",
-          "pt": "Telefones m\xF3veis",
-          "nl": "Mobiele telefoons",
-          "fr": "T\xE9l\xE9phones mobiles",
-          "it": "Telefoni cellulari",
-          "es": "Tel\xE9fonos m\xF3viles",
-          "pl": "Telefon kom\xF3rkowy",
-          "uk": "\u041C\u043E\u0431\u0456\u043B\u044C\u043D\u0456 \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0438",
-          "zh-cn": "\u79FB\u52A8\u7535\u8BDD"
-        }
-      },
-      native: {}
-    });
     await this.setObjectNotExistsAsync("approveNextLogins", {
       type: "state",
       common: {
@@ -146,7 +127,6 @@ class SamartHomeHandyBis extends utils.Adapter {
       native: {}
     });
     await this.setStateAsync("approveNextLogins", false, true);
-    this.subscribeStates("approveNextLogins");
     this.subscribeStates("*");
     this.check_aes_key();
     this.loadConfigs();
@@ -270,12 +250,14 @@ class SamartHomeHandyBis extends utils.Adapter {
           ack: state.ack
         };
         all_dp.push(map);
-        this.subscribeForeignStates(dataPoints[i]);
+        this.listener.addPendingSubscribeState(dataPoints[i]);
       } else {
         this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
       }
     }
+    3;
     if (all_dp.length > 0) {
+      this.listener.subscribeToPendingStates();
       client.sendMSG(new import_datapacks.AnswerSubscribeToDataPointsPack(all_dp).toJSON(), true);
     }
   }

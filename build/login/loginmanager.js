@@ -238,7 +238,6 @@ class LoginManager {
       loginRequestData.version
     );
     this.adapter.clientinfos[deviceIDRep].firstload = true;
-    this.adapter.subscribeStatesAsync("devices." + deviceIDRep + ".approved");
     this.adapter.setStateAsync("devices." + deviceIDRep + ".connected", true, true);
     client.setID(deviceIDRep);
     if (!await this.validateLoginRequest(client, deviceIDRep, loginRequestData)) {
@@ -569,7 +568,6 @@ class LoginManager {
       },
       native: {}
     });
-    await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.sendNotification`);
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_view`, {
       type: "state",
       common: {
@@ -595,7 +593,6 @@ class LoginManager {
       },
       native: {}
     });
-    await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.aesKey_view`);
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey`, {
       type: "state",
       common: {
@@ -659,7 +656,6 @@ class LoginManager {
       },
       native: {}
     });
-    await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.aesKey_new`);
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_active`, {
       type: "state",
       common: {
@@ -685,7 +681,6 @@ class LoginManager {
       },
       native: {}
     });
-    await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.aesKey_active`);
   }
   genRandomString(length, woCharacters) {
     let result = "";
