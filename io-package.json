@@ -150,6 +150,7 @@
     "dataSource": "push",
     "materialize": false,
     "messagebox": true,
+    "blockly": true,
     "adminUI": {
       "config": "json"
     },
