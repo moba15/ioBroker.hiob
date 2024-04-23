@@ -22,6 +22,11 @@ __export(datapoint_history_data_exports, {
 });
 module.exports = __toCommonJS(datapoint_history_data_exports);
 class DatapointHistoryData {
+  datapoint;
+  method;
+  lastUpdated;
+  lowerBound;
+  upperBound;
   constructor(datapoint, method, lastUpadted, lowerBound, upperBound) {
     this.datapoint = datapoint;
     this.method = method;

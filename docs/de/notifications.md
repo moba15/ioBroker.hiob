@@ -13,17 +13,18 @@
 
 ### Erste Schritte
 
-1. Schalte die Batterieoptimierung auf ihrem Gerät für die App aus. (Unter den Geräteeinstellungen)
+1. Die Batterieoptimierung auf das Gerät für die App ausschalten. (Unter den Geräteeinstellungen)
    - Dies soll verhindern, dass Android die App im Hintergrund aus Energiespargründen stoppt.
-2. Erlaube Benachrichtigungen für die App
-3. Aktiviere Background Notifications in der App unter den Einstellungen
-4. Starte die App einmal neu
+2. Benachrichtigungen für die App erlauben
+3. In der APP Einstellung **Notification** die Background Notifications aktivieren
+4. Die App neu starten
 
 ### Benachrichtigungen senden
 
-- Hierfür gehst du in die ioBroker objects und suchst unter hiob.x.devices dein Gerät aus
-- Hier sollte nun auch ein "sendNotification" Datenpunkt sein
-- Setze den Datenpunkt auf einen beliebigen Text -> Nachricht wird gesendet
+- `notificationBacklog` Nachrichten die noch nicht versendet werden konnten
+- `sendNotification` Für eine Nachricht als Text oder JSON eintragen
+
+![Example](img/notify_state.png)
 
 ### Benutzerdefinierte Benachrichtigungen
 #### Schema

@@ -225,7 +225,6 @@ export class LoginManager {
             loginRequestData.version,
         );
         this.adapter.clientinfos[deviceIDRep].firstload = true;
-        this.adapter.subscribeStatesAsync("devices." + deviceIDRep + ".approved");
         this.adapter.setStateAsync("devices." + deviceIDRep + ".connected", true, true);
         client.setID(deviceIDRep);
         if (!(await this.validateLoginRequest(client, deviceIDRep, loginRequestData))) {
@@ -333,7 +332,7 @@ export class LoginManager {
             },
             native: {},
         });
-        // Delete setObjectAsync after first latest release
+        // Delete setObjectAsync after first latest release -->
         await this.adapter.setObjectAsync(`devices.${deviceIDRep}`, {
             type: "channel",
             common: {
@@ -342,6 +341,7 @@ export class LoginManager {
             },
             native: {},
         });
+        // <-- Delete setObjectAsync after first latest release
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.connected`, {
             type: "state",
             common: {
@@ -603,7 +603,6 @@ export class LoginManager {
             },
             native: {},
         });
-        await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.sendNotification`);
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_view`, {
             type: "state",
             common: {
@@ -629,7 +628,6 @@ export class LoginManager {
             },
             native: {},
         });
-        await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.aesKey_view`);
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey`, {
             type: "state",
             common: {
@@ -693,7 +691,6 @@ export class LoginManager {
             },
             native: {},
         });
-        await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.aesKey_new`);
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_active`, {
             type: "state",
             common: {
@@ -719,7 +716,6 @@ export class LoginManager {
             },
             native: {},
         });
-        await this.adapter.subscribeStatesAsync(`devices.${deviceIDRep}.aesKey_active`);
     }
 
     private genRandomString(length: number, woCharacters: boolean): string {

@@ -14,7 +14,7 @@
 # Step 1: Instance Settings
 
 1. Please enter a free port (default is 8090). If the selected port is occupied, the next free port will be used. This is written to the log and should then be copied into the config instance.
-2. For the graphic widget you need either the SQL or Histroy adapter to record changes to data points. Please select either a SQL or History instance.
+2. For the graphic widget you need either the SQL or Histroy adapter to record changes to states. Please select either a SQL or History instance.
 3. Now start the adapter.
 
 ![instance.png](img/instance.png)
@@ -37,7 +37,7 @@
 
 ![app_login_first.png](../de/img/app_login_first.png)
 
-2. Then under Objects, set the data point `approved`, from the correct device, to true (without the Confirmed check mark)
+2. Then under Objects, set the state `approved`, from the correct device, to true (without the Confirmed check mark)
 
 ![request_approved_wo_pw.png](img/request_approved_wo_pw.png)
 
@@ -58,7 +58,7 @@
 
 ![app_login_first_wo_pw.png](../de/img/app_login_first_wo_pw.png)
 
-2. Set the data point `noPwdAllowed` to true (without the Confirmed checkmark) and then set the `approved` data point to true (without the Confirmed checkmark).
+2. Set the state `noPwdAllowed` to true (without the Confirmed checkmark) and then set the `approved` state to true (without the Confirmed checkmark).
 
 ![request_approved_wo_pw.png](img/request_approved_wo_pw.png)
 
@@ -69,9 +69,9 @@
 
 # Important informations
 
-- If you want to block a user, simply set the “approved” data point to false.
+- If you want to block a user, simply set the “approved” state to false.
 - A green checkmark now appears at the top left of the view when you are connected.
-- If a red WLAN symbol flashes there, then no connection can be established. Either you are not on the same network or the data point “approved” is false.
+- If a red WLAN symbol flashes there, then no connection can be established. Either you are not on the same network or the state “approved” is false.
 
 ![app_connection_on.png](../de/img/app_connection_on.png)
 ![app_connection_off.png](../de/img/app_connection_off.png)

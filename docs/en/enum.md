@@ -16,16 +16,16 @@
 ![ENUM](img/create_enum.png)
 ![ENUM](img/create_enum_save.png)
 
-2. Now you can create as many categories as you want under ENMU `hiob`. It would be advantageous to choose categories such as light, sockets or rooms. It is then a little easier to find the desired data points in the APP.
+2. Now you can create as many categories as you want under ENMU `hiob`. It would be advantageous to choose categories such as light, sockets or rooms. It is then a little easier to find the desired states in the APP.
 
 ![ENUM](img/create_category.png)
 ![ENUM](img/create_enum_save.png)
 
-3. It is recommended to create adapter data points as `alias`. The adapter `alias-manager` is recommended for this. Then create a new `channel` here and add the data points there with the `alias manager`. Data points under 0_userdata.x or javascript.x do not necessarily have to be created as aliases.
+3. It is recommended to create adapter states as `alias`. The adapter `alias-manager` is recommended for this. Then create a new `channel` here and add the states there with the `alias manager`. states under 0_userdata.x or javascript.x do not necessarily have to be created as aliases.
 
 ![ENUM](img/create_alias.png)
 
-4. Now drag the desired data points into the Job lists.
+4. Now drag the desired states into the Job lists.
 
 ![ENUM](img/create_category_datapoint.png)
 
@@ -34,7 +34,7 @@
 ![ENUM](img/../../de/img/app_login_wo_pw_suc.png)
 
 6. Now switch to `Device Settings` in the APP. If the categories are displayed in green, then everything worked. If the categories are red, please run `Update` again and then `Sync`.
-Categories can be deleted by swiping from right to left. These appear again after `Update` & `Sync`. It is possible to create your own categories and enter new data points into them. Of course, these must be available in the ioBroker. However, these will also be deleted after `Update` & `Sync`. Therefore, after the settings/changes, make a backup or create a new backup!!!
+Categories can be deleted by swiping from right to left. These appear again after `Update` & `Sync`. It is possible to create your own categories and enter new states into them. Of course, these must be available in the ioBroker. However, these will also be deleted after `Update` & `Sync`. Therefore, after the settings/changes, make a backup or create a new backup!!!
 
 ![ENUM](img/../../de/img/app_dev_settings_green.png)
 ![ENUM](img/../../de/img/app_cat_del.png)
@@ -43,12 +43,12 @@ Categories can be deleted by swiping from right to left. These appear again afte
 
 ![ENUM](img/../../de/img/app_create_cat.png)
 
-8. New data points can be added by pressing `Add data point man.`. The ID must exist in ioBroker. E.g.: Name: Worx Party Mode and ID: worx.0.702470273301009453d9.mower.partyMode. But it would be better to create everything using alias and then assign it to the enums.
+8. New states can be added by pressing `Add data point man.`. The ID must exist in ioBroker. E.g.: Name: Worx Party Mode and ID: worx.0.702470273301009453d9.mower.partyMode. But it would be better to create everything using alias and then assign it to the enums.
 Then press save.
 
 ![ENUM](../de/img/app_create_cat_dp.png)
 
-9. Tap on a category to go to the next view. Change the names or IDs here or add new data points. Data points can be deleted by swiping from right to left.
+9. Tap on a category to go to the next view. Change the names or IDs here or add new states. States can be deleted by swiping from right to left.
 
 ![ENUM](img/../../de/img/app_edit_device.png)
 ![ENUM](img/../../de/img/app_new_device.png)

@@ -19,8 +19,7 @@
 [![Test and Release](https://github.com/moba15/ioBroker.hiob/actions/workflows/test-and-release.yml/badge.svg)](https://github.com/moba15/ioBroker.hiob/actions/workflows/test-and-release.yml)
 
 ## HioB adapter for ioBroker
-
--   Data points can be controlled with the HioB APP.
+This app allows you to control your ioBroker Smarthome system via the hiob app. It is an simpler and faster alternative to comparable projects with fewer configuration possibilities. It is mainly intended for Android devices, but also works on Windows and Linux desktops.
 
 ## Requirements
 
@@ -42,7 +41,12 @@
 ## Description
 
 🇬🇧 [Description](/docs/en/README.md)</br>
-🇩🇪 [Beschreibung](/docs/de/README.md)
+🇩🇪 [Dokumentation](/docs/de/README.md)
+
+## Examples
+
+🇬🇧 [Examples](/docs/en/example.md)</br>
+🇩🇪 [Beispiele](/docs/de/example.md)
 
 ## Questions
 
@@ -50,12 +54,16 @@
 
 ## Known Issues
 - 0.1.2 and 0.1.1 don't work if you use aes encryption, please donwgrade to 0.1.0 or 0.0.67 if you have issues
+
 ## Changelog
 
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **Work IN PROGRESS**
+- (Lucky-Esa) added docs and more examples
+
 ### 0.1.3 (2024-03-29)
 - (Lucky-ESA) fixed common.keywords
 - (mob15) updated dependencies

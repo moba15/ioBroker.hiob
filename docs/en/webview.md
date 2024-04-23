@@ -21,7 +21,7 @@
 - Name: Name of the widget
 - URL (optional): A URL such as E.g.: `http://192.168.x.x:8082/iqontrol/index.html?namespace=iqontrol.0`
 - Device: Select the desired listing.
-- Datapoint: Selection of the data point in which a web address is stored. By changing the data point, the address from the data point is updated or used.
+- Datapoint: Selection of the state in which a web address is stored. By changing the state, the address from the state is updated or used.
 - Height: The height of the widget. If the size is too small, the website may be cut off.
 - Javascript enabled: Allows running Javascripts
 

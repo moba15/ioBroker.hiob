@@ -74,6 +74,26 @@ export class SamartHomeHandyBis extends utils.Adapter {
             this.config.port = check_port;
         }
 
+        await this.setObjectNotExistsAsync(`devices`, {
+            type: "device",
+            common: {
+                name: {
+                    "en": "Mobile phones",
+                    "de": "Handys",
+                    "ru": "Мобильный телефон",
+                    "pt": "Telefones móveis",
+                    "nl": "Mobiele telefoons",
+                    "fr": "Téléphones mobiles",
+                    "it": "Telefoni cellulari",
+                    "es": "Teléfonos móviles",
+                    "pl": "Telefon komórkowy",
+                    "uk": "Мобільні телефони",
+                    "zh-cn": "移动电话"
+                },
+            },
+            native: {},
+        });
+
         await this.setObjectNotExistsAsync("approveNextLogins", {
             type: "state",
             common: {
@@ -99,7 +119,6 @@ export class SamartHomeHandyBis extends utils.Adapter {
             native: {},
         });
         await this.setStateAsync("approveNextLogins", false, true);
-        this.subscribeStates("approveNextLogins");
         this.subscribeStates("*");
         this.check_aes_key();
         this.loadConfigs();
