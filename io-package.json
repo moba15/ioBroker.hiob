@@ -1,21 +1,8 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.1.4-beta.0",
+    "version": "0.1.3",
     "news": {
-      "0.1.4-beta.0": {
-        "en": "added docs and more examples\nImplement suggestions for latest release",
-        "de": "ergänzte doks und weitere beispiele\nImplementierungsvorschläge für die neueste Veröffentlichung",
-        "ru": "добавлены docs и больше примеров\nВыполнить предложения о последнем выпуске",
-        "pt": "adicionar documentos e mais exemplos\nSugestões de implementação para lançamento mais recente",
-        "nl": "toegevoegd documenten en meer voorbeelden\nImplementeer suggesties voor de laatste versie",
-        "fr": "plus de documents et plus d'exemples\nMettre en œuvre des suggestions pour la dernière version",
-        "it": "aggiunta di documenti e più esempi\nImplement suggerimenti per l'ultima release",
-        "es": "docs añadidos y más ejemplos\nImplementar sugerencias para la última versión",
-        "pl": "dodane dokumenty i więcej przykładów\nWdrożenie sugestii dla najnowszego wydania",
-        "uk": "додано docs і більше прикладів\nРеалізація пропозицій для останнього релізу",
-        "zh-cn": "添加文件和更多实例\n执行关于最新发布的建议"
-      },
       "0.1.3": {
         "en": "fixed common.keywords\nupdated dependencies",
         "de": "fest. schlüsselwörter\naktualisierte abhängigkeiten",
