@@ -36,12 +36,9 @@ var import_datapacks = require("../server/datapacks");
 var bcrypt = __toESM(require("bcrypt"));
 var crypto = __toESM(require("crypto"));
 class LoginManager {
-  adapter;
-  pendingClients;
-  approveLogins = false;
-  approveLoginsTimeout;
-  aesViewTimeout = {};
   constructor(adapter) {
+    this.approveLogins = false;
+    this.aesViewTimeout = {};
     this.adapter = adapter;
     this.adapter.listener.on(import_listener.Events.StateChange, this.onStateChange.bind(this));
     this.pendingClients = [];

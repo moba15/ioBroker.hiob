@@ -35,17 +35,8 @@ var import_datapacks = require("./datapacks");
 var import_template_manager = require("../template/template_manager");
 var CryptoJS = __toESM(require("crypto-js"));
 class Client {
-  socket;
-  server;
-  isConnected;
-  req;
-  adapter;
-  approved;
-  aesKey;
-  onlySendNotification = false;
-  id;
-  name;
   constructor(socket, server, req, adapter) {
+    this.onlySendNotification = false;
     this.socket = socket;
     this.server = server;
     this.req = req;

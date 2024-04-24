@@ -37,15 +37,9 @@ var import_https = require("https");
 var import_client = require("./client");
 var import_datapacks = require("./datapacks");
 class Server {
-  certPath;
-  keyPath;
-  useCert;
-  port;
-  adapter;
-  socket;
-  stoped = false;
-  conClients = [];
   constructor(port = 4500, keyPath = "key.pem", certPath = "cert.pem", adapter, useCert = false) {
+    this.stoped = false;
+    this.conClients = [];
     this.port = port;
     this.certPath = certPath;
     this.keyPath = keyPath;

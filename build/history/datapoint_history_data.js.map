@@ -2,6 +2,6 @@
   "version": 3,
   "sources": ["../../src/history/datapoint_history_data.ts"],
   "sourcesContent": ["import { HistoryBound } from \"./history_bound\"\nimport { HistoryMethod } from \"./history_method\"\n\nexport class DatapointHistoryData {\n    datapoint: string;\n    method: HistoryMethod;\n    lastUpdated: number;\n    lowerBound: HistoryBound;\n    upperBound: HistoryBound;\n\n    constructor(datapoint: string, method: HistoryMethod, lastUpadted: number, lowerBound: HistoryBound, upperBound: HistoryBound) {\n        this.datapoint = datapoint;\n        this.method = method;\n        this.lastUpdated = lastUpadted;\n        this.lowerBound = lowerBound;\n        this.upperBound = upperBound;\n    }\n}\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAGO,MAAM,qBAAqB;AAAA,EAC9B;AAAA,EACA;AAAA,EACA;AAAA,EACA;AAAA,EACA;AAAA,EAEA,YAAY,WAAmB,QAAuB,aAAqB,YAA0B,YAA0B;AAC3H,SAAK,YAAY;AACjB,SAAK,SAAS;AACd,SAAK,cAAc;AACnB,SAAK,aAAa;AAClB,SAAK,aAAa;AAAA,EACtB;AACJ;",
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAGO,MAAM,qBAAqB;AAAA,EAO9B,YAAY,WAAmB,QAAuB,aAAqB,YAA0B,YAA0B;AAC3H,SAAK,YAAY;AACjB,SAAK,SAAS;AACd,SAAK,cAAc;AACnB,SAAK,aAAa;AAClB,SAAK,aAAa;AAAA,EACtB;AACJ;",
   "names": []
 }

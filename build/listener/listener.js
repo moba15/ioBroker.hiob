@@ -30,14 +30,12 @@ var Events = /* @__PURE__ */ ((Events2) => {
   Events2["StateChange"] = "stateChanged";
   return Events2;
 })(Events || {});
-class Listener extends import_stream.EventEmitter {
-  static subscribtionThresholdPerInstance = 50;
-  adapter;
-  busy = false;
-  subsribedStates = /* @__PURE__ */ new Map();
-  mutex = new import_async_mutex.Mutex();
+const _Listener = class _Listener extends import_stream.EventEmitter {
   constructor(adapter) {
     super();
+    this.busy = false;
+    this.subsribedStates = /* @__PURE__ */ new Map();
+    this.mutex = new import_async_mutex.Mutex();
     this.adapter = adapter;
   }
   onStateChange(id, state) {
@@ -91,15 +89,15 @@ class Listener extends import_stream.EventEmitter {
             subsribedStatesStatus.pending.forEach((e) => subsribedStatesStatus.subscribed.add(e));
           } else {
             const newSubscriptionSize = subsribedStatesStatus.pending.size + subsribedStatesStatus.subscribed.size;
-            if (newSubscriptionSize > Listener.subscribtionThresholdPerInstance) {
+            if (newSubscriptionSize > _Listener.subscribtionThresholdPerInstance) {
               subsribedStatesStatus.pending.forEach((e) => {
                 subsribedStatesStatus.subscribed.add(e);
               });
+              this.adapter.log.debug("More than 50 states of " + adapaterKey + " where subscribed. Now only listening to " + adapaterKey + ".*");
+              await this.adapter.subscribeForeignStatesAsync(adapaterKey + ".*");
               for (const i of subsribedStatesStatus.subscribed) {
                 this.adapter.unsubscribeForeignStatesAsync(i);
               }
-              this.adapter.log.debug("More than 50 states of " + adapaterKey + " where subscribed. Now only listening to " + adapaterKey + ".*");
-              this.adapter.subscribeForeignStates(adapaterKey + ".*");
             } else {
               subsribedStatesStatus.pending.forEach((e) => {
                 subsribedStatesStatus.subscribed.add(e);
@@ -112,11 +110,10 @@ class Listener extends import_stream.EventEmitter {
       }
     });
   }
-}
+};
+_Listener.subscribtionThresholdPerInstance = 50;
+let Listener = _Listener;
 class StateChangeEvent {
-  objectID;
-  value;
-  ack;
   constructor(objectID, value, ack) {
     this.objectID = objectID;
     this.value = value;

@@ -23,7 +23,6 @@ __export(template_manager_exports, {
 });
 module.exports = __toCommonJS(template_manager_exports);
 class TemplateManager {
-  adapter;
   constructor(adapter) {
     this.adapter = adapter;
   }
@@ -119,7 +118,6 @@ class TemplateManager {
   }
 }
 class TemplateSettings {
-  name;
   constructor(name) {
     this.name = name;
   }

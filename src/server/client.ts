@@ -8,7 +8,6 @@ import {
     GetTemplateSettingPack,
     RequestLoginPacket,
     StateChangeRequestPack,
-    SubscribeToDataPointsHistory,
     SubscribeToDataPointsPack,
     TemplateSettingCreatePack,
     TemplateSettingUploadPack,

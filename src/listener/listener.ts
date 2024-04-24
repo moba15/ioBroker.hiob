@@ -9,7 +9,7 @@ export enum Events {
 // eslint-disable-next-line no-unused-vars 
 export class Listener extends EventEmitter {
     static subscribtionThresholdPerInstance = 50;
-    adapter;
+    adapter : SamartHomeHandyBis;
     busy : boolean = false;
     subsribedStates: Map<string, {overThreshold: boolean, subscribed: Set<string>, pending: Set<string>}> = new Map();
     mutex : Mutex = new Mutex();
@@ -77,13 +77,13 @@ export class Listener extends EventEmitter {
                             subsribedStatesStatus.pending.forEach((e) => {
                                 subsribedStatesStatus.subscribed.add(e);
                             });
+                            this.adapter.log.debug("More than 50 states of " + adapaterKey + " where subscribed. Now only listening to " + adapaterKey + ".*");
+                            //subscribe to adapaterKey.* instead
+                            await this.adapter.subscribeForeignStatesAsync(adapaterKey + ".*");
                             //Unsubscribe to the exesting subscriptions
                             for(const i of subsribedStatesStatus.subscribed) {
                                 this.adapter.unsubscribeForeignStatesAsync(i);
                             }
-                            this.adapter.log.debug("More than 50 states of " + adapaterKey + " where subscribed. Now only listening to " + adapaterKey + ".*");
-                            //subscribe to adapaterKey.* instead
-                            this.adapter.subscribeForeignStates(adapaterKey + ".*");
                         } else {
                             subsribedStatesStatus.pending.forEach((e) => {
                                 subsribedStatesStatus.subscribed.add(e);
