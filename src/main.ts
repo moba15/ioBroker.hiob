@@ -277,12 +277,13 @@ export class SamartHomeHandyBis extends utils.Adapter {
                     ack: state.ack,
                 };
                 all_dp.push(map);
-                this.subscribeForeignStates(dataPoints[i]);
+                this.listener.addPendingSubscribeState(dataPoints[i]);
             } else {
                 this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
             }
-        }
+        }3
         if (all_dp.length > 0) {
+            this.listener.subscribeToPendingStates();
             client.sendMSG(new AnswerSubscribeToDataPointsPack(all_dp).toJSON(), true);
         }
     }

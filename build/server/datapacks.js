@@ -43,7 +43,6 @@ __export(datapacks_exports, {
 });
 module.exports = __toCommonJS(datapacks_exports);
 class DataPack {
-  type;
   constructor(type) {
     this.type = type;
   }
@@ -52,8 +51,6 @@ class DataPack {
   }
 }
 class StateChangeRequestPack extends DataPack {
-  objectID;
-  newValue;
   constructor(objectID, newValue) {
     super("iobStateChangeRequest");
     this.objectID = objectID;
@@ -69,11 +66,6 @@ class StateChangeRequestPack extends DataPack {
   }
 }
 class StateChangedDataPack extends DataPack {
-  objectID;
-  value;
-  ack;
-  lc;
-  ts;
   constructor(objectID, value, ack, lc, ts) {
     super("iobStateChanged");
     this.objectID = objectID;
@@ -95,15 +87,12 @@ class StateChangedDataPack extends DataPack {
   }
 }
 class EnumUpdateRequestPack extends DataPack {
-  id;
   constructor(id) {
     super("enumUpdateRequest");
     this.id = id;
   }
 }
 class EnumUpdatePack extends DataPack {
-  id;
-  enumsJSON;
   constructor(id, enumsJSON) {
     super("enumUpdate");
     this.id = id;
@@ -142,12 +131,6 @@ class NewAesPacket extends DataPack {
   }
 }
 class RequestLoginPacket extends DataPack {
-  deviceName;
-  deviceID;
-  key;
-  version;
-  user;
-  password;
   constructor(deviceName, deviceID, key, version, user, password) {
     super("requestLogin");
     this.deviceName = deviceName;
@@ -159,8 +142,6 @@ class RequestLoginPacket extends DataPack {
   }
 }
 class LoginAnswer extends DataPack {
-  key;
-  suc;
   constructor(key, suc) {
     super("answerLogin");
     this.key = key;
@@ -176,17 +157,12 @@ class LoginAnswer extends DataPack {
   }
 }
 class SubscribeToDataPointsPack extends DataPack {
-  dataPoints;
   constructor(dataPoints) {
     super("subscribeToDataPoints");
     this.dataPoints = dataPoints;
   }
 }
 class SubscribeToDataPointsHistory extends DataPack {
-  dataPoint;
-  end;
-  start;
-  minInterval;
   constructor(dataPoint, end, start, minInterval) {
     super("subscribeHistory");
     this.dataPoint = dataPoint;
@@ -196,7 +172,6 @@ class SubscribeToDataPointsHistory extends DataPack {
   }
 }
 class LoginKeyPacket extends DataPack {
-  key;
   constructor(key) {
     super("loginKey");
     this.key = key;
@@ -210,7 +185,6 @@ class LoginKeyPacket extends DataPack {
   }
 }
 class LoginApprovedPacket extends DataPack {
-  release;
   constructor(release) {
     super("loginApproved");
     this.release = release;
@@ -246,7 +220,6 @@ class WrongAesKeyPack extends DataPack {
   }
 }
 class TemplateSettingCreatePack extends DataPack {
-  name;
   constructor(name) {
     super("templateSettingCreate");
     this.name = name;
@@ -259,7 +232,6 @@ class TemplateSettingCreatePack extends DataPack {
   }
 }
 class TemplateSettingsRequestedPack extends DataPack {
-  list;
   constructor(list) {
     super("requestTemplatesSettings");
     this.list = list;
@@ -273,10 +245,6 @@ class TemplateSettingsRequestedPack extends DataPack {
   }
 }
 class TemplateSettingUploadPack extends DataPack {
-  name;
-  devices;
-  screens;
-  widgets;
   constructor(name, devices, screens, widgets) {
     super("uploadTemplateSetting");
     this.name = name;
@@ -297,9 +265,6 @@ class TemplateSettingUploadSuccessPack extends DataPack {
   }
 }
 class GetTemplateSettingPack extends DataPack {
-  devices;
-  screens;
-  widgets;
   constructor(devices, screens, widgets) {
     super("getTemplatesSetting");
     this.devices = devices;
@@ -317,9 +282,6 @@ class GetTemplateSettingPack extends DataPack {
   }
 }
 class NotificationPack extends DataPack {
-  onlySendNotification;
-  content;
-  date;
   constructor(onlySendNotification, content, date) {
     super("notification");
     this.onlySendNotification = onlySendNotification;
@@ -337,7 +299,6 @@ class NotificationPack extends DataPack {
   }
 }
 class AnswerSubscribeToDataPointsPack extends DataPack {
-  dataValues;
   constructor(dataValues) {
     super("answerSubscribeToDataPoints");
     this.dataValues = dataValues;

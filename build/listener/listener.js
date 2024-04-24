@@ -25,28 +25,34 @@ __export(listener_exports, {
 module.exports = __toCommonJS(listener_exports);
 var import_stream = require("stream");
 var import_datapacks = require("../server/datapacks");
+var import_async_mutex = require("async-mutex");
 var Events = /* @__PURE__ */ ((Events2) => {
   Events2["StateChange"] = "stateChanged";
   return Events2;
 })(Events || {});
-class Listener extends import_stream.EventEmitter {
-  adapter;
+const _Listener = class _Listener extends import_stream.EventEmitter {
   constructor(adapter) {
     super();
+    this.busy = false;
+    this.subsribedStates = /* @__PURE__ */ new Map();
+    this.mutex = new import_async_mutex.Mutex();
     this.adapter = adapter;
   }
   onStateChange(id, state) {
     var _a;
     if (state != null) {
       if (!id.startsWith("hiob.")) {
-        if (this.adapter.valueDatapoints[id] == null) {
-          this.adapter.valueDatapoints[id] = {};
+        const adapaterKey = id.split(".")[0] + "." + id.split(".")[1];
+        if (this.subsribedStates.has(adapaterKey) && this.subsribedStates.get(adapaterKey).subscribed.has(id)) {
+          if (this.adapter.valueDatapoints[id] == null) {
+            this.adapter.valueDatapoints[id] = {};
+          }
+          this.adapter.valueDatapoints[id].val = state.val;
+          this.adapter.valueDatapoints[id].ack = state.ack;
+          (_a = this.adapter.server) == null ? void 0 : _a.broadcastMsg(
+            new import_datapacks.StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON()
+          );
         }
-        this.adapter.valueDatapoints[id].val = state.val;
-        this.adapter.valueDatapoints[id].ack = state.ack;
-        (_a = this.adapter.server) == null ? void 0 : _a.broadcastMsg(
-          new import_datapacks.StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON()
-        );
       }
       this.emit("stateChanged" /* StateChange */, new StateChangeEvent(id, state.val, state.ack));
     } else {
@@ -54,11 +60,60 @@ class Listener extends import_stream.EventEmitter {
       this.adapter.log.info(`state ${id} deleted`);
     }
   }
-}
+  /**
+   * Adds a State id to the pending list
+   * @param id The id of the State you want to subscribe to
+   */
+  addPendingSubscribeState(id) {
+    this.mutex.runExclusive(async () => {
+      const adapaterKey = id.split(".")[0] + "." + id.split(".")[1];
+      if (this.subsribedStates.has(adapaterKey)) {
+        const t = this.subsribedStates.get(adapaterKey);
+        if (!t.subscribed.has(id)) {
+          t == null ? void 0 : t.pending.add(id);
+        }
+      } else {
+        this.subsribedStates.set(adapaterKey, { overThreshold: false, subscribed: /* @__PURE__ */ new Set(), pending: /* @__PURE__ */ new Set([id]) });
+      }
+    });
+  }
+  /**
+   * Subscribes to all States listed in the pending (see addPendingSubscribeState)
+   * If there are more than 50 subscriptions for one instance it subscribses to all changes inside this instance
+   */
+  subscribeToPendingStates() {
+    this.mutex.runExclusive(async () => {
+      for (const [adapaterKey, subsribedStatesStatus] of this.subsribedStates) {
+        if (subsribedStatesStatus.pending.size > 0) {
+          if (subsribedStatesStatus.overThreshold) {
+            subsribedStatesStatus.pending.forEach((e) => subsribedStatesStatus.subscribed.add(e));
+          } else {
+            const newSubscriptionSize = subsribedStatesStatus.pending.size + subsribedStatesStatus.subscribed.size;
+            if (newSubscriptionSize > _Listener.subscribtionThresholdPerInstance) {
+              subsribedStatesStatus.pending.forEach((e) => {
+                subsribedStatesStatus.subscribed.add(e);
+              });
+              this.adapter.log.debug("More than 50 states of " + adapaterKey + " where subscribed. Now only listening to " + adapaterKey + ".*");
+              await this.adapter.subscribeForeignStatesAsync(adapaterKey + ".*");
+              for (const i of subsribedStatesStatus.subscribed) {
+                this.adapter.unsubscribeForeignStatesAsync(i);
+              }
+            } else {
+              subsribedStatesStatus.pending.forEach((e) => {
+                subsribedStatesStatus.subscribed.add(e);
+                this.adapter.subscribeForeignStates(e);
+              });
+            }
+          }
+          subsribedStatesStatus.pending.clear();
+        }
+      }
+    });
+  }
+};
+_Listener.subscribtionThresholdPerInstance = 50;
+let Listener = _Listener;
 class StateChangeEvent {
-  objectID;
-  value;
-  ack;
   constructor(objectID, value, ack) {
     this.objectID = objectID;
     this.value = value;

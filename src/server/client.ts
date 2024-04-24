@@ -8,7 +8,6 @@ import {
     GetTemplateSettingPack,
     RequestLoginPacket,
     StateChangeRequestPack,
-    SubscribeToDataPointsHistory,
     SubscribeToDataPointsPack,
     TemplateSettingCreatePack,
     TemplateSettingUploadPack,
@@ -183,16 +182,16 @@ export class Client {
     }
 
     onEnd(): void {
-        this.setConnection();
         this.isConnected = false;
+        this.setConnection();
         this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
         this.server.conClients = this.server.conClients.filter(this.filter.bind(this));
         this.adapter.log.debug("Size: " + this.server.conClients.length.toString());
     }
 
     onError(): void {
-        this.setConnection();
         this.isConnected = false;
+        this.setConnection();
         this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
     }
 
@@ -200,7 +199,7 @@ export class Client {
         //TODO
         // this.adapter.loginManager.pendingClients = this.adapter.loginManager.pendingClients.filter((e) => e.deviceID != this.deviceID);
         // this.adapter.loginManager.loginedClients = this.adapter.loginManager.loginedClients.filter((e) => e.deviceID != this.deviceID);
-        // this.adapter.setStateAsync("devices." + this.deviceID + ".connected", false, true);
+        this.adapter.setStateAsync("devices." + this.id + ".connected", this.isConnected, true);
     }
 
     onStateChangeRequest(request: StateChangeRequestPack): void {
@@ -226,7 +225,8 @@ export class Client {
     } */
 
     onLoginRequest(requestLoginPacket: RequestLoginPacket): void {
-        this.adapter.loginManager.onLoginRequest(this,requestLoginPacket);
+        this.setConnection();
+        this.adapter.loginManager.onLoginRequest(this, requestLoginPacket);
     }
 
     onWrongAesKey(): void {

@@ -43,7 +43,7 @@ export class NotificationManager {
                 if(currentBacklogArray.length > 250) {
                     currentBacklogArray.shift();
                 }
-                await this.adapter.setStateAsync("devices." + deviceID + ".notificationBacklog", JSON.stringify(currentBacklogArray));
+                await this.adapter.setStateAsync("devices." + deviceID + ".notificationBacklog", JSON.stringify(currentBacklogArray), true);
             }
         }
     }
@@ -61,7 +61,7 @@ export class NotificationManager {
                     for(const i of currentBacklogArray) {
                         client.sendMSG(new NotificationPack(false, i, new Date()).toJSON(), true);
                     }
-                    await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]));
+                    await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]), true);
                 }
             }
         }

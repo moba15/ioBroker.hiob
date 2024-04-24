@@ -24,9 +24,8 @@ module.exports = __toCommonJS(notification_manager_exports);
 var import_listener = require("../listener/listener");
 var import_datapacks = require("../server/datapacks");
 class NotificationManager {
-  adapter;
-  backlog = {};
   constructor(adapter) {
+    this.backlog = {};
     this.adapter = adapter;
     this.init();
   }
@@ -58,7 +57,7 @@ class NotificationManager {
         if (currentBacklogArray.length > 250) {
           currentBacklogArray.shift();
         }
-        await this.adapter.setStateAsync("devices." + deviceID + ".notificationBacklog", JSON.stringify(currentBacklogArray));
+        await this.adapter.setStateAsync("devices." + deviceID + ".notificationBacklog", JSON.stringify(currentBacklogArray), true);
       }
     }
   }
@@ -75,7 +74,7 @@ class NotificationManager {
           for (const i of currentBacklogArray) {
             client.sendMSG(new import_datapacks.NotificationPack(false, i, /* @__PURE__ */ new Date()).toJSON(), true);
           }
-          await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]));
+          await this.adapter.setStateAsync("devices." + client.id + ".notificationBacklog", JSON.stringify([]), true);
         }
       }
     }

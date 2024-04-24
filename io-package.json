@@ -80,19 +80,6 @@
         "pl": "Naprawiono brakującą konfigurację pakietu jo- z powodu braku commit",
         "uk": "Виправлено відсутні налаштування io-package через відсутній коміт",
         "zh-cn": "失踪造成的固定的氧化包装配置"
-      },
-      "0.0.67-beta.0": {
-        "en": "Fixed #25\nsendTo support for notifications\nHandling sensitive data & timeouts #22",
-        "de": "Feste #25\nsendTo Unterstützung für Benachrichtigungen\nUmgang mit sensiblen Daten & Timeouts #22",
-        "ru": "#25\nsendTo поддержка уведомлений\nОбработка чувствительных данных и таймаутов #22",
-        "pt": "Fixo #25\nsuporte para notificações\nManipulação de dados e timeouts sensíveis #22",
-        "nl": "Vast #25\nsendTo support for notifications\nBehandeling van gevoelige gegevens en time-outs #22",
-        "fr": "Correction n°25\nsendTo support pour les notifications\nTraitement des données sensibles et des délais #22",
-        "it": "Fisso #25\nsendTo supporto per le notifiche\nGestione di dati e timeout sensibili #22",
-        "es": "Arreglado #25\nenviarA soporte para notificaciones\nManejo de datos sensibles \" timeouts \" #22",
-        "pl": "Naprawiono # 25\nsendTo support for notification\nObsługa wrażliwych danych i timeout # 22",
-        "uk": "Виправлено #25\nвідправити\nОбробка конфіденційних даних та часів #22",
-        "zh-cn": "25号固定\n发送到支持通知\n处理敏感数据及超时22"
       }
     },
     "titleLang": {
@@ -150,6 +137,7 @@
     "dataSource": "push",
     "materialize": false,
     "messagebox": true,
+    "blockly": true,
     "adminUI": {
       "config": "json"
     },

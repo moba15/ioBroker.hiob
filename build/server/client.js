@@ -35,17 +35,8 @@ var import_datapacks = require("./datapacks");
 var import_template_manager = require("../template/template_manager");
 var CryptoJS = __toESM(require("crypto-js"));
 class Client {
-  socket;
-  server;
-  isConnected;
-  req;
-  adapter;
-  approved;
-  aesKey;
-  onlySendNotification = false;
-  id;
-  name;
   constructor(socket, server, req, adapter) {
+    this.onlySendNotification = false;
     this.socket = socket;
     this.server = server;
     this.req = req;
@@ -186,18 +177,19 @@ class Client {
     return value.isConnected == true;
   }
   onEnd() {
-    this.setConnection();
     this.isConnected = false;
+    this.setConnection();
     this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
     this.server.conClients = this.server.conClients.filter(this.filter.bind(this));
     this.adapter.log.debug("Size: " + this.server.conClients.length.toString());
   }
   onError() {
-    this.setConnection();
     this.isConnected = false;
+    this.setConnection();
     this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
   }
   setConnection() {
+    this.adapter.setStateAsync("devices." + this.id + ".connected", this.isConnected, true);
   }
   onStateChangeRequest(request) {
     try {
@@ -217,6 +209,7 @@ class Client {
       // this.adapter.historyManager.subscribeToHistory(sub.dataPoint, sub.start, sub.end, this, sub.minInterval);
   } */
   onLoginRequest(requestLoginPacket) {
+    this.setConnection();
     this.adapter.loginManager.onLoginRequest(this, requestLoginPacket);
   }
   onWrongAesKey() {
