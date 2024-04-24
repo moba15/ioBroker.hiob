@@ -89,7 +89,7 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
             subsribedStatesStatus.pending.forEach((e) => subsribedStatesStatus.subscribed.add(e));
           } else {
             const newSubscriptionSize = subsribedStatesStatus.pending.size + subsribedStatesStatus.subscribed.size;
-            if (newSubscriptionSize > _Listener.subscribtionThresholdPerInstance) {
+            if (newSubscriptionSize > _Listener.subscribtionThresholdPerInstance && !adapaterKey.startsWith("alias.")) {
               subsribedStatesStatus.pending.forEach((e) => {
                 subsribedStatesStatus.subscribed.add(e);
               });
