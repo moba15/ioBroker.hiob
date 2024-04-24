@@ -73,7 +73,7 @@ export class Listener extends EventEmitter {
                         subsribedStatesStatus.pending.forEach((e) => subsribedStatesStatus.subscribed.add(e));
                     } else {
                         const newSubscriptionSize = subsribedStatesStatus.pending.size + subsribedStatesStatus.subscribed.size;
-                        if(newSubscriptionSize >  Listener.subscribtionThresholdPerInstance) {
+                        if(newSubscriptionSize >  Listener.subscribtionThresholdPerInstance && !adapaterKey.startsWith("alias.")) {
                             subsribedStatesStatus.pending.forEach((e) => {
                                 subsribedStatesStatus.subscribed.add(e);
                             });
