@@ -53,7 +53,7 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
 🇩🇪 [Fragen](https://forum.iobroker.net/topic/55250/neuer-adapter-hiob-handy-app)
 
 ## Known Issues
-- 0.1.2 and 0.1.1 don't work if you use aes encryption, please donwgrade to 0.1.0 or 0.0.67 if you have issues
+- 0.1.4: The blockly element shouldn't be in this release. It doesn't work at the time
 
 ## Changelog
 
