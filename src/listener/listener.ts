@@ -77,7 +77,7 @@ export class Listener extends EventEmitter {
                             subsribedStatesStatus.pending.forEach((e) => {
                                 subsribedStatesStatus.subscribed.add(e);
                             });
-                            this.adapter.log.debug("More than 50 states of " + adapaterKey + " where subscribed. Now only listening to " + adapaterKey + ".*");
+                            this.adapter.log.debug("More than 50 states of " + adapaterKey + " were subscribed. Now only listening to " + adapaterKey + ".*");
                             //subscribe to adapaterKey.* instead
                             await this.adapter.subscribeForeignStatesAsync(adapaterKey + ".*");
                             //Unsubscribe to the exesting subscriptions
