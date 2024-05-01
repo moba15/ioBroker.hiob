@@ -8,7 +8,7 @@ export enum Events {
 }
 // eslint-disable-next-line no-unused-vars 
 export class Listener extends EventEmitter {
-    static subscribtionThresholdPerInstance = 50;
+    static subscribtionThresholdPerInstance = 2;
     adapter : SamartHomeHandyBis;
     busy : boolean = false;
     //subsribedStates: Map<string, {overThreshold: boolean, subscribed: Set<string>, pending: Set<string>}> = new Map();
@@ -27,7 +27,7 @@ export class Listener extends EventEmitter {
             //Check if notification
             if (!id.startsWith("hiob.")) {
                 const adapaterKey : string = id.split(".")[0] + "." +  id.split(".")[1];
-                if(this.subscribedStates.has(adapaterKey) && this.subscribedStates.has(id)) {
+                if(this.subscribedStates.has(id)) {
                     if (this.adapter.valueDatapoints[id] == null) {
                         this.adapter.valueDatapoints[id] = {};
                     }
@@ -77,11 +77,12 @@ export class Listener extends EventEmitter {
                 this.pendingSubscribeStates.clear();
             } else {
                 if(this.subscribedStates.size + this.pendingSubscribeStates.size >= Listener.subscribtionThresholdPerInstance) {
+                    this.adapter.log.debug("More than 50 states. Subscribing to *")
                     await this.adapter.subscribeForeignStatesAsync("*");
-                    this.subscribedStates.forEach((e) => this.adapter.unsubscribeStatesAsync(e));
+                    this.subscribedStates.forEach((e) => this.adapter.unsubscribeForeignStatesAsync(e));
                     this.pendingSubscribeStates.forEach((e) => this.subscribedStates.add(e));
                 } else {
-                    this.pendingSubscribeStates.forEach((e) => this.adapter.subscribeStatesAsync(e));
+                    this.pendingSubscribeStates.forEach((e) => this.adapter.subscribeForeignStatesAsync(e));
                 }
                 this.pendingSubscribeStates.clear();
             }
