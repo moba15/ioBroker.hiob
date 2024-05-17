@@ -34,7 +34,9 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
   constructor(adapter) {
     super();
     this.busy = false;
-    this.subsribedStates = /* @__PURE__ */ new Map();
+    //subsribedStates: Map<string, {overThreshold: boolean, subscribed: Set<string>, pending: Set<string>}> = new Map();
+    this.subscribedStates = /* @__PURE__ */ new Set();
+    this.pendingSubscribeStates = /* @__PURE__ */ new Set();
     this.mutex = new import_async_mutex.Mutex();
     this.adapter = adapter;
   }
@@ -43,7 +45,7 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
     if (state != null) {
       if (!id.startsWith("hiob.")) {
         const adapaterKey = id.split(".")[0] + "." + id.split(".")[1];
-        if (this.subsribedStates.has(adapaterKey) && this.subsribedStates.get(adapaterKey).subscribed.has(id)) {
+        if (this.subscribedStates.has(id)) {
           if (this.adapter.valueDatapoints[id] == null) {
             this.adapter.valueDatapoints[id] = {};
           }
@@ -66,15 +68,10 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
    */
   addPendingSubscribeState(id) {
     this.mutex.runExclusive(async () => {
-      const adapaterKey = id.split(".")[0] + "." + id.split(".")[1];
-      if (this.subsribedStates.has(adapaterKey)) {
-        const t = this.subsribedStates.get(adapaterKey);
-        if (!t.subscribed.has(id)) {
-          t == null ? void 0 : t.pending.add(id);
-        }
-      } else {
-        this.subsribedStates.set(adapaterKey, { overThreshold: false, subscribed: /* @__PURE__ */ new Set(), pending: /* @__PURE__ */ new Set([id]) });
+      if (this.subscribedStates.has(id)) {
+        return;
       }
+      this.pendingSubscribeStates.add(id);
     });
   }
   /**
@@ -83,35 +80,24 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
    */
   subscribeToPendingStates() {
     this.mutex.runExclusive(async () => {
-      for (const [adapaterKey, subsribedStatesStatus] of this.subsribedStates) {
-        if (subsribedStatesStatus.pending.size > 0) {
-          if (subsribedStatesStatus.overThreshold) {
-            subsribedStatesStatus.pending.forEach((e) => subsribedStatesStatus.subscribed.add(e));
-          } else {
-            const newSubscriptionSize = subsribedStatesStatus.pending.size + subsribedStatesStatus.subscribed.size;
-            if (newSubscriptionSize > _Listener.subscribtionThresholdPerInstance && !adapaterKey.startsWith("alias.")) {
-              subsribedStatesStatus.pending.forEach((e) => {
-                subsribedStatesStatus.subscribed.add(e);
-              });
-              this.adapter.log.debug("More than 50 states of " + adapaterKey + " where subscribed. Now only listening to " + adapaterKey + ".*");
-              await this.adapter.subscribeForeignStatesAsync(adapaterKey + ".*");
-              for (const i of subsribedStatesStatus.subscribed) {
-                this.adapter.unsubscribeForeignStatesAsync(i);
-              }
-            } else {
-              subsribedStatesStatus.pending.forEach((e) => {
-                subsribedStatesStatus.subscribed.add(e);
-                this.adapter.subscribeForeignStates(e);
-              });
-            }
-          }
-          subsribedStatesStatus.pending.clear();
+      if (this.subscribedStates.size >= _Listener.subscribtionThresholdPerInstance) {
+        this.pendingSubscribeStates.forEach((e) => this.subscribedStates.add(e));
+        this.pendingSubscribeStates.clear();
+      } else {
+        if (this.subscribedStates.size + this.pendingSubscribeStates.size >= _Listener.subscribtionThresholdPerInstance) {
+          this.adapter.log.debug("More than 50 states. Subscribing to *");
+          await this.adapter.subscribeForeignStatesAsync("*");
+          this.subscribedStates.forEach((e) => this.adapter.unsubscribeForeignStatesAsync(e));
+          this.pendingSubscribeStates.forEach((e) => this.subscribedStates.add(e));
+        } else {
+          this.pendingSubscribeStates.forEach((e) => this.adapter.subscribeForeignStatesAsync(e));
         }
+        this.pendingSubscribeStates.clear();
       }
     });
   }
 };
-_Listener.subscribtionThresholdPerInstance = 50;
+_Listener.subscribtionThresholdPerInstance = 2;
 let Listener = _Listener;
 class StateChangeEvent {
   constructor(objectID, value, ack) {

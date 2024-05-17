@@ -46,7 +46,6 @@ class LoginManager {
   }
   async onStateChange(event) {
     var _a, _b, _c;
-    this.adapter.log.debug(JSON.stringify(event));
     if (event.objectID.startsWith("hiob.") && !event.ack) {
       const splited = event.objectID.split(".");
       if (splited.length > 4 && splited[2] == "devices") {

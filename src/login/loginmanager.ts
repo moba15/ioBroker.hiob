@@ -25,7 +25,6 @@ export class LoginManager {
     }
 
     private async onStateChange(event: StateChangeEvent): Promise<void> {
-        this.adapter.log.debug(JSON.stringify(event));
         if (event.objectID.startsWith("hiob.") && !event.ack) {
             const splited = event.objectID.split(".");
             //If Datapoint is approved Datapoint
