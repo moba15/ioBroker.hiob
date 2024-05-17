@@ -27,6 +27,7 @@
 ![division](img/../../de/img/app_create_division.png)
 
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![division](img/../../de/img/app_create_division_done.png)
 

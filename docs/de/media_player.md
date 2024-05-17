@@ -28,6 +28,7 @@
 ![app_create_player_widget.png](img/app_create_player_widget.png)
 
 - Danach speichern drücken.
+- Durch langes drücken auf ein Widget wird auf den Kopiermodus gewechselt. Hier können Widgets ausgewählt werden von den eine Kopie erstellt werden soll.
 
 ![app_create_player_widget_done.png](img/app_create_player_widget_done.png)
 

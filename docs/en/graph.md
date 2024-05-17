@@ -72,6 +72,7 @@
 ![app_create_graph_tracking.png](img/../../de/img/app_create_graph_tracking.png)
 
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![app_create_graph_done.png](img/../../de/img/app_create_graph_done.png)
 

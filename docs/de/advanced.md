@@ -45,6 +45,7 @@
 
 - `Popup Menu`: Hier können weitere Widgets erstellt werden. Durch langes drücken auf das Widget öffnet sich ein Popup Menu mit den erstellten Widgets.
 - Danach speichern drücken.
+- Durch langes drücken auf ein Widget wird auf den Kopiermodus gewechselt. Hier können Widgets ausgewählt werden von den eine Kopie erstellt werden soll.
 
 ![app_create_advanced_value_popup_create_1.png](img/app_create_advanced_value_popup_create_1.png)
 ![app_create_advanced_value_popup_create_2.png](img/app_create_advanced_value_popup_create_2.png)
@@ -63,6 +64,7 @@
 - `Selections`: Um eine Auflistung zu erstellen auf `add` klicken. In `Display Value` einen Namen der Auswahl angeben und in `Dateipoint Value` den Wert eintragen der in den Datenpunkt geschieben werden soll. Die Selections können später durch langes Drücken noch sortiert werden. Eine Editierung ist später nicht möglich. Die Regel kann nur mit wischen gelöscht werden.
 - `Popup Menu`: Hier können weitere Widgets erstellt werden. Durch langes drücken auf das Widget öffnet sich ein Popup Menu mit den erstellten Widgets.
 - Danach speichern drücken.
+- Durch langes drücken auf ein Widget wird auf den Kopiermodus gewechselt. Hier können Widgets ausgewählt werden von den eine Kopie erstellt werden soll.
 
 ![app_create_multi_option.png](img/app_create_multi_option.png)
 ![app_create_multi_option_1.png](img/app_create_multi_option_1.png)
@@ -86,6 +88,7 @@
 - `Steps`: In welchen Schritten Änderungen durchgeführt werden dürfen (Standard 10).
 - `Popup Menu`: Hier können weitere Widgets erstellt werden. Durch langes drücken auf das Widget öffnet sich ein Popup Menu mit den erstellten Widgets.
 - Danach speichern drücken.
+- Durch langes drücken auf ein Widget wird auf den Kopiermodus gewechselt. Hier können Widgets ausgewählt werden von den eine Kopie erstellt werden soll.
 
 ![app_create_advanced_slider_value.png](img/app_create_advanced_slider_value.png)
 
@@ -104,6 +107,7 @@
 - `Send if off`: Wert der bei AUS in den Datenpunkte gesetzt werden soll.
 - `Popup Menu`: Hier können weitere Widgets erstellt werden. Durch langes drücken auf das Widget öffnet sich ein Popup Menu mit den erstellten Widgets.
 - Danach speichern drücken.
+- Durch langes drücken auf ein Widget wird auf den Kopiermodus gewechselt. Hier können Widgets ausgewählt werden von den eine Kopie erstellt werden soll.
 
 ![app_create_advanced_handle_value.png](img/app_create_advanced_handle_value.png)
 
@@ -121,6 +125,7 @@
 - `Button Lable`: Text im Button.
 - `Popup Menu`: Hier können weitere Widgets erstellt werden. Durch langes drücken auf das Widget öffnet sich ein Popup Menu mit den erstellten Widgets.
 - Danach speichern drücken.
+- Durch langes drücken auf ein Widget wird auf den Kopiermodus gewechselt. Hier können Widgets ausgewählt werden von den eine Kopie erstellt werden soll.
 
 ![app_create_advanced_handle_value.png](img/app_create_advanced_button_value.png)
 

@@ -36,6 +36,7 @@
 ![webview](img/../../de/img/app_create_button_dp.png)
 
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![webview](img/../../de/img/app_create_value_done.png)
 

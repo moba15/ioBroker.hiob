@@ -39,6 +39,7 @@
 ![add_create_color_1.png](../de/img/add_create_color_1.png)
 
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![app_create_color_done.png](../de/img/app_create_color_done.png)
 

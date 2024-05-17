@@ -27,6 +27,7 @@
 ![division](img/app_create_division.png)
 
 - Danach speichern drücken.
+- Durch langes drücken auf ein Widget wird auf den Kopiermodus gewechselt. Hier können Widgets ausgewählt werden von den eine Kopie erstellt werden soll.
 
 ![division](img/app_create_division_done.png)
 
