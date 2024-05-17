@@ -7,6 +7,8 @@
 -   [Create Division Line](division.md)
 -   [Create Web View](webview.md)
 -   [Create Table](table.md)
+-   [Create Color Palette](color.md)
+-   [Create Network Media Player](media_player.md)
 
 ## Graph (only sql Adapter)
 
@@ -84,3 +86,5 @@
 -   [Create Division Line](division.md)
 -   [Create Web View](webview.md)
 -   [Create Table](table.md)
+-   [Create Color Palette](color.md)
+-   [Create Network Media Player](media_player.md)

@@ -7,6 +7,8 @@
 -   [Create Web View](webview.md)
 -   [Create Table](table.md)
 -   [Create Graph (only sql Adapter)](graph.md)
+-   [Create Color Pallete](color.md)
+-   [Create Network Media Player](media_player.md)
 
 ## Advanced/Flexible
 
@@ -134,3 +136,5 @@
 -   [Create Web View](webview.md)
 -   [Create Table](table.md)
 -   [Create Graph (only sql Adapter)](graph.md)
+-   [Create Color Pallete](color.md)
+-   [Create Network Media Player](media_player.md)

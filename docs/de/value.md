@@ -7,6 +7,8 @@
 -   [Web View erstellen](webview.md)
 -   [Table erstellen](table.md)
 -   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Color Palette erstellen](color.md)
+-   [Network Media Player erstellen](media_player.md)
 
 ## Value
 
@@ -51,3 +53,5 @@
 -   [Web View erstellen](webview.md)
 -   [Table erstellen](table.md)
 -   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Color Palette erstellen](color.md)
+-   [Network Media Player erstellen](media_player.md)

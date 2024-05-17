@@ -7,6 +7,8 @@
 -   [Division Line erstellen](division.md)
 -   [Table erstellen](table.md)
 -   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Color Palette erstellen](color.md)
+-   [Network Media Player erstellen](media_player.md)
 
 ## Web View
 
@@ -44,3 +46,5 @@
 -   [Division Line erstellen](division.md)
 -   [Table erstellen](table.md)
 -   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Color Palette erstellen](color.md)
+-   [Network Media Player erstellen](media_player.md)
