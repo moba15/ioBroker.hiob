@@ -13,4 +13,7 @@
 - Import anklicken, Backup-Datei auswählen und importieren.
 - Vibration: Keine Funktion
 - Info Device Name und Geräte ID
+- Export logs anklicken, Ordner auswählen und speichern.
+- Delete all logs Ordner auswählen und alles löschen.
+
 ![app_general_settings.png](img/app_general_settings.png)
