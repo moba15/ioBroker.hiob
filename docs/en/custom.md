@@ -10,6 +10,7 @@
 
 - Here it is possible to change the color of the header and switch.
 - With `App bar Elevation` the height of the header can be determined.
+- The font size can be set with `Textscale`.
 
 ![app_theme_seetings.png](img/../../de/img/app_theme_seetings.png)
 

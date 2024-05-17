@@ -10,6 +10,7 @@
 
 - Hier ist es möglich die Farbe vom Header und Switch zu ändern.
 - Mit `App bar Elevation` kann die Höhe vom Header bestimmt werden.
+- Mit `Textscale` kann die Schriftgröße eingestellt werden.
 
 ![app_theme_seetings.png](img/app_theme_seetings.png)
 
