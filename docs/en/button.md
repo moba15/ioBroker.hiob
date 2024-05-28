@@ -7,6 +7,8 @@
 -   [Create Web View](webview.md)
 -   [Create Table](table.md)
 -   [Create Graph (only sql Adapter)](graph.md)
+-   [Create Color Palette](color.md)
+-   [Create Network Media Player](media_player.md)
 
 ## Button
 
@@ -34,6 +36,7 @@
 ![botton](img/../../de/img/app_create_button_dp.png)
 
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![botton](img/../../de/img/app_create_button_done.png)
 
@@ -44,3 +47,5 @@
 -   [Create Web View](webview.md)
 -   [Create Table](table.md)
 -   [Create Graph (only sql Adapter)](graph.md)
+-   [Create Color Palette](color.md)
+-   [Create Network Media Player](media_player.md)

@@ -14,5 +14,7 @@
 - Click import, select backup file and import.
 - Vibration: No function
 - Info Device Name and Device ID
+- Click Export logs, select folder and save.
+- Click Delete all logs, select folder and delete all files.
 
 ![app_general_settings.png](img/../../de/img/app_general_settings.png)

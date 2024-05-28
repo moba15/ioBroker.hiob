@@ -7,6 +7,8 @@
 -   [Create Division Line](division.md)
 -   [Create Web View](webview.md)
 -   [Create Graph (only sql Adapter)](graph.md)
+-   [Create Color Palette](color.md)
+-   [Create Network Media Player](media_player.md)
 
 ## Table
 
@@ -56,6 +58,7 @@
 ![add_create_table.png](img/../../de/img/add_create_table_column.png)
 
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![app_create_table_done.png](img/../../de/img/app_create_table_done.png)
 
@@ -70,3 +73,5 @@
 -   [Create Division Line](division.md)
 -   [Create Web View](webview.md)
 -   [Create Graph (only sql Adapter)](graph.md)
+-   [Create Color Palette](color.md)
+-   [Create Network Media Player](media_player.md)
