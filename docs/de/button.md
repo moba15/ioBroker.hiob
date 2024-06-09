@@ -7,6 +7,8 @@
 -   [Web View erstellen](webview.md)
 -   [Table erstellen](table.md)
 -   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Color Palette erstellen](color.md)
+-   [Network Media Player erstellen](media_player.md)
 
 ## Button
 
@@ -34,6 +36,7 @@
 ![botton](img/app_create_button_dp.png)
 
 - Danach speichern drücken.
+- Durch langes drücken auf ein Widget wird auf den Kopiermodus gewechselt. Hier können Widgets ausgewählt werden von den eine Kopie erstellt werden soll.
 
 ![botton](img/app_create_button_done.png)
 
@@ -45,3 +48,5 @@
 -   [Web View erstellen](webview.md)
 -   [Table erstellen](table.md)
 -   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Color Palette erstellen](color.md)
+-   [Network Media Player erstellen](media_player.md)

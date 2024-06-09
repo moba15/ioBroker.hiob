@@ -48,7 +48,7 @@ Then press save.
 
 ![ENUM](../de/img/app_create_cat_dp.png)
 
-9. Tap on a category to go to the next view. Change the names or IDs here or add new states. States can be deleted by swiping from right to left.
+9. Tap on a category to go to the next view. Change the names or IDs here or add new states. States can be deleted by swiping from right to left. `Ignore/Override Devicestatus`: Reachable of the device is ignored
 
 ![ENUM](img/../../de/img/app_edit_device.png)
 ![ENUM](img/../../de/img/app_new_device.png)

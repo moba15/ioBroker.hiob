@@ -191,7 +191,7 @@
     <variable id="^$e!?JpvIt1Qh-]SBl!@">channelname</variable>
     <variable id="N){4B$~4B!QQ.f5r#d9h">debuggen</variable>
     <variable id="E)rAXto0,#kty+s^R^]H">datapoint_logparser</variable>
-    <variable id="dSN5{8P[Ky6E,X,r~I/~">log</variable>
+    <variable id="dSN5{8P[Ky6E,X,r~I/~">log_array</variable>
     <variable id="r0SdD!g$udUhXK,jhpw$">counter</variable>
     <variable id="0zcb*kTbLSli%3bh)L5M">new_log</variable>
     <variable id="aC];U-UD1HlFN%sxAR=%">i</variable>
@@ -566,7 +566,7 @@
                                         </value>
                                         <statement name="STATEMENT">
                                           <block type="variables_set" id="ME~Q=i#S6=]a@d2!OSx.">
-                                            <field name="VAR" id="dSN5{8P[Ky6E,X,r~I/~">log</field>
+                                            <field name="VAR" id="dSN5{8P[Ky6E,X,r~I/~">log_array</field>
                                             <value name="VALUE">
                                               <block type="convert_json2object" id="qUiS[-ymR-Kxq%O;-6(V">
                                                 <value name="VALUE">
@@ -618,7 +618,7 @@
                                                             <field name="VAR" id="aC];U-UD1HlFN%sxAR=%">i</field>
                                                             <value name="LIST">
                                                               <block type="variables_get" id="#vf/i3Xg+uz^N~N@aye~">
-                                                                <field name="VAR" id="dSN5{8P[Ky6E,X,r~I/~">log</field>
+                                                                <field name="VAR" id="dSN5{8P[Ky6E,X,r~I/~">log_array</field>
                                                               </block>
                                                             </value>
                                                             <statement name="DO">

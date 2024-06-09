@@ -7,6 +7,8 @@
 -   [Division Line erstellen](division.md)
 -   [Table erstellen](table.md)
 -   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Color Palette erstellen](color.md)
+-   [Network Media Player erstellen](media_player.md)
 
 ## Web View
 
@@ -29,6 +31,7 @@
 ![webview](img/app_create_web.png)
 
 - Danach speichern drücken.
+- Durch langes drücken auf ein Widget wird auf den Kopiermodus gewechselt. Hier können Widgets ausgewählt werden von den eine Kopie erstellt werden soll.
 
 ![webview](img/app_create_web_done.png)
 
@@ -44,3 +47,5 @@
 -   [Division Line erstellen](division.md)
 -   [Table erstellen](table.md)
 -   [Graph (only sql Adapter) erstellen](graph.md)
+-   [Color Palette erstellen](color.md)
+-   [Network Media Player erstellen](media_player.md)

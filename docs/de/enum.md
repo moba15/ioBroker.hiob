@@ -39,7 +39,7 @@ Mit wischen von rechts nach links können Kategorien gelöscht werden. Diese ers
 Danach speichern drücken.
 ![ENUM](img/app_create_cat_dp.png)
 
-9. Tippt auf eine Kategorie klicken um in die nächste Ansicht zu gelangen. Hier die Namen oder ID`s ändern beziehungsweise neue Datenpunkte hinzufügen. Mit wischen von rechts nach links können Datenpunkte gelöscht werden.
+9. Tippt auf eine Kategorie um in die nächste Ansicht zu gelangen. Hier die Namen oder ID's ändern beziehungsweise neue Datenpunkte hinzufügen. Mit wischen von rechts nach links können Datenpunkte gelöscht werden. `Ignore/Override Devicestatus`: Verfügbarkeit vom Geräte wird ignoriert
 ![ENUM](img/app_edit_device.png)
 ![ENUM](img/app_new_device.png)
 ![ENUM](img/app_del_device.png)

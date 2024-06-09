@@ -7,6 +7,8 @@
 -   [Create Web View](webview.md)
 -   [Create Table](table.md)
 -   [Create Graph (only sql Adapter)](graph.md)
+-   [Create Color Pallete](color.md)
+-   [Create Network Media Player](media_player.md)
 
 ## Advanced/Flexible
 
@@ -43,6 +45,7 @@
 
 - `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![app_create_advanced_value_popup_create_1.png](img/../../de/img/app_create_advanced_value_popup_create_1.png)
 ![app_create_advanced_value_popup_create_2.png](img/../../de/img/app_create_advanced_value_popup_create_2.png)
@@ -61,6 +64,7 @@
 - `Selections`: To create a list click on `add`. Enter a name for the selection in `Display Value` and enter the value that should be moved into the state in `File Point Value`. The selections can be sorted later by long pressing. Editing is not possible later. The rule can only be deleted with a swipe.
 - `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![app_create_multi_option.png](img/../../de/img/app_create_multi_option.png)
 ![app_create_multi_option_1.png](img/../../de/img/app_create_multi_option_1.png)
@@ -84,6 +88,7 @@
 - `Steps`: In which steps changes can be made (standard 10).
 - `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![app_create_advanced_slider_value.png](img/../../de/img/app_create_advanced_slider_value.png)
 
@@ -102,6 +107,7 @@
 - `Send if off`: Value that should be set in the states when OFF.
 - `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![app_create_advanced_handle_value.png](img/../../de/img/app_create_advanced_handle_value.png)
 
@@ -119,6 +125,7 @@
 - `Button Lable`: Text in the button.
 - `Popup Menu`: Additional widgets can be created here. Long-pressing the widget opens a popup menu with the widgets you have created.
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![app_create_advanced_handle_value.png](img/../../de/img/app_create_advanced_button_value.png)
 
@@ -134,3 +141,5 @@
 -   [Create Web View](webview.md)
 -   [Create Table](table.md)
 -   [Create Graph (only sql Adapter)](graph.md)
+-   [Create Color Pallete](color.md)
+-   [Create Network Media Player](media_player.md)

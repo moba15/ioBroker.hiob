@@ -7,6 +7,8 @@
 -   [Create Web View](webview.md)
 -   [Create Table](table.md)
 -   [Create Graph (only sql Adapter)](graph.md)
+-   [Create Color Palette](color.md)
+-   [Create Network Media Player](media_player.md)
 
 ## Switch with Slider
 
@@ -45,6 +47,7 @@
 ![Switch with Slider](img/../../de/img/app_create_widget_reach.png)
 
 - Then press save.
+- A long press on a widget switches to copy mode. Here you can select widgets from which a copy should be created.
 
 ![Switch with Slider](img/../../de/img/app_create_switch_done.png)
 
@@ -60,3 +63,5 @@
 -   [Create Web View](webview.md)
 -   [Create Table](table.md)
 -   [Create Graph (only sql Adapter)](graph.md)
+-   [Create Color Palette](color.md)
+-   [Create Network Media Player](media_player.md)
