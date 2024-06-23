@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "news": {
+      "0.1.5": {
+        "en": "Removed blockly\nFixed some bugs \nUpdated dependencies",
+        "de": "Entfernt blockweise\nEinige Fehler behoben\nAktualisierte Abhängigkeiten",
+        "ru": "Удалено блокно\nИсправлены некоторые ошибки\nОбновленные зависимости",
+        "pt": "Removido em bloco\nCorrigido alguns bugs\nDependências atualizadas",
+        "nl": "Blokjes verwijderd\nEnkele bugs hersteld\nBijgewerkte afhankelijkheden",
+        "fr": "Supprimé en bloc\nCorrection de certains bugs\nDépendances actualisées",
+        "it": "Rimozione bloccata\nRisolto alcuni bug\nDipendenze aggiornate",
+        "es": "Retirada bloqueada\nArreglado algunos errores\nDependencias actualizadas",
+        "pl": "Usunięte blokowane\nNaprawiono kilka błędów\nAktualizacja zależności",
+        "uk": "Видалити блокноти\nВиправлено деякі помилки\nОновлені залежності",
+        "zh-cn": "块状删除\n修补一些错误\n更新的依赖关系"
+      },
       "0.1.4": {
         "en": "added docs and more examples\nImplement suggestions for latest release",
         "de": "ergänzte doks und weitere beispiele\nImplementierungsvorschläge für die neueste Veröffentlichung",
@@ -80,19 +93,6 @@
         "pl": "ikona stała\ndodany backlog powiadomień, jeśli klient nie jest podłączony (do 250 wiadomości)\nstałe logowanie",
         "uk": "фіксована ікона\nдодано повідомлення backlog, якщо клієнт не підключений (до 250 повідомлень)\nувійти",
         "zh-cn": "固定图标\n如果客户端没有连接, 则添加通知积压( 最多250条消息)\n固定登录"
-      },
-      "0.0.67-beta.1": {
-        "en": "Fixed missing io-package config due to missing commit",
-        "de": "Behobene fehlende io-package config aufgrund fehlender Verpflichtung",
-        "ru": "Исправленная недостающая настройка io-package из-за отсутствия фиксации",
-        "pt": "Corrigido falta io-package config devido a falta de commit",
-        "nl": "Fixed io-package config wegens ontbrekende commit",
-        "fr": "Correction de la configuration io-package manquante en raison de la disparition du commit",
-        "it": "Fisso di configurazione di io-package mancante a causa del commit mancante",
-        "es": "Fig de io-paquete fijo por falta de compromiso",
-        "pl": "Naprawiono brakującą konfigurację pakietu jo- z powodu braku commit",
-        "uk": "Виправлено відсутні налаштування io-package через відсутній коміт",
-        "zh-cn": "失踪造成的固定的氧化包装配置"
       }
     },
     "titleLang": {
