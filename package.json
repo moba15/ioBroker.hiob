@@ -14,7 +14,8 @@
     "APP",
     "Widgets",
     "Templates",
-    "home automation"
+    "home automation",
+    "ioBroker"
   ],
   "repository": {
     "type": "git",
