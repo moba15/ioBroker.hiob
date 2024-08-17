@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "news": {
+      "0.1.6": {
+        "en": "Updated Packages\nPrepared lates release",
+        "de": "Aktualisierte Pakete\nVorbereitete Verspätung",
+        "ru": "Обновленные пакеты\nГотовые задержки релиз",
+        "pt": "Pacotes atualizados\nLiberação de tardes preparada",
+        "nl": "Bijgewerkte pakketten\nBereide te late vrijgave",
+        "fr": "Packages mis à jour\nLibération tardive préparée",
+        "it": "Pacchetti aggiornati\nComunicato in ritardo preparato",
+        "es": "Paquetes actualizados\nLiberación de los lates preparados",
+        "pl": "Aktualizacja pakietów\nGotowe uwalnianie lamentów",
+        "uk": "Оновлені пакети\nПриготований реліз пізніх фінішів",
+        "zh-cn": "更新软件包\n准备的迟发"
+      },
       "0.1.5": {
         "en": "Removed blockly\nFixed some bugs \nUpdated dependencies",
         "de": "Entfernt blockweise\nEinige Fehler behoben\nAktualisierte Abhängigkeiten",
@@ -68,7 +81,6 @@
         "uk": "фіксований пакет.json",
         "zh-cn": "固定包裹.json"
       },
-      
       "0.0.67": {
         "en": "fixed icon\nadded notifications backlog, if client is not connected (up to 250 messages)\nfixed login",
         "de": "feste ikone\nzusätzliche benachrichtigungen backlog, wenn client nicht angeschlossen ist (bis zu 250 nachrichten)\nfeste anmeldung",
