@@ -125,7 +125,6 @@
     },
     "tier": 2,
     "platform": "Javascript/Node.js",
-    "main": "build/main.js",
     "icon": "hiob.png",
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/moba15/ioBroker.hiob/main/admin/hiob.png",
