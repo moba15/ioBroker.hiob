@@ -189,7 +189,7 @@ class Client {
     this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
   }
   setConnection() {
-    this.adapter.setStateAsync("devices." + this.id + ".connected", this.isConnected, true);
+    this.adapter.setState("devices." + this.id + ".connected", this.isConnected, true);
   }
   onStateChangeRequest(request) {
     try {
@@ -209,8 +209,12 @@ class Client {
       // this.adapter.historyManager.subscribeToHistory(sub.dataPoint, sub.start, sub.end, this, sub.minInterval);
   } */
   onLoginRequest(requestLoginPacket) {
-    this.setConnection();
-    this.adapter.loginManager.onLoginRequest(this, requestLoginPacket);
+    this.adapter.loginManager.onLoginRequest(this, requestLoginPacket).then(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      (_) => {
+        this.setConnection();
+      }
+    );
   }
   onWrongAesKey() {
     this.adapter.loginManager.onWrongAesKey(this);

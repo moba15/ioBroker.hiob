@@ -62,7 +62,7 @@ class TemplateManager {
     const list = [];
     for (const id in settings) {
       const splitted = id.split(".");
-      if (splitted[2] != "settings" || splitted.length > 4)
+      if (splitted[3] == null || splitted[2] != "settings" || splitted.length > 4)
         continue;
       this.adapter.log.debug("Settings: " + id);
       list.push(splitted[3]);
@@ -70,6 +70,13 @@ class TemplateManager {
     return list;
   }
   async createNewTemplateSetting(templateSettings) {
+    await this.adapter.setObjectNotExistsAsync("settings", {
+      type: "channel",
+      common: {
+        name: "Settings"
+      },
+      native: {}
+    });
     await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name, {
       type: "folder",
       common: {
