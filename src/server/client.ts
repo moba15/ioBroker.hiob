@@ -199,7 +199,7 @@ export class Client {
         //TODO
         // this.adapter.loginManager.pendingClients = this.adapter.loginManager.pendingClients.filter((e) => e.deviceID != this.deviceID);
         // this.adapter.loginManager.loginedClients = this.adapter.loginManager.loginedClients.filter((e) => e.deviceID != this.deviceID);
-        this.adapter.setStateAsync("devices." + this.id + ".connected", this.isConnected, true);
+        this.adapter.setState("devices." + this.id + ".connected", this.isConnected, true);
     }
 
     onStateChangeRequest(request: StateChangeRequestPack): void {
@@ -225,8 +225,12 @@ export class Client {
     } */
 
     onLoginRequest(requestLoginPacket: RequestLoginPacket): void {
-        this.setConnection();
-        this.adapter.loginManager.onLoginRequest(this, requestLoginPacket);
+        this.adapter.loginManager.onLoginRequest(this, requestLoginPacket).then(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            (_) => {
+                this.setConnection();
+            }
+        );
     }
 
     onWrongAesKey(): void {
