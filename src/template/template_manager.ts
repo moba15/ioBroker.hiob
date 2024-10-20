@@ -63,6 +63,13 @@ export class TemplateManager {
     }
 
     public async createNewTemplateSetting(templateSettings: TemplateSettings): Promise<void> {
+        await this.adapter.setObjectNotExistsAsync("settings", {
+            type: "channel",
+            common: {
+                name: "Settings",
+            },
+            native: {},
+        });
         await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name, {
             type: "folder",
             common: {
