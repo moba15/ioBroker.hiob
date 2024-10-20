@@ -54,7 +54,7 @@ export class TemplateManager {
         const list = [];
         for (const id in settings) {
             const splitted = id.split(".");
-            if (splitted[2] != "settings" || splitted.length > 4) continue;
+            if (splitted[3] == null || splitted[2] != "settings" || splitted.length > 4) continue;
             this.adapter.log.debug("Settings: " + id);
             list.push(splitted[3]);
         }
