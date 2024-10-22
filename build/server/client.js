@@ -137,11 +137,13 @@ class Client {
           if (this.approved)
             break;
         case "requestLogin":
-          if (!content["version"]) {
-            this.adapter.log.warn(`Please update the HioB APP!`);
+          if (!content["version"] && content["deviceName"]) {
+            this.adapter.log.warn(`Please update the HioB APP! [${content["version"]}]`);
             return;
           }
-          this.onLoginRequest(new import_datapacks.RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["version"], content["user"], content["password"]));
+          if (content["deviceName"]) {
+            this.onLoginRequest(new import_datapacks.RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["version"], content["user"], content["password"]));
+          }
           break;
         case "templateSettingCreate":
           this.adapter.log.debug(JSON.stringify(content["name"]));
