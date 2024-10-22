@@ -73,6 +73,10 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
 -->
 ### **WORK IN PROGRESS**
 - Updated packages
+- Fix for #93 
+- Fix for #91 
+- Fixed Update App message
+
 ### 0.1.6 (2024-08-17)
 - Updated Packages
 - Prepared lates release
