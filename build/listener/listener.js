@@ -124,7 +124,7 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
     });
   }
 };
-_Listener.subscribtionThresholdPerInstance = 2;
+_Listener.subscribtionThresholdPerInstance = 15;
 let Listener = _Listener;
 class StateChangeEvent {
   constructor(objectID, value, ack) {

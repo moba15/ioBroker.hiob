@@ -8,7 +8,7 @@ export enum Events {
 }
 // eslint-disable-next-line no-unused-vars 
 export class Listener extends EventEmitter {
-    static subscribtionThresholdPerInstance = 2;
+    static subscribtionThresholdPerInstance = 15;
     adapter : SamartHomeHandyBis;
     busy : boolean = false;
     subsribedStates: Map<string, {overThreshold: boolean, subscribed: Set<string>, pending: Set<string>}> = new Map();
