@@ -11,7 +11,7 @@ export class Listener extends EventEmitter {
     static subscribtionThresholdPerInstance = 2;
     adapter : SamartHomeHandyBis;
     busy : boolean = false;
-    //subsribedStates: Map<string, {overThreshold: boolean, subscribed: Set<string>, pending: Set<string>}> = new Map();
+    subsribedStates: Map<string, {overThreshold: boolean, subscribed: Set<string>, pending: Set<string>}> = new Map();
     subscribedStates: Set<string> = new Set();
     pendingSubscribeStates: Set<string> = new Set();
     mutex : Mutex = new Mutex();
@@ -55,15 +55,17 @@ export class Listener extends EventEmitter {
             return;
         }
         this.pendingSubscribeStates.add(id);
-        /*const adapaterKey : string = id.split(".")[0] + "." +  id.split(".")[1];
+        const adapaterKey : string = id.split(".")[0] + "." +  id.split(".")[1];
         if(this.subsribedStates.has(adapaterKey)) {
             const t = this.subsribedStates.get(adapaterKey);
             if(!t!.subscribed.has(id)) {
                 t?.pending.add(id);
+            } else {
+                this.adapter.log.debug("Already has subscribed to " + id + "!");
             }
         } else {
             this.subsribedStates.set(adapaterKey, {overThreshold: false, subscribed: new Set(), pending:  new Set([id])});
-        }*/
+        }
        });
     }
     /**
@@ -76,7 +78,7 @@ export class Listener extends EventEmitter {
                 this.pendingSubscribeStates.forEach((e) => this.subscribedStates.add(e));
                 this.pendingSubscribeStates.clear();
             } else {
-                if(this.subscribedStates.size + this.pendingSubscribeStates.size >= Listener.subscribtionThresholdPerInstance) {
+               /* if(this.subscribedStates.size + this.pendingSubscribeStates.size >= Listener.subscribtionThresholdPerInstance) {
                     this.adapter.log.debug("More than 50 states. Subscribing to *")
                     await this.adapter.subscribeForeignStatesAsync("*");
                     this.subscribedStates.forEach((e) => this.adapter.unsubscribeForeignStatesAsync(e));
@@ -84,9 +86,9 @@ export class Listener extends EventEmitter {
                 } else {
                     this.pendingSubscribeStates.forEach((e) => this.adapter.subscribeForeignStatesAsync(e));
                 }
-                this.pendingSubscribeStates.clear();
-            }
-            /*for(const [adapaterKey, subsribedStatesStatus] of this.subsribedStates) {
+                this.pendingSubscribeStates.clear();*/
+            
+            for(const [adapaterKey, subsribedStatesStatus] of this.subsribedStates) {
                 if(subsribedStatesStatus.pending.size > 0) {
                     if(subsribedStatesStatus.overThreshold) {
                         subsribedStatesStatus.pending.forEach((e) => subsribedStatesStatus.subscribed.add(e));
@@ -96,9 +98,9 @@ export class Listener extends EventEmitter {
                             subsribedStatesStatus.pending.forEach((e) => {
                                 subsribedStatesStatus.subscribed.add(e);
                             });
-                            this.adapter.log.debug("More than 50 states of " + adapaterKey + " were subscribed. Now only listening to " + adapaterKey + ".*");
+                            this.adapter.log.debug("More than " + Listener.subscribtionThresholdPerInstance + " states of " + adapaterKey + " were subscribed. Now only listening to " + adapaterKey + ".*");
                             //subscribe to * instead
-                            await this.adapter.subscribeForeignStatesAsync("*");
+                            await this.adapter.subscribeForeignStatesAsync(adapaterKey + ".*");
                             //Unsubscribe to the exesting subscriptions
                             for(const i of subsribedStatesStatus.subscribed) {
                                 this.adapter.unsubscribeForeignStatesAsync(i);
@@ -112,7 +114,8 @@ export class Listener extends EventEmitter {
                     }
                     subsribedStatesStatus.pending.clear();
                 }
-            }*/
+            }
+        }
         });
     }
 }
