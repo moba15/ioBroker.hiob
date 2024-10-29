@@ -14,6 +14,7 @@ import {
     TemplateSettingUploadSuccessPack,
     TemplateSettingsRequestedPack,
     NotificationPack,
+    GetIoBFunctionsDataPackage,
 } from "./datapacks";
 import { TemplateSettings } from "../template/template_manager";
 import * as CryptoJS from "crypto-js";
@@ -166,6 +167,9 @@ export class Client {
                 case "notification":
                     this.onNotification(new NotificationPack(content["onlySendNotification"], content["content"], content["date"]));
                     break;
+                    case "getIoBFunctions":
+                        this.onGetIoBFunctions();
+                        break;
             }
         } catch (e) {
             if (e instanceof SyntaxError) {
@@ -173,6 +177,7 @@ export class Client {
             }
         }
     }
+   
 
     onApprove(): void {
         this.approved = true;
@@ -267,6 +272,10 @@ export class Client {
         if (pack.onlySendNotification != undefined) {
             this.onlySendNotification = pack.onlySendNotification;
         }
+    }
+
+    onGetIoBFunctions(): void {
+        this.adapter.deviceRepo.onGetIoBFunctions(this);
     }
 
     toString(): string {

@@ -342,3 +342,21 @@ export class AnswerSubscribeToDataPointsPack extends DataPack {
         return map;
     }
 }
+
+export class GetIoBFunctionsDataPackage extends DataPack {
+    functions: {id: string, name: string, icon: string | undefined}[] | undefined;
+    constructor(functions: { id: string; name: string; icon: string | undefined; }[] | undefined) {
+        super("getIoBFunctions");
+        this.functions = functions;
+    }
+
+    toJSON(): any {
+        const map = {
+            type: this.type,
+            functions: this.functions,
+        };
+        return map;
+    }
+
+
+}

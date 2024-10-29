@@ -12,6 +12,7 @@ import { Client } from "./server/client";
 import { AnswerSubscribeToDataPointsPack } from "./server/datapacks";
 import { TemplateManager } from "./template/template_manager";
 import { NotificationManager } from "./notification/notification_manager";
+import {DeviceRepo} from "./device/devie_repo";
 type DatapointState = {
     val?: any,
     ack?: boolean
@@ -25,6 +26,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     server?: Server;
     listener: Listener;
     loginManager: LoginManager;
+    deviceRepo: DeviceRepo;
     notificationManager: NotificationManager;
     port: number = 8095;
     keyPath: string = "";
@@ -42,6 +44,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
         });
         this.templateManager = new TemplateManager(this);
         this.listener = new Listener(this);
+        this.deviceRepo = new DeviceRepo(this);
         this.notificationManager = new NotificationManager(this);
         this.loginManager = new LoginManager(this);
         this.on("ready", this.onReady.bind(this));
