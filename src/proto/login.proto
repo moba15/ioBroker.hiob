@@ -1,0 +1,33 @@
+
+syntax = "proto3";
+
+message FirstPing {
+    string buildnumber = 1;
+    string versionumber = 2;
+}
+
+message RequestLogin {
+    string deviceName = 1;
+    string deviceID = 2;
+    string key = 3;
+    string user = 4;
+    optional string password = 5;
+}
+
+message LoginAnswer {
+    string key = 1;
+    enum status {
+        succesfull = 1;
+        wrongKey = 2;
+        wrongPassword = 3;
+        error = 4;
+    }
+}
+
+message NewAesPacket {
+
+}
+
+message WrongAesKeyPack {
+    
+}
