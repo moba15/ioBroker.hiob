@@ -32,12 +32,12 @@ __export(main_exports, {
 });
 module.exports = __toCommonJS(main_exports);
 var utils = __toESM(require("@iobroker/adapter-core"));
-var import_server = require("./server/server");
 var import_listener = require("./listener/listener");
 var import_loginmanager = require("./login/loginmanager");
 var import_datapacks = require("./server/datapacks");
 var import_template_manager = require("./template/template_manager");
 var import_notification_manager = require("./notification/notification_manager");
+var import_grpc_server = require("./server/grpc/grpc-server");
 class SamartHomeHandyBis extends utils.Adapter {
   constructor(options = {}) {
     super({
@@ -156,7 +156,7 @@ class SamartHomeHandyBis extends utils.Adapter {
     }
   }
   initServer() {
-    this.server = new import_server.Server(this.port, this.keyPath, this.certPath, this, this.useCer);
+    this.server = new import_grpc_server.GrpcServer(this.port, this.keyPath, this.certPath, this, this.useCer);
     this.server.startServer();
   }
   async getEnumListJSON(id) {

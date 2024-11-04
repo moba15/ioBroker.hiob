@@ -1,21 +1,10 @@
 syntax = "proto3";
-import 'login.proto';
+
 enum PackageType {
-    firstPing = 1;
+    firstPing = 0;
 }
 message Package {
     PackageType type = 1;
-    oneof Data {
-        FirstPing firstPing = 2;
-        RequestLogin requestLogin = 3;
-        LoginAnswer loginAnswer = 4;
-        NewAesPacket newAesPacket = 5;
-        WrongAesKeyPack wrongAesKeyPack = 6;
-
-
-
-
-        string jsonDeprecated = 100;
-    }
+   
 
 }

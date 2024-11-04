@@ -12,6 +12,7 @@ import { Client } from "./server/client";
 import { AnswerSubscribeToDataPointsPack } from "./server/datapacks";
 import { TemplateManager } from "./template/template_manager";
 import { NotificationManager } from "./notification/notification_manager";
+import { GrpcServer } from "./server/grpc/grpc-server";
 type DatapointState = {
     val?: any,
     ack?: boolean
@@ -22,7 +23,7 @@ type ClientInfo = {
 // Load your modules here, e.g.:
 // import * as fs from "fs";
 export class SamartHomeHandyBis extends utils.Adapter {
-    server?: Server;
+    server?: GrpcServer;
     listener: Listener;
     loginManager: LoginManager;
     notificationManager: NotificationManager;
@@ -158,7 +159,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     }
 
     private initServer(): void {
-        this.server = new Server(this.port, this.keyPath, this.certPath, this, this.useCer);
+        this.server = new GrpcServer(this.port, this.keyPath, this.certPath, this, this.useCer);
         this.server.startServer();
     }
 
