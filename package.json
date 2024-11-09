@@ -96,7 +96,7 @@
     "lint": "eslint --ext .ts src/",
     "translate": "translate-adapter",
     "release": "release-script",
-    "generate": "mkdir -p src/generate/packages && pbjs -t static-module -w commonjs -o src/generate/packages/compileproto.js src/proto/packages.proto && pbts -o src/generate/packages/compileproto.d.ts src/generate/packages/compileproto.js",
+    "generate": "rm -rf src/generated && mkdir -p src/generated &&  protoc  -I=src/proto --ts_out='./src/generated' src/proto/packages.proto src/proto/state/state.proto  src/proto/login/login.proto",
     "generate2": "protoc -I=src --ts_out=src/generate src/proto/packages.proto src/proto/login/login.proto"
   },
   "bugs": {

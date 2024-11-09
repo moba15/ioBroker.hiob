@@ -26,52 +26,22 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var grpc_server_exports = {};
-__export(grpc_server_exports, {
-  GrpcServer: () => GrpcServer
+var login_service_exports = {};
+__export(login_service_exports, {
+  addLoginServices: () => addLoginServices
 });
-module.exports = __toCommonJS(grpc_server_exports);
-var grpc = __toESM(require("@grpc/grpc-js"));
-var import_login_service = require("../services/login-service");
-class GrpcServer {
-  constructor(port = 4500, keyPath = "key.pem", certPath = "cert.pem", adapter, useCert = false) {
-    this.stoped = false;
-    this.conClients = [];
-    this.port = port;
-    this.certPath = certPath;
-    this.keyPath = keyPath;
-    this.adapter = adapter;
-    this.useCert = useCert;
-  }
-  startServer() {
-    this.gRpcServer = new grpc.Server();
-    this.gRpcServer.bindAsync("0.0.0.0:" + this.port, grpc.ServerCredentials.createInsecure(), () => {
-      this.adapter.log.info("Server listening on port: " + this.port);
-    });
-    if (this.adapter == null) {
-      throw Error("Adapater null");
+module.exports = __toCommonJS(login_service_exports);
+var proto = __toESM(require("../../generated/login/login"));
+function addLoginServices(gRpcServer, adapter) {
+  gRpcServer.addService(proto.LoginClient.service, {
+    Login: (call, callback) => {
+      const request = call.request;
+      adapter.loginManager.onLoginRequestProto(request);
     }
-    (0, import_login_service.addLoginServices)(this.gRpcServer, this.adapter);
-  }
-  broadcastMsg(msg) {
-    this.conClients.filter((e) => !e.onlySendNotification).forEach((element) => {
-      if (element.isConnected)
-        element.sendMSG(msg, true);
-    });
-  }
-  isConnected(deviceID) {
-    return this.conClients.some((c) => c.isConnected && c.id == deviceID);
-  }
-  getClient(deviceID) {
-    return this.conClients.find((c) => c.isConnected && c.id == deviceID);
-  }
-  stop() {
-    this.adapter.log.info("Server stoped");
-    this.stoped = true;
-  }
+  });
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  GrpcServer
+  addLoginServices
 });
-//# sourceMappingURL=grpc-server.js.map
+//# sourceMappingURL=login-service.js.map

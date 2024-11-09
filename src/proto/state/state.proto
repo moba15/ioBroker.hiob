@@ -1,0 +1,87 @@
+syntax="proto3";
+service stateService {
+    rpc Subscibe(StateSubscribtion) returns(stream StateValueUpdate);
+    rpc updateValue(StateValueUpdateRequest) returns(StateValueUpdateResponse);
+    rpc searchState(SearchState) returns(SearchStateResponse);
+    rpc searchStateStream(stream SearchState) returns(stream SearchStateResponse);
+}
+
+message StateValueUpdate {
+    string stateId = 1;
+    bool acc = 2;
+    uint64 time = 3;
+    oneof value {
+        string stringValue = 4;
+        bool boolValue = 5;
+        double doubleValue = 6;
+        string other = 99;
+    }
+}
+message StateValueUpdateRequest {
+    string userId = 1;
+    string stateId = 2;
+     oneof value {
+        string stringValue = 3;
+        bool boolValue = 4;
+        double doubleValue = 5;
+        string other = 99;
+    }
+    
+
+}
+
+message StateValueUpdateResponse {
+    bool suc = 1;
+}
+message StateSubscribtion {
+    string userId =1;
+    enum SubscriptionType {
+        cancle = 0;
+        subscripe = 1;
+    }
+    SubscriptionType type = 2;
+    repeated string stateIds = 3;
+
+}
+
+message SearchState {
+    string userId = 1;
+    string query = 2;
+    
+}
+message SearchStateResponse {
+    repeated State states = 1;
+}
+
+message State {
+    string stateId = 1;
+    oneof value {
+        string stringValue = 3;
+        bool boolValue = 4;
+        double doubleValue = 5;
+        string other = 99;
+    }
+    message StateCommon {
+        enum StateType {
+            boolean = 0;
+            str = 1;
+            number = 2;
+
+        }
+       
+        string name = 1;
+        string desc = 2;
+        StateType type = 3;
+        bool read = 4;
+        bool write = 5;
+        string role = 6;
+        optional string unit = 7;
+        optional int32 step = 8;
+        optional int32 min = 9;
+        optional int32 max = 10;
+
+    }
+
+     
+
+}

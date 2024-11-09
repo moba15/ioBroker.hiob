@@ -3,17 +3,10 @@ import * as fs from "fs";
 import * as m from "../..//main";
 import { Client } from ".././client";
 import * as grpc from "@grpc/grpc-js";
-import * as proto from "../../generate/proto/login/login"
+import * as proto from "../../generated/login/login"
+import { addLoginServices } from "../services/login-service";
 
-class LoginService extends proto.UnimplementedLoginService {
-    CheckCompatibility(call: grpc.ServerUnaryCall<proto.CompatibilityRequest, proto.CompatibilityResponse>, callback: grpc.sendUnaryData<proto.CompatibilityResponse>): void {
-        throw new Error("Method not implemented.");
-    }
-    Login(call: grpc.ServerUnaryCall<proto.LoginRequest, proto.LoginResponse>, callback: grpc.sendUnaryData<proto.LoginResponse>): void {
-        throw new Error("Method not implemented.");
-    }
 
-}
 
 export class GrpcServer {
     certPath: string;
@@ -40,15 +33,14 @@ export class GrpcServer {
     startServer(): void {
         this.gRpcServer = new grpc.Server();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        this.gRpcServer.addService(proto.LoginClient.service, { 
-            Login: (call: grpc.ServerUnaryCall<proto.LoginRequest, proto.LoginResponse>,
-             callback: grpc.sendUnaryData<proto.LoginResponse>) => {
-            const request : proto.LoginRequest = call.request;
-            this.adapter.loginManager.onLoginRequest(request);
-        }})
+        
         this.gRpcServer.bindAsync("0.0.0.0:" + this.port, grpc.ServerCredentials.createInsecure(), () => {
             this.adapter.log.info("Server listening on port: " + this.port);
-        })
+        });
+        if(this.adapter == null) {
+            throw Error("Adapater null");
+        }
+        addLoginServices(this.gRpcServer, this.adapter);
     }
 
     broadcastMsg(msg: string): void {

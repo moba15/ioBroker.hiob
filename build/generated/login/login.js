@@ -310,8 +310,8 @@ const _LoginRequest = class _LoginRequest extends pb_1.Message {
       if ("deviceName" in data && data.deviceName != void 0) {
         this.deviceName = data.deviceName;
       }
-      if ("deviceID" in data && data.deviceID != void 0) {
-        this.deviceID = data.deviceID;
+      if ("deviceId" in data && data.deviceId != void 0) {
+        this.deviceId = data.deviceId;
       }
       if ("key" in data && data.key != void 0) {
         this.key = data.key;
@@ -330,10 +330,10 @@ const _LoginRequest = class _LoginRequest extends pb_1.Message {
   set deviceName(value) {
     pb_1.Message.setField(this, 1, value);
   }
-  get deviceID() {
+  get deviceId() {
     return pb_1.Message.getFieldWithDefault(this, 2, "");
   }
-  set deviceID(value) {
+  set deviceId(value) {
     pb_1.Message.setField(this, 2, value);
   }
   get key() {
@@ -369,8 +369,8 @@ const _LoginRequest = class _LoginRequest extends pb_1.Message {
     if (data.deviceName != null) {
       message.deviceName = data.deviceName;
     }
-    if (data.deviceID != null) {
-      message.deviceID = data.deviceID;
+    if (data.deviceId != null) {
+      message.deviceId = data.deviceId;
     }
     if (data.key != null) {
       message.key = data.key;
@@ -388,8 +388,8 @@ const _LoginRequest = class _LoginRequest extends pb_1.Message {
     if (this.deviceName != null) {
       data.deviceName = this.deviceName;
     }
-    if (this.deviceID != null) {
-      data.deviceID = this.deviceID;
+    if (this.deviceId != null) {
+      data.deviceId = this.deviceId;
     }
     if (this.key != null) {
       data.key = this.key;
@@ -406,8 +406,8 @@ const _LoginRequest = class _LoginRequest extends pb_1.Message {
     const writer = w || new pb_1.BinaryWriter();
     if (this.deviceName.length)
       writer.writeString(1, this.deviceName);
-    if (this.deviceID.length)
-      writer.writeString(2, this.deviceID);
+    if (this.deviceId.length)
+      writer.writeString(2, this.deviceId);
     if (this.key.length)
       writer.writeString(3, this.key);
     if (this.user.length)
@@ -427,7 +427,7 @@ const _LoginRequest = class _LoginRequest extends pb_1.Message {
           message.deviceName = reader.readString();
           break;
         case 2:
-          message.deviceID = reader.readString();
+          message.deviceId = reader.readString();
           break;
         case 3:
           message.key = reader.readString();
@@ -456,11 +456,20 @@ let LoginRequest = _LoginRequest;
 const _LoginResponse = class _LoginResponse extends pb_1.Message {
   constructor(data) {
     super();
-    __privateAdd(this, _one_of_decls5, []);
+    __privateAdd(this, _one_of_decls5, [[5]]);
     pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls5));
     if (!Array.isArray(data) && typeof data == "object") {
       if ("key" in data && data.key != void 0) {
         this.key = data.key;
+      }
+      if ("status" in data && data.status != void 0) {
+        this.status = data.status;
+      }
+      if ("errorMsg" in data && data.errorMsg != void 0) {
+        this.errorMsg = data.errorMsg;
+      }
+      if ("sessionId" in data && data.sessionId != void 0) {
+        this.sessionId = data.sessionId;
       }
     }
   }
@@ -470,10 +479,47 @@ const _LoginResponse = class _LoginResponse extends pb_1.Message {
   set key(value) {
     pb_1.Message.setField(this, 1, value);
   }
+  get status() {
+    return pb_1.Message.getFieldWithDefault(this, 4, _LoginResponse.Status.succesfull);
+  }
+  set status(value) {
+    pb_1.Message.setField(this, 4, value);
+  }
+  get errorMsg() {
+    return pb_1.Message.getFieldWithDefault(this, 5, "");
+  }
+  set errorMsg(value) {
+    pb_1.Message.setOneofField(this, 5, __privateGet(this, _one_of_decls5)[0], value);
+  }
+  get has_errorMsg() {
+    return pb_1.Message.getField(this, 5) != null;
+  }
+  get sessionId() {
+    return pb_1.Message.getFieldWithDefault(this, 6, "");
+  }
+  set sessionId(value) {
+    pb_1.Message.setField(this, 6, value);
+  }
+  get _errorMsg() {
+    const cases = {
+      0: "none",
+      5: "errorMsg"
+    };
+    return cases[pb_1.Message.computeOneofCase(this, [5])];
+  }
   static fromObject(data) {
     const message = new _LoginResponse({});
     if (data.key != null) {
       message.key = data.key;
+    }
+    if (data.status != null) {
+      message.status = data.status;
+    }
+    if (data.errorMsg != null) {
+      message.errorMsg = data.errorMsg;
+    }
+    if (data.sessionId != null) {
+      message.sessionId = data.sessionId;
     }
     return message;
   }
@@ -482,12 +528,27 @@ const _LoginResponse = class _LoginResponse extends pb_1.Message {
     if (this.key != null) {
       data.key = this.key;
     }
+    if (this.status != null) {
+      data.status = this.status;
+    }
+    if (this.errorMsg != null) {
+      data.errorMsg = this.errorMsg;
+    }
+    if (this.sessionId != null) {
+      data.sessionId = this.sessionId;
+    }
     return data;
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
     if (this.key.length)
       writer.writeString(1, this.key);
+    if (this.status != _LoginResponse.Status.succesfull)
+      writer.writeEnum(4, this.status);
+    if (this.has_errorMsg)
+      writer.writeString(5, this.errorMsg);
+    if (this.sessionId.length)
+      writer.writeString(6, this.sessionId);
     if (!w)
       return writer.getResultBuffer();
   }
@@ -499,6 +560,15 @@ const _LoginResponse = class _LoginResponse extends pb_1.Message {
       switch (reader.getFieldNumber()) {
         case 1:
           message.key = reader.readString();
+          break;
+        case 4:
+          message.status = reader.readEnum();
+          break;
+        case 5:
+          message.errorMsg = reader.readString();
+          break;
+        case 6:
+          message.sessionId = reader.readString();
           break;
         default:
           reader.skipField();
@@ -516,13 +586,13 @@ const _LoginResponse = class _LoginResponse extends pb_1.Message {
 _one_of_decls5 = new WeakMap();
 let LoginResponse = _LoginResponse;
 ((LoginResponse2) => {
-  let status;
-  ((status2) => {
-    status2[status2["succesfull"] = 0] = "succesfull";
-    status2[status2["wrongKey"] = 1] = "wrongKey";
-    status2[status2["wrongPassword"] = 2] = "wrongPassword";
-    status2[status2["error"] = 3] = "error";
-  })(status = LoginResponse2.status || (LoginResponse2.status = {}));
+  let Status;
+  ((Status2) => {
+    Status2[Status2["succesfull"] = 0] = "succesfull";
+    Status2[Status2["wrongKey"] = 1] = "wrongKey";
+    Status2[Status2["wrongPassword"] = 2] = "wrongPassword";
+    Status2[Status2["error"] = 3] = "error";
+  })(Status = LoginResponse2.Status || (LoginResponse2.Status = {}));
 })(LoginResponse || (LoginResponse = {}));
 const _NewAesPacket = class _NewAesPacket extends pb_1.Message {
   constructor(data) {

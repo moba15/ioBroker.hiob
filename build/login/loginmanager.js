@@ -35,6 +35,7 @@ var import_listener = require("../listener/listener");
 var import_datapacks = require("../server/datapacks");
 var bcrypt = __toESM(require("bcrypt"));
 var crypto = __toESM(require("crypto"));
+var proto = __toESM(require("../generated/login/login"));
 class LoginManager {
   constructor(adapter) {
     this.approveLogins = false;
@@ -43,6 +44,7 @@ class LoginManager {
     this.adapter.listener.on(import_listener.Events.StateChange, this.onStateChange.bind(this));
     this.pendingClients = [];
     this.approveLoginsTimeout = void 0;
+    this.pendingClientIds = [];
   }
   async onStateChange(event) {
     var _a, _b, _c;
@@ -174,6 +176,11 @@ class LoginManager {
       this.adapter.log.info(`AES encryption disabled!`);
     }
   }
+  /**
+   * @deprecated
+   * @param deviceID 
+   * @param cl 
+   */
   async setAndSendLoginKeys(deviceID, cl) {
     const keys = await this.genKey();
     const aes_status = await this.adapter.getStateAsync("devices." + deviceID + ".aesKey_active");
@@ -213,6 +220,30 @@ class LoginManager {
     this.wrongAesKey(client);
     return false;
   }
+  async onLoginRequestProto(loginRequest) {
+    this.adapter.log.debug("Client(" + loginRequest + ") requested to login");
+    let sessionId = this.genRandomString(12, true);
+    this.pendingClientIds.push(sessionId);
+    let deviceIDRep = loginRequest.deviceId.replace(".", "-");
+    while (deviceIDRep.includes(".")) {
+      deviceIDRep = deviceIDRep.replace(".", "-");
+    }
+    await this.createObjects(
+      deviceIDRep,
+      loginRequest.deviceName,
+      loginRequest.key,
+      "No version"
+    );
+    this.adapter.setStateAsync("devices." + deviceIDRep + ".connected", true, true);
+    if (!await this.validateLoginRequestProto(loginRequest.deviceName, deviceIDRep, loginRequest)) {
+      this.adapter.log.debug("Generating new key");
+      const keys = await this.genKey();
+      await this.adapter.setStateAsync("devices." + deviceIDRep + ".key", keys[1], true);
+      return new proto.LoginResponse({ key: keys[0], sessionId, status: proto.LoginResponse.Status.error });
+      ;
+    }
+    return new proto.LoginResponse({ key: "", sessionId, status: proto.LoginResponse.Status.succesfull });
+  }
   async onLoginRequest(client, loginRequestData) {
     this.adapter.log.debug("Client(" + client.toString() + ") requested to login");
     this.pendingClients.push(client);
@@ -227,7 +258,6 @@ class LoginManager {
     }
     //!Quick fix
     await this.createObjects(
-      client,
       deviceIDRep,
       loginRequestData.deviceName,
       loginRequestData.key,
@@ -247,6 +277,9 @@ class LoginManager {
     client.sendMSG(new import_datapacks.LoginApprovedPacket(version).toJSON(), false);
     return true;
   }
+  /**
+  * @deprecated The method should not be used
+  */
   async validateLoginRequest(client, deviceIDRep, loginRequestData) {
     const approved = await this.adapter.getStateAsync("devices." + deviceIDRep + ".approved");
     const keyState = await this.adapter.getStateAsync("devices." + deviceIDRep + ".key");
@@ -289,11 +322,58 @@ class LoginManager {
     return apr;
   }
   /**
+   * This method validdates the Loginrequest based on the key and password
+   * @param clientName 
+   * @param deviceIDRep 
+   * @param loginRequestData 
+   * @returns true if valid, false if invalid
+   */
+  async validateLoginRequestProto(clientName, deviceIDRep, loginRequestData) {
+    const approved = await this.adapter.getStateAsync("devices." + deviceIDRep + ".approved");
+    const keyState = await this.adapter.getStateAsync("devices." + deviceIDRep + ".key");
+    const needPWD = await this.adapter.getStateAsync("devices." + deviceIDRep + ".noPwdAllowed");
+    let apr = true;
+    if (!approved || !approved.val) {
+      this.adapter.log.debug(
+        "Login declined for client: " + clientName + " (" + loginRequestData.deviceName + "): not approved"
+      );
+      apr = false;
+    }
+    if (keyState == null || keyState.val == null) {
+      apr = false;
+    }
+    if (!loginRequestData.key) {
+      apr = false;
+    }
+    if (needPWD && !(needPWD == null ? void 0 : needPWD.val)) {
+      if (!loginRequestData.user || !loginRequestData.password || !await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
+        this.adapter.log.debug(
+          "Login declined for client: " + clientName + " (" + loginRequestData.deviceName + "): wrong password"
+        );
+        apr = false;
+      }
+    }
+    if (loginRequestData.key == null) {
+      apr = false;
+    }
+    if (keyState != null && keyState.val != null && loginRequestData.key && !await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
+      this.adapter.log.debug(
+        "Login declined for client: " + clientName + " (" + loginRequestData.deviceName + "): wrong key" + !await bcrypt.compare(loginRequestData.key, keyState.val.toString())
+      );
+      apr = false;
+    }
+    if (!apr && this.approveLogins) {
+      await this.adapter.setStateAsync("devices." + deviceIDRep + ".approved", true, true);
+      apr = true;
+    }
+    return apr;
+  }
+  /**
    * This method creates all IoBroker Objects needed for the login request. If they exists this method will not create any
    * @param deviceIDRep Id of the device
    * @param deviceName Name of the device
    */
-  async createObjects(client, deviceIDRep, deviceName, key, version) {
+  async createObjects(deviceIDRep, deviceName, key, version) {
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}`, {
       type: "channel",
       common: {
@@ -616,17 +696,6 @@ class LoginManager {
     });
     const get_aes = await this.adapter.getStateAsync(`devices.${deviceIDRep}.aesKey`);
     const random_key = this.genRandomString(6, true);
-    if (!get_aes || get_aes.val == null || get_aes.val == "") {
-      await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
-      client.aesKey = random_key;
-    } else if (get_aes != null && typeof get_aes.val === "string") {
-      if (get_aes.val.toString().length > 6) {
-        get_aes.val = this.adapter.decrypt(get_aes.val.toString());
-      }
-      client.aesKey = get_aes.val;
-    } else {
-      this.adapter.log.warn("Cannot find AES Key. Please Restart Adapter!");
-    }
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_new`, {
       type: "state",
       common: {

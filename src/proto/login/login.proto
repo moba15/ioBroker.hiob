@@ -4,7 +4,6 @@ syntax = "proto3";
 service Login {
     rpc CheckCompatibility (CompatibilityRequest) returns (CompatibilityResponse) {};
     rpc Login (LoginRequest) returns (LoginResponse) {};
-    
 }
 
 message CompatibilityRequest {
@@ -24,7 +23,7 @@ message FirstPing {
 
 message LoginRequest {
     string deviceName = 1;
-    string deviceID = 2;
+    string deviceId = 2;
     string key = 3;
     string user = 4;
     optional string password = 5;
@@ -32,12 +31,15 @@ message LoginRequest {
 
 message LoginResponse {
     string key = 1;
-    enum status {
+    enum Status {
         succesfull = 0;
         wrongKey = 1;
         wrongPassword = 2;
         error = 3;
     }
+    Status status = 4; 
+    optional string errorMsg = 5;
+    string sessionId = 6;
 }
 
 message NewAesPacket {
