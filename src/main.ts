@@ -5,7 +5,6 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 import * as utils from "@iobroker/adapter-core";
-import { Server } from "./server/server";
 import { Listener } from "./listener/listener";
 import { LoginManager } from "./login/loginmanager";
 import { Client } from "./server/client";
@@ -264,7 +263,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
                     };
                 }
             } catch (e) {
-                this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
+                this.log.warn("App tried to request to a deleted datapoint. " + i);
                 continue;
             }
             if (state) {
@@ -279,14 +278,12 @@ export class SamartHomeHandyBis extends utils.Adapter {
                     ack: state.ack,
                 };
                 all_dp.push(map);
-               
                 this.listener.addPendingSubscribeState(i);
             } else {
                 this.log.warn("App tried to request to a deleted datapoint. " + i);
             }
         }
         if (all_dp.length > 0) {
-            
             this.listener.subscribeToPendingStates();
             //client.sendMSG(new AnswerSubscribeToDataPointsPack(all_dp).toJSON(), true);
             this.log.debug("Sending states...");
@@ -297,8 +294,8 @@ export class SamartHomeHandyBis extends utils.Adapter {
 
     /**
      * @deprecated
-     * @param dataPoints 
-     * @param client 
+     * @param dataPoints
+     * @param client
      */
     public async subscribeToDataPoints(dataPoints: { [x: string]: any }, client: Client): Promise<void> {
         this.log.debug(JSON.stringify(dataPoints));
