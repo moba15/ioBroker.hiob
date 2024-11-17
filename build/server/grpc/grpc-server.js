@@ -33,6 +33,7 @@ __export(grpc_server_exports, {
 module.exports = __toCommonJS(grpc_server_exports);
 var grpc = __toESM(require("@grpc/grpc-js"));
 var import_login_service = require("../services/login-service");
+var import_state_service = require("../services/state-service");
 class GrpcServer {
   constructor(port = 4500, keyPath = "key.pem", certPath = "cert.pem", adapter, useCert = false) {
     this.stoped = false;
@@ -52,6 +53,7 @@ class GrpcServer {
       throw Error("Adapater null");
     }
     (0, import_login_service.addLoginServices)(this.gRpcServer, this.adapter);
+    (0, import_state_service.addStateServices)(this.gRpcServer, this.adapter);
   }
   broadcastMsg(msg) {
     this.conClients.filter((e) => !e.onlySendNotification).forEach((element) => {

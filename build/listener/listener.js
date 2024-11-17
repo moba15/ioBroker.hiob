@@ -57,6 +57,7 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
         }
       }
       this.emit("stateChanged" /* StateChange */, new StateChangeEvent(id, state.val, state.ack));
+      this.emit("stateChanged" /* StateChange */ + id, new StateChangeEvent(id, state.val, state.ack));
     } else {
       this.emit("stateDeleted", new StateChangeEvent(id, null, null));
       this.adapter.log.info(`state ${id} deleted`);

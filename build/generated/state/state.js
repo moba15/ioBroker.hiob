@@ -45,11 +45,11 @@ __export(state_exports, {
   SearchStateResponse: () => SearchStateResponse,
   State: () => State,
   StateSubscribtion: () => StateSubscribtion,
+  StateUpdateClient: () => StateUpdateClient,
   StateValueUpdate: () => StateValueUpdate,
   StateValueUpdateRequest: () => StateValueUpdateRequest,
   StateValueUpdateResponse: () => StateValueUpdateResponse,
-  UnimplementedstateServiceService: () => UnimplementedstateServiceService,
-  stateServiceClient: () => stateServiceClient
+  UnimplementedStateUpdateService: () => UnimplementedStateUpdateService
 });
 module.exports = __toCommonJS(state_exports);
 var pb_1 = __toESM(require("google-protobuf"));
@@ -511,9 +511,6 @@ const _StateSubscribtion = class _StateSubscribtion extends pb_1.Message {
     __privateAdd(this, _one_of_decls4, []);
     pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], __privateGet(this, _one_of_decls4));
     if (!Array.isArray(data) && typeof data == "object") {
-      if ("userId" in data && data.userId != void 0) {
-        this.userId = data.userId;
-      }
       if ("type" in data && data.type != void 0) {
         this.type = data.type;
       }
@@ -521,12 +518,6 @@ const _StateSubscribtion = class _StateSubscribtion extends pb_1.Message {
         this.stateIds = data.stateIds;
       }
     }
-  }
-  get userId() {
-    return pb_1.Message.getFieldWithDefault(this, 1, "");
-  }
-  set userId(value) {
-    pb_1.Message.setField(this, 1, value);
   }
   get type() {
     return pb_1.Message.getFieldWithDefault(this, 2, _StateSubscribtion.SubscriptionType.cancle);
@@ -542,9 +533,6 @@ const _StateSubscribtion = class _StateSubscribtion extends pb_1.Message {
   }
   static fromObject(data) {
     const message = new _StateSubscribtion({});
-    if (data.userId != null) {
-      message.userId = data.userId;
-    }
     if (data.type != null) {
       message.type = data.type;
     }
@@ -555,9 +543,6 @@ const _StateSubscribtion = class _StateSubscribtion extends pb_1.Message {
   }
   toObject() {
     const data = {};
-    if (this.userId != null) {
-      data.userId = this.userId;
-    }
     if (this.type != null) {
       data.type = this.type;
     }
@@ -568,8 +553,6 @@ const _StateSubscribtion = class _StateSubscribtion extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.userId.length)
-      writer.writeString(1, this.userId);
     if (this.type != _StateSubscribtion.SubscriptionType.cancle)
       writer.writeEnum(2, this.type);
     if (this.stateIds.length)
@@ -583,9 +566,6 @@ const _StateSubscribtion = class _StateSubscribtion extends pb_1.Message {
       if (reader.isEndGroup())
         break;
       switch (reader.getFieldNumber()) {
-        case 1:
-          message.userId = reader.readString();
-          break;
         case 2:
           message.type = reader.readEnum();
           break;
@@ -1216,11 +1196,11 @@ let State = _State;
     })(StateType = StateCommon2.StateType || (StateCommon2.StateType = {}));
   })(StateCommon = State2.StateCommon || (State2.StateCommon = {}));
 })(State || (State = {}));
-class UnimplementedstateServiceService {
+class UnimplementedStateUpdateService {
 }
-UnimplementedstateServiceService.definition = {
+UnimplementedStateUpdateService.definition = {
   Subscibe: {
-    path: "/stateService/Subscibe",
+    path: "/StateUpdate/Subscibe",
     requestStream: false,
     responseStream: true,
     requestSerialize: (message) => Buffer.from(message.serialize()),
@@ -1229,7 +1209,7 @@ UnimplementedstateServiceService.definition = {
     responseDeserialize: (bytes) => StateValueUpdate.deserialize(new Uint8Array(bytes))
   },
   updateValue: {
-    path: "/stateService/updateValue",
+    path: "/StateUpdate/updateValue",
     requestStream: false,
     responseStream: false,
     requestSerialize: (message) => Buffer.from(message.serialize()),
@@ -1238,7 +1218,7 @@ UnimplementedstateServiceService.definition = {
     responseDeserialize: (bytes) => StateValueUpdateResponse.deserialize(new Uint8Array(bytes))
   },
   searchState: {
-    path: "/stateService/searchState",
+    path: "/StateUpdate/searchState",
     requestStream: false,
     responseStream: false,
     requestSerialize: (message) => Buffer.from(message.serialize()),
@@ -1247,7 +1227,7 @@ UnimplementedstateServiceService.definition = {
     responseDeserialize: (bytes) => SearchStateResponse.deserialize(new Uint8Array(bytes))
   },
   searchStateStream: {
-    path: "/stateService/searchStateStream",
+    path: "/StateUpdate/searchStateStream",
     requestStream: true,
     responseStream: true,
     requestSerialize: (message) => Buffer.from(message.serialize()),
@@ -1256,7 +1236,7 @@ UnimplementedstateServiceService.definition = {
     responseDeserialize: (bytes) => SearchStateResponse.deserialize(new Uint8Array(bytes))
   }
 };
-class stateServiceClient extends grpc_1.makeGenericClientConstructor(UnimplementedstateServiceService.definition, "stateService", {}) {
+class StateUpdateClient extends grpc_1.makeGenericClientConstructor(UnimplementedStateUpdateService.definition, "StateUpdate", {}) {
   constructor(address, credentials, options) {
     super(address, credentials, options);
     this.Subscibe = (message, metadata, options) => {
@@ -1279,10 +1259,10 @@ class stateServiceClient extends grpc_1.makeGenericClientConstructor(Unimplement
   SearchStateResponse,
   State,
   StateSubscribtion,
+  StateUpdateClient,
   StateValueUpdate,
   StateValueUpdateRequest,
   StateValueUpdateResponse,
-  UnimplementedstateServiceService,
-  stateServiceClient
+  UnimplementedStateUpdateService
 });
 //# sourceMappingURL=state.js.map

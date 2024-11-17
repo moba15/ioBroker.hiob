@@ -26,26 +26,36 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var login_service_exports = {};
-__export(login_service_exports, {
-  addLoginServices: () => addLoginServices
+var state_service_exports = {};
+__export(state_service_exports, {
+  addStateServices: () => addStateServices
 });
-module.exports = __toCommonJS(login_service_exports);
-var proto = __toESM(require("../../generated/login/login"));
-function addLoginServices(gRpcServer, adapter) {
-  gRpcServer.addService(proto.LoginClient.service, {
-    Login: async (call, callback) => {
-      const request = call.request;
-      callback(null, await adapter.loginManager.onLoginRequestProto(request));
-    },
-    RequestApproval: async (call, callback) => {
-      const request = call.request;
-      callback(null, await adapter.loginManager.requestApproval(request));
+module.exports = __toCommonJS(state_service_exports);
+var proto = __toESM(require("../../generated/state/state"));
+var import_state = require("../../generated/state/state");
+class Test extends import_state.UnimplementedStateUpdateService {
+  Subscibe(call) {
+    throw new Error("Method not implemented.");
+  }
+  updateValue(call, callback) {
+    throw new Error("Method not implemented.");
+  }
+  searchState(call, callback) {
+    throw new Error("Method not implemented.");
+  }
+  searchStateStream(call) {
+    throw new Error("Method not implemented.");
+  }
+}
+function addStateServices(gRpcServer, adapter) {
+  gRpcServer.addService(proto.StateUpdateClient.service, {
+    Subscibe: (call) => {
+      adapter.subscribeToDataPointsProto(call.request.stateIds);
     }
   });
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  addLoginServices
+  addStateServices
 });
-//# sourceMappingURL=login-service.js.map
+//# sourceMappingURL=state-service.js.map

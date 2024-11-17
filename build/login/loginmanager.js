@@ -45,6 +45,7 @@ class LoginManager {
     this.pendingClients = [];
     this.approveLoginsTimeout = void 0;
     this.pendingClientIds = [];
+    this.streams = [];
   }
   async onStateChange(event) {
     var _a, _b, _c;
@@ -235,14 +236,35 @@ class LoginManager {
       "No version"
     );
     this.adapter.setStateAsync("devices." + deviceIDRep + ".connected", true, true);
-    if (!await this.validateLoginRequestProto(loginRequest.deviceName, deviceIDRep, loginRequest)) {
+    let validdate = await this.validateLoginRequestProto(loginRequest.deviceName, deviceIDRep, loginRequest);
+    if (validdate != proto.LoginResponse.Status.succesfull) {
+      return new proto.LoginResponse({ sessionId, status: proto.LoginResponse.Status.error });
+      ;
+    }
+    this.adapter.log.debug("Login approved");
+    return new proto.LoginResponse({ sessionId, status: proto.LoginResponse.Status.succesfull });
+  }
+  async requestApproval(request) {
+    this.adapter.log.debug("Client " + request.deviceName + " requests approval");
+    let deviceIDRep = request.deviceId.replace(".", "-");
+    while (deviceIDRep.includes(".")) {
+      deviceIDRep = deviceIDRep.replace(".", "-");
+    }
+    let approved = await new Promise((resolve2, rejects2) => {
+      let onChange = (event) => {
+        resolve2(event.value);
+      };
+      this.adapter.listener.once(import_listener.Events.StateChange + "hiob.0.devices." + deviceIDRep + ".approved", onChange.bind(this));
+    });
+    this.adapter.log.debug("Client " + request.deviceName + " request for approval: " + approved);
+    if (approved) {
       this.adapter.log.debug("Generating new key");
       const keys = await this.genKey();
       await this.adapter.setStateAsync("devices." + deviceIDRep + ".key", keys[1], true);
-      return new proto.LoginResponse({ key: keys[0], sessionId, status: proto.LoginResponse.Status.error });
-      ;
+      return new proto.ApprovalResponse({ key: keys[0], status: proto.ApprovalResponse.Status.aprroved });
+    } else {
+      return new proto.ApprovalResponse({ key: "", status: proto.ApprovalResponse.Status.timeout });
     }
-    return new proto.LoginResponse({ key: "", sessionId, status: proto.LoginResponse.Status.succesfull });
   }
   async onLoginRequest(client, loginRequestData) {
     this.adapter.log.debug("Client(" + client.toString() + ") requested to login");
@@ -332,39 +354,39 @@ class LoginManager {
     const approved = await this.adapter.getStateAsync("devices." + deviceIDRep + ".approved");
     const keyState = await this.adapter.getStateAsync("devices." + deviceIDRep + ".key");
     const needPWD = await this.adapter.getStateAsync("devices." + deviceIDRep + ".noPwdAllowed");
-    let apr = true;
+    let apr = proto.LoginResponse.Status.succesfull;
     if (!approved || !approved.val) {
       this.adapter.log.debug(
         "Login declined for client: " + clientName + " (" + loginRequestData.deviceName + "): not approved"
       );
-      apr = false;
+      apr = proto.LoginResponse.Status.notApproved;
     }
     if (keyState == null || keyState.val == null) {
-      apr = false;
+      apr = proto.LoginResponse.Status.error;
     }
     if (!loginRequestData.key) {
-      apr = false;
+      apr = proto.LoginResponse.Status.wrongKey;
     }
     if (needPWD && !(needPWD == null ? void 0 : needPWD.val)) {
       if (!loginRequestData.user || !loginRequestData.password || !await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
         this.adapter.log.debug(
           "Login declined for client: " + clientName + " (" + loginRequestData.deviceName + "): wrong password"
         );
-        apr = false;
+        apr = proto.LoginResponse.Status.wrongPassword;
       }
     }
     if (loginRequestData.key == null) {
-      apr = false;
+      apr = proto.LoginResponse.Status.wrongKey;
     }
     if (keyState != null && keyState.val != null && loginRequestData.key && !await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
       this.adapter.log.debug(
         "Login declined for client: " + clientName + " (" + loginRequestData.deviceName + "): wrong key" + !await bcrypt.compare(loginRequestData.key, keyState.val.toString())
       );
-      apr = false;
+      apr = proto.LoginResponse.Status.wrongKey;
     }
     if (!apr && this.approveLogins) {
       await this.adapter.setStateAsync("devices." + deviceIDRep + ".approved", true, true);
-      apr = true;
+      apr = proto.LoginResponse.Status.succesfull;
     }
     return apr;
   }

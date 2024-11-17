@@ -41,6 +41,8 @@ var __privateAdd = (obj, member, value) => {
 };
 var login_exports = {};
 __export(login_exports, {
+  ApprovalRequest: () => ApprovalRequest,
+  ApprovalResponse: () => ApprovalResponse,
   CompatibilityRequest: () => CompatibilityRequest,
   CompatibilityResponse: () => CompatibilityResponse,
   FirstPing: () => FirstPing,
@@ -54,7 +56,7 @@ __export(login_exports, {
 module.exports = __toCommonJS(login_exports);
 var pb_1 = __toESM(require("google-protobuf"));
 var grpc_1 = __toESM(require("@grpc/grpc-js"));
-var _one_of_decls, _one_of_decls2, _one_of_decls3, _one_of_decls4, _one_of_decls5, _one_of_decls6, _one_of_decls7;
+var _one_of_decls, _one_of_decls2, _one_of_decls3, _one_of_decls4, _one_of_decls5, _one_of_decls6, _one_of_decls7, _one_of_decls8, _one_of_decls9;
 const _CompatibilityRequest = class _CompatibilityRequest extends pb_1.Message {
   constructor(data) {
     super();
@@ -456,12 +458,9 @@ let LoginRequest = _LoginRequest;
 const _LoginResponse = class _LoginResponse extends pb_1.Message {
   constructor(data) {
     super();
-    __privateAdd(this, _one_of_decls5, [[5]]);
+    __privateAdd(this, _one_of_decls5, [[2]]);
     pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls5));
     if (!Array.isArray(data) && typeof data == "object") {
-      if ("key" in data && data.key != void 0) {
-        this.key = data.key;
-      }
       if ("status" in data && data.status != void 0) {
         this.status = data.status;
       }
@@ -473,45 +472,36 @@ const _LoginResponse = class _LoginResponse extends pb_1.Message {
       }
     }
   }
-  get key() {
-    return pb_1.Message.getFieldWithDefault(this, 1, "");
-  }
-  set key(value) {
-    pb_1.Message.setField(this, 1, value);
-  }
   get status() {
-    return pb_1.Message.getFieldWithDefault(this, 4, _LoginResponse.Status.succesfull);
+    return pb_1.Message.getFieldWithDefault(this, 1, _LoginResponse.Status.succesfull);
   }
   set status(value) {
-    pb_1.Message.setField(this, 4, value);
+    pb_1.Message.setField(this, 1, value);
   }
   get errorMsg() {
-    return pb_1.Message.getFieldWithDefault(this, 5, "");
+    return pb_1.Message.getFieldWithDefault(this, 2, "");
   }
   set errorMsg(value) {
-    pb_1.Message.setOneofField(this, 5, __privateGet(this, _one_of_decls5)[0], value);
+    pb_1.Message.setOneofField(this, 2, __privateGet(this, _one_of_decls5)[0], value);
   }
   get has_errorMsg() {
-    return pb_1.Message.getField(this, 5) != null;
+    return pb_1.Message.getField(this, 2) != null;
   }
   get sessionId() {
-    return pb_1.Message.getFieldWithDefault(this, 6, "");
+    return pb_1.Message.getFieldWithDefault(this, 3, "");
   }
   set sessionId(value) {
-    pb_1.Message.setField(this, 6, value);
+    pb_1.Message.setField(this, 3, value);
   }
   get _errorMsg() {
     const cases = {
       0: "none",
-      5: "errorMsg"
+      2: "errorMsg"
     };
-    return cases[pb_1.Message.computeOneofCase(this, [5])];
+    return cases[pb_1.Message.computeOneofCase(this, [2])];
   }
   static fromObject(data) {
     const message = new _LoginResponse({});
-    if (data.key != null) {
-      message.key = data.key;
-    }
     if (data.status != null) {
       message.status = data.status;
     }
@@ -525,9 +515,6 @@ const _LoginResponse = class _LoginResponse extends pb_1.Message {
   }
   toObject() {
     const data = {};
-    if (this.key != null) {
-      data.key = this.key;
-    }
     if (this.status != null) {
       data.status = this.status;
     }
@@ -541,14 +528,12 @@ const _LoginResponse = class _LoginResponse extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.key.length)
-      writer.writeString(1, this.key);
     if (this.status != _LoginResponse.Status.succesfull)
-      writer.writeEnum(4, this.status);
+      writer.writeEnum(1, this.status);
     if (this.has_errorMsg)
-      writer.writeString(5, this.errorMsg);
+      writer.writeString(2, this.errorMsg);
     if (this.sessionId.length)
-      writer.writeString(6, this.sessionId);
+      writer.writeString(3, this.sessionId);
     if (!w)
       return writer.getResultBuffer();
   }
@@ -559,15 +544,12 @@ const _LoginResponse = class _LoginResponse extends pb_1.Message {
         break;
       switch (reader.getFieldNumber()) {
         case 1:
-          message.key = reader.readString();
-          break;
-        case 4:
           message.status = reader.readEnum();
           break;
-        case 5:
+        case 2:
           message.errorMsg = reader.readString();
           break;
-        case 6:
+        case 3:
           message.sessionId = reader.readString();
           break;
         default:
@@ -592,6 +574,7 @@ let LoginResponse = _LoginResponse;
     Status2[Status2["wrongKey"] = 1] = "wrongKey";
     Status2[Status2["wrongPassword"] = 2] = "wrongPassword";
     Status2[Status2["error"] = 3] = "error";
+    Status2[Status2["notApproved"] = 4] = "notApproved";
   })(Status = LoginResponse2.Status || (LoginResponse2.Status = {}));
 })(LoginResponse || (LoginResponse = {}));
 const _NewAesPacket = class _NewAesPacket extends pb_1.Message {
@@ -678,6 +661,187 @@ const _WrongAesKeyPack = class _WrongAesKeyPack extends pb_1.Message {
 };
 _one_of_decls7 = new WeakMap();
 let WrongAesKeyPack = _WrongAesKeyPack;
+const _ApprovalRequest = class _ApprovalRequest extends pb_1.Message {
+  constructor(data) {
+    super();
+    __privateAdd(this, _one_of_decls8, []);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls8));
+    if (!Array.isArray(data) && typeof data == "object") {
+      if ("deviceName" in data && data.deviceName != void 0) {
+        this.deviceName = data.deviceName;
+      }
+      if ("deviceId" in data && data.deviceId != void 0) {
+        this.deviceId = data.deviceId;
+      }
+    }
+  }
+  get deviceName() {
+    return pb_1.Message.getFieldWithDefault(this, 1, "");
+  }
+  set deviceName(value) {
+    pb_1.Message.setField(this, 1, value);
+  }
+  get deviceId() {
+    return pb_1.Message.getFieldWithDefault(this, 2, "");
+  }
+  set deviceId(value) {
+    pb_1.Message.setField(this, 2, value);
+  }
+  static fromObject(data) {
+    const message = new _ApprovalRequest({});
+    if (data.deviceName != null) {
+      message.deviceName = data.deviceName;
+    }
+    if (data.deviceId != null) {
+      message.deviceId = data.deviceId;
+    }
+    return message;
+  }
+  toObject() {
+    const data = {};
+    if (this.deviceName != null) {
+      data.deviceName = this.deviceName;
+    }
+    if (this.deviceId != null) {
+      data.deviceId = this.deviceId;
+    }
+    return data;
+  }
+  serialize(w) {
+    const writer = w || new pb_1.BinaryWriter();
+    if (this.deviceName.length)
+      writer.writeString(1, this.deviceName);
+    if (this.deviceId.length)
+      writer.writeString(2, this.deviceId);
+    if (!w)
+      return writer.getResultBuffer();
+  }
+  static deserialize(bytes) {
+    const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _ApprovalRequest();
+    while (reader.nextField()) {
+      if (reader.isEndGroup())
+        break;
+      switch (reader.getFieldNumber()) {
+        case 1:
+          message.deviceName = reader.readString();
+          break;
+        case 2:
+          message.deviceId = reader.readString();
+          break;
+        default:
+          reader.skipField();
+      }
+    }
+    return message;
+  }
+  serializeBinary() {
+    return this.serialize();
+  }
+  static deserializeBinary(bytes) {
+    return _ApprovalRequest.deserialize(bytes);
+  }
+};
+_one_of_decls8 = new WeakMap();
+let ApprovalRequest = _ApprovalRequest;
+const _ApprovalResponse = class _ApprovalResponse extends pb_1.Message {
+  constructor(data) {
+    super();
+    __privateAdd(this, _one_of_decls9, [[2]]);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls9));
+    if (!Array.isArray(data) && typeof data == "object") {
+      if ("status" in data && data.status != void 0) {
+        this.status = data.status;
+      }
+      if ("key" in data && data.key != void 0) {
+        this.key = data.key;
+      }
+    }
+  }
+  get status() {
+    return pb_1.Message.getFieldWithDefault(this, 1, _ApprovalResponse.Status.aprroved);
+  }
+  set status(value) {
+    pb_1.Message.setField(this, 1, value);
+  }
+  get key() {
+    return pb_1.Message.getFieldWithDefault(this, 2, "");
+  }
+  set key(value) {
+    pb_1.Message.setOneofField(this, 2, __privateGet(this, _one_of_decls9)[0], value);
+  }
+  get has_key() {
+    return pb_1.Message.getField(this, 2) != null;
+  }
+  get _key() {
+    const cases = {
+      0: "none",
+      2: "key"
+    };
+    return cases[pb_1.Message.computeOneofCase(this, [2])];
+  }
+  static fromObject(data) {
+    const message = new _ApprovalResponse({});
+    if (data.status != null) {
+      message.status = data.status;
+    }
+    if (data.key != null) {
+      message.key = data.key;
+    }
+    return message;
+  }
+  toObject() {
+    const data = {};
+    if (this.status != null) {
+      data.status = this.status;
+    }
+    if (this.key != null) {
+      data.key = this.key;
+    }
+    return data;
+  }
+  serialize(w) {
+    const writer = w || new pb_1.BinaryWriter();
+    if (this.status != _ApprovalResponse.Status.aprroved)
+      writer.writeEnum(1, this.status);
+    if (this.has_key)
+      writer.writeString(2, this.key);
+    if (!w)
+      return writer.getResultBuffer();
+  }
+  static deserialize(bytes) {
+    const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _ApprovalResponse();
+    while (reader.nextField()) {
+      if (reader.isEndGroup())
+        break;
+      switch (reader.getFieldNumber()) {
+        case 1:
+          message.status = reader.readEnum();
+          break;
+        case 2:
+          message.key = reader.readString();
+          break;
+        default:
+          reader.skipField();
+      }
+    }
+    return message;
+  }
+  serializeBinary() {
+    return this.serialize();
+  }
+  static deserializeBinary(bytes) {
+    return _ApprovalResponse.deserialize(bytes);
+  }
+};
+_one_of_decls9 = new WeakMap();
+let ApprovalResponse = _ApprovalResponse;
+((ApprovalResponse2) => {
+  let Status;
+  ((Status2) => {
+    Status2[Status2["aprroved"] = 0] = "aprroved";
+    Status2[Status2["timeout"] = 1] = "timeout";
+  })(Status = ApprovalResponse2.Status || (ApprovalResponse2.Status = {}));
+})(ApprovalResponse || (ApprovalResponse = {}));
 class UnimplementedLoginService {
 }
 UnimplementedLoginService.definition = {
@@ -698,6 +862,15 @@ UnimplementedLoginService.definition = {
     requestDeserialize: (bytes) => LoginRequest.deserialize(new Uint8Array(bytes)),
     responseSerialize: (message) => Buffer.from(message.serialize()),
     responseDeserialize: (bytes) => LoginResponse.deserialize(new Uint8Array(bytes))
+  },
+  RequestApproval: {
+    path: "/Login/RequestApproval",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (message) => Buffer.from(message.serialize()),
+    requestDeserialize: (bytes) => ApprovalRequest.deserialize(new Uint8Array(bytes)),
+    responseSerialize: (message) => Buffer.from(message.serialize()),
+    responseDeserialize: (bytes) => ApprovalResponse.deserialize(new Uint8Array(bytes))
   }
 };
 class LoginClient extends grpc_1.makeGenericClientConstructor(UnimplementedLoginService.definition, "Login", {}) {
@@ -709,10 +882,15 @@ class LoginClient extends grpc_1.makeGenericClientConstructor(UnimplementedLogin
     this.Login = (message, metadata, options, callback) => {
       return super.Login(message, metadata, options, callback);
     };
+    this.RequestApproval = (message, metadata, options, callback) => {
+      return super.RequestApproval(message, metadata, options, callback);
+    };
   }
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  ApprovalRequest,
+  ApprovalResponse,
   CompatibilityRequest,
   CompatibilityResponse,
   FirstPing,
