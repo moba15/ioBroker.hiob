@@ -4,6 +4,8 @@ syntax = "proto3";
 service Login {
     rpc CheckCompatibility (CompatibilityRequest) returns (CompatibilityResponse) {};
     rpc Login (LoginRequest) returns (LoginResponse) {};
+    //TODO: Maybe Stream?
+    rpc RequestApproval (ApprovalRequest) returns (ApprovalResponse) {};
 }
 
 message CompatibilityRequest {
@@ -30,16 +32,16 @@ message LoginRequest {
 }
 
 message LoginResponse {
-    string key = 1;
     enum Status {
         succesfull = 0;
         wrongKey = 1;
         wrongPassword = 2;
         error = 3;
+        notApproved = 4;
     }
-    Status status = 4; 
-    optional string errorMsg = 5;
-    string sessionId = 6;
+    Status status = 1; 
+    optional string errorMsg = 2;
+    string sessionId = 3;
 }
 
 message NewAesPacket {
@@ -48,4 +50,22 @@ message NewAesPacket {
 
 message WrongAesKeyPack {
     
+}
+
+message ApprovalRequest {
+    string deviceName = 1;
+    string deviceId = 2;
+    
+
+
+}
+
+message ApprovalResponse {
+    enum Status {
+        aprroved = 0;
+        timeout = 1;
+    }
+    Status status = 1;
+    optional string key = 2;
+
 }
