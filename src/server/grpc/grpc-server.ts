@@ -5,7 +5,7 @@ import { Client } from ".././client";
 import * as grpc from "@grpc/grpc-js";
 import * as proto from "../../generated/login/login"
 import { addLoginServices } from "../services/login-service";
-
+import {addStateServices} from "../services/state-service"
 
 
 export class GrpcServer {
@@ -33,6 +33,7 @@ export class GrpcServer {
     startServer(): void {
         this.gRpcServer = new grpc.Server();
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
+       
         
         this.gRpcServer.bindAsync("0.0.0.0:" + this.port, grpc.ServerCredentials.createInsecure(), () => {
             this.adapter.log.info("Server listening on port: " + this.port);
@@ -41,6 +42,9 @@ export class GrpcServer {
             throw Error("Adapater null");
         }
         addLoginServices(this.gRpcServer, this.adapter);
+        addStateServices(this.gRpcServer, this.adapter);
+
+       
     }
 
     broadcastMsg(msg: string): void {

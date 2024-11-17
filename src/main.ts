@@ -245,6 +245,61 @@ export class SamartHomeHandyBis extends utils.Adapter {
         return list;
     }
 
+
+    public async subscribeToDataPointsProto(dataPoints: string[]): Promise<void> {
+        this.log.debug("Trying to subscribe to " + dataPoints.length+ " Datapoints");
+        const all_dp = [];
+        for (const i of dataPoints) {
+            let state = null;
+            try {
+                if (this.valueDatapoints[i] == null) {
+                    this.valueDatapoints[i] = {};
+                    state = await this.getForeignStateAsync(i);
+                    this.log.debug("Use getForeignStateAsync");
+                } else {
+                    this.log.debug("Use memory");
+                    state = {
+                        val: this.valueDatapoints[i].val,
+                        ack: this.valueDatapoints[i].ack,
+                    };
+                }
+            } catch (e) {
+                this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
+                continue;
+            }
+            if (state) {
+                if (state.ts != null) {
+                    this.valueDatapoints[i].val = state.val;
+                    this.valueDatapoints[i].ack = state.ack;
+                }
+                //this.log.info("sub to " + dataPoints[i]);
+                const map = {
+                    objectID: i,
+                    value: state.val,
+                    ack: state.ack,
+                };
+                all_dp.push(map);
+               
+                this.listener.addPendingSubscribeState(i);
+            } else {
+                this.log.warn("App tried to request to a deleted datapoint. " + i);
+            }
+        }
+        if (all_dp.length > 0) {
+            
+            this.listener.subscribeToPendingStates();
+            //client.sendMSG(new AnswerSubscribeToDataPointsPack(all_dp).toJSON(), true);
+            this.log.debug("Sending states...");
+        }
+    }
+
+
+
+    /**
+     * @deprecated
+     * @param dataPoints 
+     * @param client 
+     */
     public async subscribeToDataPoints(dataPoints: { [x: string]: any }, client: Client): Promise<void> {
         this.log.debug(JSON.stringify(dataPoints));
         const all_dp = [];

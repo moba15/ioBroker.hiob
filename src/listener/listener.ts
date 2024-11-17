@@ -40,6 +40,7 @@ export class Listener extends EventEmitter {
                 }
             }
             this.emit(Events.StateChange, new StateChangeEvent(id, state.val, state.ack));
+            this.emit(Events.StateChange + id, new StateChangeEvent(id, state.val, state.ack));
         } else {
             this.emit("stateDeleted", new StateChangeEvent(id, null, null));
             this.adapter.log.info(`state ${id} deleted`);

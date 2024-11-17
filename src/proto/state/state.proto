@@ -1,5 +1,5 @@
 syntax="proto3";
-service stateService {
+service StateUpdate {
     rpc Subscibe(StateSubscribtion) returns(stream StateValueUpdate);
     rpc updateValue(StateValueUpdateRequest) returns(StateValueUpdateResponse);
     rpc searchState(SearchState) returns(SearchStateResponse);
@@ -34,7 +34,7 @@ message StateValueUpdateResponse {
     bool suc = 1;
 }
 message StateSubscribtion {
-    string userId =1;
+    
     enum SubscriptionType {
         cancle = 0;
         subscripe = 1;
