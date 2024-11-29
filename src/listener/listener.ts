@@ -2,6 +2,8 @@ import { EventEmitter } from "stream";
 import { SamartHomeHandyBis } from "../main";
 import { StateChangedDataPack } from "../server/datapacks";
 import { Mutex } from "async-mutex";
+import * as proto from "../generated/state/state";
+import { ServerWritableStream } from "@grpc/grpc-js";
 
 export enum Events {
     StateChange = "stateChanged",
@@ -12,22 +14,25 @@ export class Listener extends EventEmitter {
     adapter : SamartHomeHandyBis;
     busy : boolean = false;
     subsribedStates: Map<string, {overThreshold: boolean, subscribed: Set<string>, pending: Set<string>}> = new Map();
-    subscribedStates: Set<string> = new Set();
+    //subscribedStates: Set<string> = new Set();
     pendingSubscribeStates: Set<string> = new Set();
     mutex : Mutex = new Mutex();
+    subscribedWritersMutex : Mutex = new Mutex();
+    subscribedWriters: {device: string, writer: ServerWritableStream<proto.StateSubscribtion, proto.StatesValueUpdate>}[] = [];
     constructor(adapter: SamartHomeHandyBis) {
         super();
         this.adapter = adapter;
     }
 
     onStateChange(id: string, state: ioBroker.State | null | undefined): void {
+        this.adapter.log.debug("Send" + JSON.stringify(this.pendingSubscribeStates));
         if (state != null) {
             // The state was changed
             //this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
             //Check if notification
             if (!id.startsWith("hiob.")) {
                 const adapaterKey : string = id.split(".")[0] + "." +  id.split(".")[1];
-                if(this.subscribedStates.has(id)) {
+                if(this.subsribedStates.has(adapaterKey) && this.subsribedStates.get(adapaterKey)?.subscribed.has(id)) {
                     if (this.adapter.valueDatapoints[id] == null) {
                         this.adapter.valueDatapoints[id] = {};
                     }
@@ -36,6 +41,8 @@ export class Listener extends EventEmitter {
                     this.adapter.server?.broadcastMsg(
                         new StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON()
                     );
+                    const stateValueUpdate = new proto.StateValueUpdate({stateId: id, acc: state.ack, stringValue: state.val?.toString(), time: state.ts});
+                    this.subscribedWriters.forEach((e) => e.writer.write(new proto.StatesValueUpdate({stateUpdates: [stateValueUpdate]})))
 
                 }
             }
@@ -52,9 +59,6 @@ export class Listener extends EventEmitter {
      */
     addPendingSubscribeState(id: string) : void {
        this.mutex.runExclusive(async () => {
-        if(this.subscribedStates.has(id)) {
-            return;
-        }
         this.pendingSubscribeStates.add(id);
         const adapaterKey : string = id.split(".")[0] + "." +  id.split(".")[1];
         if(this.subsribedStates.has(adapaterKey)) {
@@ -73,12 +77,9 @@ export class Listener extends EventEmitter {
      * Subscribes to all States listed in the pending (see addPendingSubscribeState)
      * If there are more than 50 subscriptions for one instance it subscribses to all changes inside this instance
      */
-    subscribeToPendingStates() : void{
+    subscribeToPendingStates() : void {
         this.mutex.runExclusive(async () => {
-            if(this.subscribedStates.size >=  Listener.subscribtionThresholdPerInstance) {
-                this.pendingSubscribeStates.forEach((e) => this.subscribedStates.add(e));
-                this.pendingSubscribeStates.clear();
-            } else {
+            
                /* if(this.subscribedStates.size + this.pendingSubscribeStates.size >= Listener.subscribtionThresholdPerInstance) {
                     this.adapter.log.debug("More than 50 states. Subscribing to *")
                     await this.adapter.subscribeForeignStatesAsync("*");
@@ -88,7 +89,6 @@ export class Listener extends EventEmitter {
                     this.pendingSubscribeStates.forEach((e) => this.adapter.subscribeForeignStatesAsync(e));
                 }
                 this.pendingSubscribeStates.clear();*/
-            
             for(const [adapaterKey, subsribedStatesStatus] of this.subsribedStates) {
                 if(subsribedStatesStatus.pending.size > 0) {
                     if(subsribedStatesStatus.overThreshold) {
@@ -116,7 +116,21 @@ export class Listener extends EventEmitter {
                     subsribedStatesStatus.pending.clear();
                 }
             }
-        }
+        });
+    }
+
+    addWriter(device: string, writer: ServerWritableStream<proto.StateSubscribtion, proto.StatesValueUpdate>) : void {
+        this.subscribedWritersMutex.runExclusive(() => {
+            this.subscribedWriters.push({
+                device: device,
+                writer: writer
+            });
+        });
+    }
+
+    removeWriter(device: string) : void {
+        this.subscribedWritersMutex.runExclusive(() => {
+            this.subscribedWriters = this.subscribedWriters.filter((v) => v.device == device);
         });
     }
 }

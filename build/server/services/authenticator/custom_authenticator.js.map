@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../../src/server/services/authenticator/custom_authenticator.ts"],
-  "sourcesContent": ["import { Metadata } from \"@grpc/grpc-js\";\n\nclass CustomAuthenticator  {\n\n}"],
-  "mappings": ";AAEA,MAAM,oBAAqB;AAE3B;",
-  "names": []
-}

@@ -1,9 +1,13 @@
 syntax="proto3";
 service StateUpdate {
-    rpc Subscibe(StateSubscribtion) returns(stream StateValueUpdate);
+    rpc Subscibe(StateSubscribtion) returns(stream StatesValueUpdate);
     rpc updateValue(StateValueUpdateRequest) returns(StateValueUpdateResponse);
     rpc searchState(SearchState) returns(SearchStateResponse);
     rpc searchStateStream(stream SearchState) returns(stream SearchStateResponse);
+}
+
+message StatesValueUpdate {
+    repeated StateValueUpdate stateUpdates = 2;
 }
 
 message StateValueUpdate {
@@ -81,6 +85,7 @@ message State {
         optional int32 max = 10;
 
     }
+    optional StateCommon common = 6;
 
      
 
