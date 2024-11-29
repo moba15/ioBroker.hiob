@@ -220,28 +220,29 @@ class SamartHomeHandyBis extends utils.Adapter {
       let state = null;
       try {
         if (this.valueDatapoints[i] == null) {
-          this.valueDatapoints[i] = {};
           state = await this.getForeignStateAsync(i);
           this.log.debug("Use getForeignStateAsync");
         } else {
           this.log.debug("Use memory");
           state = {
+            objectID: i,
             val: this.valueDatapoints[i].val,
             ack: this.valueDatapoints[i].ack
           };
         }
       } catch (e) {
-        this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
+        this.log.warn("App tried to request to a deleted datapoint. ID:" + i + e);
         continue;
       }
       if (state) {
         if (state.ts != null) {
+          this.valueDatapoints[i] = {};
           this.valueDatapoints[i].val = state.val;
           this.valueDatapoints[i].ack = state.ack;
         }
         const map = {
           objectID: i,
-          value: state.val,
+          val: state.val,
           ack: state.ack
         };
         all_dp.push(map);
@@ -250,15 +251,13 @@ class SamartHomeHandyBis extends utils.Adapter {
         this.log.warn("App tried to request to a deleted datapoint. " + i);
       }
     }
-    if (all_dp.length > 0) {
-      this.listener.subscribeToPendingStates();
-      this.log.debug("Sending states...");
-    }
+    this.listener.subscribeToPendingStates();
+    return all_dp;
   }
   /**
    * @deprecated
-   * @param dataPoints 
-   * @param client 
+   * @param dataPoints
+   * @param client
    */
   async subscribeToDataPoints(dataPoints, client) {
     this.log.debug(JSON.stringify(dataPoints));

@@ -49,8 +49,18 @@ class Test extends import_state.UnimplementedStateUpdateService {
 }
 function addStateServices(gRpcServer, adapter) {
   gRpcServer.addService(proto.StateUpdateClient.service, {
-    Subscibe: (call) => {
-      adapter.subscribeToDataPointsProto(call.request.stateIds);
+    Subscibe: async (call) => {
+      const result = await adapter.subscribeToDataPointsProto(call.request.stateIds);
+      const stateValueUpdates = result.map((e) => {
+        return new proto.StateValueUpdate({
+          stateId: e.objectID,
+          stringValue: e.val.toString(),
+          acc: e.ack,
+          time: 0
+        });
+      });
+      call.write(new proto.StatesValueUpdate({ stateUpdates: stateValueUpdates }));
+      adapter.listener.addWriter("DeviceIdFromHeader", call);
     }
   });
 }

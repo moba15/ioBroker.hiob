@@ -5,6 +5,73 @@
  * git: https://github.com/thesayyn/protoc-gen-ts */
 import * as pb_1 from "google-protobuf";
 import * as grpc_1 from "@grpc/grpc-js";
+export class StatesValueUpdate extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        stateUpdates?: StateValueUpdate[];
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("stateUpdates" in data && data.stateUpdates != undefined) {
+                this.stateUpdates = data.stateUpdates;
+            }
+        }
+    }
+    get stateUpdates() {
+        return pb_1.Message.getRepeatedWrapperField(this, StateValueUpdate, 2) as StateValueUpdate[];
+    }
+    set stateUpdates(value: StateValueUpdate[]) {
+        pb_1.Message.setRepeatedWrapperField(this, 2, value);
+    }
+    static fromObject(data: {
+        stateUpdates?: ReturnType<typeof StateValueUpdate.prototype.toObject>[];
+    }): StatesValueUpdate {
+        const message = new StatesValueUpdate({});
+        if (data.stateUpdates != null) {
+            message.stateUpdates = data.stateUpdates.map(item => StateValueUpdate.fromObject(item));
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            stateUpdates?: ReturnType<typeof StateValueUpdate.prototype.toObject>[];
+        } = {};
+        if (this.stateUpdates != null) {
+            data.stateUpdates = this.stateUpdates.map((item: StateValueUpdate) => item.toObject());
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.stateUpdates.length)
+            writer.writeRepeatedMessage(2, this.stateUpdates, (item: StateValueUpdate) => item.serialize(writer));
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): StatesValueUpdate {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new StatesValueUpdate();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 2:
+                    reader.readMessage(message.stateUpdates, () => pb_1.Message.addToRepeatedWrapperField(message, 2, StateValueUpdate.deserialize(reader), StateValueUpdate));
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static deserializeBinary(bytes: Uint8Array): StatesValueUpdate {
+        return StatesValueUpdate.deserialize(bytes);
+    }
+}
 export class StateValueUpdate extends pb_1.Message {
     #one_of_decls: number[][] = [[4, 5, 6, 99]];
     constructor(data?: any[] | ({
@@ -793,7 +860,7 @@ export class SearchStateResponse extends pb_1.Message {
     }
 }
 export class State extends pb_1.Message {
-    #one_of_decls: number[][] = [[3, 4, 5, 99]];
+    #one_of_decls: number[][] = [[3, 4, 5, 99], [6]];
     constructor(data?: any[] | ({
         stateId?: string;
     } & (({
@@ -816,6 +883,8 @@ export class State extends pb_1.Message {
         boolValue?: never;
         doubleValue?: never;
         other?: string;
+    }) | ({
+        common?: State.StateCommon;
     })))) {
         super();
         pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
@@ -834,6 +903,9 @@ export class State extends pb_1.Message {
             }
             if ("other" in data && data.other != undefined) {
                 this.other = data.other;
+            }
+            if ("common" in data && data.common != undefined) {
+                this.common = data.common;
             }
         }
     }
@@ -879,6 +951,15 @@ export class State extends pb_1.Message {
     get has_other() {
         return pb_1.Message.getField(this, 99) != null;
     }
+    get common() {
+        return pb_1.Message.getWrapperField(this, State.StateCommon, 6) as State.StateCommon;
+    }
+    set common(value: State.StateCommon) {
+        pb_1.Message.setOneofWrapperField(this, 6, this.#one_of_decls[1], value);
+    }
+    get has_common() {
+        return pb_1.Message.getField(this, 6) != null;
+    }
     get value() {
         const cases: {
             [index: number]: "none" | "stringValue" | "boolValue" | "doubleValue" | "other";
@@ -891,12 +972,22 @@ export class State extends pb_1.Message {
         };
         return cases[pb_1.Message.computeOneofCase(this, [3, 4, 5, 99])];
     }
+    get _common() {
+        const cases: {
+            [index: number]: "none" | "common";
+        } = {
+            0: "none",
+            6: "common"
+        };
+        return cases[pb_1.Message.computeOneofCase(this, [6])];
+    }
     static fromObject(data: {
         stateId?: string;
         stringValue?: string;
         boolValue?: boolean;
         doubleValue?: number;
         other?: string;
+        common?: ReturnType<typeof State.StateCommon.prototype.toObject>;
     }): State {
         const message = new State({});
         if (data.stateId != null) {
@@ -914,6 +1005,9 @@ export class State extends pb_1.Message {
         if (data.other != null) {
             message.other = data.other;
         }
+        if (data.common != null) {
+            message.common = State.StateCommon.fromObject(data.common);
+        }
         return message;
     }
     toObject() {
@@ -923,6 +1017,7 @@ export class State extends pb_1.Message {
             boolValue?: boolean;
             doubleValue?: number;
             other?: string;
+            common?: ReturnType<typeof State.StateCommon.prototype.toObject>;
         } = {};
         if (this.stateId != null) {
             data.stateId = this.stateId;
@@ -938,6 +1033,9 @@ export class State extends pb_1.Message {
         }
         if (this.other != null) {
             data.other = this.other;
+        }
+        if (this.common != null) {
+            data.common = this.common.toObject();
         }
         return data;
     }
@@ -955,6 +1053,8 @@ export class State extends pb_1.Message {
             writer.writeDouble(5, this.doubleValue);
         if (this.has_other)
             writer.writeString(99, this.other);
+        if (this.has_common)
+            writer.writeMessage(6, this.common, () => this.common.serialize(writer));
         if (!w)
             return writer.getResultBuffer();
     }
@@ -978,6 +1078,9 @@ export class State extends pb_1.Message {
                     break;
                 case 99:
                     message.other = reader.readString();
+                    break;
+                case 6:
+                    reader.readMessage(message.common, () => message.common = State.StateCommon.deserialize(reader));
                     break;
                 default: reader.skipField();
             }
@@ -1358,8 +1461,8 @@ export abstract class UnimplementedStateUpdateService {
             responseStream: true,
             requestSerialize: (message: StateSubscribtion) => Buffer.from(message.serialize()),
             requestDeserialize: (bytes: Buffer) => StateSubscribtion.deserialize(new Uint8Array(bytes)),
-            responseSerialize: (message: StateValueUpdate) => Buffer.from(message.serialize()),
-            responseDeserialize: (bytes: Buffer) => StateValueUpdate.deserialize(new Uint8Array(bytes))
+            responseSerialize: (message: StatesValueUpdate) => Buffer.from(message.serialize()),
+            responseDeserialize: (bytes: Buffer) => StatesValueUpdate.deserialize(new Uint8Array(bytes))
         },
         updateValue: {
             path: "/StateUpdate/updateValue",
@@ -1390,7 +1493,7 @@ export abstract class UnimplementedStateUpdateService {
         }
     };
     [method: string]: grpc_1.UntypedHandleCall;
-    abstract Subscibe(call: grpc_1.ServerWritableStream<StateSubscribtion, StateValueUpdate>): void;
+    abstract Subscibe(call: grpc_1.ServerWritableStream<StateSubscribtion, StatesValueUpdate>): void;
     abstract updateValue(call: grpc_1.ServerUnaryCall<StateValueUpdateRequest, StateValueUpdateResponse>, callback: grpc_1.sendUnaryData<StateValueUpdateResponse>): void;
     abstract searchState(call: grpc_1.ServerUnaryCall<SearchState, SearchStateResponse>, callback: grpc_1.sendUnaryData<SearchStateResponse>): void;
     abstract searchStateStream(call: grpc_1.ServerDuplexStream<SearchState, SearchStateResponse>): void;
@@ -1399,7 +1502,7 @@ export class StateUpdateClient extends grpc_1.makeGenericClientConstructor(Unimp
     constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
         super(address, credentials, options);
     }
-    Subscibe: GrpcStreamServiceInterface<StateSubscribtion, StateValueUpdate> = (message: StateSubscribtion, metadata?: grpc_1.Metadata | grpc_1.CallOptions, options?: grpc_1.CallOptions): grpc_1.ClientReadableStream<StateValueUpdate> => {
+    Subscibe: GrpcStreamServiceInterface<StateSubscribtion, StatesValueUpdate> = (message: StateSubscribtion, metadata?: grpc_1.Metadata | grpc_1.CallOptions, options?: grpc_1.CallOptions): grpc_1.ClientReadableStream<StatesValueUpdate> => {
         return super.Subscibe(message, metadata, options);
     };
     updateValue: GrpcUnaryServiceInterface<StateValueUpdateRequest, StateValueUpdateResponse> = (message: StateValueUpdateRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<StateValueUpdateResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<StateValueUpdateResponse>, callback?: grpc_1.requestCallback<StateValueUpdateResponse>): grpc_1.ClientUnaryCall => {
