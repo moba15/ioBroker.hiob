@@ -72,7 +72,9 @@ export class Client {
         } else {
             send["content"] = msg;
         }
-        this.socket.send(JSON.stringify(send).toString());
+        this.socket.send(JSON.stringify(send).toString(), (err) => {
+            this.adapter.log.debug("Error sending to client " + err?.message);
+        });
         if (msg["type"] != "loginKey") {
             this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
         }
