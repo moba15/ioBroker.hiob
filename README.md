@@ -75,8 +75,11 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
 - Updated packages
 - Fix for #93 
 - Fix for #91 
+- Fix for #109
+- Migration to ESLint 9 #108
 - Fixed Update App message
 - Added PingPong disconnection handling -> some offline message functionality
+
 
 ### 0.1.6 (2024-08-17)
 - Updated Packages

@@ -52,7 +52,9 @@ export class LoginManager {
                             this.setAesStatus(deviceID, cl);
                         } else {
                             cl.setAESKey("");
-                            this.adapter.log.info(`AES encryption disabled!`);
+                            if(!this.adapter.server?.useCert) {
+                                this.adapter.log.info(`AES encryption disabled!`);
+                            }
                         }
                         this.adapter.setState(event.objectID, { ack: true });
                     } else {
@@ -158,7 +160,9 @@ export class LoginManager {
             this.adapter.log.info(`AES encryption enabled!`);
         } else {
             cl.setAESKey("");
-            this.adapter.log.info(`AES encryption disabled!`);
+            if(!this.adapter.server?.useCert) {
+                this.adapter.log.info(`AES encryption disabled!`);
+            }
         }
     }
 
