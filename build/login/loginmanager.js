@@ -45,7 +45,7 @@ class LoginManager {
     this.approveLoginsTimeout = void 0;
   }
   async onStateChange(event) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     if (event.objectID.startsWith("hiob.") && !event.ack) {
       const splited = event.objectID.split(".");
       if (splited.length > 4 && splited[2] == "devices") {
@@ -70,11 +70,13 @@ class LoginManager {
               this.setAesStatus(deviceID, cl);
             } else {
               cl.setAESKey("");
-              this.adapter.log.info(`AES encryption disabled!`);
+              if (!((_b = this.adapter.server) == null ? void 0 : _b.useCert)) {
+                this.adapter.log.info(`AES encryption disabled!`);
+              }
             }
             this.adapter.setState(event.objectID, { ack: true });
           } else {
-            const client = (_b = this.adapter.server) == null ? void 0 : _b.getClient(deviceID);
+            const client = (_c = this.adapter.server) == null ? void 0 : _c.getClient(deviceID);
             if (client) {
               this.setAesStatus(deviceID, client);
             } else {
@@ -93,7 +95,7 @@ class LoginManager {
             }
             this.adapter.setState(event.objectID, false, true);
           } else {
-            const client = (_c = this.adapter.server) == null ? void 0 : _c.getClient(deviceID);
+            const client = (_d = this.adapter.server) == null ? void 0 : _d.getClient(deviceID);
             if (client && event.value) {
               this.setAesNewAndSentInfo(deviceID, client);
             } else {
@@ -161,6 +163,7 @@ class LoginManager {
     cl.sendMSG(new import_datapacks.NewAesPacket().toJSON(), false);
   }
   async setAesStatus(deviceID, cl) {
+    var _a;
     const get_aes = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
     const aes_status = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey_active`);
     if (get_aes && get_aes.val && aes_status && aes_status.val) {
@@ -171,7 +174,9 @@ class LoginManager {
       this.adapter.log.info(`AES encryption enabled!`);
     } else {
       cl.setAESKey("");
-      this.adapter.log.info(`AES encryption disabled!`);
+      if (!((_a = this.adapter.server) == null ? void 0 : _a.useCert)) {
+        this.adapter.log.info(`AES encryption disabled!`);
+      }
     }
   }
   async setAndSendLoginKeys(deviceID, cl) {
