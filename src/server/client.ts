@@ -14,9 +14,11 @@ import {
     TemplateSettingUploadSuccessPack,
     TemplateSettingsRequestedPack,
     NotificationPack,
+    DataPack,
 } from "./datapacks";
 import { TemplateSettings } from "../template/template_manager";
 import * as CryptoJS from "crypto-js";
+import { Mutex } from "async-mutex";
 
 export class Client {
     socket;
@@ -29,6 +31,8 @@ export class Client {
     onlySendNotification: boolean = false;
     id?: string;
     name?: string;
+    messageHistoryMutex = new Mutex();
+    messageHistory: any[] = [];
     constructor(socket: WebSocket, server: Server, req: IncomingMessage, adapter: SamartHomeHandyBis) {
         this.socket = socket;
         this.server = server;
@@ -37,16 +41,30 @@ export class Client {
         this.adapter = adapter;
         this.approved = false;
         this.aesKey = "";
+        this.onlySendNotification = false;
         socket.on("message", this.onData.bind(this));
         socket.on("close", this.onEnd.bind(this));
+        socket.onclose = this.onEnd.bind(this);
         socket.onerror = this.onError.bind(this);
+        socket.on("pong", () => {
+            this.adapter.server?.clientMutex.runExclusive(() => {
+                const c = this.adapter.server?.conClients.find(e => e.client.id == this.id);
+                if(c) {
+                    this.adapter.log.debug("PONG");
+                    c.lastPong = true;
+                }
+                this.messageHistoryMutex.runExclusive(() => {
+                    this.messageHistory = [];
+                })
+            })
+        });
     }
 
     close(): void {
         this.socket.pause();
     }
 
-    async sendMSG(msg: any, needAproval: boolean = false, log : boolean = true): Promise<boolean> {
+    async sendMSG(msg: any, needAproval: boolean = false, log : boolean = true, backlog: boolean = false): Promise<boolean> {
         if (needAproval && !this.approved) {
             if(log) {
                 this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
@@ -72,12 +90,14 @@ export class Client {
         } else {
             send["content"] = msg;
         }
-        this.socket.send(JSON.stringify(send).toString(), (err) => {
-            this.adapter.log.debug("Error sending to client " + err?.message);
-        });
-        if (msg["type"] != "loginKey") {
-            this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
+        if(backlog) {
+            this.messageHistoryMutex.runExclusive(() => {
+                this.messageHistory.push(msg);
+            });
         }
+
+        this.socket.send(JSON.stringify(send).toString(), (err) => {
+        });
         return false;
     }
 
@@ -179,18 +199,18 @@ export class Client {
     onApprove(): void {
         this.approved = true;
         this.adapter.notificationManager.sendBacklog(this);
+        this.adapter.server?.sendBacklog(this);
     }
 
-    filter(value: Client): boolean {
-        return value.isConnected == true;
+    filter(value: { client: Client }): boolean {
+        return value.client.isConnected == true;
     }
 
     onEnd(): void {
         this.isConnected = false;
         this.setConnection();
         this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
-        this.server.conClients = this.server.conClients.filter(this.filter.bind(this));
-        this.adapter.log.debug("Size: " + this.server.conClients.length.toString());
+   
     }
 
     onError(): void {

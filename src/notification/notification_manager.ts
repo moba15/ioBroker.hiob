@@ -20,16 +20,22 @@ export class NotificationManager {
         const match: RegExpMatchArray | null = event.objectID.match("(hiob.\\d*.devices.)(.*)(.sendNotification)");
         if (match && match[2] && !event.ack) {
             const deviceID = match[2];
-            const client = this.adapter.server?.getClient(deviceID);
+            const clients : Client[] | undefined = this.adapter.server?.getClients(deviceID);
             //Check if client is connected
-            this.sendNotificationLocal(client, deviceID, event.value);
+            clients?.forEach(e => {
+                this.sendNotificationLocal(e, deviceID, event.value);
+
+            });
+            if(!clients || clients.length <= 0 ) {
+                this.sendNotificationLocal(this.adapter.server?.getClient(deviceID), deviceID, event.value);
+            }
             this.adapter.setState(event.objectID, { ack: true });
         }
     }
 
     public async sendNotificationLocal(client: Client | undefined, deviceID: string, notification: string): Promise<void> {
         if (client != undefined && client?.isConnected) {
-            client.sendMSG(new NotificationPack(false, notification, new Date()).toJSON(), true);
+            client.sendMSG(new NotificationPack(false, notification, new Date()).toJSON(), true, true, true);
         } else {
             //Store to backlog
             const currentBacklogState = await this.adapter.getStateAsync("devices." + deviceID + ".notificationBacklog");
