@@ -260,8 +260,10 @@ class SamartHomeHandyBis extends utils.Adapter {
    * Is called when adapter shuts down - callback has to be called under any circumstances!
    */
   onUnload(callback) {
+    var _a;
     try {
       this.loginManager.stop();
+      (_a = this.server) == null ? void 0 : _a.stop();
       this.server = void 0;
       callback();
     } catch (e) {

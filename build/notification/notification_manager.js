@@ -33,18 +33,23 @@ class NotificationManager {
     this.adapter.listener.on(import_listener.Events.StateChange, this.onStateChange.bind(this));
   }
   async onStateChange(event) {
-    var _a;
+    var _a, _b;
     const match = event.objectID.match("(hiob.\\d*.devices.)(.*)(.sendNotification)");
     if (match && match[2] && !event.ack) {
       const deviceID = match[2];
-      const client = (_a = this.adapter.server) == null ? void 0 : _a.getClient(deviceID);
-      this.sendNotificationLocal(client, deviceID, event.value);
+      const clients = (_a = this.adapter.server) == null ? void 0 : _a.getClients(deviceID);
+      clients == null ? void 0 : clients.forEach((e) => {
+        this.sendNotificationLocal(e, deviceID, event.value);
+      });
+      if (!clients || clients.length <= 0) {
+        this.sendNotificationLocal((_b = this.adapter.server) == null ? void 0 : _b.getClient(deviceID), deviceID, event.value);
+      }
       this.adapter.setState(event.objectID, { ack: true });
     }
   }
   async sendNotificationLocal(client, deviceID, notification) {
     if (client != void 0 && (client == null ? void 0 : client.isConnected)) {
-      client.sendMSG(new import_datapacks.NotificationPack(false, notification, /* @__PURE__ */ new Date()).toJSON(), true);
+      client.sendMSG(new import_datapacks.NotificationPack(false, notification, /* @__PURE__ */ new Date()).toJSON(), true, true, true);
     } else {
       const currentBacklogState = await this.adapter.getStateAsync("devices." + deviceID + ".notificationBacklog");
       if (currentBacklogState) {

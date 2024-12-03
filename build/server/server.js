@@ -36,10 +36,13 @@ var fs = __toESM(require("fs"));
 var import_https = require("https");
 var import_client = require("./client");
 var import_datapacks = require("./datapacks");
+var import_async_mutex = require("async-mutex");
 class Server {
   constructor(port = 4500, keyPath = "key.pem", certPath = "cert.pem", adapter, useCert = false) {
     this.stoped = false;
+    this.clientMutex = new import_async_mutex.Mutex();
     this.conClients = [];
+    this.messageBacklogForClient = [];
     this.port = port;
     this.certPath = certPath;
     this.keyPath = keyPath;
@@ -66,30 +69,72 @@ class Server {
     this.adapter.setState("info.connection", true, true);
     this.socket.on("connection", (socket, req) => {
       this.adapter.log.debug("Client connected");
-      this.conClients.push(new import_client.Client(socket, this, req, this.adapter));
+      this.conClients.push({
+        client: new import_client.Client(socket, this, req, this.adapter),
+        lastPong: true
+      });
       socket.send(new import_datapacks.FirstPingPack().toJSON());
     });
     server == null ? void 0 : server.listen(this.port);
     this.adapter.log.info("Server started and is listening on port: " + this.port);
     this.stoped = false;
+    this.startPingPong();
+  }
+  startPingPong() {
+    this.pingPongInterval = this.adapter.setInterval(this.pingAll.bind(this), 15 * 1e3);
+  }
+  async pingAll() {
+    await this.clientMutex.runExclusive(() => {
+      this.conClients = this.conClients.filter((e) => {
+        if (e.lastPong) {
+          return true;
+        } else {
+          e.client.onEnd();
+          let backlog = this.messageBacklogForClient.find((c) => c.clientId == e.client.id);
+          if (!backlog) {
+            backlog = { clientId: e.client.id, backlog: [] };
+            this.messageBacklogForClient.push(backlog);
+          }
+          e.client.messageHistoryMutex.runExclusive(() => {
+            backlog.backlog.push(...e.client.messageHistory);
+          });
+          this.sendBacklog(e.client);
+          return false;
+        }
+      });
+    });
+    this.adapter.log.debug("Size: " + this.conClients.length.toString());
+    this.conClients.forEach((e) => {
+      e.lastPong = false;
+      e.client.socket.ping();
+    });
+  }
+  sendBacklog(client) {
+    const backlog = this.messageBacklogForClient.find((e) => e.clientId == client.id);
+    backlog == null ? void 0 : backlog.backlog.forEach((msg) => client.sendMSG(msg, true));
   }
   broadcastMsg(msg) {
-    this.conClients.filter((e) => !e.onlySendNotification).forEach((element) => {
-      if (element.isConnected)
-        element.sendMSG(msg, true);
+    this.conClients.filter((e) => !e.client.onlySendNotification).forEach((element) => {
+      if (element.client.isConnected)
+        element.client.sendMSG(msg, true);
     });
   }
   isConnected(deviceID) {
-    return this.conClients.some((c) => c.isConnected && c.id == deviceID);
+    return this.conClients.some((c) => c.client.isConnected && c.client.id == deviceID);
   }
   getClient(deviceID) {
-    return this.conClients.find((c) => c.isConnected && c.id == deviceID);
+    var _a;
+    return (_a = this.conClients.find((c) => c.client.isConnected && c.client.id == deviceID)) == null ? void 0 : _a.client;
+  }
+  getClients(deviceID) {
+    return this.conClients.filter((c) => c.client.isConnected && c.client.id == deviceID).map((e) => e.client);
   }
   stop() {
     var _a;
     (_a = this.socket) == null ? void 0 : _a.close();
     this.adapter.log.info("Server stoped");
     this.stoped = true;
+    this.adapter.clearInterval(this.pingPongInterval);
   }
 }
 // Annotate the CommonJS export names for ESM import in node:

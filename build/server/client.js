@@ -34,9 +34,12 @@ module.exports = __toCommonJS(client_exports);
 var import_datapacks = require("./datapacks");
 var import_template_manager = require("../template/template_manager");
 var CryptoJS = __toESM(require("crypto-js"));
+var import_async_mutex = require("async-mutex");
 class Client {
   constructor(socket, server, req, adapter) {
     this.onlySendNotification = false;
+    this.messageHistoryMutex = new import_async_mutex.Mutex();
+    this.messageHistory = [];
     this.socket = socket;
     this.server = server;
     this.req = req;
@@ -44,14 +47,30 @@ class Client {
     this.adapter = adapter;
     this.approved = false;
     this.aesKey = "";
+    this.onlySendNotification = false;
     socket.on("message", this.onData.bind(this));
     socket.on("close", this.onEnd.bind(this));
+    socket.onclose = this.onEnd.bind(this);
     socket.onerror = this.onError.bind(this);
+    socket.on("pong", () => {
+      var _a;
+      (_a = this.adapter.server) == null ? void 0 : _a.clientMutex.runExclusive(() => {
+        var _a2;
+        const c = (_a2 = this.adapter.server) == null ? void 0 : _a2.conClients.find((e) => e.client.id == this.id);
+        if (c) {
+          this.adapter.log.debug("PONG");
+          c.lastPong = true;
+        }
+        this.messageHistoryMutex.runExclusive(() => {
+          this.messageHistory = [];
+        });
+      });
+    });
   }
   close() {
     this.socket.pause();
   }
-  async sendMSG(msg, needAproval = false, log = true) {
+  async sendMSG(msg, needAproval = false, log = true, backlog = false) {
     var _a;
     if (needAproval && !this.approved) {
       if (log) {
@@ -74,10 +93,13 @@ class Client {
     } else {
       send["content"] = msg;
     }
-    this.socket.send(JSON.stringify(send).toString());
-    if (msg["type"] != "loginKey") {
-      this.adapter.log.debug("Send MSG( " + JSON.stringify(send) + ") to Client(" + this.toString() + ")");
+    if (backlog) {
+      this.messageHistoryMutex.runExclusive(() => {
+        this.messageHistory.push(msg);
+      });
     }
+    this.socket.send(JSON.stringify(send).toString(), (err) => {
+    });
     return false;
   }
   setAESKey(aesKey) {
@@ -172,18 +194,18 @@ class Client {
     }
   }
   onApprove() {
+    var _a;
     this.approved = true;
     this.adapter.notificationManager.sendBacklog(this);
+    (_a = this.adapter.server) == null ? void 0 : _a.sendBacklog(this);
   }
   filter(value) {
-    return value.isConnected == true;
+    return value.client.isConnected == true;
   }
   onEnd() {
     this.isConnected = false;
     this.setConnection();
     this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
-    this.server.conClients = this.server.conClients.filter(this.filter.bind(this));
-    this.adapter.log.debug("Size: " + this.server.conClients.length.toString());
   }
   onError() {
     this.isConnected = false;
