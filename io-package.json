@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.1.6",
+    "version": "0.1.7-beta.0",
     "news": {
+      "0.1.7-beta.0": {
+        "en": "Updated packages\nFix for #93 \nFix for #91 \nFix for #109\nMigration to ESLint 9 #108\nFixed Update App message\nAdded PingPong disconnection handling -> some offline message functionality",
+        "de": "Aktualisierte Pakete\nFix für #93\nFix für #91\nFix für #109\nMigration auf ESLint 9 #108\nBehobenes Update App-Nachricht\nHinzugefügt PingPong Trennhandling -> einige Offline-Nachricht-Funktionalität",
+        "ru": "Обновленные пакеты\n#93\n#91\n#109\nМиграция в ESLint 9 #108\nИсправленное обновление Сообщение\nДобавлено отключение PingPong -> некоторая функциональность автономного сообщения",
+        "pt": "Pacotes atualizados\nFix para #93\nFix para #91\nFix para #109\nMigração para ESLint 9 #108\nAtualização fixa Mensagem do aplicativo\nAdicionado PingPong manipulação de desconexão -> algumas funcionalidades de mensagem offline",
+        "nl": "Bijgewerkte pakketten\nFix voor #93\nFix voor #91\nFix voor #109\nMigratie naar ESLint 9 #108\nVaste update App-bericht\nToegevoegd PingPong ontkoppeling behandeling -> sommige offline bericht functionaliteit",
+        "fr": "Paquets mis à jour\nCorrection pour #93\nCorrection pour #91\nCorrection pour #109\nMigration vers ESLint 9 #108\nMise à jour corrigée Message de l'application\nAjout de la gestion de la déconnexion PingPong -> certaines fonctionnalités de message hors ligne",
+        "it": "Pacchetti aggiornati\nFissare per #93\nFissare per #91\nFissare per #109\nMigrazione a ESLint 9 #108\nAggiornamento fisso Messaggio di App\nAggiunto PingPong disconnessione di gestione -> alcune funzionalità di messaggio offline",
+        "es": "Paquetes actualizados\nCorrección para #93\nCorrección para #91\nCorrección para #109\nMigración a ESLint 9 #108\nActualización fija Mensaje de aplicación\nAñadido Manejo de desconexión de PingPong - confiar algunas funcionalidad de mensaje offline",
+        "pl": "Aktualizacja pakietów\nNapraw dla # 93\nNapraw dla # 91\nNapraw dla # 109\nMigracja do ESLint 9 # 108\nNaprawiona aktualizacja Komunikat aplikacji\nDodano obsługę odłączenia PingPong - > niektóre funkcje wiadomości offline",
+        "uk": "Оновлені пакети\nВиправлення для #93\nВиправлення для #91\nВиправлення для #109\nМіграція до ESLint 9 #108\nВиправлено оновлення Повідомлення\nДодано PingPong роз'єднання -> деякі функції офлайн повідомлення",
+        "zh-cn": "更新软件包\n准备93号\n准备91号\n修复为 #109\n迁移到ESLint 9#108\n固定更新 应用消息\n添加了 PingPong 断开处理 - > 一些离线消息功能"
+      },
       "0.1.6": {
         "en": "Updated Packages\nPrepared lates release",
         "de": "Aktualisierte Pakete\nVorbereitete Verspätung",
@@ -80,19 +93,6 @@
         "pl": "stałe package.json",
         "uk": "фіксований пакет.json",
         "zh-cn": "固定包裹.json"
-      },
-      "0.0.67": {
-        "en": "fixed icon\nadded notifications backlog, if client is not connected (up to 250 messages)\nfixed login",
-        "de": "feste ikone\nzusätzliche benachrichtigungen backlog, wenn client nicht angeschlossen ist (bis zu 250 nachrichten)\nfeste anmeldung",
-        "ru": "значок\nдобавленное отставание уведомлений, если клиент не подключен (до 250 сообщений)\nфиксированный вход",
-        "pt": "ícone fixo\nnotificações adicionais backlog, se o cliente não estiver conectado (até 250 mensagens)\nlogin fixo",
-        "nl": "vast pictogram\ntoegevoegde meldingen achterstand, als client niet verbonden is (tot 250 berichten)\nvaste login",
-        "fr": "icône fixe\nl'arriéré de notifications ajouté, si le client n'est pas connecté (jusqu'à 250 messages)\nconnexion fixe",
-        "it": "icona fissa\nbacklog, se il client non è connesso (fino a 250 messaggi)\nlogin fisso",
-        "es": "icono fijo\nnotificaciones agregadas atraso, si el cliente no está conectado (hasta 250 mensajes)\nlogin fijo",
-        "pl": "ikona stała\ndodany backlog powiadomień, jeśli klient nie jest podłączony (do 250 wiadomości)\nstałe logowanie",
-        "uk": "фіксована ікона\nдодано повідомлення backlog, якщо клієнт не підключений (до 250 повідомлень)\nувійти",
-        "zh-cn": "固定图标\n如果客户端没有连接, 则添加通知积压( 最多250条消息)\n固定登录"
       }
     },
     "titleLang": {
