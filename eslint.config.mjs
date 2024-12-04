@@ -26,7 +26,7 @@ export default [
         // as this improves maintainability. jsdoc warnings will not block buiuld process.
         rules: {
             'jsdoc/require-jsdoc': 'off',
-            "quotes": ["error", "double"] // Enforce double quotes
+            // Enforce double quotes
             
         },
     },

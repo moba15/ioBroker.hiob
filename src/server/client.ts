@@ -1,7 +1,7 @@
-import { IncomingMessage } from "http";
-import { WebSocket } from "ws";
-import { SamartHomeHandyBis } from "../main";
-import { Server } from "./server";
+import type { IncomingMessage } from 'http';
+import type { WebSocket } from 'ws';
+import type { SamartHomeHandyBis } from '../main';
+import type { Server } from './server';
 import {
     EnumUpdatePack,
     EnumUpdateRequestPack,
@@ -14,18 +14,17 @@ import {
     TemplateSettingUploadSuccessPack,
     TemplateSettingsRequestedPack,
     NotificationPack,
-    DataPack,
-} from "./datapacks";
-import { TemplateSettings } from "../template/template_manager";
-import * as CryptoJS from "crypto-js";
-import { Mutex } from "async-mutex";
+} from './datapacks';
+import { TemplateSettings } from '../template/template_manager';
+import * as CryptoJS from 'crypto-js';
+import { Mutex } from 'async-mutex';
 
 export class Client {
     socket;
     server;
     isConnected;
     req;
-    adapter : SamartHomeHandyBis;
+    adapter: SamartHomeHandyBis;
     approved;
     aesKey?: string;
     onlySendNotification: boolean = false;
@@ -40,23 +39,23 @@ export class Client {
         this.isConnected = true;
         this.adapter = adapter;
         this.approved = false;
-        this.aesKey = "";
+        this.aesKey = '';
         this.onlySendNotification = false;
-        socket.on("message", this.onData.bind(this));
-        socket.on("close", this.onEnd.bind(this));
+        socket.on('message', this.onData.bind(this));
+        socket.on('close', this.onEnd.bind(this));
         socket.onclose = this.onEnd.bind(this);
         socket.onerror = this.onError.bind(this);
-        socket.on("pong", () => {
+        socket.on('pong', () => {
             this.adapter.server?.clientMutex.runExclusive(() => {
                 const c = this.adapter.server?.conClients.find(e => e.client.id == this.id);
-                if(c) {
-                    this.adapter.log.debug("PONG");
+                if (c) {
+                    this.adapter.log.debug('PONG');
                     c.lastPong = true;
                 }
                 this.messageHistoryMutex.runExclusive(() => {
                     this.messageHistory = [];
-                })
-            })
+                });
+            });
         });
     }
 
@@ -64,40 +63,44 @@ export class Client {
         this.socket.pause();
     }
 
-    async sendMSG(msg: any, needAproval: boolean = false, log : boolean = true, backlog: boolean = false): Promise<boolean> {
+    async sendMSG(
+        msg: any,
+        needAproval: boolean = false,
+        log: boolean = true,
+        backlog: boolean = false,
+    ): Promise<boolean> {
         if (needAproval && !this.approved) {
-            if(log) {
-                this.adapter.log.debug("The Client was not approved to get a msg (" + msg + +") " + needAproval);
+            if (log) {
+                this.adapter.log.debug(`The Client was not approved to get a msg (${msg}${+') '}${needAproval}`);
             }
             return false;
         }
-        if (msg["type"] === "loginKey") {
-            this.adapter.log.debug("Send MSG( LoginKey ) to Client(" + this.toString() + ")");
+        if (msg.type === 'loginKey') {
+            this.adapter.log.debug(`Send MSG( LoginKey ) to Client(${this.toString()})`);
         } else {
-            this.adapter.log.debug("Send MSG( " + JSON.stringify(msg) + ") to Client(" + this.toString() + ")");
+            this.adapter.log.debug(`Send MSG( ${JSON.stringify(msg)}) to Client(${this.toString()})`);
         }
         const send = {
-            type: msg["type"],
-            content: "",
+            type: msg.type,
+            content: '',
         };
         if (
-            this.aesKey != "" &&
+            this.aesKey != '' &&
             Object.keys(msg).length > 1 &&
-            (await this.adapter.getStateAsync("devices." + this.id + ".aesKey_active"))?.val
+            (await this.adapter.getStateAsync(`devices.${this.id}.aesKey_active`))?.val
         ) {
-            const aes = `${this.aesKey}${msg["type"]}`;
-            send["content"] = CryptoJS.AES.encrypt(JSON.stringify(msg), aes).toString();
+            const aes = `${this.aesKey}${msg.type}`;
+            send.content = CryptoJS.AES.encrypt(JSON.stringify(msg), aes).toString();
         } else {
-            send["content"] = msg;
+            send.content = msg;
         }
-        if(backlog) {
+        if (backlog) {
             this.messageHistoryMutex.runExclusive(() => {
                 this.messageHistory.push(msg);
             });
         }
 
-        this.socket.send(JSON.stringify(send).toString(), (err) => {
-        });
+        this.socket.send(JSON.stringify(send).toString());
         return false;
     }
 
@@ -112,86 +115,104 @@ export class Client {
     onData(data: string): void {
         try {
             const map = JSON.parse(data);
-            if (map && map["content"] != null && typeof map["content"] === "string") {
-                if (this.aesKey != "" || map["type"] === "requestLogin") {
-                    let aes = "";
-                    if (map["type"] === "requestLogin") {
-                        aes = `tH8Lm-${map["type"]}`; // Dummy Key
+            if (map && map.content != null && typeof map.content === 'string') {
+                if (this.aesKey != '' || map.type === 'requestLogin') {
+                    let aes = '';
+                    if (map.type === 'requestLogin') {
+                        aes = `tH8Lm-${map.type}`; // Dummy Key
                     } else {
-                        aes = `${this.aesKey}${map["type"]}`;
+                        aes = `${this.aesKey}${map.type}`;
                     }
                     try {
-                        const bytes = CryptoJS.AES.decrypt(map["content"], aes);
-                        map["content"] = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)) ?? {};
-                    } catch (error) {
+                        const bytes = CryptoJS.AES.decrypt(map.content, aes);
+                        map.content = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)) ?? {};
+                    } catch (error: any) {
                         this.onWrongAesKey();
                         this.adapter.log.warn(`Wrong AES Key - ${error}`);
                         return;
                     }
                 } else {
-                    if (this.aesKey == "" && map["type"] != "requestLogin") {
-                        this.adapter.log.warn(`Please enabled AES encryption`);
+                    if (this.aesKey == '' && map.type != 'requestLogin') {
+                        this.adapter.log.warn('Please enabled AES encryption');
                         this.onWrongAesKey();
                         return;
                     }
                 }
             }
-            const content = map["content"] ?? {};
-            if (map["type"] === "requestLogin") {
-                this.adapter.log.debug("Client(" + this.toString() + ") send requestLogin");
+            const content = map.content ?? {};
+            if (map.type === 'requestLogin') {
+                this.adapter.log.debug(`Client(${this.toString()}) send requestLogin`);
             } else {
-                this.adapter.log.debug("Client(" + this.toString() + ") sended msg: " + data + " type: " + map["type"]);
+                this.adapter.log.debug(`Client(${this.toString()}) sended msg: ${data} type: ${map.type}`);
             }
-            switch (map["type"]) {
-                case "iobStateChangeRequest":
-                    if (this.approved)
-                        this.onStateChangeRequest(new StateChangeRequestPack(content["stateID"], content["value"]));
+            switch (map.type) {
+                case 'iobStateChangeRequest':
+                    if (this.approved) {
+                        this.onStateChangeRequest(new StateChangeRequestPack(content.stateID, content.value));
+                    }
                     break;
-                case "enumUpdateRequest": //Enum update Request
-                    if (this.approved) this.onEnumUpdateRequest(new EnumUpdateRequestPack(content["id"]));
+                case 'enumUpdateRequest': //Enum update Request
+                    if (this.approved) {
+                        this.onEnumUpdateRequest(new EnumUpdateRequestPack(content.id));
+                    }
                     break;
-                case "subscribeToDataPoints":
-                    if (this.approved)
-                        this.onSubscribeToDataPoints(new SubscribeToDataPointsPack(content["dataPoints"]));
+                case 'subscribeToDataPoints':
+                    if (this.approved) {
+                        this.onSubscribeToDataPoints(new SubscribeToDataPointsPack(content.dataPoints));
+                    }
                     break;
-                case "subscribeHistory":
-                    if (this.approved)
+                case 'subscribeHistory':
+                    if (this.approved) {
                         /* this.onSubscribeToHistory(new SubscribeToDataPointsHistory(content["dataPoint"], content["end"], content["start"], content["interval"])); */
-                    //TODO:
+                        //TODO:
+                    }
                     break;
-                case "requestLogin":
-                    if (!content["version"] && content["deviceName"]) {
+                case 'requestLogin':
+                    if (!content.version && content.deviceName) {
                         //TODO: Send info to APP
-                        this.adapter.log.warn(`Please update the HioB APP! [${content["version"]}]`);
+                        this.adapter.log.warn(`Please update the HioB APP! [${content.version}]`);
                         return;
                     }
-                    if(content["deviceName"]) {
-                        this.onLoginRequest(new RequestLoginPacket(content["deviceName"], content["deviceID"], content["key"], content["version"], content["user"], content["password"]));
+                    if (content.deviceName) {
+                        this.onLoginRequest(
+                            new RequestLoginPacket(
+                                content.deviceName,
+                                content.deviceID,
+                                content.key,
+                                content.version,
+                                content.user,
+                                content.password,
+                            ),
+                        );
                     }
                     break;
-                case "templateSettingCreate":
-                    this.adapter.log.debug(JSON.stringify(content["name"]));
-                    this.onTemplateSettingCreate(new TemplateSettingCreatePack(content["name"]));
+                case 'templateSettingCreate':
+                    this.adapter.log.debug(JSON.stringify(content.name));
+                    this.onTemplateSettingCreate(new TemplateSettingCreatePack(content.name));
                     break;
-                case "requestTemplatesSettings":
-                    this.adapter.log.debug("requestTemplatesSettings");
+                case 'requestTemplatesSettings':
+                    this.adapter.log.debug('requestTemplatesSettings');
                     this.onTemplateSettingsRequest();
                     break;
-                case "uploadTemplateSetting":
-                    this.adapter.log.debug("uploadTemplateSetting");
-                    this.onTemplateUpload(new TemplateSettingUploadPack(content["name"], content["devices"], content["screens"], content["widgets"]));
+                case 'uploadTemplateSetting':
+                    this.adapter.log.debug('uploadTemplateSetting');
+                    this.onTemplateUpload(
+                        new TemplateSettingUploadPack(content.name, content.devices, content.screens, content.widgets),
+                    );
                     break;
-                case "getTemplatesSetting":
-                    this.adapter.log.debug("getTemplatesSetting");
-                    this.getTemplatesSetting(content["name"], content["device"], content["screen"], content["widget"]);
+                case 'getTemplatesSetting':
+                    this.adapter.log.debug('getTemplatesSetting');
+                    this.getTemplatesSetting(content.name, content.device, content.screen, content.widget);
                     break;
-                case "notification":
-                    this.onNotification(new NotificationPack(content["onlySendNotification"], content["content"], content["date"]));
+                case 'notification':
+                    this.onNotification(
+                        new NotificationPack(content.onlySendNotification, content.content, content.date),
+                    );
                     break;
             }
         } catch (e) {
             if (e instanceof SyntaxError) {
-                this.adapter.log.error("There is something wrong with the sent data: No valid JSON Format");
+                this.adapter.log.error('There is something wrong with the sent data: No valid JSON Format');
             }
         }
     }
@@ -209,28 +230,27 @@ export class Client {
     onEnd(): void {
         this.isConnected = false;
         this.setConnection();
-        this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
-   
+        this.adapter.log.debug(`Closed connection to Client(${this.toString()})`);
     }
 
     onError(): void {
         this.isConnected = false;
         this.setConnection();
-        this.adapter.log.debug("Closed connection to Client(" + this.toString() + ")");
+        this.adapter.log.debug(`Closed connection to Client(${this.toString()})`);
     }
 
     setConnection(): void {
         //TODO
         // this.adapter.loginManager.pendingClients = this.adapter.loginManager.pendingClients.filter((e) => e.deviceID != this.deviceID);
         // this.adapter.loginManager.loginedClients = this.adapter.loginManager.loginedClients.filter((e) => e.deviceID != this.deviceID);
-        this.adapter.setState("devices." + this.id + ".connected", this.isConnected, true);
+        this.adapter.setState(`devices.${this.id}.connected`, this.isConnected, true);
     }
 
     onStateChangeRequest(request: StateChangeRequestPack): void {
         //Catch missing alias objects
         try {
             this.adapter.setForeignState(request.objectID, request.newValue, false);
-        } catch (e) {
+        } catch (e: any) {
             this.adapter.log.warn(`The data point ${request.objectID} does not exist! ${e}`);
         }
     }
@@ -249,12 +269,9 @@ export class Client {
     } */
 
     onLoginRequest(requestLoginPacket: RequestLoginPacket): void {
-        this.adapter.loginManager.onLoginRequest(this, requestLoginPacket).then(
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            (_) => {
-                this.setConnection();
-            }
-        );
+        this.adapter.loginManager.onLoginRequest(this, requestLoginPacket).then(_ => {
+            this.setConnection();
+        });
     }
 
     onWrongAesKey(): void {
@@ -268,21 +285,34 @@ export class Client {
 
     async onTemplateSettingCreate(templateSettingCreatePack: TemplateSettingCreatePack): Promise<void> {
         //TODO:
-        this.adapter.log.debug("OnTemplateSettingCreate: " + templateSettingCreatePack.name);
-        await this.adapter.templateManager.createNewTemplateSetting(new TemplateSettings(templateSettingCreatePack.name));
+        this.adapter.log.debug(`OnTemplateSettingCreate: ${templateSettingCreatePack.name}`);
+        await this.adapter.templateManager.createNewTemplateSetting(
+            new TemplateSettings(templateSettingCreatePack.name),
+        );
         this.sendMSG(new TemplateSettingCreatePack(templateSettingCreatePack.name).toJSON(), true);
     }
 
     async onTemplateUpload(uploadTemplateSettingPack: any): Promise<void> {
-        await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets);
+        await this.adapter.templateManager.uploadTemplateSetting(
+            uploadTemplateSettingPack.name,
+            uploadTemplateSettingPack.devices,
+            uploadTemplateSettingPack.screens,
+            uploadTemplateSettingPack.widgets,
+        );
         this.sendMSG(new TemplateSettingUploadSuccessPack().toJSON(), true);
     }
 
     async getTemplatesSetting(name: any, device: any, screen: any, widget: any): Promise<void> {
-        this.adapter.log.debug("NAME: " + name);
+        this.adapter.log.debug(`NAME: ${name}`);
         const map = await this.adapter.templateManager.getTemplateSettings(name);
-        this.sendMSG(new GetTemplateSettingPack(device ? map["devices"]: null, screen ? map["screens"]: null, widget ? map["widgets"] : null).toJSON(), true);
-
+        this.sendMSG(
+            new GetTemplateSettingPack(
+                device ? map.devices : null,
+                screen ? map.screens : null,
+                widget ? map.widgets : null,
+            ).toJSON(),
+            true,
+        );
     }
 
     onNotification(pack: NotificationPack): any {
@@ -292,6 +322,6 @@ export class Client {
     }
 
     toString(): string {
-        return JSON.stringify(this.req.socket.address()) + ":" + this.req.socket.remotePort + " id: " + this.id;
+        return `${JSON.stringify(this.req.socket.address())}:${this.req.socket.remotePort} id: ${this.id}`;
     }
 }

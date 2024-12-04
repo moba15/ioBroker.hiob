@@ -5,14 +5,14 @@ export class DataPack {
     }
 
     toJSON(): string {
-        return "";
+        return '';
     }
 }
 export class StateChangeRequestPack extends DataPack {
     objectID;
     newValue: any;
     constructor(objectID: string, newValue: any) {
-        super("iobStateChangeRequest");
+        super('iobStateChangeRequest');
         this.objectID = objectID;
         this.newValue = newValue;
     }
@@ -34,7 +34,7 @@ export class StateChangedDataPack extends DataPack {
     lc;
     ts;
     constructor(objectID: string, value: any, ack: boolean, lc: number, ts: number) {
-        super("iobStateChanged");
+        super('iobStateChanged');
         this.objectID = objectID;
         this.value = value;
         this.ack = ack;
@@ -58,7 +58,7 @@ export class StateChangedDataPack extends DataPack {
 export class EnumUpdateRequestPack extends DataPack {
     id: string;
     constructor(id: string) {
-        super("enumUpdateRequest");
+        super('enumUpdateRequest');
         this.id = id;
     }
 }
@@ -67,7 +67,7 @@ export class EnumUpdatePack extends DataPack {
     id: string;
     enumsJSON: any;
     constructor(id: string, enumsJSON: any) {
-        super("enumUpdate");
+        super('enumUpdate');
         this.id = id;
         this.enumsJSON = enumsJSON;
     }
@@ -83,7 +83,7 @@ export class EnumUpdatePack extends DataPack {
 
 export class FirstPingPack extends DataPack {
     constructor() {
-        super("firstPingFromIob2");
+        super('firstPingFromIob2');
     }
 
     toJSON(): string {
@@ -97,7 +97,7 @@ export class FirstPingPack extends DataPack {
 
 export class NewAesPacket extends DataPack {
     constructor() {
-        super("setNewAes");
+        super('setNewAes');
     }
 
     toJSON(): any {
@@ -117,7 +117,7 @@ export class RequestLoginPacket extends DataPack {
     user: string;
     password: string;
     constructor(deviceName: string, deviceID: string, key: string, version: string, user: string, password: string) {
-        super("requestLogin");
+        super('requestLogin');
         this.deviceName = deviceName;
         this.deviceID = deviceID;
         this.key = key;
@@ -131,7 +131,7 @@ export class LoginAnswer extends DataPack {
     key;
     suc;
     constructor(key: string, suc: boolean) {
-        super("answerLogin");
+        super('answerLogin');
         this.key = key;
         this.suc = suc;
     }
@@ -149,7 +149,7 @@ export class LoginAnswer extends DataPack {
 export class SubscribeToDataPointsPack extends DataPack {
     dataPoints;
     constructor(dataPoints: any) {
-        super("subscribeToDataPoints");
+        super('subscribeToDataPoints');
         this.dataPoints = dataPoints;
     }
 }
@@ -160,7 +160,7 @@ export class SubscribeToDataPointsHistory extends DataPack {
     start;
     minInterval;
     constructor(dataPoint: any, end: any, start: any, minInterval: any) {
-        super("subscribeHistory");
+        super('subscribeHistory');
         this.dataPoint = dataPoint;
         this.end = end;
         this.start = start;
@@ -171,7 +171,7 @@ export class SubscribeToDataPointsHistory extends DataPack {
 export class LoginKeyPacket extends DataPack {
     key;
     constructor(key: string) {
-        super("loginKey");
+        super('loginKey');
         this.key = key;
     }
 
@@ -187,7 +187,7 @@ export class LoginKeyPacket extends DataPack {
 export class LoginApprovedPacket extends DataPack {
     release;
     constructor(release: string) {
-        super("loginApproved");
+        super('loginApproved');
         this.release = release;
     }
 
@@ -202,7 +202,7 @@ export class LoginApprovedPacket extends DataPack {
 
 export class LoginDeclinedPacket extends DataPack {
     constructor() {
-        super("loginDeclined");
+        super('loginDeclined');
     }
 
     toJSON(): any {
@@ -215,7 +215,7 @@ export class LoginDeclinedPacket extends DataPack {
 
 export class WrongAesKeyPack extends DataPack {
     constructor() {
-        super("wrongAesKey");
+        super('wrongAesKey');
     }
     toJSON(): any {
         const map = {
@@ -228,7 +228,7 @@ export class WrongAesKeyPack extends DataPack {
 export class TemplateSettingCreatePack extends DataPack {
     name;
     constructor(name: any) {
-        super("templateSettingCreate");
+        super('templateSettingCreate');
         this.name = name;
     }
 
@@ -243,7 +243,7 @@ export class TemplateSettingCreatePack extends DataPack {
 export class TemplateSettingsRequestedPack extends DataPack {
     list;
     constructor(list: string[]) {
-        super("requestTemplatesSettings");
+        super('requestTemplatesSettings');
         this.list = list;
     }
 
@@ -262,7 +262,7 @@ export class TemplateSettingUploadPack extends DataPack {
     screens;
     widgets;
     constructor(name: any, devices: any, screens: any, widgets: any) {
-        super("uploadTemplateSetting");
+        super('uploadTemplateSetting');
         this.name = name;
         this.devices = devices;
         this.screens = screens;
@@ -272,7 +272,7 @@ export class TemplateSettingUploadPack extends DataPack {
 
 export class TemplateSettingUploadSuccessPack extends DataPack {
     constructor() {
-        super("uploadTemplateSettingSuccess");
+        super('uploadTemplateSettingSuccess');
     }
 
     toJSON(): any {
@@ -289,7 +289,7 @@ export class GetTemplateSettingPack extends DataPack {
     widgets;
 
     constructor(devices: any, screens: any, widgets: any) {
-        super("getTemplatesSetting");
+        super('getTemplatesSetting');
         this.devices = devices;
         this.screens = screens;
         this.widgets = widgets;
@@ -311,7 +311,7 @@ export class NotificationPack extends DataPack {
     content?: string | Map<string, any>;
     date?: Date;
     constructor(onlySendNotification?: boolean, content?: string | Map<string, any>, date?: Date) {
-        super("notification");
+        super('notification');
         this.onlySendNotification = onlySendNotification;
         this.content = content;
         this.date = date;
@@ -330,7 +330,7 @@ export class NotificationPack extends DataPack {
 export class AnswerSubscribeToDataPointsPack extends DataPack {
     dataValues;
     constructor(dataValues: any) {
-        super("answerSubscribeToDataPoints");
+        super('answerSubscribeToDataPoints');
         this.dataValues = dataValues;
     }
 

@@ -4,20 +4,20 @@
 
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
-import * as utils from "@iobroker/adapter-core";
-import { Server } from "./server/server";
-import { Listener } from "./listener/listener";
-import { LoginManager } from "./login/loginmanager";
-import { Client } from "./server/client";
-import { AnswerSubscribeToDataPointsPack } from "./server/datapacks";
-import { TemplateManager } from "./template/template_manager";
-import { NotificationManager } from "./notification/notification_manager";
+import * as utils from '@iobroker/adapter-core';
+import { Server } from './server/server';
+import { Listener } from './listener/listener';
+import { LoginManager } from './login/loginmanager';
+import type { Client } from './server/client';
+import { AnswerSubscribeToDataPointsPack } from './server/datapacks';
+import { TemplateManager } from './template/template_manager';
+import { NotificationManager } from './notification/notification_manager';
 type DatapointState = {
-    val?: any,
-    ack?: boolean
+    val?: any;
+    ack?: boolean;
 };
 type ClientInfo = {
-    firstload?: boolean
+    firstload?: boolean;
 };
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -27,28 +27,28 @@ export class SamartHomeHandyBis extends utils.Adapter {
     loginManager: LoginManager;
     notificationManager: NotificationManager;
     port: number = 8095;
-    keyPath: string = "";
-    certPath: string = "";
+    keyPath: string = '';
+    certPath: string = '';
     useCer: boolean = false;
     templateManager: TemplateManager;
-    clientinfos: {[key: string]: ClientInfo} = {};
-    valueDatapoints: {[key: string]: DatapointState} = {};
-    lang: string = "de";
+    clientinfos: { [key: string]: ClientInfo } = {};
+    valueDatapoints: { [key: string]: DatapointState } = {};
+    lang: string = 'de';
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
             ...options,
-            name: "hiob",
+            name: 'hiob',
         });
         this.templateManager = new TemplateManager(this);
         this.listener = new Listener(this);
         this.notificationManager = new NotificationManager(this);
         this.loginManager = new LoginManager(this);
-        this.on("ready", this.onReady.bind(this));
-        this.on("stateChange", this.listener.onStateChange.bind(this.listener));
+        this.on('ready', this.onReady.bind(this));
+        this.on('stateChange', this.listener.onStateChange.bind(this.listener));
         // this.on("objectChange", this.onObjectChange.bind(this));
-        this.on("message", this.onMessage.bind(this));
-        this.on("unload", this.onUnload.bind(this));
+        this.on('message', this.onMessage.bind(this));
+        this.on('unload', this.onUnload.bind(this));
         this.server = undefined;
     }
 
@@ -58,7 +58,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     private async onReady(): Promise<void> {
         // Initialize your adapter here
         // Reset the connection indicator during startup
-        this.setState("info.connection", true, true);
+        this.setState('info.connection', true, true);
 
         if (this.config.port < 1025) {
             this.log.warn(`Port is automatically changed because it is less than 1025 - ${this.config.port}`);
@@ -74,64 +74,64 @@ export class SamartHomeHandyBis extends utils.Adapter {
             this.config.port = check_port;
         }
 
-        await this.setObjectNotExistsAsync(`devices`, {
-            type: "device",
+        await this.setObjectNotExistsAsync('devices', {
+            type: 'device',
             common: {
                 name: {
-                    "en": "Mobile phones",
-                    "de": "Handys",
-                    "ru": "Мобильный телефон",
-                    "pt": "Telefones móveis",
-                    "nl": "Mobiele telefoons",
-                    "fr": "Téléphones mobiles",
-                    "it": "Telefoni cellulari",
-                    "es": "Teléfonos móviles",
-                    "pl": "Telefon komórkowy",
-                    "uk": "Мобільні телефони",
-                    "zh-cn": "移动电话"
+                    en: 'Mobile phones',
+                    de: 'Handys',
+                    ru: 'Мобильный телефон',
+                    pt: 'Telefones móveis',
+                    nl: 'Mobiele telefoons',
+                    fr: 'Téléphones mobiles',
+                    it: 'Telefoni cellulari',
+                    es: 'Teléfonos móviles',
+                    pl: 'Telefon komórkowy',
+                    uk: 'Мобільні телефони',
+                    'zh-cn': '移动电话',
                 },
             },
             native: {},
         });
 
-        await this.setObjectNotExistsAsync("approveNextLogins", {
-            type: "state",
+        await this.setObjectNotExistsAsync('approveNextLogins', {
+            type: 'state',
             common: {
                 name: {
-                    en: "Connected",
-                    de: "Verbunden",
-                    ru: "Соединение",
-                    pt: "Conectado",
-                    nl: "Verbonden",
-                    fr: "Connecté",
-                    it: "Collegato",
-                    es: "Conectado",
-                    pl: "Połączone",
+                    en: 'Connected',
+                    de: 'Verbunden',
+                    ru: 'Соединение',
+                    pt: 'Conectado',
+                    nl: 'Verbonden',
+                    fr: 'Connecté',
+                    it: 'Collegato',
+                    es: 'Conectado',
+                    pl: 'Połączone',
                     uk: "Зв'язатися",
-                    "zh-cn": "已连接",
+                    'zh-cn': '已连接',
                 },
-                type: "boolean",
-                role: "button",
+                type: 'boolean',
+                role: 'button',
                 def: false,
                 read: true,
                 write: true,
             },
             native: {},
         });
-        await this.setStateAsync("approveNextLogins", false, true);
-        this.subscribeStates("*");
+        await this.setStateAsync('approveNextLogins', false, true);
+        this.subscribeStates('*');
         this.check_aes_key();
         this.loadConfigs();
         this.initServer();
-        const obj = await this.getForeignObjectAsync("system.config");
+        const obj = await this.getForeignObjectAsync('system.config');
         if (obj && obj.common && obj.common.language) {
             try {
                 this.lang = obj.common.language === this.lang ? this.lang : obj.common.language;
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
                 // Nothing
             }
         }
-
     }
 
     private loadConfigs(): void {
@@ -144,13 +144,13 @@ export class SamartHomeHandyBis extends utils.Adapter {
     private async check_aes_key(): Promise<void> {
         const channels = await this.getChannelsAsync();
         for (const element of channels) {
-            const id = `${this.namespace}.devices`
-            if (element["_id"].startsWith(id)) {
-                const state = await this.getStateAsync(`${element["_id"]}.aesKey`);
+            const id = `${this.namespace}.devices`;
+            if (element._id.startsWith(id)) {
+                const state = await this.getStateAsync(`${element._id}.aesKey`);
                 if (state != null && state.val != null) {
                     if (state.val.toString().length === 6) {
                         const shaAes = this.encrypt(state.val.toString());
-                        await this.setStateAsync(`${element["_id"]}.aesKey`, shaAes, true);
+                        await this.setStateAsync(`${element._id}.aesKey`, shaAes, true);
                     }
                 }
             }
@@ -187,7 +187,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
             }[];
         }[] = [];
 
-        const enumDevices = await this.getForeignObjectsAsync(id, "enum");
+        const enumDevices = await this.getForeignObjectsAsync(id, 'enum');
 
         for (const i in enumDevices) {
             const members: string[] | undefined = enumDevices[i].common.members;
@@ -200,35 +200,37 @@ export class SamartHomeHandyBis extends utils.Adapter {
             }
             for (const z of members) {
                 const dataPoint = await this.getForeignObjectAsync(z);
-                if (!dataPoint) continue;
-                const name: ioBroker.Translated | string | undefined = dataPoint!.common.name;
-                if (typeof name == "object") {
+                if (!dataPoint) {
+                    continue;
+                }
+                const name: ioBroker.Translated | string | undefined = dataPoint.common.name;
+                if (typeof name == 'object') {
                     /**
                      * Translation
                      */
-                    const translated: ioBroker.Translated = name as ioBroker.Translated;
+                    const translated: ioBroker.Translated = name;
                     const translatedString = translated[this.lang as ioBroker.Languages];
                     if (translatedString) {
                         dataPoints.push({
                             name: translatedString,
                             id: z,
-                            role: dataPoint!.common.role,
-                            otherDetails: dataPoint!.common.custom,
+                            role: dataPoint.common.role,
+                            otherDetails: dataPoint.common.custom,
                         });
                     } else {
                         dataPoints.push({
                             name: name,
                             id: z,
-                            role: dataPoint!.common.role,
-                            otherDetails: dataPoint!.common.custom,
+                            role: dataPoint.common.role,
+                            otherDetails: dataPoint.common.custom,
                         });
                     }
                 } else {
                     dataPoints.push({
                         name: name,
                         id: z,
-                        role: dataPoint!.common.role,
-                        otherDetails: dataPoint!.common.custom,
+                        role: dataPoint.common.role,
+                        otherDetails: dataPoint.common.custom,
                     });
                 }
             }
@@ -253,16 +255,17 @@ export class SamartHomeHandyBis extends utils.Adapter {
                 if (this.valueDatapoints[dataPoints[i]] == null) {
                     this.valueDatapoints[dataPoints[i]] = {};
                     state = await this.getForeignStateAsync(dataPoints[i]);
-                    this.log.debug("Use getForeignStateAsync");
+                    this.log.debug('Use getForeignStateAsync');
                 } else {
-                    this.log.debug("Use memory");
+                    this.log.debug('Use memory');
                     state = {
                         val: this.valueDatapoints[dataPoints[i]].val,
                         ack: this.valueDatapoints[dataPoints[i]].ack,
                     };
                 }
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
-                this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
+                this.log.warn(`App tried to request to a deleted datapoint. ${dataPoints[i]}`);
                 continue;
             }
             if (state) {
@@ -279,9 +282,10 @@ export class SamartHomeHandyBis extends utils.Adapter {
                 all_dp.push(map);
                 this.listener.addPendingSubscribeState(dataPoints[i]);
             } else {
-                this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
+                this.log.warn(`App tried to request to a deleted datapoint. ${dataPoints[i]}`);
             }
-        }3
+        }
+        3;
         if (all_dp.length > 0) {
             this.listener.subscribeToPendingStates();
             client.sendMSG(new AnswerSubscribeToDataPointsPack(all_dp).toJSON(), true);
@@ -290,6 +294,8 @@ export class SamartHomeHandyBis extends utils.Adapter {
 
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
+     *
+     * @param callback
      */
     private onUnload(callback: () => void): void {
         try {
@@ -298,6 +304,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
             this.server?.stop();
             this.server = undefined;
             callback();
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
             callback();
         }
@@ -320,6 +327,8 @@ export class SamartHomeHandyBis extends utils.Adapter {
 
     /**
      * Is called if a subscribed state changes
+     *
+     * @param obj
      */
     //private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
     //    if (state) {
@@ -337,17 +346,25 @@ export class SamartHomeHandyBis extends utils.Adapter {
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
     //  */
     private onMessage(obj: ioBroker.Message): void {
-        if (typeof obj === "object" && obj.message) {
-            if (obj.command === "send") {
-                this.log.debug("send command");
+        if (typeof obj === 'object' && obj.message) {
+            if (obj.command === 'send') {
+                this.log.debug('send command');
                 const message = obj.message;
-                if ("notification" in message && "uuid" in message) {
+                if ('notification' in message && 'uuid' in message) {
                     //Send Not.
-                    const cl: Client | undefined = this.server?.getClient(message["uuid"]);
-                    this.notificationManager.sendNotificationLocal(cl, message["uuid"], JSON.stringify(message["notification"]));
-                    if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
+                    const cl: Client | undefined = this.server?.getClient(message.uuid);
+                    this.notificationManager.sendNotificationLocal(
+                        cl,
+                        message.uuid,
+                        JSON.stringify(message.notification),
+                    );
+                    if (obj.callback) {
+                        this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
+                    }
                 } else {
-                    if (obj.callback) this.sendTo(obj.from, obj.command, "Error received", obj.callback);
+                    if (obj.callback) {
+                        this.sendTo(obj.from, obj.command, 'Error received', obj.callback);
+                    }
                 }
             }
         }
