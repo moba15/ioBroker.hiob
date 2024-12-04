@@ -63,7 +63,7 @@ class Server {
       this.socket = new ws.Server({ port: this.port });
     }
     this.socket.on("error", (e) => {
-      this.adapter.log.info("error: " + e.message);
+      this.adapter.log.info(`error: ${e.message}`);
       this.adapter.setState("info.connection", false, true);
     });
     this.adapter.setState("info.connection", true, true);
@@ -76,7 +76,7 @@ class Server {
       socket.send(new import_datapacks.FirstPingPack().toJSON());
     });
     server == null ? void 0 : server.listen(this.port);
-    this.adapter.log.info("Server started and is listening on port: " + this.port);
+    this.adapter.log.info(`Server started and is listening on port: ${this.port}`);
     this.stoped = false;
     this.startPingPong();
   }
@@ -88,22 +88,21 @@ class Server {
       this.conClients = this.conClients.filter((e) => {
         if (e.lastPong) {
           return true;
-        } else {
-          e.client.onEnd();
-          let backlog = this.messageBacklogForClient.find((c) => c.clientId == e.client.id);
-          if (!backlog) {
-            backlog = { clientId: e.client.id, backlog: [] };
-            this.messageBacklogForClient.push(backlog);
-          }
-          e.client.messageHistoryMutex.runExclusive(() => {
-            backlog.backlog.push(...e.client.messageHistory);
-          });
-          this.sendBacklog(e.client);
-          return false;
         }
+        e.client.onEnd();
+        let backlog = this.messageBacklogForClient.find((c) => c.clientId == e.client.id);
+        if (!backlog) {
+          backlog = { clientId: e.client.id, backlog: [] };
+          this.messageBacklogForClient.push(backlog);
+        }
+        e.client.messageHistoryMutex.runExclusive(() => {
+          backlog.backlog.push(...e.client.messageHistory);
+        });
+        this.sendBacklog(e.client);
+        return false;
       });
     });
-    this.adapter.log.debug("Size: " + this.conClients.length.toString());
+    this.adapter.log.debug(`Size: ${this.conClients.length.toString()}`);
     this.conClients.forEach((e) => {
       e.lastPong = false;
       e.client.socket.ping();
@@ -115,8 +114,9 @@ class Server {
   }
   broadcastMsg(msg) {
     this.conClients.filter((e) => !e.client.onlySendNotification).forEach((element) => {
-      if (element.client.isConnected)
+      if (element.client.isConnected) {
         element.client.sendMSG(msg, true);
+      }
     });
   }
   isConnected(deviceID) {

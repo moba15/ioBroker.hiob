@@ -78,20 +78,20 @@ class SamartHomeHandyBis extends utils.Adapter {
       this.log.warn(`Port ${this.config.port} is used!! Change to port ${check_port}.`);
       this.config.port = check_port;
     }
-    await this.setObjectNotExistsAsync(`devices`, {
+    await this.setObjectNotExistsAsync("devices", {
       type: "device",
       common: {
         name: {
-          "en": "Mobile phones",
-          "de": "Handys",
-          "ru": "\u041C\u043E\u0431\u0438\u043B\u044C\u043D\u044B\u0439 \u0442\u0435\u043B\u0435\u0444\u043E\u043D",
-          "pt": "Telefones m\xF3veis",
-          "nl": "Mobiele telefoons",
-          "fr": "T\xE9l\xE9phones mobiles",
-          "it": "Telefoni cellulari",
-          "es": "Tel\xE9fonos m\xF3viles",
-          "pl": "Telefon kom\xF3rkowy",
-          "uk": "\u041C\u043E\u0431\u0456\u043B\u044C\u043D\u0456 \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0438",
+          en: "Mobile phones",
+          de: "Handys",
+          ru: "\u041C\u043E\u0431\u0438\u043B\u044C\u043D\u044B\u0439 \u0442\u0435\u043B\u0435\u0444\u043E\u043D",
+          pt: "Telefones m\xF3veis",
+          nl: "Mobiele telefoons",
+          fr: "T\xE9l\xE9phones mobiles",
+          it: "Telefoni cellulari",
+          es: "Tel\xE9fonos m\xF3viles",
+          pl: "Telefon kom\xF3rkowy",
+          uk: "\u041C\u043E\u0431\u0456\u043B\u044C\u043D\u0456 \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0438",
           "zh-cn": "\u79FB\u52A8\u7535\u8BDD"
         }
       },
@@ -144,12 +144,12 @@ class SamartHomeHandyBis extends utils.Adapter {
     const channels = await this.getChannelsAsync();
     for (const element of channels) {
       const id = `${this.namespace}.devices`;
-      if (element["_id"].startsWith(id)) {
-        const state = await this.getStateAsync(`${element["_id"]}.aesKey`);
+      if (element._id.startsWith(id)) {
+        const state = await this.getStateAsync(`${element._id}.aesKey`);
         if (state != null && state.val != null) {
           if (state.val.toString().length === 6) {
             const shaAes = this.encrypt(state.val.toString());
-            await this.setStateAsync(`${element["_id"]}.aesKey`, shaAes, true);
+            await this.setStateAsync(`${element._id}.aesKey`, shaAes, true);
           }
         }
       }
@@ -173,8 +173,9 @@ class SamartHomeHandyBis extends utils.Adapter {
       }
       for (const z of members) {
         const dataPoint = await this.getForeignObjectAsync(z);
-        if (!dataPoint)
+        if (!dataPoint) {
           continue;
+        }
         const name = dataPoint.common.name;
         if (typeof name == "object") {
           const translated = name;
@@ -231,7 +232,7 @@ class SamartHomeHandyBis extends utils.Adapter {
           };
         }
       } catch (e) {
-        this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
+        this.log.warn(`App tried to request to a deleted datapoint. ${dataPoints[i]}`);
         continue;
       }
       if (state) {
@@ -247,7 +248,7 @@ class SamartHomeHandyBis extends utils.Adapter {
         all_dp.push(map);
         this.listener.addPendingSubscribeState(dataPoints[i]);
       } else {
-        this.log.warn("App tried to request to a deleted datapoint. " + dataPoints[i]);
+        this.log.warn(`App tried to request to a deleted datapoint. ${dataPoints[i]}`);
       }
     }
     3;
@@ -258,6 +259,8 @@ class SamartHomeHandyBis extends utils.Adapter {
   }
   /**
    * Is called when adapter shuts down - callback has to be called under any circumstances!
+   *
+   * @param callback
    */
   onUnload(callback) {
     var _a;
@@ -286,6 +289,8 @@ class SamartHomeHandyBis extends utils.Adapter {
   // }
   /**
    * Is called if a subscribed state changes
+   *
+   * @param obj
    */
   //private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
   //    if (state) {
@@ -308,13 +313,19 @@ class SamartHomeHandyBis extends utils.Adapter {
         this.log.debug("send command");
         const message = obj.message;
         if ("notification" in message && "uuid" in message) {
-          const cl = (_a = this.server) == null ? void 0 : _a.getClient(message["uuid"]);
-          this.notificationManager.sendNotificationLocal(cl, message["uuid"], JSON.stringify(message["notification"]));
-          if (obj.callback)
+          const cl = (_a = this.server) == null ? void 0 : _a.getClient(message.uuid);
+          this.notificationManager.sendNotificationLocal(
+            cl,
+            message.uuid,
+            JSON.stringify(message.notification)
+          );
+          if (obj.callback) {
             this.sendTo(obj.from, obj.command, "Message received", obj.callback);
+          }
         } else {
-          if (obj.callback)
+          if (obj.callback) {
             this.sendTo(obj.from, obj.command, "Error received", obj.callback);
+          }
         }
       }
     }

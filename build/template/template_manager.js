@@ -28,32 +28,32 @@ class TemplateManager {
   }
   async uploadTemplateSetting(name, devices, screens, widgets) {
     if (devices != null) {
-      await this.adapter.setStateAsync("settings." + name + ".devices", devices, true);
+      await this.adapter.setStateAsync(`settings.${name}.devices`, devices, true);
     }
     if (screens != null) {
-      await this.adapter.setStateAsync("settings." + name + ".screens", screens, true);
+      await this.adapter.setStateAsync(`settings.${name}.screens`, screens, true);
     }
     if (widgets != null) {
-      await this.adapter.setStateAsync("settings." + name + ".widgets", widgets, true);
+      await this.adapter.setStateAsync(`settings.${name}.widgets`, widgets, true);
     }
   }
   async getTemplateSettings(name) {
-    let temp = await this.adapter.getStateAsync("settings." + name + ".devices");
+    let temp = await this.adapter.getStateAsync(`settings.${name}.devices`);
     if (temp == null) {
       return {};
     }
     const devicesJSON = temp.val;
-    temp = await this.adapter.getStateAsync("settings." + name + ".screens");
+    temp = await this.adapter.getStateAsync(`settings.${name}.screens`);
     if (temp == null) {
       return {};
     }
     const screensJSON = temp.val;
-    temp = await this.adapter.getStateAsync("settings." + name + ".widgets");
+    temp = await this.adapter.getStateAsync(`settings.${name}.widgets`);
     if (temp == null) {
       return {};
     }
     const widgetsJSON = temp.val;
-    this.adapter.log.debug("WIDGETS " + widgetsJSON);
+    this.adapter.log.debug(`WIDGETS ${widgetsJSON}`);
     return { screens: screensJSON, widgets: widgetsJSON, devices: devicesJSON };
   }
   async fetchTemplateSettings() {
@@ -62,9 +62,10 @@ class TemplateManager {
     const list = [];
     for (const id in settings) {
       const splitted = id.split(".");
-      if (splitted[3] == null || splitted[2] != "settings" || splitted.length > 4)
+      if (splitted[3] == null || splitted[2] != "settings" || splitted.length > 4) {
         continue;
-      this.adapter.log.debug("Settings: " + id);
+      }
+      this.adapter.log.debug(`Settings: ${id}`);
       list.push(splitted[3]);
     }
     return list;
@@ -77,7 +78,7 @@ class TemplateManager {
       },
       native: {}
     });
-    await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name, {
+    await this.adapter.setObjectNotExistsAsync(`settings.${templateSettings.name}`, {
       type: "folder",
       common: {
         name: templateSettings.name,
@@ -86,10 +87,10 @@ class TemplateManager {
       },
       native: {}
     });
-    await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name + ".devices", {
+    await this.adapter.setObjectNotExistsAsync(`settings.${templateSettings.name}.devices`, {
       type: "state",
       common: {
-        name: templateSettings.name + " devices",
+        name: `${templateSettings.name} devices`,
         type: "string",
         role: "json",
         def: "{}",
@@ -98,10 +99,10 @@ class TemplateManager {
       },
       native: {}
     });
-    await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name + ".widgets", {
+    await this.adapter.setObjectNotExistsAsync(`settings.${templateSettings.name}.widgets`, {
       type: "state",
       common: {
-        name: templateSettings.name + " widgets",
+        name: `${templateSettings.name} widgets`,
         type: "string",
         role: "json",
         def: "{}",
@@ -110,10 +111,10 @@ class TemplateManager {
       },
       native: {}
     });
-    await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name + ".screens", {
+    await this.adapter.setObjectNotExistsAsync(`settings.${templateSettings.name}.screens`, {
       type: "state",
       common: {
-        name: templateSettings.name + " screens",
+        name: `${templateSettings.name} screens`,
         type: "string",
         role: "json",
         def: "{}",

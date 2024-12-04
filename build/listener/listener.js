@@ -44,7 +44,7 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
     var _a;
     if (state != null) {
       if (!id.startsWith("hiob.")) {
-        const adapaterKey = id.split(".")[0] + "." + id.split(".")[1];
+        const adapaterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
         if (this.subscribedStates.has(id)) {
           if (this.adapter.valueDatapoints[id] == null) {
             this.adapter.valueDatapoints[id] = {};
@@ -64,24 +64,29 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
   }
   /**
    * Adds a State id to the pending list
+   *
    * @param id The id of the State you want to subscribe to
    */
   addPendingSubscribeState(id) {
-    this.mutex.runExclusive(async () => {
+    this.mutex.runExclusive(() => {
       if (this.subscribedStates.has(id)) {
         return;
       }
       this.pendingSubscribeStates.add(id);
-      const adapaterKey = id.split(".")[0] + "." + id.split(".")[1];
+      const adapaterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
       if (this.subsribedStates.has(adapaterKey)) {
         const t = this.subsribedStates.get(adapaterKey);
         if (!t.subscribed.has(id)) {
           t == null ? void 0 : t.pending.add(id);
         } else {
-          this.adapter.log.debug("Already has subscribed to " + id + "!");
+          this.adapter.log.debug(`Already has subscribed to ${id}!`);
         }
       } else {
-        this.subsribedStates.set(adapaterKey, { overThreshold: false, subscribed: /* @__PURE__ */ new Set(), pending: /* @__PURE__ */ new Set([id]) });
+        this.subsribedStates.set(adapaterKey, {
+          overThreshold: false,
+          subscribed: /* @__PURE__ */ new Set(),
+          pending: /* @__PURE__ */ new Set([id])
+        });
       }
     });
   }
@@ -105,8 +110,10 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
                 subsribedStatesStatus.pending.forEach((e) => {
                   subsribedStatesStatus.subscribed.add(e);
                 });
-                this.adapter.log.debug("More than " + _Listener.subscribtionThresholdPerInstance + " states of " + adapaterKey + " were subscribed. Now only listening to " + adapaterKey + ".*");
-                await this.adapter.subscribeForeignStatesAsync(adapaterKey + ".*");
+                this.adapter.log.debug(
+                  `More than ${_Listener.subscribtionThresholdPerInstance} states of ${adapaterKey} were subscribed. Now only listening to ${adapaterKey}.*`
+                );
+                await this.adapter.subscribeForeignStatesAsync(`${adapaterKey}.*`);
                 for (const i of subsribedStatesStatus.subscribed) {
                   this.adapter.unsubscribeForeignStatesAsync(i);
                 }
