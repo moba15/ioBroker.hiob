@@ -35,7 +35,7 @@ export class Listener extends EventEmitter {
             if (!id.startsWith('hiob.')) {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const adapaterKey = `${id.split('.')[0]}.${id.split('.')[1]}`;
-                if (this.subscribedStates.has(id)) {
+                if (this.subsribedStates.get(adapaterKey)?.subscribed.has(id)) {
                     if (this.adapter.valueDatapoints[id] == null) {
                         this.adapter.valueDatapoints[id] = {};
                     }
