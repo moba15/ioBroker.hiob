@@ -41,17 +41,17 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
     this.adapter = adapter;
   }
   onStateChange(id, state) {
-    var _a;
+    var _a, _b;
     if (state != null) {
       if (!id.startsWith("hiob.")) {
         const adapaterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
-        if (this.subscribedStates.has(id)) {
+        if ((_a = this.subsribedStates.get(adapaterKey)) == null ? void 0 : _a.subscribed.has(id)) {
           if (this.adapter.valueDatapoints[id] == null) {
             this.adapter.valueDatapoints[id] = {};
           }
           this.adapter.valueDatapoints[id].val = state.val;
           this.adapter.valueDatapoints[id].ack = state.ack;
-          (_a = this.adapter.server) == null ? void 0 : _a.broadcastMsg(
+          (_b = this.adapter.server) == null ? void 0 : _b.broadcastMsg(
             new import_datapacks.StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON()
           );
         }
