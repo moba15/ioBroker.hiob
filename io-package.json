@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.1.7-beta.0",
+    "version": "0.1.7-beta.1",
     "news": {
+      "0.1.7-beta.1": {
+        "en": "Updated packages\nFix for #93 \nFix for #91 \nFix for #109\nMigration to ESLint 9 #108\nFixed Update App message\nAdded PingPong disconnection handling -> some offline message functionality\nOptimized logic behind state subscription -> Now subscribes only to the necessary adapter",
+        "de": "Aktualisierte Pakete\nFix für #93\nFix für #91\nFix für #109\nMigration auf ESLint 9 #108\nBehobenes Update App-Nachricht\nHinzugefügt PingPong Trennhandling -> einige Offline-Nachricht-Funktionalität\nOptimierte Logik hinter dem Staatsabonnement -> Jetzt abonniert nur den nötigen Adapter",
+        "ru": "Обновленные пакеты\n#93\n#91\n#109\nМиграция в ESLint 9 #108\nИсправленное обновление Сообщение\nДобавлено отключение PingPong -> некоторая функциональность автономного сообщения\nОптимизированная логика за государственной подпиской -> Теперь подписывается только на необходимый адаптер",
+        "pt": "Pacotes atualizados\nFix para #93\nFix para #91\nFix para #109\nMigração para ESLint 9 #108\nAtualização fixa Mensagem do aplicativo\nAdicionado PingPong manipulação de desconexão -> algumas funcionalidades de mensagem offline\nLógica otimizada por trás da assinatura estatal -> Agora assina apenas o adaptador necessário",
+        "nl": "Bijgewerkte pakketten\nFix voor #93\nFix voor #91\nFix voor #109\nMigratie naar ESLint 9 #108\nVaste update App-bericht\nToegevoegd PingPong ontkoppeling behandeling -> sommige offline bericht functionaliteit\nGeoptimaliseerde logica achter het staatsabonnement -> Abonneert zich nu alleen op de benodigde adapter",
+        "fr": "Paquets mis à jour\nCorrection pour #93\nCorrection pour #91\nCorrection pour #109\nMigration vers ESLint 9 #108\nMise à jour corrigée Message de l'application\nAjout de la gestion de la déconnexion PingPong -> certaines fonctionnalités de message hors ligne\nLogique optimisée derrière l'abonnement d'État -> Maintenant s'abonner seulement à l'adaptateur nécessaire",
+        "it": "Pacchetti aggiornati\nFissare per #93\nFissare per #91\nFissare per #109\nMigrazione a ESLint 9 #108\nAggiornamento fisso Messaggio di App\nAggiunto PingPong disconnessione di gestione -> alcune funzionalità di messaggio offline\nLogica ottimizzata dietro abbonamento statale -> Ora si iscrive solo all'adattatore necessario",
+        "es": "Paquetes actualizados\nCorrección para #93\nCorrección para #91\nCorrección para #109\nMigración a ESLint 9 #108\nActualización fija Mensaje de aplicación\nAñadido Manejo de desconexión de PingPong - confiar algunas funcionalidad de mensaje offline\nLógica optimizada detrás de la suscripción estatal - título Ahora suscribe sólo al adaptador necesario",
+        "pl": "Aktualizacja pakietów\nNapraw dla # 93\nNapraw dla # 91\nNapraw dla # 109\nMigracja do ESLint 9 # 108\nNaprawiona aktualizacja Komunikat aplikacji\nDodano obsługę odłączenia PingPong - > niektóre funkcje wiadomości offline\nZoptymalizowana logika za subskrypcją państwową - > Teraz subskrybuje tylko do niezbędnego adaptera",
+        "uk": "Оновлені пакети\nВиправлення для #93\nВиправлення для #91\nВиправлення для #109\nМіграція до ESLint 9 #108\nВиправлено оновлення Повідомлення\nДодано PingPong роз'єднання -> деякі функції офлайн повідомлення\nОптимізована логіка за державною підпискою -> Тепер підписується тільки на необхідний адаптер",
+        "zh-cn": "更新软件包\n准备93号\n准备91号\n修复为 #109\n迁移到ESLint 9#108\n固定更新 应用消息\n添加了 PingPong 断开处理 - > 一些离线消息功能\n状态订阅背后的优化逻辑 - > 现在只订阅必要的适配器"
+      },
       "0.1.7-beta.0": {
         "en": "Updated packages\nFix for #93 \nFix for #91 \nFix for #109\nMigration to ESLint 9 #108\nFixed Update App message\nAdded PingPong disconnection handling -> some offline message functionality",
         "de": "Aktualisierte Pakete\nFix für #93\nFix für #91\nFix für #109\nMigration auf ESLint 9 #108\nBehobenes Update App-Nachricht\nHinzugefügt PingPong Trennhandling -> einige Offline-Nachricht-Funktionalität",
@@ -80,19 +93,6 @@
         "pl": "zmieniona licencja Informacje i poziom",
         "uk": "змінена ліцензіяІнформація та ярус",
         "zh-cn": "更改许可证信息和等级"
-      },
-      "0.1.1": {
-        "en": "fixed package.json",
-        "de": "festpaket.json",
-        "ru": "фиксированный пакет.json",
-        "pt": "pacote fixo.json",
-        "nl": "vast pakket.json",
-        "fr": "paquet fixe.json",
-        "it": "pacchetto fisso.json",
-        "es": "paquete fijo.json",
-        "pl": "stałe package.json",
-        "uk": "фіксований пакет.json",
-        "zh-cn": "固定包裹.json"
       }
     },
     "titleLang": {
