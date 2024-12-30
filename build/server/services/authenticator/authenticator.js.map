@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../src/server/services/authenticator/authenticator.ts"],
+  "sourcesContent": ["import * as grpc from \"@grpc/grpc-js\";\nexport function checkAuthentication(metadata: grpc.Metadata) {\n    const keyValue = metadata.get(\"token\");\n    const id = metadata.get(\"deviceId\");\n    if(id && keyValue && id.length == 1 && keyValue.length == 1) {\n        //TODO check\n        return {code: grpc.status.OK, name:\"\"};\n\n    } else {\n        return {code: grpc.status.UNAUTHENTICATED, details: \"request missing metadata required field: id or key\", name: \"Not authenticated\"}\n    }\n}"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,WAAsB;AACf,SAAS,oBAAoB,UAAyB;AACzD,QAAM,WAAW,SAAS,IAAI,OAAO;AACrC,QAAM,KAAK,SAAS,IAAI,UAAU;AAClC,MAAG,MAAM,YAAY,GAAG,UAAU,KAAK,SAAS,UAAU,GAAG;AAEzD,WAAO,EAAC,MAAM,KAAK,OAAO,IAAI,MAAK,GAAE;AAAA,EAEzC,OAAO;AACH,WAAO,EAAC,MAAM,KAAK,OAAO,iBAAiB,SAAS,sDAAsD,MAAM,oBAAmB;AAAA,EACvI;AACJ;",
+  "names": []
+}

@@ -38,6 +38,7 @@ var import_datapacks = require("./server/datapacks");
 var import_template_manager = require("./template/template_manager");
 var import_notification_manager = require("./notification/notification_manager");
 var import_grpc_server = require("./server/grpc/grpc-server");
+var import_search_engine = require("./search/search-engine");
 class SamartHomeHandyBis extends utils.Adapter {
   constructor(options = {}) {
     super({
@@ -55,6 +56,7 @@ class SamartHomeHandyBis extends utils.Adapter {
     this.listener = new import_listener.Listener(this);
     this.notificationManager = new import_notification_manager.NotificationManager(this);
     this.loginManager = new import_loginmanager.LoginManager(this);
+    this.stateSearchEngine = new import_search_engine.StateSearchEngine(this);
     this.on("ready", this.onReady.bind(this));
     this.on("stateChange", this.listener.onStateChange.bind(this.listener));
     this.on("message", this.onMessage.bind(this));
@@ -133,6 +135,7 @@ class SamartHomeHandyBis extends utils.Adapter {
       } catch (e) {
       }
     }
+    this.stateSearchEngine.loadFirstLevel();
   }
   loadConfigs() {
     this.port = Number(this.config.port);

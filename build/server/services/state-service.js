@@ -31,8 +31,10 @@ __export(state_service_exports, {
   addStateServices: () => addStateServices
 });
 module.exports = __toCommonJS(state_service_exports);
+var grpc = __toESM(require("@grpc/grpc-js"));
 var proto = __toESM(require("../../generated/state/state"));
 var import_state = require("../../generated/state/state");
+var import_authenticator = require("./authenticator/authenticator");
 class Test extends import_state.UnimplementedStateUpdateService {
   Subscibe(call) {
     throw new Error("Method not implemented.");
@@ -50,6 +52,11 @@ class Test extends import_state.UnimplementedStateUpdateService {
 function addStateServices(gRpcServer, adapter) {
   gRpcServer.addService(proto.StateUpdateClient.service, {
     Subscibe: async (call) => {
+      const authStatus = (0, import_authenticator.checkAuthentication)(call.metadata);
+      if (authStatus.code != grpc.status.OK) {
+        call.emit("error", authStatus);
+        return;
+      }
       const result = await adapter.subscribeToDataPointsProto(call.request.stateIds);
       const stateValueUpdates = result.map((e) => {
         return new proto.StateValueUpdate({
@@ -60,7 +67,19 @@ function addStateServices(gRpcServer, adapter) {
         });
       });
       call.write(new proto.StatesValueUpdate({ stateUpdates: stateValueUpdates }));
-      adapter.listener.addWriter("DeviceIdFromHeader", call);
+      const id = call.metadata.get("deviceId")[0].toString();
+      adapter.listener.addWriter(id, call);
+    },
+    searchStateStream: async (call) => {
+      adapter.log.debug("Start search");
+      const firstLevelMap = adapter.stateSearchEngine.getFirstLevel();
+      const firstLevelResponse = [];
+      for (const [id, adapaterObj] of firstLevelMap) {
+        firstLevelResponse.push(new proto.State({
+          stateId: id
+        }));
+      }
+      call.write(new proto.SearchStateResponse({ states: firstLevelResponse }));
     }
   });
 }

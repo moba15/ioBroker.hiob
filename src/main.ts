@@ -12,6 +12,7 @@ import { AnswerSubscribeToDataPointsPack } from "./server/datapacks";
 import { TemplateManager } from "./template/template_manager";
 import { NotificationManager } from "./notification/notification_manager";
 import { GrpcServer } from "./server/grpc/grpc-server";
+import { StateSearchEngine } from "./search/search-engine";
 type DatapointState = {
     val?: any,
     ack?: boolean
@@ -26,6 +27,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     listener: Listener;
     loginManager: LoginManager;
     notificationManager: NotificationManager;
+    stateSearchEngine: StateSearchEngine;
     port: number = 8095;
     keyPath: string = "";
     certPath: string = "";
@@ -44,6 +46,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.listener = new Listener(this);
         this.notificationManager = new NotificationManager(this);
         this.loginManager = new LoginManager(this);
+        this.stateSearchEngine = new StateSearchEngine(this);
         this.on("ready", this.onReady.bind(this));
         this.on("stateChange", this.listener.onStateChange.bind(this.listener));
         // this.on("objectChange", this.onObjectChange.bind(this));
@@ -131,6 +134,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
                 // Nothing
             }
         }
+        this.stateSearchEngine.loadFirstLevel();
 
     }
 

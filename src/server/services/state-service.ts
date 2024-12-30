@@ -3,6 +3,7 @@ import * as m from "../..//main";
 import * as grpc from "@grpc/grpc-js";
 import * as proto from "../../generated/state/state"
 import { SearchState, SearchStateResponse, StateSubscribtion, StateValueUpdate, StateValueUpdateRequest, StateValueUpdateResponse, UnimplementedStateUpdateService } from "../../generated/state/state";
+import { checkAuthentication } from "./authenticator/authenticator";
 class Test  extends UnimplementedStateUpdateService {
     Subscibe(call: grpc.ServerWritableStream<StateSubscribtion, proto.StatesValueUpdate>): void {
         throw new Error("Method not implemented.");
@@ -19,9 +20,16 @@ class Test  extends UnimplementedStateUpdateService {
 
 }
 
-export function addStateServices(gRpcServer: grpc.Server, adapter : m.SamartHomeHandyBis) {
+export function addStateServices(gRpcServer: grpc.Server, adapter : m.SamartHomeHandyBis) : void {
     gRpcServer.addService(proto.StateUpdateClient.service, {
         Subscibe: async (call: grpc.ServerWritableStream<StateSubscribtion, proto.StatesValueUpdate>) => {
+            const authStatus = checkAuthentication(call.metadata)
+            if(authStatus.code != grpc.status.OK) {
+                call.emit("error", authStatus );
+                return;
+            }
+
+
             const result = await adapter.subscribeToDataPointsProto(call.request.stateIds);
             const stateValueUpdates = result.map(e => {
                 return new proto.StateValueUpdate({
@@ -33,7 +41,21 @@ export function addStateServices(gRpcServer: grpc.Server, adapter : m.SamartHome
             });
             call.write(new proto.StatesValueUpdate({stateUpdates: stateValueUpdates}));
             //TODO Device Id from header
-            adapter.listener.addWriter("DeviceIdFromHeader", call);
+            const id = call.metadata.get("deviceId")[0].toString();
+            adapter.listener.addWriter(id, call);
+        },
+        searchStateStream: async (call: grpc.ServerDuplexStream<SearchState, SearchStateResponse>) => {
+            adapter.log.debug("Start search");
+            //1. Return first level
+            const firstLevelMap = adapter.stateSearchEngine.getFirstLevel();
+            const firstLevelResponse : proto.State[] = [];
+            for(const [id, adapaterObj] of firstLevelMap ) {
+                firstLevelResponse.push(new proto.State({
+                    stateId: id,
+                }))
+            }
+            call.write(new proto.SearchStateResponse({states: firstLevelResponse}));
+
         } });
 
 
