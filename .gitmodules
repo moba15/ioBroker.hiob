@@ -1,0 +1,3 @@
+[submodule "hiob_protobuf"]
+	path = hiob_protobuf
+	url = git@github.com:moba15/hiob_protobuf.git
