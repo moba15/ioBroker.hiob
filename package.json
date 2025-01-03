@@ -96,8 +96,8 @@
     "lint": "eslint --ext .ts src/",
     "translate": "translate-adapter",
     "release": "release-script",
-    "generate": "rm -rf src/generated && mkdir -p src/generated &&  protoc  -I=src/proto --ts_out=grpc:'./src/generated' src/proto/packages.proto src/proto/state/state.proto  src/proto/login/login.proto",
-    "generate2": "protoc -I=src --ts_out=src/generate src/proto/packages.proto src/proto/login/login.proto"
+    "generate": "rm -rf src/generated && mkdir -p src/generated &&  protoc  -I=hiob_protobuf --ts_out=grpc:'./src/generated' hiob_protobuf/packages.proto hiob_protobuf/state/state.proto  hiob_protobuf/login/login.proto",
+    "generate2": "protoc -I=hiob_protobuf --ts_out=src/generate hiob_protobuf/packages.proto hiob_protobuf/login/login.proto"
   },
   "bugs": {
     "url": "https://github.com/moba15/ioBroker.hiob/issues"
