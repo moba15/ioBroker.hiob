@@ -5,6 +5,113 @@
  * git: https://github.com/thesayyn/protoc-gen-ts */
 import * as pb_1 from "google-protobuf";
 import * as grpc_1 from "@grpc/grpc-js";
+export class AllObjectsResults extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {
+        states?: State[];
+    }) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("states" in data && data.states != undefined) {
+                this.states = data.states;
+            }
+        }
+    }
+    get states() {
+        return pb_1.Message.getRepeatedWrapperField(this, State, 1) as State[];
+    }
+    set states(value: State[]) {
+        pb_1.Message.setRepeatedWrapperField(this, 1, value);
+    }
+    static fromObject(data: {
+        states?: ReturnType<typeof State.prototype.toObject>[];
+    }): AllObjectsResults {
+        const message = new AllObjectsResults({});
+        if (data.states != null) {
+            message.states = data.states.map(item => State.fromObject(item));
+        }
+        return message;
+    }
+    toObject() {
+        const data: {
+            states?: ReturnType<typeof State.prototype.toObject>[];
+        } = {};
+        if (this.states != null) {
+            data.states = this.states.map((item: State) => item.toObject());
+        }
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (this.states.length)
+            writer.writeRepeatedMessage(1, this.states, (item: State) => item.serialize(writer));
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): AllObjectsResults {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new AllObjectsResults();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                case 1:
+                    reader.readMessage(message.states, () => pb_1.Message.addToRepeatedWrapperField(message, 1, State.deserialize(reader), State));
+                    break;
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static deserializeBinary(bytes: Uint8Array): AllObjectsResults {
+        return AllObjectsResults.deserialize(bytes);
+    }
+}
+export class AllObjectRequest extends pb_1.Message {
+    #one_of_decls: number[][] = [];
+    constructor(data?: any[] | {}) {
+        super();
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") { }
+    }
+    static fromObject(data: {}): AllObjectRequest {
+        const message = new AllObjectRequest({});
+        return message;
+    }
+    toObject() {
+        const data: {} = {};
+        return data;
+    }
+    serialize(): Uint8Array;
+    serialize(w: pb_1.BinaryWriter): void;
+    serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
+        const writer = w || new pb_1.BinaryWriter();
+        if (!w)
+            return writer.getResultBuffer();
+    }
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): AllObjectRequest {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new AllObjectRequest();
+        while (reader.nextField()) {
+            if (reader.isEndGroup())
+                break;
+            switch (reader.getFieldNumber()) {
+                default: reader.skipField();
+            }
+        }
+        return message;
+    }
+    serializeBinary(): Uint8Array {
+        return this.serialize();
+    }
+    static deserializeBinary(bytes: Uint8Array): AllObjectRequest {
+        return AllObjectRequest.deserialize(bytes);
+    }
+}
 export class StatesValueUpdate extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
@@ -702,7 +809,7 @@ export namespace StateSubscribtion {
         subscripe = 1
     }
 }
-export class SearchState extends pb_1.Message {
+export class SearchStateRequest extends pb_1.Message {
     #one_of_decls: number[][] = [];
     constructor(data?: any[] | {
         userId?: string;
@@ -734,8 +841,8 @@ export class SearchState extends pb_1.Message {
     static fromObject(data: {
         userId?: string;
         query?: string;
-    }): SearchState {
-        const message = new SearchState({});
+    }): SearchStateRequest {
+        const message = new SearchStateRequest({});
         if (data.userId != null) {
             message.userId = data.userId;
         }
@@ -768,8 +875,8 @@ export class SearchState extends pb_1.Message {
         if (!w)
             return writer.getResultBuffer();
     }
-    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): SearchState {
-        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new SearchState();
+    static deserialize(bytes: Uint8Array | pb_1.BinaryReader): SearchStateRequest {
+        const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new SearchStateRequest();
         while (reader.nextField()) {
             if (reader.isEndGroup())
                 break;
@@ -788,8 +895,8 @@ export class SearchState extends pb_1.Message {
     serializeBinary(): Uint8Array {
         return this.serialize();
     }
-    static deserializeBinary(bytes: Uint8Array): SearchState {
-        return SearchState.deserialize(bytes);
+    static deserializeBinary(bytes: Uint8Array): SearchStateRequest {
+        return SearchStateRequest.deserialize(bytes);
     }
 }
 export class SearchStateResponse extends pb_1.Message {
@@ -1464,8 +1571,8 @@ export abstract class UnimplementedStateUpdateService {
             responseSerialize: (message: StatesValueUpdate) => Buffer.from(message.serialize()),
             responseDeserialize: (bytes: Buffer) => StatesValueUpdate.deserialize(new Uint8Array(bytes))
         },
-        updateValue: {
-            path: "/StateUpdate/updateValue",
+        UpdateValue: {
+            path: "/StateUpdate/UpdateValue",
             requestStream: false,
             responseStream: false,
             requestSerialize: (message: StateValueUpdateRequest) => Buffer.from(message.serialize()),
@@ -1473,30 +1580,40 @@ export abstract class UnimplementedStateUpdateService {
             responseSerialize: (message: StateValueUpdateResponse) => Buffer.from(message.serialize()),
             responseDeserialize: (bytes: Buffer) => StateValueUpdateResponse.deserialize(new Uint8Array(bytes))
         },
-        searchState: {
-            path: "/StateUpdate/searchState",
+        SearchState: {
+            path: "/StateUpdate/SearchState",
             requestStream: false,
             responseStream: false,
-            requestSerialize: (message: SearchState) => Buffer.from(message.serialize()),
-            requestDeserialize: (bytes: Buffer) => SearchState.deserialize(new Uint8Array(bytes)),
+            requestSerialize: (message: SearchStateRequest) => Buffer.from(message.serialize()),
+            requestDeserialize: (bytes: Buffer) => SearchStateRequest.deserialize(new Uint8Array(bytes)),
             responseSerialize: (message: SearchStateResponse) => Buffer.from(message.serialize()),
             responseDeserialize: (bytes: Buffer) => SearchStateResponse.deserialize(new Uint8Array(bytes))
         },
-        searchStateStream: {
-            path: "/StateUpdate/searchStateStream",
+        SearchStateStream: {
+            path: "/StateUpdate/SearchStateStream",
             requestStream: true,
             responseStream: true,
-            requestSerialize: (message: SearchState) => Buffer.from(message.serialize()),
-            requestDeserialize: (bytes: Buffer) => SearchState.deserialize(new Uint8Array(bytes)),
+            requestSerialize: (message: SearchStateRequest) => Buffer.from(message.serialize()),
+            requestDeserialize: (bytes: Buffer) => SearchStateRequest.deserialize(new Uint8Array(bytes)),
             responseSerialize: (message: SearchStateResponse) => Buffer.from(message.serialize()),
             responseDeserialize: (bytes: Buffer) => SearchStateResponse.deserialize(new Uint8Array(bytes))
+        },
+        GetAllObjects: {
+            path: "/StateUpdate/GetAllObjects",
+            requestStream: false,
+            responseStream: false,
+            requestSerialize: (message: AllObjectRequest) => Buffer.from(message.serialize()),
+            requestDeserialize: (bytes: Buffer) => AllObjectRequest.deserialize(new Uint8Array(bytes)),
+            responseSerialize: (message: AllObjectsResults) => Buffer.from(message.serialize()),
+            responseDeserialize: (bytes: Buffer) => AllObjectsResults.deserialize(new Uint8Array(bytes))
         }
     };
     [method: string]: grpc_1.UntypedHandleCall;
     abstract Subscibe(call: grpc_1.ServerWritableStream<StateSubscribtion, StatesValueUpdate>): void;
-    abstract updateValue(call: grpc_1.ServerUnaryCall<StateValueUpdateRequest, StateValueUpdateResponse>, callback: grpc_1.sendUnaryData<StateValueUpdateResponse>): void;
-    abstract searchState(call: grpc_1.ServerUnaryCall<SearchState, SearchStateResponse>, callback: grpc_1.sendUnaryData<SearchStateResponse>): void;
-    abstract searchStateStream(call: grpc_1.ServerDuplexStream<SearchState, SearchStateResponse>): void;
+    abstract UpdateValue(call: grpc_1.ServerUnaryCall<StateValueUpdateRequest, StateValueUpdateResponse>, callback: grpc_1.sendUnaryData<StateValueUpdateResponse>): void;
+    abstract SearchState(call: grpc_1.ServerUnaryCall<SearchStateRequest, SearchStateResponse>, callback: grpc_1.sendUnaryData<SearchStateResponse>): void;
+    abstract SearchStateStream(call: grpc_1.ServerDuplexStream<SearchStateRequest, SearchStateResponse>): void;
+    abstract GetAllObjects(call: grpc_1.ServerUnaryCall<AllObjectRequest, AllObjectsResults>, callback: grpc_1.sendUnaryData<AllObjectsResults>): void;
 }
 export class StateUpdateClient extends grpc_1.makeGenericClientConstructor(UnimplementedStateUpdateService.definition, "StateUpdate", {}) {
     constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -1505,13 +1622,16 @@ export class StateUpdateClient extends grpc_1.makeGenericClientConstructor(Unimp
     Subscibe: GrpcStreamServiceInterface<StateSubscribtion, StatesValueUpdate> = (message: StateSubscribtion, metadata?: grpc_1.Metadata | grpc_1.CallOptions, options?: grpc_1.CallOptions): grpc_1.ClientReadableStream<StatesValueUpdate> => {
         return super.Subscibe(message, metadata, options);
     };
-    updateValue: GrpcUnaryServiceInterface<StateValueUpdateRequest, StateValueUpdateResponse> = (message: StateValueUpdateRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<StateValueUpdateResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<StateValueUpdateResponse>, callback?: grpc_1.requestCallback<StateValueUpdateResponse>): grpc_1.ClientUnaryCall => {
-        return super.updateValue(message, metadata, options, callback);
+    UpdateValue: GrpcUnaryServiceInterface<StateValueUpdateRequest, StateValueUpdateResponse> = (message: StateValueUpdateRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<StateValueUpdateResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<StateValueUpdateResponse>, callback?: grpc_1.requestCallback<StateValueUpdateResponse>): grpc_1.ClientUnaryCall => {
+        return super.UpdateValue(message, metadata, options, callback);
     };
-    searchState: GrpcUnaryServiceInterface<SearchState, SearchStateResponse> = (message: SearchState, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<SearchStateResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<SearchStateResponse>, callback?: grpc_1.requestCallback<SearchStateResponse>): grpc_1.ClientUnaryCall => {
-        return super.searchState(message, metadata, options, callback);
+    SearchState: GrpcUnaryServiceInterface<SearchStateRequest, SearchStateResponse> = (message: SearchStateRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<SearchStateResponse>, options?: grpc_1.CallOptions | grpc_1.requestCallback<SearchStateResponse>, callback?: grpc_1.requestCallback<SearchStateResponse>): grpc_1.ClientUnaryCall => {
+        return super.SearchState(message, metadata, options, callback);
     };
-    searchStateStream: GrpcChunkServiceInterface<SearchState, SearchStateResponse> = (metadata?: grpc_1.Metadata | grpc_1.CallOptions, options?: grpc_1.CallOptions): grpc_1.ClientDuplexStream<SearchState, SearchStateResponse> => {
-        return super.searchStateStream(metadata, options);
+    SearchStateStream: GrpcChunkServiceInterface<SearchStateRequest, SearchStateResponse> = (metadata?: grpc_1.Metadata | grpc_1.CallOptions, options?: grpc_1.CallOptions): grpc_1.ClientDuplexStream<SearchStateRequest, SearchStateResponse> => {
+        return super.SearchStateStream(metadata, options);
+    };
+    GetAllObjects: GrpcUnaryServiceInterface<AllObjectRequest, AllObjectsResults> = (message: AllObjectRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<AllObjectsResults>, options?: grpc_1.CallOptions | grpc_1.requestCallback<AllObjectsResults>, callback?: grpc_1.requestCallback<AllObjectsResults>): grpc_1.ClientUnaryCall => {
+        return super.GetAllObjects(message, metadata, options, callback);
     };
 }
