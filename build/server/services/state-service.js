@@ -39,13 +39,16 @@ class Test extends import_state.UnimplementedStateUpdateService {
   Subscibe(call) {
     throw new Error("Method not implemented.");
   }
-  updateValue(call, callback) {
+  UpdateValue(call, callback) {
     throw new Error("Method not implemented.");
   }
-  searchState(call, callback) {
+  SearchState(call, callback) {
     throw new Error("Method not implemented.");
   }
-  searchStateStream(call) {
+  SearchStateStream(call) {
+    throw new Error("Method not implemented.");
+  }
+  GetAllObjects(call, callback) {
     throw new Error("Method not implemented.");
   }
 }
@@ -80,6 +83,21 @@ function addStateServices(gRpcServer, adapter) {
         }));
       }
       call.write(new proto.SearchStateResponse({ states: firstLevelResponse }));
+    },
+    GetAllObjects: async (call, callback) => {
+      const objects = await adapter.getForeignObjectsAsync("*");
+      const result = [];
+      for (const objectId in objects) {
+        const object = objects[objectId];
+        result.push(new proto.State({
+          stateId: objectId,
+          common: new proto.State.StateCommon({
+            //TODO Language support
+            name: object.common.name.toString()
+          })
+        }));
+      }
+      callback(null, new proto.AllObjectsResults({ states: result }));
     }
   });
 }

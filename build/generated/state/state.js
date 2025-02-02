@@ -41,7 +41,9 @@ var __privateAdd = (obj, member, value) => {
 };
 var state_exports = {};
 __export(state_exports, {
-  SearchState: () => SearchState,
+  AllObjectRequest: () => AllObjectRequest,
+  AllObjectsResults: () => AllObjectsResults,
+  SearchStateRequest: () => SearchStateRequest,
   SearchStateResponse: () => SearchStateResponse,
   State: () => State,
   StateSubscribtion: () => StateSubscribtion,
@@ -55,12 +57,116 @@ __export(state_exports, {
 module.exports = __toCommonJS(state_exports);
 var pb_1 = __toESM(require("google-protobuf"));
 var grpc_1 = __toESM(require("@grpc/grpc-js"));
-var _one_of_decls, _one_of_decls2, _one_of_decls3, _one_of_decls4, _one_of_decls5, _one_of_decls6, _one_of_decls7, _one_of_decls8;
-const _StatesValueUpdate = class _StatesValueUpdate extends pb_1.Message {
+var _one_of_decls, _one_of_decls2, _one_of_decls3, _one_of_decls4, _one_of_decls5, _one_of_decls6, _one_of_decls7, _one_of_decls8, _one_of_decls9, _one_of_decls10;
+const _AllObjectsResults = class _AllObjectsResults extends pb_1.Message {
   constructor(data) {
     super();
     __privateAdd(this, _one_of_decls, []);
-    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], __privateGet(this, _one_of_decls));
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], __privateGet(this, _one_of_decls));
+    if (!Array.isArray(data) && typeof data == "object") {
+      if ("states" in data && data.states != void 0) {
+        this.states = data.states;
+      }
+    }
+  }
+  get states() {
+    return pb_1.Message.getRepeatedWrapperField(this, State, 1);
+  }
+  set states(value) {
+    pb_1.Message.setRepeatedWrapperField(this, 1, value);
+  }
+  static fromObject(data) {
+    const message = new _AllObjectsResults({});
+    if (data.states != null) {
+      message.states = data.states.map((item) => State.fromObject(item));
+    }
+    return message;
+  }
+  toObject() {
+    const data = {};
+    if (this.states != null) {
+      data.states = this.states.map((item) => item.toObject());
+    }
+    return data;
+  }
+  serialize(w) {
+    const writer = w || new pb_1.BinaryWriter();
+    if (this.states.length)
+      writer.writeRepeatedMessage(1, this.states, (item) => item.serialize(writer));
+    if (!w)
+      return writer.getResultBuffer();
+  }
+  static deserialize(bytes) {
+    const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _AllObjectsResults();
+    while (reader.nextField()) {
+      if (reader.isEndGroup())
+        break;
+      switch (reader.getFieldNumber()) {
+        case 1:
+          reader.readMessage(message.states, () => pb_1.Message.addToRepeatedWrapperField(message, 1, State.deserialize(reader), State));
+          break;
+        default:
+          reader.skipField();
+      }
+    }
+    return message;
+  }
+  serializeBinary() {
+    return this.serialize();
+  }
+  static deserializeBinary(bytes) {
+    return _AllObjectsResults.deserialize(bytes);
+  }
+};
+_one_of_decls = new WeakMap();
+let AllObjectsResults = _AllObjectsResults;
+const _AllObjectRequest = class _AllObjectRequest extends pb_1.Message {
+  constructor(data) {
+    super();
+    __privateAdd(this, _one_of_decls2, []);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls2));
+    if (!Array.isArray(data) && typeof data == "object") {
+    }
+  }
+  static fromObject(data) {
+    const message = new _AllObjectRequest({});
+    return message;
+  }
+  toObject() {
+    const data = {};
+    return data;
+  }
+  serialize(w) {
+    const writer = w || new pb_1.BinaryWriter();
+    if (!w)
+      return writer.getResultBuffer();
+  }
+  static deserialize(bytes) {
+    const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _AllObjectRequest();
+    while (reader.nextField()) {
+      if (reader.isEndGroup())
+        break;
+      switch (reader.getFieldNumber()) {
+        default:
+          reader.skipField();
+      }
+    }
+    return message;
+  }
+  serializeBinary() {
+    return this.serialize();
+  }
+  static deserializeBinary(bytes) {
+    return _AllObjectRequest.deserialize(bytes);
+  }
+};
+_one_of_decls2 = new WeakMap();
+let AllObjectRequest = _AllObjectRequest;
+const _StatesValueUpdate = class _StatesValueUpdate extends pb_1.Message {
+  constructor(data) {
+    super();
+    __privateAdd(this, _one_of_decls3, []);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [2], __privateGet(this, _one_of_decls3));
     if (!Array.isArray(data) && typeof data == "object") {
       if ("stateUpdates" in data && data.stateUpdates != void 0) {
         this.stateUpdates = data.stateUpdates;
@@ -116,13 +222,13 @@ const _StatesValueUpdate = class _StatesValueUpdate extends pb_1.Message {
     return _StatesValueUpdate.deserialize(bytes);
   }
 };
-_one_of_decls = new WeakMap();
+_one_of_decls3 = new WeakMap();
 let StatesValueUpdate = _StatesValueUpdate;
 const _StateValueUpdate = class _StateValueUpdate extends pb_1.Message {
   constructor(data) {
     super();
-    __privateAdd(this, _one_of_decls2, [[4, 5, 6, 99]]);
-    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls2));
+    __privateAdd(this, _one_of_decls4, [[4, 5, 6, 99]]);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls4));
     if (!Array.isArray(data) && typeof data == "object") {
       if ("stateId" in data && data.stateId != void 0) {
         this.stateId = data.stateId;
@@ -169,7 +275,7 @@ const _StateValueUpdate = class _StateValueUpdate extends pb_1.Message {
     return pb_1.Message.getFieldWithDefault(this, 4, "");
   }
   set stringValue(value) {
-    pb_1.Message.setOneofField(this, 4, __privateGet(this, _one_of_decls2)[0], value);
+    pb_1.Message.setOneofField(this, 4, __privateGet(this, _one_of_decls4)[0], value);
   }
   get has_stringValue() {
     return pb_1.Message.getField(this, 4) != null;
@@ -178,7 +284,7 @@ const _StateValueUpdate = class _StateValueUpdate extends pb_1.Message {
     return pb_1.Message.getFieldWithDefault(this, 5, false);
   }
   set boolValue(value) {
-    pb_1.Message.setOneofField(this, 5, __privateGet(this, _one_of_decls2)[0], value);
+    pb_1.Message.setOneofField(this, 5, __privateGet(this, _one_of_decls4)[0], value);
   }
   get has_boolValue() {
     return pb_1.Message.getField(this, 5) != null;
@@ -187,7 +293,7 @@ const _StateValueUpdate = class _StateValueUpdate extends pb_1.Message {
     return pb_1.Message.getFieldWithDefault(this, 6, 0);
   }
   set doubleValue(value) {
-    pb_1.Message.setOneofField(this, 6, __privateGet(this, _one_of_decls2)[0], value);
+    pb_1.Message.setOneofField(this, 6, __privateGet(this, _one_of_decls4)[0], value);
   }
   get has_doubleValue() {
     return pb_1.Message.getField(this, 6) != null;
@@ -196,7 +302,7 @@ const _StateValueUpdate = class _StateValueUpdate extends pb_1.Message {
     return pb_1.Message.getFieldWithDefault(this, 99, "");
   }
   set other(value) {
-    pb_1.Message.setOneofField(this, 99, __privateGet(this, _one_of_decls2)[0], value);
+    pb_1.Message.setOneofField(this, 99, __privateGet(this, _one_of_decls4)[0], value);
   }
   get has_other() {
     return pb_1.Message.getField(this, 99) != null;
@@ -320,13 +426,13 @@ const _StateValueUpdate = class _StateValueUpdate extends pb_1.Message {
     return _StateValueUpdate.deserialize(bytes);
   }
 };
-_one_of_decls2 = new WeakMap();
+_one_of_decls4 = new WeakMap();
 let StateValueUpdate = _StateValueUpdate;
 const _StateValueUpdateRequest = class _StateValueUpdateRequest extends pb_1.Message {
   constructor(data) {
     super();
-    __privateAdd(this, _one_of_decls3, [[3, 4, 5, 99]]);
-    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls3));
+    __privateAdd(this, _one_of_decls5, [[3, 4, 5, 99]]);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls5));
     if (!Array.isArray(data) && typeof data == "object") {
       if ("userId" in data && data.userId != void 0) {
         this.userId = data.userId;
@@ -364,7 +470,7 @@ const _StateValueUpdateRequest = class _StateValueUpdateRequest extends pb_1.Mes
     return pb_1.Message.getFieldWithDefault(this, 3, "");
   }
   set stringValue(value) {
-    pb_1.Message.setOneofField(this, 3, __privateGet(this, _one_of_decls3)[0], value);
+    pb_1.Message.setOneofField(this, 3, __privateGet(this, _one_of_decls5)[0], value);
   }
   get has_stringValue() {
     return pb_1.Message.getField(this, 3) != null;
@@ -373,7 +479,7 @@ const _StateValueUpdateRequest = class _StateValueUpdateRequest extends pb_1.Mes
     return pb_1.Message.getFieldWithDefault(this, 4, false);
   }
   set boolValue(value) {
-    pb_1.Message.setOneofField(this, 4, __privateGet(this, _one_of_decls3)[0], value);
+    pb_1.Message.setOneofField(this, 4, __privateGet(this, _one_of_decls5)[0], value);
   }
   get has_boolValue() {
     return pb_1.Message.getField(this, 4) != null;
@@ -382,7 +488,7 @@ const _StateValueUpdateRequest = class _StateValueUpdateRequest extends pb_1.Mes
     return pb_1.Message.getFieldWithDefault(this, 5, 0);
   }
   set doubleValue(value) {
-    pb_1.Message.setOneofField(this, 5, __privateGet(this, _one_of_decls3)[0], value);
+    pb_1.Message.setOneofField(this, 5, __privateGet(this, _one_of_decls5)[0], value);
   }
   get has_doubleValue() {
     return pb_1.Message.getField(this, 5) != null;
@@ -391,7 +497,7 @@ const _StateValueUpdateRequest = class _StateValueUpdateRequest extends pb_1.Mes
     return pb_1.Message.getFieldWithDefault(this, 99, "");
   }
   set other(value) {
-    pb_1.Message.setOneofField(this, 99, __privateGet(this, _one_of_decls3)[0], value);
+    pb_1.Message.setOneofField(this, 99, __privateGet(this, _one_of_decls5)[0], value);
   }
   get has_other() {
     return pb_1.Message.getField(this, 99) != null;
@@ -504,13 +610,13 @@ const _StateValueUpdateRequest = class _StateValueUpdateRequest extends pb_1.Mes
     return _StateValueUpdateRequest.deserialize(bytes);
   }
 };
-_one_of_decls3 = new WeakMap();
+_one_of_decls5 = new WeakMap();
 let StateValueUpdateRequest = _StateValueUpdateRequest;
 const _StateValueUpdateResponse = class _StateValueUpdateResponse extends pb_1.Message {
   constructor(data) {
     super();
-    __privateAdd(this, _one_of_decls4, []);
-    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls4));
+    __privateAdd(this, _one_of_decls6, []);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls6));
     if (!Array.isArray(data) && typeof data == "object") {
       if ("suc" in data && data.suc != void 0) {
         this.suc = data.suc;
@@ -566,13 +672,13 @@ const _StateValueUpdateResponse = class _StateValueUpdateResponse extends pb_1.M
     return _StateValueUpdateResponse.deserialize(bytes);
   }
 };
-_one_of_decls4 = new WeakMap();
+_one_of_decls6 = new WeakMap();
 let StateValueUpdateResponse = _StateValueUpdateResponse;
 const _StateSubscribtion = class _StateSubscribtion extends pb_1.Message {
   constructor(data) {
     super();
-    __privateAdd(this, _one_of_decls5, []);
-    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], __privateGet(this, _one_of_decls5));
+    __privateAdd(this, _one_of_decls7, []);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [3], __privateGet(this, _one_of_decls7));
     if (!Array.isArray(data) && typeof data == "object") {
       if ("type" in data && data.type != void 0) {
         this.type = data.type;
@@ -648,7 +754,7 @@ const _StateSubscribtion = class _StateSubscribtion extends pb_1.Message {
     return _StateSubscribtion.deserialize(bytes);
   }
 };
-_one_of_decls5 = new WeakMap();
+_one_of_decls7 = new WeakMap();
 let StateSubscribtion = _StateSubscribtion;
 ((StateSubscribtion2) => {
   let SubscriptionType;
@@ -657,11 +763,11 @@ let StateSubscribtion = _StateSubscribtion;
     SubscriptionType2[SubscriptionType2["subscripe"] = 1] = "subscripe";
   })(SubscriptionType = StateSubscribtion2.SubscriptionType || (StateSubscribtion2.SubscriptionType = {}));
 })(StateSubscribtion || (StateSubscribtion = {}));
-const _SearchState = class _SearchState extends pb_1.Message {
+const _SearchStateRequest = class _SearchStateRequest extends pb_1.Message {
   constructor(data) {
     super();
-    __privateAdd(this, _one_of_decls6, []);
-    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls6));
+    __privateAdd(this, _one_of_decls8, []);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls8));
     if (!Array.isArray(data) && typeof data == "object") {
       if ("userId" in data && data.userId != void 0) {
         this.userId = data.userId;
@@ -684,7 +790,7 @@ const _SearchState = class _SearchState extends pb_1.Message {
     pb_1.Message.setField(this, 2, value);
   }
   static fromObject(data) {
-    const message = new _SearchState({});
+    const message = new _SearchStateRequest({});
     if (data.userId != null) {
       message.userId = data.userId;
     }
@@ -713,7 +819,7 @@ const _SearchState = class _SearchState extends pb_1.Message {
       return writer.getResultBuffer();
   }
   static deserialize(bytes) {
-    const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _SearchState();
+    const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _SearchStateRequest();
     while (reader.nextField()) {
       if (reader.isEndGroup())
         break;
@@ -734,16 +840,16 @@ const _SearchState = class _SearchState extends pb_1.Message {
     return this.serialize();
   }
   static deserializeBinary(bytes) {
-    return _SearchState.deserialize(bytes);
+    return _SearchStateRequest.deserialize(bytes);
   }
 };
-_one_of_decls6 = new WeakMap();
-let SearchState = _SearchState;
+_one_of_decls8 = new WeakMap();
+let SearchStateRequest = _SearchStateRequest;
 const _SearchStateResponse = class _SearchStateResponse extends pb_1.Message {
   constructor(data) {
     super();
-    __privateAdd(this, _one_of_decls7, []);
-    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], __privateGet(this, _one_of_decls7));
+    __privateAdd(this, _one_of_decls9, []);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], __privateGet(this, _one_of_decls9));
     if (!Array.isArray(data) && typeof data == "object") {
       if ("states" in data && data.states != void 0) {
         this.states = data.states;
@@ -799,13 +905,13 @@ const _SearchStateResponse = class _SearchStateResponse extends pb_1.Message {
     return _SearchStateResponse.deserialize(bytes);
   }
 };
-_one_of_decls7 = new WeakMap();
+_one_of_decls9 = new WeakMap();
 let SearchStateResponse = _SearchStateResponse;
 const _State = class _State extends pb_1.Message {
   constructor(data) {
     super();
-    __privateAdd(this, _one_of_decls8, [[3, 4, 5, 99], [6]]);
-    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls8));
+    __privateAdd(this, _one_of_decls10, [[3, 4, 5, 99], [6]]);
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls10));
     if (!Array.isArray(data) && typeof data == "object") {
       if ("stateId" in data && data.stateId != void 0) {
         this.stateId = data.stateId;
@@ -837,7 +943,7 @@ const _State = class _State extends pb_1.Message {
     return pb_1.Message.getFieldWithDefault(this, 3, "");
   }
   set stringValue(value) {
-    pb_1.Message.setOneofField(this, 3, __privateGet(this, _one_of_decls8)[0], value);
+    pb_1.Message.setOneofField(this, 3, __privateGet(this, _one_of_decls10)[0], value);
   }
   get has_stringValue() {
     return pb_1.Message.getField(this, 3) != null;
@@ -846,7 +952,7 @@ const _State = class _State extends pb_1.Message {
     return pb_1.Message.getFieldWithDefault(this, 4, false);
   }
   set boolValue(value) {
-    pb_1.Message.setOneofField(this, 4, __privateGet(this, _one_of_decls8)[0], value);
+    pb_1.Message.setOneofField(this, 4, __privateGet(this, _one_of_decls10)[0], value);
   }
   get has_boolValue() {
     return pb_1.Message.getField(this, 4) != null;
@@ -855,7 +961,7 @@ const _State = class _State extends pb_1.Message {
     return pb_1.Message.getFieldWithDefault(this, 5, 0);
   }
   set doubleValue(value) {
-    pb_1.Message.setOneofField(this, 5, __privateGet(this, _one_of_decls8)[0], value);
+    pb_1.Message.setOneofField(this, 5, __privateGet(this, _one_of_decls10)[0], value);
   }
   get has_doubleValue() {
     return pb_1.Message.getField(this, 5) != null;
@@ -864,7 +970,7 @@ const _State = class _State extends pb_1.Message {
     return pb_1.Message.getFieldWithDefault(this, 99, "");
   }
   set other(value) {
-    pb_1.Message.setOneofField(this, 99, __privateGet(this, _one_of_decls8)[0], value);
+    pb_1.Message.setOneofField(this, 99, __privateGet(this, _one_of_decls10)[0], value);
   }
   get has_other() {
     return pb_1.Message.getField(this, 99) != null;
@@ -873,7 +979,7 @@ const _State = class _State extends pb_1.Message {
     return pb_1.Message.getWrapperField(this, _State.StateCommon, 6);
   }
   set common(value) {
-    pb_1.Message.setOneofWrapperField(this, 6, __privateGet(this, _one_of_decls8)[1], value);
+    pb_1.Message.setOneofWrapperField(this, 6, __privateGet(this, _one_of_decls10)[1], value);
   }
   get has_common() {
     return pb_1.Message.getField(this, 6) != null;
@@ -993,15 +1099,15 @@ const _State = class _State extends pb_1.Message {
     return _State.deserialize(bytes);
   }
 };
-_one_of_decls8 = new WeakMap();
+_one_of_decls10 = new WeakMap();
 let State = _State;
 ((State2) => {
-  var _one_of_decls9;
+  var _one_of_decls11;
   const _StateCommon = class _StateCommon extends pb_1.Message {
     constructor(data) {
       super();
-      __privateAdd(this, _one_of_decls9, [[7], [8], [9], [10]]);
-      pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls9));
+      __privateAdd(this, _one_of_decls11, [[7], [8], [9], [10]]);
+      pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls11));
       if (!Array.isArray(data) && typeof data == "object") {
         if ("name" in data && data.name != void 0) {
           this.name = data.name;
@@ -1075,7 +1181,7 @@ let State = _State;
       return pb_1.Message.getFieldWithDefault(this, 7, "");
     }
     set unit(value) {
-      pb_1.Message.setOneofField(this, 7, __privateGet(this, _one_of_decls9)[0], value);
+      pb_1.Message.setOneofField(this, 7, __privateGet(this, _one_of_decls11)[0], value);
     }
     get has_unit() {
       return pb_1.Message.getField(this, 7) != null;
@@ -1084,7 +1190,7 @@ let State = _State;
       return pb_1.Message.getFieldWithDefault(this, 8, 0);
     }
     set step(value) {
-      pb_1.Message.setOneofField(this, 8, __privateGet(this, _one_of_decls9)[1], value);
+      pb_1.Message.setOneofField(this, 8, __privateGet(this, _one_of_decls11)[1], value);
     }
     get has_step() {
       return pb_1.Message.getField(this, 8) != null;
@@ -1093,7 +1199,7 @@ let State = _State;
       return pb_1.Message.getFieldWithDefault(this, 9, 0);
     }
     set min(value) {
-      pb_1.Message.setOneofField(this, 9, __privateGet(this, _one_of_decls9)[2], value);
+      pb_1.Message.setOneofField(this, 9, __privateGet(this, _one_of_decls11)[2], value);
     }
     get has_min() {
       return pb_1.Message.getField(this, 9) != null;
@@ -1102,7 +1208,7 @@ let State = _State;
       return pb_1.Message.getFieldWithDefault(this, 10, 0);
     }
     set max(value) {
-      pb_1.Message.setOneofField(this, 10, __privateGet(this, _one_of_decls9)[3], value);
+      pb_1.Message.setOneofField(this, 10, __privateGet(this, _one_of_decls11)[3], value);
     }
     get has_max() {
       return pb_1.Message.getField(this, 10) != null;
@@ -1277,7 +1383,7 @@ let State = _State;
       return _StateCommon.deserialize(bytes);
     }
   };
-  _one_of_decls9 = new WeakMap();
+  _one_of_decls11 = new WeakMap();
   let StateCommon = _StateCommon;
   State2.StateCommon = _StateCommon;
   ((StateCommon2) => {
@@ -1301,8 +1407,8 @@ UnimplementedStateUpdateService.definition = {
     responseSerialize: (message) => Buffer.from(message.serialize()),
     responseDeserialize: (bytes) => StatesValueUpdate.deserialize(new Uint8Array(bytes))
   },
-  updateValue: {
-    path: "/StateUpdate/updateValue",
+  UpdateValue: {
+    path: "/StateUpdate/UpdateValue",
     requestStream: false,
     responseStream: false,
     requestSerialize: (message) => Buffer.from(message.serialize()),
@@ -1310,23 +1416,32 @@ UnimplementedStateUpdateService.definition = {
     responseSerialize: (message) => Buffer.from(message.serialize()),
     responseDeserialize: (bytes) => StateValueUpdateResponse.deserialize(new Uint8Array(bytes))
   },
-  searchState: {
-    path: "/StateUpdate/searchState",
+  SearchState: {
+    path: "/StateUpdate/SearchState",
     requestStream: false,
     responseStream: false,
     requestSerialize: (message) => Buffer.from(message.serialize()),
-    requestDeserialize: (bytes) => SearchState.deserialize(new Uint8Array(bytes)),
+    requestDeserialize: (bytes) => SearchStateRequest.deserialize(new Uint8Array(bytes)),
     responseSerialize: (message) => Buffer.from(message.serialize()),
     responseDeserialize: (bytes) => SearchStateResponse.deserialize(new Uint8Array(bytes))
   },
-  searchStateStream: {
-    path: "/StateUpdate/searchStateStream",
+  SearchStateStream: {
+    path: "/StateUpdate/SearchStateStream",
     requestStream: true,
     responseStream: true,
     requestSerialize: (message) => Buffer.from(message.serialize()),
-    requestDeserialize: (bytes) => SearchState.deserialize(new Uint8Array(bytes)),
+    requestDeserialize: (bytes) => SearchStateRequest.deserialize(new Uint8Array(bytes)),
     responseSerialize: (message) => Buffer.from(message.serialize()),
     responseDeserialize: (bytes) => SearchStateResponse.deserialize(new Uint8Array(bytes))
+  },
+  GetAllObjects: {
+    path: "/StateUpdate/GetAllObjects",
+    requestStream: false,
+    responseStream: false,
+    requestSerialize: (message) => Buffer.from(message.serialize()),
+    requestDeserialize: (bytes) => AllObjectRequest.deserialize(new Uint8Array(bytes)),
+    responseSerialize: (message) => Buffer.from(message.serialize()),
+    responseDeserialize: (bytes) => AllObjectsResults.deserialize(new Uint8Array(bytes))
   }
 };
 class StateUpdateClient extends grpc_1.makeGenericClientConstructor(UnimplementedStateUpdateService.definition, "StateUpdate", {}) {
@@ -1335,20 +1450,25 @@ class StateUpdateClient extends grpc_1.makeGenericClientConstructor(Unimplemente
     this.Subscibe = (message, metadata, options) => {
       return super.Subscibe(message, metadata, options);
     };
-    this.updateValue = (message, metadata, options, callback) => {
-      return super.updateValue(message, metadata, options, callback);
+    this.UpdateValue = (message, metadata, options, callback) => {
+      return super.UpdateValue(message, metadata, options, callback);
     };
-    this.searchState = (message, metadata, options, callback) => {
-      return super.searchState(message, metadata, options, callback);
+    this.SearchState = (message, metadata, options, callback) => {
+      return super.SearchState(message, metadata, options, callback);
     };
-    this.searchStateStream = (metadata, options) => {
-      return super.searchStateStream(metadata, options);
+    this.SearchStateStream = (metadata, options) => {
+      return super.SearchStateStream(metadata, options);
+    };
+    this.GetAllObjects = (message, metadata, options, callback) => {
+      return super.GetAllObjects(message, metadata, options, callback);
     };
   }
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  SearchState,
+  AllObjectRequest,
+  AllObjectsResults,
+  SearchStateRequest,
   SearchStateResponse,
   State,
   StateSubscribtion,
