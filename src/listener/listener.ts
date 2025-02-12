@@ -33,7 +33,6 @@ export class Listener extends EventEmitter {
             //this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
             //Check if notification
             if (!id.startsWith('hiob.')) {
-                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 const adapaterKey = `${id.split('.')[0]}.${id.split('.')[1]}`;
                 if (this.subsribedStates.get(adapaterKey)?.subscribed.has(id)) {
                     if (this.adapter.valueDatapoints[id] == null) {
