@@ -23,14 +23,24 @@
             "label": "useCert",
             "tooltip": "useCert_tooltip",
             "default": false,
-            "newLine": true
+            "newLine": true,
+            "sm":3,
+            "md":3,
+            "lg":3,
+            "xs":12,
+            "xl": 4
         },
         "staticLink": {
             "type": "staticLink",
             "text": "link to description",
             "href": "https://github.com/moba15/ioBroker.hiob/blob/main/docs%2Fde%2FsecureCon.md",
             "icon": "info",
-            "newLine": true
+            "newLine": true,
+            "sm":3,
+            "md":3,
+            "lg":3,
+            "xs":12,
+            "xl": 4
         },
         "certPath": {
             "newLine": true,
