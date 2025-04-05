@@ -10,11 +10,11 @@
         "port": {
             "type": "port",
             "label": "select a port",
-            "sm":3,
-            "md":3,
-            "lg":3,
-            "xs":4,
-            "xl": 12,
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4,
+            "xl": 4,
             "default": 8090,
             "newLine": true
         },
@@ -24,11 +24,11 @@
             "tooltip": "useCert_tooltip",
             "default": false,
             "newLine": true,
-            "sm":3,
-            "md":3,
-            "lg":3,
-            "xs":4,
-            "xl": 12
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4,
+            "xl": 4
         },
         "staticLink": {
             "type": "staticLink",
@@ -36,11 +36,11 @@
             "href": "https://github.com/moba15/ioBroker.hiob/blob/main/docs%2Fde%2FsecureCon.md",
             "icon": "info",
             "newLine": true,
-            "sm":3,
-            "md":3,
-            "lg":3,
-            "xs":4,
-            "xl": 12
+            "xs": 12,
+            "sm": 12,
+            "md": 6,
+            "lg": 4,
+            "xl": 4
         },
         "certPath": {
             "newLine": true,
@@ -49,11 +49,11 @@
             "tooltip": "certPath_tooltip",
             "disabled": "!data.useCert",
             "hidden": "!data.useCert",
+            "xs": 12,
             "sm": 12,
             "md": 6,
-            "lg": 3,
-            "xs": 4,
-            "xl": 12,
+            "lg": 4,
+            "xl": 4,
             "default": ""
         },
         "keyPath": {
@@ -63,11 +63,11 @@
             "tooltip": "keyPath_tooltip",
             "disabled": "!data.useCert",
             "hidden": "!data.useCert",
+            "xs": 12,
             "sm": 12,
             "md": 6,
-            "lg": 3,
-            "xs": 4,
-            "xl": 12,
+            "lg": 4,
+            "xl": 4,
             "default": ""
         }
     }
