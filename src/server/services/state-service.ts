@@ -73,6 +73,15 @@ export function addStateServices(gRpcServer: grpc.Server, adapter : m.SamartHome
                     common: new proto.State.StateCommon({
                         //TODO Language support
                         name: object.common.name.toString(),
+                        unit: object.common.unit,
+                        desc: object.common.desc?.toString(),
+                        max: object.common.max,
+                        min: object.common.min,
+                        type: object.common.type.toString(),
+                        step: object.common.step,
+                        read: object.common.read,
+                        write: object.common.write,
+                        role: object.common.role
                     })
                 }));
             }
