@@ -71,7 +71,7 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.1.7-beta.2 (2025-04-10)
 - Updated packages (moba15)
 - Fixing adpater issues found by ioBroker bot (moba15)
 - Fixed some smaller bugs (moba15)

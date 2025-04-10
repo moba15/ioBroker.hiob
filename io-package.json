@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.1.7-beta.1",
+    "version": "0.1.7-beta.2",
     "news": {
+      "0.1.7-beta.2": {
+        "en": "Updated packages (moba15)\nFixing adpater issues found by ioBroker bot (moba15)\nFixed some smaller bugs (moba15)",
+        "de": "Aktualisierte Pakete (moba15)\nAdpater Probleme gefunden von ioBroker bot (moba15)\nEinige kleinere Fehler behoben (moba15)",
+        "ru": "Обновленные пакеты (moba15)\nИсправление проблем с адпатером, обнаруженных ботом ioBroker (moba15)\nИсправлено несколько небольших багов (moba15)",
+        "pt": "Pacotes atualizados (moba15)\nCorrigindo problemas de adpater encontrados pelo bot ioBroker (moba15)\nCorrigido alguns bugs menores (moba15)",
+        "nl": "Bijgewerkte pakketten (moba15)\nBevestiging adpater problemen gevonden door ioBroker bot (moba15)\nEnkele kleinere bugs gerepareerd (moba15)",
+        "fr": "Paquets mis à jour (moba15)\nCorrection des problèmes d'adpater trouvés par ioBroker bot (moba15)\nCorrection de quelques bugs plus petits (moba15)",
+        "it": "Pacchetti aggiornati (moba15)\nFissare i problemi di adpater trovati da ioBroker bot (moba15)\nRisolto alcuni bug più piccoli (moba15)",
+        "es": "Paquetes actualizados (moba15)\nCorrección de problemas de adpater encontrados por ioBroker bot (moba15)\nArreglado algunos errores más pequeños (moba15)",
+        "pl": "Aktualizacja pakietów (moba15)\nFixing adpater issues found by joBroker bot (moba15)\nNaprawiono kilka mniejszych błędów (moba15)",
+        "uk": "Оновлені пакети (moba15)\nВиправлення проблем адпатора, знайдених ботом ioBroker (moba15)\nВиправлено деякі менші помилки (moba15)",
+        "zh-cn": "更新的软件包(moba15)\n修复 ioBroker bot(moba15)发现的寄生虫问题\n修补一些小虫子( moba15)"
+      },
       "0.1.7-beta.1": {
         "en": "Updated packages\nFix for #93 \nFix for #91 \nFix for #109\nMigration to ESLint 9 #108\nFixed Update App message\nAdded PingPong disconnection handling -> some offline message functionality\nOptimized logic behind state subscription -> Now subscribes only to the necessary adapter",
         "de": "Aktualisierte Pakete\nFix für #93\nFix für #91\nFix für #109\nMigration auf ESLint 9 #108\nBehobenes Update App-Nachricht\nHinzugefügt PingPong Trennhandling -> einige Offline-Nachricht-Funktionalität\nOptimierte Logik hinter dem Staatsabonnement -> Jetzt abonniert nur den nötigen Adapter",
@@ -80,19 +93,6 @@
         "pl": "często. słowa kluczowe\nzaktualizowane zależności",
         "uk": "фіксований загальний. новини\nоновлені залежності",
         "zh-cn": "固定常见。 关键词\n更新的依赖关系"
-      },
-      "0.1.2": {
-        "en": "changed licenseInformation and tier",
-        "de": "geänderte LizenzInformation und Tier",
-        "ru": "измененная лицензияИнформация и уровень",
-        "pt": "licença alteradaInformação e nível",
-        "nl": "veranderd licentieInformatie en niveau",
-        "fr": "changement de licenceInformations et niveau",
-        "it": "licenza modificataInformazioni e livello",
-        "es": "cambio de licenciaInformación y titulación",
-        "pl": "zmieniona licencja Informacje i poziom",
-        "uk": "змінена ліцензіяІнформація та ярус",
-        "zh-cn": "更改许可证信息和等级"
       }
     },
     "titleLang": {
