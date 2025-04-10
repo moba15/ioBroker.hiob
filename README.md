@@ -72,8 +72,9 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
-- Integrating gRPC as main protocol#
-- Fixing adpater issues found by ioBroker bot
+- Updated packages (moba15)
+- Fixing adpater issues found by ioBroker bot (moba15)
+- Fixed some smaller bugs (moba15)
 
 ### 0.1.7-beta.1 (2024-12-08)
 - Updated packages
