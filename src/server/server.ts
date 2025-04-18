@@ -107,6 +107,9 @@ export class Server {
         //TODO: Discuss if this would be thread safe. There should only be one client connected (with the same id), so this should be no problem?
         const backlog = this.messageBacklogForClient.find(e => e.clientId == client.id);
         backlog?.backlog.forEach(msg => client.sendMSG(msg, true));
+        if (backlog) {
+            backlog.backlog = [];
+        }
     }
 
     broadcastMsg(msg: string): void {
