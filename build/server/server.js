@@ -111,6 +111,9 @@ class Server {
   sendBacklog(client) {
     const backlog = this.messageBacklogForClient.find((e) => e.clientId == client.id);
     backlog == null ? void 0 : backlog.backlog.forEach((msg) => client.sendMSG(msg, true));
+    if (backlog) {
+      backlog.backlog = [];
+    }
   }
   broadcastMsg(msg) {
     this.conClients.filter((e) => !e.client.onlySendNotification).forEach((element) => {
