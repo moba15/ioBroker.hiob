@@ -1154,7 +1154,7 @@ let State = _State;
       pb_1.Message.setField(this, 2, value);
     }
     get type() {
-      return pb_1.Message.getFieldWithDefault(this, 3, State2.StateCommon.StateType.boolean);
+      return pb_1.Message.getFieldWithDefault(this, 3, "");
     }
     set type(value) {
       pb_1.Message.setField(this, 3, value);
@@ -1315,8 +1315,8 @@ let State = _State;
         writer.writeString(1, this.name);
       if (this.desc.length)
         writer.writeString(2, this.desc);
-      if (this.type != State2.StateCommon.StateType.boolean)
-        writer.writeEnum(3, this.type);
+      if (this.type.length)
+        writer.writeString(3, this.type);
       if (this.read != false)
         writer.writeBool(4, this.read);
       if (this.write != false)
@@ -1347,7 +1347,7 @@ let State = _State;
             message.desc = reader.readString();
             break;
           case 3:
-            message.type = reader.readEnum();
+            message.type = reader.readString();
             break;
           case 4:
             message.read = reader.readBool();
@@ -1386,14 +1386,6 @@ let State = _State;
   _one_of_decls11 = new WeakMap();
   let StateCommon = _StateCommon;
   State2.StateCommon = _StateCommon;
-  ((StateCommon2) => {
-    let StateType;
-    ((StateType2) => {
-      StateType2[StateType2["boolean"] = 0] = "boolean";
-      StateType2[StateType2["str"] = 1] = "str";
-      StateType2[StateType2["number"] = 2] = "number";
-    })(StateType = StateCommon2.StateType || (StateCommon2.StateType = {}));
-  })(StateCommon = State2.StateCommon || (State2.StateCommon = {}));
 })(State || (State = {}));
 class UnimplementedStateUpdateService {
 }
