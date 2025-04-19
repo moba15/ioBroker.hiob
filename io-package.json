@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.1.7-beta.3",
+    "version": "0.1.7",
     "news": {
+      "0.1.7": {
+        "en": "fixed notification bug: the backlog now is sent only ones if the client reconnects multiple times (moba15)\nUpdated packages\nUpdated packages (moba15)\nFixing adpater issues found by ioBroker bot (moba15)\nFixed some smaller bugs (moba15)\nFix for #93 \nFix for #91 \nFix for #109\nMigration to ESLint 9 #108\nAdded PingPong disconnection handling -> some offline message functionality\nOptimized logic behind state subscription -> Now subscribes only to the necessary adapter",
+        "de": "behobener benachrichtigungsfehler: das backlog wird jetzt nur gesendet, wenn der client mehrfach wieder vernetzt (moba15)\nAktualisierte Pakete\nAktualisierte Pakete (moba15)\nAdpater Probleme gefunden von ioBroker bot (moba15)\nEinige kleinere Fehler behoben (moba15)\nFix für #93\nFix für #91\nFix für #109\nMigration auf ESLint 9 #108\nHinzugefügt PingPong Trennhandling -> einige Offline-Nachricht-Funktionalität\nOptimierte Logik hinter dem Staatsabonnement -> Jetzt abonniert nur den nötigen Adapter",
+        "ru": "исправленная ошибка уведомления: отставание теперь отправляется только в том случае, если клиент повторно подключается несколько раз (moba15)\nОбновленные пакеты\nОбновленные пакеты (moba15)\nИсправление проблем с адпатером, обнаруженных ботом ioBroker (moba15)\nИсправлено несколько небольших багов (moba15)\nРемонт для #93\nИсправить #91\nРемонт для #109\nМиграция в ESLint 9 #108\nДобавлена обработка отключения PingPong -> некоторые функции автономного сообщения\nОптимизированная логика государственной подписки Теперь подписывается только на необходимый адаптер",
+        "pt": "bug de notificação fixa: o backlog agora é enviado apenas um se o cliente reconectar várias vezes (moba15)\nPacotes atualizados\nPacotes atualizados (moba15)\nCorrigindo problemas de adpater encontrados pelo bot ioBroker (moba15)\nCorrigido alguns bugs menores (moba15)\nFix para #93\nFix para #91\nFix para #109\nMigração para ESLint 9 #108\nAdicionado PingPong manipulação de desconexão -> algumas funcionalidades de mensagem offline\nLógica otimizada por trás da assinatura estatal -> Agora assina apenas o adaptador necessário",
+        "nl": "vaste melding bug: de achterstand wordt nu alleen verstuurd als de client meerdere keren opnieuw verbinding maakt (moba15)\nBijgewerkte pakketten\nBijgewerkte pakketten (moba15)\nBevestiging adpater problemen gevonden door ioBroker bot (moba15)\nEnkele kleinere bugs gerepareerd (moba15)\nFix voor #93\nFix voor #91\nFix voor #109\nMigratie naar ESLint 9 #108\nToegevoegd PingPong ontkoppeling behandeling -> sommige offline bericht functionaliteit\nGeoptimaliseerde logica achter het staatsabonnement -> Abonneert zich nu alleen op de benodigde adapter",
+        "fr": "bug de notification fixe: l'arriéré n'est maintenant envoyé que si le client reconnecte plusieurs fois (moba15)\nPaquets mis à jour\nPaquets mis à jour (moba15)\nCorrection des problèmes d'adpater trouvés par ioBroker bot (moba15)\nCorrection de quelques bugs plus petits (moba15)\nCorrection pour #93\nCorrection pour #91\nCorrection pour #109\nMigration vers ESLint 9 #108\nAjout de la gestion de la déconnexion PingPong -> certaines fonctionnalités de message hors ligne\nLogique optimisée derrière l'abonnement d'État -> Maintenant s'abonner seulement à l'adaptateur nécessaire",
+        "it": "bug di notifica fisso: il backlog ora viene inviato solo se il client ricollega più volte (moba15)\nPacchetti aggiornati\nPacchetti aggiornati (moba15)\nFissare i problemi di adpater trovati da ioBroker bot (moba15)\nRisolto alcuni bug più piccoli (moba15)\nFissare per #93\nFissare per #91\nFissare per #109\nMigrazione a ESLint 9 #108\nAggiunto PingPong disconnessione di gestione -> alcune funzionalità di messaggio offline\nLogica ottimizzata dietro abbonamento statale -> Ora si iscrive solo all'adattatore necessario",
+        "es": "error de notificación fija: el atraso ahora se envía sólo los si el cliente vuelve a conectar varias veces (moba15)\nPaquetes actualizados\nPaquetes actualizados (moba15)\nCorrección de problemas de adpater encontrados por ioBroker bot (moba15)\nArreglado algunos errores más pequeños (moba15)\nCorrección para #93\nCorrección para #91\nCorrección para #109\nMigración a ESLint 9 #108\nAñadido Manejo de desconexión de PingPong - confiar algunas funcionalidad de mensaje offline\nLógica optimizada detrás de la suscripción estatal - título Ahora suscribe sólo al adaptador necesario",
+        "pl": "fixed notification bug: backlog jest teraz wysyłany tylko wtedy, gdy klient ponownie łączy się wielokrotnie (moba15)\nAktualizacja pakietów\nAktualizacja pakietów (moba15)\nFixing adpater issues found by joBroker bot (moba15)\nNaprawiono kilka mniejszych błędów (moba15)\nNapraw dla # 93\nNapraw dla # 91\nNapraw dla # 109\nMigracja do ESLint 9 # 108\nDodano obsługę odłączenia PingPong - > niektóre funkcje wiadomości offline\nZoptymalizowana logika za subskrypcją państwową - > Teraz subskrybuje tylko do niezbędnego adaptera",
+        "uk": "виправлено помилку повідомлення: backlog тепер надсилається тільки ті, якщо клієнт відключає кілька разів (moba15)\nОновлені пакети\nОновлені пакети (moba15)\nВиправлення проблем адпатора, знайдених ботом ioBroker (moba15)\nВиправлено деякі менші помилки (moba15)\nВиправлення для #93\nВиправлення для #91\nВиправлення для #109\nМіграція до ESLint 9 #108\nДодано PingPong роз'єднання -> деякі функції офлайн повідомлення\nОптимізована логіка за державною підпискою -> Тепер підписується тільки на необхідний адаптер",
+        "zh-cn": "固定通知错误: 如果客户端多次重连接( moba15) , 现在只发送积压 \n更新软件包\n更新的软件包(moba15)\n修复 ioBroker bot(moba15)发现的寄生虫问题\n修补一些小虫子( moba15)\n准备93号\n准备91号\n修复为 #109\n迁移到ESLint 9#108\n添加了 PingPong 断开处理 - > 一些离线消息功能\n状态订阅背后的优化逻辑 - > 现在只订阅必要的适配器"
+      },
       "0.1.7-beta.3": {
         "en": "fixed notification bug: the backlog now is sent only ones if the client reconnects multiple times (moba15)",
         "de": "behobener benachrichtigungsfehler: das backlog wird jetzt nur gesendet, wenn der client mehrfach wieder vernetzt (moba15)",
@@ -80,19 +93,6 @@
         "pl": "Usunięte blokowane\nNaprawiono kilka błędów\nAktualizacja zależności",
         "uk": "Видалити блокноти\nВиправлено деякі помилки\nОновлені залежності",
         "zh-cn": "块状删除\n修补一些错误\n更新的依赖关系"
-      },
-      "0.1.4": {
-        "en": "added docs and more examples\nImplement suggestions for latest release",
-        "de": "ergänzte doks und weitere beispiele\nImplementierungsvorschläge für die neueste Veröffentlichung",
-        "ru": "добавлены docs и больше примеров\nВыполнить предложения о последнем выпуске",
-        "pt": "adicionar documentos e mais exemplos\nSugestões de implementação para lançamento mais recente",
-        "nl": "toegevoegd documenten en meer voorbeelden\nImplementeer suggesties voor de laatste versie",
-        "fr": "plus de documents et plus d'exemples\nMettre en œuvre des suggestions pour la dernière version",
-        "it": "aggiunta di documenti e più esempi\nImplement suggerimenti per l'ultima release",
-        "es": "docs añadidos y más ejemplos\nImplementar sugerencias para la última versión",
-        "pl": "dodane dokumenty i więcej przykładów\nWdrożenie sugestii dla najnowszego wydania",
-        "uk": "додано docs і більше прикладів\nРеалізація пропозицій для останнього релізу",
-        "zh-cn": "添加文件和更多实例\n执行关于最新发布的建议"
       }
     },
     "titleLang": {
