@@ -32,7 +32,6 @@ __export(client_exports, {
 });
 module.exports = __toCommonJS(client_exports);
 var import_datapacks = require("./datapacks");
-var import_template_manager = require("../template/template_manager");
 var CryptoJS = __toESM(require("crypto-js"));
 class Client {
   constructor(socket, server, req, adapter) {
@@ -227,17 +226,14 @@ class Client {
   }
   async onTemplateSettingCreate(templateSettingCreatePack) {
     this.adapter.log.debug("OnTemplateSettingCreate: " + templateSettingCreatePack.name);
-    await this.adapter.templateManager.createNewTemplateSetting(new import_template_manager.TemplateSettings(templateSettingCreatePack.name));
     this.sendMSG(new import_datapacks.TemplateSettingCreatePack(templateSettingCreatePack.name).toJSON(), true);
   }
   async onTemplateUpload(uploadTemplateSettingPack) {
-    await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets);
     this.sendMSG(new import_datapacks.TemplateSettingUploadSuccessPack().toJSON(), true);
   }
   async getTemplatesSetting(name, device, screen, widget) {
     this.adapter.log.debug("NAME: " + name);
     const map = await this.adapter.templateManager.getTemplateSettings(name);
-    this.sendMSG(new import_datapacks.GetTemplateSettingPack(device ? map["devices"] : null, screen ? map["screens"] : null, widget ? map["widgets"] : null).toJSON(), true);
   }
   onNotification(pack) {
     if (pack.onlySendNotification != void 0) {

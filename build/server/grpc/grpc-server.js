@@ -34,6 +34,7 @@ module.exports = __toCommonJS(grpc_server_exports);
 var grpc = __toESM(require("@grpc/grpc-js"));
 var import_login_service = require("../services/login-service");
 var import_state_service = require("../services/state-service");
+var import_config_sync_service = require("../services/config-sync-service");
 class GrpcServer {
   constructor(port = 4500, keyPath = "key.pem", certPath = "cert.pem", adapter, useCert = false) {
     this.stoped = false;
@@ -54,6 +55,7 @@ class GrpcServer {
     }
     (0, import_login_service.addLoginServices)(this.gRpcServer, this.adapter);
     (0, import_state_service.addStateServices)(this.gRpcServer, this.adapter);
+    (0, import_config_sync_service.addConfigSyncServices)(this.gRpcServer, this.adapter);
   }
   broadcastMsg(msg) {
     this.conClients.filter((e) => !e.onlySendNotification).forEach((element) => {

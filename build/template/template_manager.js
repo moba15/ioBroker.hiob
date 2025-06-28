@@ -26,10 +26,7 @@ class TemplateManager {
   constructor(adapter) {
     this.adapter = adapter;
   }
-  async uploadTemplateSetting(name, devices, screens, widgets) {
-    if (devices != null) {
-      await this.adapter.setStateAsync("settings." + name + ".devices", devices, true);
-    }
+  async uploadTemplateSetting(name, screens, widgets) {
     if (screens != null) {
       await this.adapter.setStateAsync("settings." + name + ".screens", screens, true);
     }
@@ -42,11 +39,6 @@ class TemplateManager {
     if (temp == null) {
       return {};
     }
-    const devicesJSON = temp.val;
-    temp = await this.adapter.getStateAsync("settings." + name + ".screens");
-    if (temp == null) {
-      return {};
-    }
     const screensJSON = temp.val;
     temp = await this.adapter.getStateAsync("settings." + name + ".widgets");
     if (temp == null) {
@@ -54,7 +46,7 @@ class TemplateManager {
     }
     const widgetsJSON = temp.val;
     this.adapter.log.debug("WIDGETS " + widgetsJSON);
-    return { screens: screensJSON, widgets: widgetsJSON, devices: devicesJSON };
+    return { screens: screensJSON, widgets: widgetsJSON };
   }
   async fetchTemplateSettings() {
     const settings = await this.adapter.getAdapterObjectsAsync();
@@ -69,7 +61,7 @@ class TemplateManager {
     }
     return list;
   }
-  async createNewTemplateSetting(templateSettings) {
+  async createNewTemplateSetting(templateSettingName) {
     await this.adapter.setObjectNotExistsAsync("settings", {
       type: "channel",
       common: {
@@ -77,19 +69,19 @@ class TemplateManager {
       },
       native: {}
     });
-    await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name, {
+    await this.adapter.setObjectNotExistsAsync("settings." + templateSettingName, {
       type: "folder",
       common: {
-        name: templateSettings.name,
+        name: templateSettingName,
         read: true,
         write: true
       },
       native: {}
     });
-    await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name + ".devices", {
+    await this.adapter.setObjectNotExistsAsync("settings." + templateSettingName + ".widgets", {
       type: "state",
       common: {
-        name: templateSettings.name + " devices",
+        name: templateSettingName + " widgets",
         type: "string",
         role: "json",
         def: "{}",
@@ -98,22 +90,10 @@ class TemplateManager {
       },
       native: {}
     });
-    await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name + ".widgets", {
+    await this.adapter.setObjectNotExistsAsync("settings." + templateSettingName + ".screens", {
       type: "state",
       common: {
-        name: templateSettings.name + " widgets",
-        type: "string",
-        role: "json",
-        def: "{}",
-        read: true,
-        write: true
-      },
-      native: {}
-    });
-    await this.adapter.setObjectNotExistsAsync("settings." + templateSettings.name + ".screens", {
-      type: "state",
-      common: {
-        name: templateSettings.name + " screens",
+        name: templateSettingName + " screens",
         type: "string",
         role: "json",
         def: "{}",

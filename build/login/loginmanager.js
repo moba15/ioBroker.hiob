@@ -238,8 +238,8 @@ class LoginManager {
     this.adapter.setStateAsync("devices." + deviceIDRep + ".connected", true, true);
     let validdate = await this.validateLoginRequestProto(loginRequest.deviceName, deviceIDRep, loginRequest);
     if (validdate != proto.LoginResponse.Status.succesfull) {
-      return new proto.LoginResponse({ sessionId, status: proto.LoginResponse.Status.error });
-      ;
+      this.adapter.log.debug("Login declained");
+      return new proto.LoginResponse({ sessionId, status: validdate });
     }
     this.adapter.log.debug("Login approved");
     return new proto.LoginResponse({ sessionId, status: proto.LoginResponse.Status.succesfull });
