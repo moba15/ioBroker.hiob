@@ -6,6 +6,7 @@ import * as grpc from "@grpc/grpc-js";
 import * as proto from "../../generated/login/login"
 import { addLoginServices } from "../services/login-service";
 import {addStateServices} from "../services/state-service"
+import {addConfigSyncServices} from "../services/config-sync-service"
 
 
 export class GrpcServer {
@@ -43,6 +44,7 @@ export class GrpcServer {
         }
         addLoginServices(this.gRpcServer, this.adapter);
         addStateServices(this.gRpcServer, this.adapter);
+        addConfigSyncServices(this.gRpcServer, this.adapter);
 
        
     }

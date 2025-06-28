@@ -245,8 +245,9 @@ export class LoginManager {
         let validdate = await this.validateLoginRequestProto(loginRequest.deviceName, deviceIDRep, loginRequest);
         if (validdate != proto.LoginResponse.Status.succesfull) {
             //Login declined
+            this.adapter.log.debug("Login declained");
             
-            return  new proto.LoginResponse({sessionId: sessionId, status: proto.LoginResponse.Status.error});;
+            return  new proto.LoginResponse({sessionId: sessionId, status: validdate});
         }
         this.adapter.log.debug("Login approved");
         return new proto.LoginResponse({sessionId: sessionId, status: proto.LoginResponse.Status.succesfull});
@@ -427,6 +428,7 @@ export class LoginManager {
             );
             apr = proto.LoginResponse.Status.notApproved;
         }
+       
         if (keyState == null || keyState.val == null) {
             apr = proto.LoginResponse.Status.error;
         }

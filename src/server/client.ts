@@ -247,19 +247,19 @@ export class Client {
     async onTemplateSettingCreate(templateSettingCreatePack: TemplateSettingCreatePack): Promise<void> {
         //TODO:
         this.adapter.log.debug("OnTemplateSettingCreate: " + templateSettingCreatePack.name);
-        await this.adapter.templateManager.createNewTemplateSetting(new TemplateSettings(templateSettingCreatePack.name));
+        //await this.adapter.templateManager.createNewTemplateSetting(new TemplateSettings(templateSettingCreatePack.name));
         this.sendMSG(new TemplateSettingCreatePack(templateSettingCreatePack.name).toJSON(), true);
     }
 
     async onTemplateUpload(uploadTemplateSettingPack: any): Promise<void> {
-        await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets);
+        //await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets);
         this.sendMSG(new TemplateSettingUploadSuccessPack().toJSON(), true);
     }
 
     async getTemplatesSetting(name: any, device: any, screen: any, widget: any): Promise<void> {
         this.adapter.log.debug("NAME: " + name);
         const map = await this.adapter.templateManager.getTemplateSettings(name);
-        this.sendMSG(new GetTemplateSettingPack(device ? map["devices"]: null, screen ? map["screens"]: null, widget ? map["widgets"] : null).toJSON(), true);
+        //this.sendMSG(new GetTemplateSettingPack(device ? map["devices"]: null, screen ? map["screens"]: null, widget ? map["widgets"] : null).toJSON(), true);
 
     }
 
