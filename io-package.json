@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.1.6",
+    "version": "0.2.0-alpha.0",
     "news": {
+      "0.2.0-alpha.0": {
+        "en": "Added first gRPC support\nAdded support for client side states database\nIMPORTANT: This is only an alpha version, it should only be used for testing and feedback. Many features are not implemented yet.",
+        "de": "Erste gRPC-Unterstützung hinzugefügt\nUnterstützung für clientseitige Statusdatenbank hinzugefügt\nWICHTIG: Dies ist nur eine Alpha-Version und sollte nur zum Testen und für Feedback verwendet werden. Viele Funktionen sind noch nicht implementiert.",
+        "ru": "Добавлена первая поддержка gRPC\nДобавлена поддержка клиентской базы данных состояний\nВАЖНО: Это только альфа-версия, использовать только для тестирования и обратной связи. Многие функции еще не реализованы.",
+        "pt": "Adicionado o primeiro suporte a gRPC\nAdicionado suporte para banco de dados de estados no lado do cliente\nIMPORTANTE: Esta é apenas uma versão alfa, deve ser usada apenas para testes e feedback. Muitos recursos ainda não estão implementados.",
+        "nl": "Eerste gRPC-ondersteuning toegevoegd\nOndersteuning voor client-side statusdatabase toegevoegd\nBELANGRIJK: Dit is slechts een alfaversie, alleen gebruiken voor testen en feedback. Veel functies zijn nog niet geïmplementeerd.",
+        "fr": "Ajout du premier support gRPC\nAjout du support de la base de données des états côté client\nIMPORTANT : Ceci est seulement une version alpha, à utiliser uniquement pour les tests et les retours. De nombreuses fonctionnalités ne sont pas encore implémentées.",
+        "it": "Aggiunto il primo supporto gRPC\nAggiunto supporto per il database degli stati lato client\nIMPORTANTE: Questa è solo una versione alpha, da usare solo per test e feedback. Molte funzionalità non sono ancora implementate.",
+        "es": "Añadido el primer soporte gRPC\nAñadido soporte para la base de datos de estados del lado del cliente\nIMPORTANTE: Esta es solo una versión alfa, debe usarse solo para pruebas y comentarios. Muchas funciones aún no están implementadas.",
+        "pl": "Dodano pierwsze wsparcie dla gRPC\nDodano obsługę bazy stanów po stronie klienta\nWAŻNE: To jest tylko wersja alfa, należy używać tylko do testów i opinii. Wiele funkcji nie jest jeszcze zaimplementowanych.",
+        "uk": "Додано першу підтримку gRPC\nДодано підтримку клієнтської бази даних станів\nВАЖЛИВО: Це лише альфа-версія, використовуйте лише для тестування та відгуків. Багато функцій ще не реалізовано.",
+        "zh-cn": "添加了首个 gRPC 支持\n添加了客户端状态数据库支持\n重要提示：这只是一个 alpha 版本，仅供测试和反馈使用。许多功能尚未实现。"
+      },
       "0.1.6": {
         "en": "Updated Packages\nPrepared lates release",
         "de": "Aktualisierte Pakete\nVorbereitete Verspätung",
