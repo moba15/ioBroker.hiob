@@ -5,6 +5,9 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __typeError = (msg) => {
+  throw TypeError(msg);
+};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -26,19 +29,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var __accessCheck = (obj, member, msg) => {
-  if (!member.has(obj))
-    throw TypeError("Cannot " + msg);
-};
-var __privateGet = (obj, member, getter) => {
-  __accessCheck(obj, member, "read from private field");
-  return getter ? getter.call(obj) : member.get(obj);
-};
-var __privateAdd = (obj, member, value) => {
-  if (member.has(obj))
-    throw TypeError("Cannot add the same private member more than once");
-  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
-};
+var __accessCheck = (obj, member, msg) => member.has(obj) || __typeError("Cannot " + msg);
+var __privateGet = (obj, member, getter) => (__accessCheck(obj, member, "read from private field"), getter ? getter.call(obj) : member.get(obj));
+var __privateAdd = (obj, member, value) => member.has(obj) ? __typeError("Cannot add the same private member more than once") : member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
 var state_exports = {};
 __export(state_exports, {
   AllObjectRequest: () => AllObjectRequest,
@@ -91,19 +84,25 @@ const _AllObjectsResults = class _AllObjectsResults extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.states.length)
+    if (this.states.length) {
       writer.writeRepeatedMessage(1, this.states, (item) => item.serialize(writer));
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _AllObjectsResults();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
-          reader.readMessage(message.states, () => pb_1.Message.addToRepeatedWrapperField(message, 1, State.deserialize(reader), State));
+          reader.readMessage(
+            message.states,
+            () => pb_1.Message.addToRepeatedWrapperField(message, 1, State.deserialize(reader), State)
+          );
           break;
         default:
           reader.skipField();
@@ -138,14 +137,16 @@ const _AllObjectRequest = class _AllObjectRequest extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (!w)
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _AllObjectRequest();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         default:
           reader.skipField();
@@ -195,19 +196,30 @@ const _StatesValueUpdate = class _StatesValueUpdate extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.stateUpdates.length)
+    if (this.stateUpdates.length) {
       writer.writeRepeatedMessage(2, this.stateUpdates, (item) => item.serialize(writer));
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _StatesValueUpdate();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 2:
-          reader.readMessage(message.stateUpdates, () => pb_1.Message.addToRepeatedWrapperField(message, 2, StateValueUpdate.deserialize(reader), StateValueUpdate));
+          reader.readMessage(
+            message.stateUpdates,
+            () => pb_1.Message.addToRepeatedWrapperField(
+              message,
+              2,
+              StateValueUpdate.deserialize(reader),
+              StateValueUpdate
+            )
+          );
           break;
         default:
           reader.skipField();
@@ -369,28 +381,37 @@ const _StateValueUpdate = class _StateValueUpdate extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.stateId.length)
+    if (this.stateId.length) {
       writer.writeString(1, this.stateId);
-    if (this.acc != false)
+    }
+    if (this.acc != false) {
       writer.writeBool(2, this.acc);
-    if (this.time != 0)
+    }
+    if (this.time != 0) {
       writer.writeUint64(3, this.time);
-    if (this.has_stringValue)
+    }
+    if (this.has_stringValue) {
       writer.writeString(4, this.stringValue);
-    if (this.has_boolValue)
+    }
+    if (this.has_boolValue) {
       writer.writeBool(5, this.boolValue);
-    if (this.has_doubleValue)
+    }
+    if (this.has_doubleValue) {
       writer.writeDouble(6, this.doubleValue);
-    if (this.has_other)
+    }
+    if (this.has_other) {
       writer.writeString(99, this.other);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _StateValueUpdate();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.stateId = reader.readString();
@@ -558,26 +579,34 @@ const _StateValueUpdateRequest = class _StateValueUpdateRequest extends pb_1.Mes
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.userId.length)
+    if (this.userId.length) {
       writer.writeString(1, this.userId);
-    if (this.stateId.length)
+    }
+    if (this.stateId.length) {
       writer.writeString(2, this.stateId);
-    if (this.has_stringValue)
+    }
+    if (this.has_stringValue) {
       writer.writeString(3, this.stringValue);
-    if (this.has_boolValue)
+    }
+    if (this.has_boolValue) {
       writer.writeBool(4, this.boolValue);
-    if (this.has_doubleValue)
+    }
+    if (this.has_doubleValue) {
       writer.writeDouble(5, this.doubleValue);
-    if (this.has_other)
+    }
+    if (this.has_other) {
       writer.writeString(99, this.other);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _StateValueUpdateRequest();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.userId = reader.readString();
@@ -645,16 +674,19 @@ const _StateValueUpdateResponse = class _StateValueUpdateResponse extends pb_1.M
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.suc != false)
+    if (this.suc != false) {
       writer.writeBool(1, this.suc);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _StateValueUpdateResponse();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.suc = reader.readBool();
@@ -689,7 +721,11 @@ const _StateSubscribtion = class _StateSubscribtion extends pb_1.Message {
     }
   }
   get type() {
-    return pb_1.Message.getFieldWithDefault(this, 2, _StateSubscribtion.SubscriptionType.cancle);
+    return pb_1.Message.getFieldWithDefault(
+      this,
+      2,
+      _StateSubscribtion.SubscriptionType.cancle
+    );
   }
   set type(value) {
     pb_1.Message.setField(this, 2, value);
@@ -722,18 +758,22 @@ const _StateSubscribtion = class _StateSubscribtion extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.type != _StateSubscribtion.SubscriptionType.cancle)
+    if (this.type != _StateSubscribtion.SubscriptionType.cancle) {
       writer.writeEnum(2, this.type);
-    if (this.stateIds.length)
+    }
+    if (this.stateIds.length) {
       writer.writeRepeatedString(3, this.stateIds);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _StateSubscribtion();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 2:
           message.type = reader.readEnum();
@@ -811,18 +851,22 @@ const _SearchStateRequest = class _SearchStateRequest extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.userId.length)
+    if (this.userId.length) {
       writer.writeString(1, this.userId);
-    if (this.query.length)
+    }
+    if (this.query.length) {
       writer.writeString(2, this.query);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _SearchStateRequest();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.userId = reader.readString();
@@ -878,19 +922,25 @@ const _SearchStateResponse = class _SearchStateResponse extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.states.length)
+    if (this.states.length) {
       writer.writeRepeatedMessage(1, this.states, (item) => item.serialize(writer));
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _SearchStateResponse();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
-          reader.readMessage(message.states, () => pb_1.Message.addToRepeatedWrapperField(message, 1, State.deserialize(reader), State));
+          reader.readMessage(
+            message.states,
+            () => pb_1.Message.addToRepeatedWrapperField(message, 1, State.deserialize(reader), State)
+          );
           break;
         default:
           reader.skipField();
@@ -1047,26 +1097,34 @@ const _State = class _State extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.stateId.length)
+    if (this.stateId.length) {
       writer.writeString(1, this.stateId);
-    if (this.has_stringValue)
+    }
+    if (this.has_stringValue) {
       writer.writeString(3, this.stringValue);
-    if (this.has_boolValue)
+    }
+    if (this.has_boolValue) {
       writer.writeBool(4, this.boolValue);
-    if (this.has_doubleValue)
+    }
+    if (this.has_doubleValue) {
       writer.writeDouble(5, this.doubleValue);
-    if (this.has_other)
+    }
+    if (this.has_other) {
       writer.writeString(99, this.other);
-    if (this.has_common)
+    }
+    if (this.has_common) {
       writer.writeMessage(6, this.common, () => this.common.serialize(writer));
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _State();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.stateId = reader.readString();
@@ -1311,34 +1369,46 @@ let State = _State;
     }
     serialize(w) {
       const writer = w || new pb_1.BinaryWriter();
-      if (this.name.length)
+      if (this.name.length) {
         writer.writeString(1, this.name);
-      if (this.desc.length)
+      }
+      if (this.desc.length) {
         writer.writeString(2, this.desc);
-      if (this.type.length)
+      }
+      if (this.type.length) {
         writer.writeString(3, this.type);
-      if (this.read != false)
+      }
+      if (this.read != false) {
         writer.writeBool(4, this.read);
-      if (this.write != false)
+      }
+      if (this.write != false) {
         writer.writeBool(5, this.write);
-      if (this.role.length)
+      }
+      if (this.role.length) {
         writer.writeString(6, this.role);
-      if (this.has_unit)
+      }
+      if (this.has_unit) {
         writer.writeString(7, this.unit);
-      if (this.has_step)
+      }
+      if (this.has_step) {
         writer.writeInt32(8, this.step);
-      if (this.has_min)
+      }
+      if (this.has_min) {
         writer.writeInt32(9, this.min);
-      if (this.has_max)
+      }
+      if (this.has_max) {
         writer.writeInt32(10, this.max);
-      if (!w)
+      }
+      if (!w) {
         return writer.getResultBuffer();
+      }
     }
     static deserialize(bytes) {
       const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _StateCommon();
       while (reader.nextField()) {
-        if (reader.isEndGroup())
+        if (reader.isEndGroup()) {
           break;
+        }
         switch (reader.getFieldNumber()) {
           case 1:
             message.name = reader.readString();
@@ -1436,7 +1506,11 @@ UnimplementedStateUpdateService.definition = {
     responseDeserialize: (bytes) => AllObjectsResults.deserialize(new Uint8Array(bytes))
   }
 };
-class StateUpdateClient extends grpc_1.makeGenericClientConstructor(UnimplementedStateUpdateService.definition, "StateUpdate", {}) {
+class StateUpdateClient extends grpc_1.makeGenericClientConstructor(
+  UnimplementedStateUpdateService.definition,
+  "StateUpdate",
+  {}
+) {
   constructor(address, credentials, options) {
     super(address, credentials, options);
     this.Subscibe = (message, metadata, options) => {

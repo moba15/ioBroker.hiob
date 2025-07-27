@@ -5,6 +5,9 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __typeError = (msg) => {
+  throw TypeError(msg);
+};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -26,19 +29,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var __accessCheck = (obj, member, msg) => {
-  if (!member.has(obj))
-    throw TypeError("Cannot " + msg);
-};
-var __privateGet = (obj, member, getter) => {
-  __accessCheck(obj, member, "read from private field");
-  return getter ? getter.call(obj) : member.get(obj);
-};
-var __privateAdd = (obj, member, value) => {
-  if (member.has(obj))
-    throw TypeError("Cannot add the same private member more than once");
-  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
-};
+var __accessCheck = (obj, member, msg) => member.has(obj) || __typeError("Cannot " + msg);
+var __privateGet = (obj, member, getter) => (__accessCheck(obj, member, "read from private field"), getter ? getter.call(obj) : member.get(obj));
+var __privateAdd = (obj, member, value) => member.has(obj) ? __typeError("Cannot add the same private member more than once") : member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
 var login_exports = {};
 __export(login_exports, {
   ApprovalRequest: () => ApprovalRequest,
@@ -105,18 +98,22 @@ const _CompatibilityRequest = class _CompatibilityRequest extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.buildnumber.length)
+    if (this.buildnumber.length) {
       writer.writeString(1, this.buildnumber);
-    if (this.versionumber.length)
+    }
+    if (this.versionumber.length) {
       writer.writeString(2, this.versionumber);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _CompatibilityRequest();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.buildnumber = reader.readString();
@@ -187,18 +184,22 @@ const _CompatibilityResponse = class _CompatibilityResponse extends pb_1.Message
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.buildnumber.length)
+    if (this.buildnumber.length) {
       writer.writeString(1, this.buildnumber);
-    if (this.versionumber.length)
+    }
+    if (this.versionumber.length) {
       writer.writeString(2, this.versionumber);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _CompatibilityResponse();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.buildnumber = reader.readString();
@@ -269,18 +270,22 @@ const _FirstPing = class _FirstPing extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.buildnumber.length)
+    if (this.buildnumber.length) {
       writer.writeString(1, this.buildnumber);
-    if (this.versionumber.length)
+    }
+    if (this.versionumber.length) {
       writer.writeString(2, this.versionumber);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _FirstPing();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.buildnumber = reader.readString();
@@ -406,24 +411,31 @@ const _LoginRequest = class _LoginRequest extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.deviceName.length)
+    if (this.deviceName.length) {
       writer.writeString(1, this.deviceName);
-    if (this.deviceId.length)
+    }
+    if (this.deviceId.length) {
       writer.writeString(2, this.deviceId);
-    if (this.key.length)
+    }
+    if (this.key.length) {
       writer.writeString(3, this.key);
-    if (this.user.length)
+    }
+    if (this.user.length) {
       writer.writeString(4, this.user);
-    if (this.has_password)
+    }
+    if (this.has_password) {
       writer.writeString(5, this.password);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _LoginRequest();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.deviceName = reader.readString();
@@ -528,20 +540,25 @@ const _LoginResponse = class _LoginResponse extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.status != _LoginResponse.Status.succesfull)
+    if (this.status != _LoginResponse.Status.succesfull) {
       writer.writeEnum(1, this.status);
-    if (this.has_errorMsg)
+    }
+    if (this.has_errorMsg) {
       writer.writeString(2, this.errorMsg);
-    if (this.sessionId.length)
+    }
+    if (this.sessionId.length) {
       writer.writeString(3, this.sessionId);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _LoginResponse();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.status = reader.readEnum();
@@ -595,14 +612,16 @@ const _NewAesPacket = class _NewAesPacket extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (!w)
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _NewAesPacket();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         default:
           reader.skipField();
@@ -637,14 +656,16 @@ const _WrongAesKeyPack = class _WrongAesKeyPack extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (!w)
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _WrongAesKeyPack();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         default:
           reader.skipField();
@@ -709,18 +730,22 @@ const _ApprovalRequest = class _ApprovalRequest extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.deviceName.length)
+    if (this.deviceName.length) {
       writer.writeString(1, this.deviceName);
-    if (this.deviceId.length)
+    }
+    if (this.deviceId.length) {
       writer.writeString(2, this.deviceId);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _ApprovalRequest();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.deviceName = reader.readString();
@@ -801,18 +826,22 @@ const _ApprovalResponse = class _ApprovalResponse extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.status != _ApprovalResponse.Status.aprroved)
+    if (this.status != _ApprovalResponse.Status.aprroved) {
       writer.writeEnum(1, this.status);
-    if (this.has_key)
+    }
+    if (this.has_key) {
       writer.writeString(2, this.key);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _ApprovalResponse();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.status = reader.readEnum();
@@ -873,7 +902,11 @@ UnimplementedLoginService.definition = {
     responseDeserialize: (bytes) => ApprovalResponse.deserialize(new Uint8Array(bytes))
   }
 };
-class LoginClient extends grpc_1.makeGenericClientConstructor(UnimplementedLoginService.definition, "Login", {}) {
+class LoginClient extends grpc_1.makeGenericClientConstructor(
+  UnimplementedLoginService.definition,
+  "Login",
+  {}
+) {
   constructor(address, credentials, options) {
     super(address, credentials, options);
     this.CheckCompatibility = (message, metadata, options, callback) => {

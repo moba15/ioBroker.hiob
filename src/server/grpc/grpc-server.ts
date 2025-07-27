@@ -1,13 +1,12 @@
-import * as ws from "ws";
-import * as fs from "fs";
-import * as m from "../..//main";
-import { Client } from ".././client";
-import * as grpc from "@grpc/grpc-js";
-import * as proto from "../../generated/login/login"
-import { addLoginServices } from "../services/login-service";
-import {addStateServices} from "../services/state-service"
-import {addConfigSyncServices} from "../services/config-sync-service"
-
+import * as ws from 'ws';
+import * as fs from 'fs';
+import type * as m from '../..//main';
+import type { Client } from '.././client';
+import * as grpc from '@grpc/grpc-js';
+import * as proto from '../../generated/login/login';
+import { addLoginServices } from '../services/login-service';
+import { addStateServices } from '../services/state-service';
+import { addConfigSyncServices } from '../services/config-sync-service';
 
 export class GrpcServer {
     certPath: string;
@@ -20,8 +19,8 @@ export class GrpcServer {
     conClients: Client[] = [];
     constructor(
         port: number = 4500,
-        keyPath: string = "key.pem",
-        certPath: string = "cert.pem",
+        keyPath: string = 'key.pem',
+        certPath: string = 'cert.pem',
         adapter: m.SamartHomeHandyBis,
         useCert: boolean = false,
     ) {
@@ -33,42 +32,39 @@ export class GrpcServer {
     }
     startServer(): void {
         this.gRpcServer = new grpc.Server();
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-       
-        
-        this.gRpcServer.bindAsync("0.0.0.0:" + this.port, grpc.ServerCredentials.createInsecure(), () => {
-            this.adapter.log.info("Server listening on port: " + this.port);
+
+        this.gRpcServer.bindAsync(`0.0.0.0:${this.port}`, grpc.ServerCredentials.createInsecure(), () => {
+            this.adapter.log.info(`Server listening on port: ${this.port}`);
         });
-        if(this.adapter == null) {
-            throw Error("Adapater null");
+        if (this.adapter == null) {
+            throw Error('Adapater null');
         }
         addLoginServices(this.gRpcServer, this.adapter);
         addStateServices(this.gRpcServer, this.adapter);
         addConfigSyncServices(this.gRpcServer, this.adapter);
-
-       
     }
 
     broadcastMsg(msg: string): void {
         //this.webSocketServer.clients.forEach((e) => {});
         this.conClients
-            .filter((e) => !e.onlySendNotification)
-            .forEach((element) => {
-                if (element.isConnected) element.sendMSG(msg, true);
+            .filter(e => !e.onlySendNotification)
+            .forEach(element => {
+                if (element.isConnected) {
+                    element.sendMSG(msg, true);
+                }
             });
     }
 
     isConnected(deviceID: string): boolean {
-        return this.conClients.some((c) => c.isConnected && c.id == deviceID);
+        return this.conClients.some(c => c.isConnected && c.id == deviceID);
     }
 
     getClient(deviceID: string): Client | undefined {
-        return this.conClients.find((c) => c.isConnected && c.id == deviceID);
+        return this.conClients.find(c => c.isConnected && c.id == deviceID);
     }
 
     stop(): void {
-   
-        this.adapter.log.info("Server stoped");
+        this.adapter.log.info('Server stoped');
         this.stoped = true;
     }
 }

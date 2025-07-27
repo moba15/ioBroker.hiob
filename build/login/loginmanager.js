@@ -47,8 +47,8 @@ class LoginManager {
     this.pendingClientIds = [];
     this.streams = [];
   }
-  async onStateChange(event) {
-    var _a, _b, _c;
+  onStateChange(event) {
+    var _a, _b, _c, _d;
     if (event.objectID.startsWith("hiob.") && !event.ack) {
       const splited = event.objectID.split(".");
       if (splited.length > 4 && splited[2] == "devices") {
@@ -73,11 +73,13 @@ class LoginManager {
               this.setAesStatus(deviceID, cl);
             } else {
               cl.setAESKey("");
-              this.adapter.log.info(`AES encryption disabled!`);
+              if (!((_b = this.adapter.server) == null ? void 0 : _b.useCert)) {
+                this.adapter.log.info("AES encryption disabled!");
+              }
             }
             this.adapter.setState(event.objectID, { ack: true });
           } else {
-            const client = (_b = this.adapter.server) == null ? void 0 : _b.getClient(deviceID);
+            const client = (_c = this.adapter.server) == null ? void 0 : _c.getClient(deviceID);
             if (client) {
               this.setAesStatus(deviceID, client);
             } else {
@@ -96,7 +98,7 @@ class LoginManager {
             }
             this.adapter.setState(event.objectID, false, true);
           } else {
-            const client = (_c = this.adapter.server) == null ? void 0 : _c.getClient(deviceID);
+            const client = (_d = this.adapter.server) == null ? void 0 : _d.getClient(deviceID);
             if (client && event.value) {
               this.setAesNewAndSentInfo(deviceID, client);
             } else {
@@ -158,12 +160,17 @@ class LoginManager {
       this.aesViewTimeout[deviceID] = void 0;
     }
     const random_key = this.genRandomString(6, true);
-    await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
+    await this.adapter.setStateAsync(
+      `devices.${deviceID}.aesKey`,
+      this.adapter.encrypt(random_key.toString()),
+      true
+    );
     cl.aesKey = random_key;
     cl.setAESKey(random_key);
     cl.sendMSG(new import_datapacks.NewAesPacket().toJSON(), false);
   }
   async setAesStatus(deviceID, cl) {
+    var _a;
     const get_aes = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
     const aes_status = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey_active`);
     if (get_aes && get_aes.val && aes_status && aes_status.val) {
@@ -171,22 +178,24 @@ class LoginManager {
         get_aes.val = this.adapter.decrypt(get_aes.val.toString());
       }
       cl.setAESKey(get_aes.val.toString());
-      this.adapter.log.info(`AES encryption enabled!`);
+      this.adapter.log.info("AES encryption enabled!");
     } else {
       cl.setAESKey("");
-      this.adapter.log.info(`AES encryption disabled!`);
+      if (!((_a = this.adapter.server) == null ? void 0 : _a.useCert)) {
+        this.adapter.log.info("AES encryption disabled!");
+      }
     }
   }
   /**
    * @deprecated
-   * @param deviceID 
-   * @param cl 
+   * @param deviceID
+   * @param cl
    */
   async setAndSendLoginKeys(deviceID, cl) {
     const keys = await this.genKey();
-    const aes_status = await this.adapter.getStateAsync("devices." + deviceID + ".aesKey_active");
+    const aes_status = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey_active`);
     if (aes_status && aes_status.val) {
-      const aes = await this.adapter.getStateAsync("devices." + deviceID + ".aesKey");
+      const aes = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
       if (aes != null && aes.val != null) {
         if (aes.val.toString().length > 6) {
           aes.val = this.adapter.decrypt(aes.val.toString());
@@ -198,14 +207,14 @@ class LoginManager {
     } else {
       cl.setAESKey("");
     }
-    await this.adapter.setStateAsync("devices." + deviceID + ".key", keys[1], true);
+    await this.adapter.setStateAsync(`devices.${deviceID}.key`, keys[1], true);
     for (const current of this.pendingClients) {
       if (current.id == cl.id) {
         current.sendMSG(new import_datapacks.LoginKeyPacket(keys[0]).toJSON(), false, false);
       }
     }
   }
-  async stop() {
+  stop() {
     this.approveLoginsTimeout && this.adapter.clearTimeout(this.approveLoginsTimeout);
     this.approveLoginsTimeout = void 0;
     if (this.aesViewTimeout && Object.keys(this.aesViewTimeout).length > 0) {
@@ -216,27 +225,22 @@ class LoginManager {
     }
     return false;
   }
-  async onWrongAesKey(client) {
-    this.adapter.log.debug("Client(" + client.toString() + ") send wrong aes!");
+  onWrongAesKey(client) {
+    this.adapter.log.debug(`Client(${client.toString()}) send wrong aes!`);
     this.wrongAesKey(client);
     return false;
   }
   async onLoginRequestProto(loginRequest) {
     this.adapter.log.debug("Client(" + loginRequest + ") requested to login");
-    let sessionId = this.genRandomString(12, true);
+    const sessionId = this.genRandomString(12, true);
     this.pendingClientIds.push(sessionId);
     let deviceIDRep = loginRequest.deviceId.replace(".", "-");
     while (deviceIDRep.includes(".")) {
       deviceIDRep = deviceIDRep.replace(".", "-");
     }
-    await this.createObjects(
-      deviceIDRep,
-      loginRequest.deviceName,
-      loginRequest.key,
-      "No version"
-    );
+    await this.createObjects(deviceIDRep, loginRequest.deviceName, loginRequest.key, "No version");
     this.adapter.setStateAsync("devices." + deviceIDRep + ".connected", true, true);
-    let validdate = await this.validateLoginRequestProto(loginRequest.deviceName, deviceIDRep, loginRequest);
+    const validdate = await this.validateLoginRequestProto(loginRequest.deviceName, deviceIDRep, loginRequest);
     if (validdate != proto.LoginResponse.Status.succesfull) {
       this.adapter.log.debug("Login declained");
       return new proto.LoginResponse({ sessionId, status: validdate });
@@ -250,7 +254,7 @@ class LoginManager {
     while (deviceIDRep.includes(".")) {
       deviceIDRep = deviceIDRep.replace(".", "-");
     }
-    let approved = await new Promise((resolve2, rejects2) => {
+    const approved = await new Promise((resolve2, rejects2) => {
       let onChange = (event) => {
         resolve2(event.value);
       };
@@ -267,7 +271,7 @@ class LoginManager {
     }
   }
   async onLoginRequest(client, loginRequestData) {
-    this.adapter.log.debug("Client(" + client.toString() + ") requested to login");
+    this.adapter.log.debug(`Client(${client.toString()}) requested to login`);
     this.pendingClients.push(client);
     this.pendingClients = this.pendingClients.filter((cli, i, s) => s.indexOf(cli) == i);
     let deviceIDRep = loginRequestData.deviceID.replace(".", "-");
@@ -286,7 +290,7 @@ class LoginManager {
       loginRequestData.version
     );
     this.adapter.clientinfos[deviceIDRep].firstload = true;
-    this.adapter.setStateAsync("devices." + deviceIDRep + ".connected", true, true);
+    this.adapter.setStateAsync(`devices.${deviceIDRep}.connected`, true, true);
     client.setID(deviceIDRep);
     if (!await this.validateLoginRequest(client, deviceIDRep, loginRequestData)) {
       this.loginDeclined(client);
@@ -300,16 +304,19 @@ class LoginManager {
     return true;
   }
   /**
+  * @param client
+  * @param deviceIDRep
+  * @param loginRequestData
   * @deprecated The method should not be used
   */
   async validateLoginRequest(client, deviceIDRep, loginRequestData) {
-    const approved = await this.adapter.getStateAsync("devices." + deviceIDRep + ".approved");
-    const keyState = await this.adapter.getStateAsync("devices." + deviceIDRep + ".key");
-    const needPWD = await this.adapter.getStateAsync("devices." + deviceIDRep + ".noPwdAllowed");
+    const approved = await this.adapter.getStateAsync(`devices.${deviceIDRep}.approved`);
+    const keyState = await this.adapter.getStateAsync(`devices.${deviceIDRep}.key`);
+    const needPWD = await this.adapter.getStateAsync(`devices.${deviceIDRep}.noPwdAllowed`);
     let apr = true;
     if (!approved || !approved.val) {
       this.adapter.log.debug(
-        "Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): not approved"
+        `Login declined for client: ${client.toString()} (${loginRequestData.deviceName}): not approved`
       );
       apr = false;
     }
@@ -322,7 +329,7 @@ class LoginManager {
     if (needPWD && !(needPWD == null ? void 0 : needPWD.val)) {
       if (!loginRequestData.user || !loginRequestData.password || !await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
         this.adapter.log.debug(
-          "Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong password"
+          `Login declined for client: ${client.toString()} (${loginRequestData.deviceName}): wrong password`
         );
         apr = false;
       }
@@ -332,12 +339,12 @@ class LoginManager {
     }
     if (keyState != null && keyState.val != null && loginRequestData.key && !await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
       this.adapter.log.debug(
-        "Login declined for client: " + client.toString() + " (" + loginRequestData.deviceName + "): wrong key" + !await bcrypt.compare(loginRequestData.key, keyState.val.toString())
+        `Login declined for client: ${client.toString()} (${loginRequestData.deviceName}): wrong key${!await bcrypt.compare(loginRequestData.key, keyState.val.toString())}`
       );
       apr = false;
     }
     if (!apr && this.approveLogins) {
-      await this.adapter.setStateAsync("devices." + deviceIDRep + ".approved", true, true);
+      await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
       await this.setAndSendLoginKeys(deviceIDRep, client);
       apr = true;
     }
@@ -345,6 +352,7 @@ class LoginManager {
   }
   /**
    * This method validdates the Loginrequest based on the key and password
+   *
    * @param clientName 
    * @param deviceIDRep 
    * @param loginRequestData 
@@ -392,8 +400,12 @@ class LoginManager {
   }
   /**
    * This method creates all IoBroker Objects needed for the login request. If they exists this method will not create any
+   *
+   * @param client
    * @param deviceIDRep Id of the device
    * @param deviceName Name of the device
+   * @param key
+   * @param version
    */
   async createObjects(deviceIDRep, deviceName, key, version) {
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}`, {
@@ -670,16 +682,16 @@ class LoginManager {
       type: "state",
       common: {
         name: {
-          "en": "decrypt AES key for 30 seconds.",
-          "de": "AES Schl\xFCssel f\xFCr 30 Sekunden entschl\xFCsseln.",
-          "ru": "\u0440\u0430\u0441\u0448\u0438\u0444\u0440\u043E\u0432\u0430\u0442\u044C \u043A\u043B\u044E\u0447 AES \u0432 \u0442\u0435\u0447\u0435\u043D\u0438\u0435 30 \u0441\u0435\u043A\u0443\u043D\u0434.",
-          "pt": "descriptografar AES chave por 30 segundos.",
-          "nl": "decodeer AES sleutel gedurende 30 seconden.",
-          "fr": "d\xE9chiffrer la cl\xE9 AES pendant 30 secondes.",
-          "it": "decifrare la chiave AES per 30 secondi.",
-          "es": "descifrar la tecla AES durante 30 segundos.",
-          "pl": "odszyfrowa\u0107 klucz AES przez 30 sekund.",
-          "uk": "\u0440\u043E\u0437\u0448\u0438\u0444\u0440\u0443\u0432\u0430\u0442\u0438 \u043A\u043B\u044E\u0447 AES \u043D\u0430 30 \u0441\u0435\u043A\u0443\u043D\u0434.",
+          en: "decrypt AES key for 30 seconds.",
+          de: "AES Schl\xFCssel f\xFCr 30 Sekunden entschl\xFCsseln.",
+          ru: "\u0440\u0430\u0441\u0448\u0438\u0444\u0440\u043E\u0432\u0430\u0442\u044C \u043A\u043B\u044E\u0447 AES \u0432 \u0442\u0435\u0447\u0435\u043D\u0438\u0435 30 \u0441\u0435\u043A\u0443\u043D\u0434.",
+          pt: "descriptografar AES chave por 30 segundos.",
+          nl: "decodeer AES sleutel gedurende 30 seconden.",
+          fr: "d\xE9chiffrer la cl\xE9 AES pendant 30 secondes.",
+          it: "decifrare la chiave AES per 30 secondi.",
+          es: "descifrar la tecla AES durante 30 segundos.",
+          pl: "odszyfrowa\u0107 klucz AES przez 30 sekund.",
+          uk: "\u0440\u043E\u0437\u0448\u0438\u0444\u0440\u0443\u0432\u0430\u0442\u0438 \u043A\u043B\u044E\u0447 AES \u043D\u0430 30 \u0441\u0435\u043A\u0443\u043D\u0434.",
           "zh-cn": "\u89E3\u5BC6AES\u5BC6\u94A530\u79D2."
         },
         type: "boolean",

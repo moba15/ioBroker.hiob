@@ -47,8 +47,8 @@ class GrpcServer {
   }
   startServer() {
     this.gRpcServer = new grpc.Server();
-    this.gRpcServer.bindAsync("0.0.0.0:" + this.port, grpc.ServerCredentials.createInsecure(), () => {
-      this.adapter.log.info("Server listening on port: " + this.port);
+    this.gRpcServer.bindAsync(`0.0.0.0:${this.port}`, grpc.ServerCredentials.createInsecure(), () => {
+      this.adapter.log.info(`Server listening on port: ${this.port}`);
     });
     if (this.adapter == null) {
       throw Error("Adapater null");
@@ -59,8 +59,9 @@ class GrpcServer {
   }
   broadcastMsg(msg) {
     this.conClients.filter((e) => !e.onlySendNotification).forEach((element) => {
-      if (element.isConnected)
+      if (element.isConnected) {
         element.sendMSG(msg, true);
+      }
     });
   }
   isConnected(deviceID) {

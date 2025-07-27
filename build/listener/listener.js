@@ -81,6 +81,7 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
   }
   /**
    * Adds a State id to the pending list
+   *
    * @param id The id of the State you want to subscribe to
    */
   addPendingSubscribeState(id) {
@@ -92,10 +93,12 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
         if (!t.subscribed.has(id)) {
           t == null ? void 0 : t.pending.add(id);
         } else {
-          this.adapter.log.debug("Already has subscribed to " + id + "!");
+          this.subsribedStates.set(adapaterKey, {
+            overThreshold: false,
+            subscribed: /* @__PURE__ */ new Set(),
+            pending: /* @__PURE__ */ new Set([id])
+          });
         }
-      } else {
-        this.subsribedStates.set(adapaterKey, { overThreshold: false, subscribed: /* @__PURE__ */ new Set(), pending: /* @__PURE__ */ new Set([id]) });
       }
     });
   }

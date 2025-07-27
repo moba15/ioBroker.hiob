@@ -37,9 +37,12 @@ function checkAuthentication(metadata) {
   const id = metadata.get("deviceId");
   if (id && keyValue && id.length == 1 && keyValue.length == 1) {
     return { code: grpc.status.OK, name: "" };
-  } else {
-    return { code: grpc.status.UNAUTHENTICATED, details: "request missing metadata required field: id or key", name: "Not authenticated" };
   }
+  return {
+    code: grpc.status.UNAUTHENTICATED,
+    details: "request missing metadata required field: id or key",
+    name: "Not authenticated"
+  };
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

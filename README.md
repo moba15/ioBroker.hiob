@@ -72,10 +72,20 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+- Conversion to gRPC #127
+
+### 0.1.7 (2025-04-19)
+- fixed notification bug: the backlog now is sent only ones if the client reconnects multiple times (moba15)
 - Updated packages
+- Updated packages (moba15)
+- Fixing adpater issues found by ioBroker bot (moba15)
+- Fixed some smaller bugs (moba15)
 - Fix for #93 
 - Fix for #91 
-- Fixed Update App message
+- Fix for #109
+- Migration to ESLint 9 #108
+- Added PingPong disconnection handling -> some offline message functionality
+- Optimized logic behind state subscription -> Now subscribes only to the necessary adapter
 
 ### 0.2.0-alpha.0 (2025-06-28)
 - Added first gRPC support 
@@ -169,6 +179,12 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
 ### 0.0.1 (2023-03-26)
 
 -   (moba15) initial release
+
+## 🎉 Hall of Fame 🎉
+A heartfelt thank you to everyone who has contributed to this project! Whether through code, bug reports, feature suggestions, or spreading the word, your support helps make this project better for everyone. 
+### Special thanks goes to:
+- @Lucky-ESA
+- @ManniBac
 
 ## License
 

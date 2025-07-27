@@ -78,9 +78,11 @@ function addStateServices(gRpcServer, adapter) {
       const firstLevelMap = adapter.stateSearchEngine.getFirstLevel();
       const firstLevelResponse = [];
       for (const [id, adapaterObj] of firstLevelMap) {
-        firstLevelResponse.push(new proto.State({
-          stateId: id
-        }));
+        firstLevelResponse.push(
+          new proto.State({
+            stateId: id
+          })
+        );
       }
       call.write(new proto.SearchStateResponse({ states: firstLevelResponse }));
     },
@@ -90,22 +92,24 @@ function addStateServices(gRpcServer, adapter) {
       const result = [];
       for (const objectId in objects) {
         const object = objects[objectId];
-        result.push(new proto.State({
-          stateId: objectId,
-          common: new proto.State.StateCommon({
-            //TODO Language support
-            name: object.common.name.toString(),
-            unit: object.common.unit,
-            desc: (_a = object.common.desc) == null ? void 0 : _a.toString(),
-            max: object.common.max,
-            min: object.common.min,
-            type: object.common.type.toString(),
-            step: object.common.step,
-            read: object.common.read,
-            write: object.common.write,
-            role: object.common.role
+        result.push(
+          new proto.State({
+            stateId: objectId,
+            common: new proto.State.StateCommon({
+              //TODO Language support
+              name: object.common.name.toString(),
+              unit: object.common.unit,
+              desc: (_a = object.common.desc) == null ? void 0 : _a.toString(),
+              max: object.common.max,
+              min: object.common.min,
+              type: object.common.type.toString(),
+              step: object.common.step,
+              read: object.common.read,
+              write: object.common.write,
+              role: object.common.role
+            })
           })
-        }));
+        );
       }
       callback(null, new proto.AllObjectsResults({ states: result }));
     }

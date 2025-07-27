@@ -33,7 +33,7 @@ class StateSearchEngine {
       if (splitted.length < 2) {
         continue;
       }
-      const level = splitted[0] + "." + splitted[1];
+      const level = `${splitted[0]}.${splitted[1]}`;
       if (this.firstLevel.has(level)) {
         continue;
       }
@@ -51,9 +51,11 @@ class StateSearchEngine {
   }
   /**
    * Searches states by pattern
+   *
+   * @param keyword
    */
   async searchKeyWord(keyword) {
-    const allObjects = await this.adapater.getForeignObjectsAsync("*" + keyword + "*");
+    const allObjects = await this.adapater.getForeignObjectsAsync(`*${keyword}*`);
     for (const obj in allObjects) {
     }
   }

@@ -5,6 +5,9 @@ var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __typeError = (msg) => {
+  throw TypeError(msg);
+};
 var __export = (target, all) => {
   for (var name in all)
     __defProp(target, name, { get: all[name], enumerable: true });
@@ -26,19 +29,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-var __accessCheck = (obj, member, msg) => {
-  if (!member.has(obj))
-    throw TypeError("Cannot " + msg);
-};
-var __privateGet = (obj, member, getter) => {
-  __accessCheck(obj, member, "read from private field");
-  return getter ? getter.call(obj) : member.get(obj);
-};
-var __privateAdd = (obj, member, value) => {
-  if (member.has(obj))
-    throw TypeError("Cannot add the same private member more than once");
-  member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
-};
+var __accessCheck = (obj, member, msg) => member.has(obj) || __typeError("Cannot " + msg);
+var __privateGet = (obj, member, getter) => (__accessCheck(obj, member, "read from private field"), getter ? getter.call(obj) : member.get(obj));
+var __privateAdd = (obj, member, value) => member.has(obj) ? __typeError("Cannot add the same private member more than once") : member instanceof WeakSet ? member.add(obj) : member.set(obj, value);
 var config_sync_exports = {};
 __export(config_sync_exports, {
   AvailableConfigsRequest: () => AvailableConfigsRequest,
@@ -96,16 +89,19 @@ const _AvailableConfigsRequest = class _AvailableConfigsRequest extends pb_1.Mes
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.userId.length)
+    if (this.userId.length) {
       writer.writeString(1, this.userId);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _AvailableConfigsRequest();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.userId = reader.readString();
@@ -158,16 +154,19 @@ const _AvailableConfigsResponse = class _AvailableConfigsResponse extends pb_1.M
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.configNames.length)
+    if (this.configNames.length) {
       writer.writeRepeatedString(1, this.configNames);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _AvailableConfigsResponse();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           pb_1.Message.addToRepeatedField(message, 1, reader.readString());
@@ -238,18 +237,22 @@ const _ConfigSyncUpRequest = class _ConfigSyncUpRequest extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.userId.length)
+    if (this.userId.length) {
       writer.writeString(1, this.userId);
-    if (this.has_config)
+    }
+    if (this.has_config) {
       writer.writeMessage(3, this.config, () => this.config.serialize(writer));
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _ConfigSyncUpRequest();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.userId = reader.readString();
@@ -320,18 +323,22 @@ const _ConfigSyncUpResponse = class _ConfigSyncUpResponse extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.userId.length)
+    if (this.userId.length) {
       writer.writeString(1, this.userId);
-    if (this.success != false)
+    }
+    if (this.success != false) {
       writer.writeBool(2, this.success);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _ConfigSyncUpResponse();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.userId = reader.readString();
@@ -417,20 +424,25 @@ const _ConfigSyncDownRequest = class _ConfigSyncDownRequest extends pb_1.Message
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.userId.length)
+    if (this.userId.length) {
       writer.writeString(1, this.userId);
-    if (this.configName.length)
+    }
+    if (this.configName.length) {
       writer.writeString(2, this.configName);
-    if (this.syncType != 0 /* SYNC_ALL */)
+    }
+    if (this.syncType != 0 /* SYNC_ALL */) {
       writer.writeEnum(3, this.syncType);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _ConfigSyncDownRequest();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.userId = reader.readString();
@@ -519,20 +531,25 @@ const _ConfigCreateDeleteRequest = class _ConfigCreateDeleteRequest extends pb_1
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.userId.length)
+    if (this.userId.length) {
       writer.writeString(1, this.userId);
-    if (this.configName.length)
+    }
+    if (this.configName.length) {
       writer.writeString(2, this.configName);
-    if (this.delete != false)
+    }
+    if (this.delete != false) {
       writer.writeBool(3, this.delete);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _ConfigCreateDeleteRequest();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.userId = reader.readString();
@@ -621,20 +638,25 @@ const _ConfigCreateDeleteResponse = class _ConfigCreateDeleteResponse extends pb
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.userId.length)
+    if (this.userId.length) {
       writer.writeString(1, this.userId);
-    if (this.configNames.length)
+    }
+    if (this.configNames.length) {
       writer.writeRepeatedString(2, this.configNames);
-    if (this.success != false)
+    }
+    if (this.success != false) {
       writer.writeBool(3, this.success);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _ConfigCreateDeleteResponse();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.userId = reader.readString();
@@ -743,20 +765,25 @@ const _Config = class _Config extends pb_1.Message {
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
-    if (this.name.length)
+    if (this.name.length) {
       writer.writeString(1, this.name);
-    if (this.has_screens)
+    }
+    if (this.has_screens) {
       writer.writeString(2, this.screens);
-    if (this.has_templates)
+    }
+    if (this.has_templates) {
       writer.writeString(3, this.templates);
-    if (!w)
+    }
+    if (!w) {
       return writer.getResultBuffer();
+    }
   }
   static deserialize(bytes) {
     const reader = bytes instanceof pb_1.BinaryReader ? bytes : new pb_1.BinaryReader(bytes), message = new _Config();
     while (reader.nextField()) {
-      if (reader.isEndGroup())
+      if (reader.isEndGroup()) {
         break;
+      }
       switch (reader.getFieldNumber()) {
         case 1:
           message.name = reader.readString();
@@ -822,7 +849,11 @@ UnimplementedConfigSyncService.definition = {
     responseDeserialize: (bytes) => ConfigCreateDeleteResponse.deserialize(new Uint8Array(bytes))
   }
 };
-class ConfigSyncClient extends grpc_1.makeGenericClientConstructor(UnimplementedConfigSyncService.definition, "ConfigSync", {}) {
+class ConfigSyncClient extends grpc_1.makeGenericClientConstructor(
+  UnimplementedConfigSyncService.definition,
+  "ConfigSync",
+  {}
+) {
   constructor(address, credentials, options) {
     super(address, credentials, options);
     this.GetAvailableConfigs = (message, metadata, options, callback) => {
