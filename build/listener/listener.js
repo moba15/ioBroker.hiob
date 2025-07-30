@@ -55,10 +55,10 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
   }
   onStateChange(id, state) {
     var _a, _b, _c;
-    this.adapter.log.debug("Send" + JSON.stringify(this.pendingSubscribeStates));
+    this.adapter.log.debug(`Send${JSON.stringify(this.pendingSubscribeStates)}`);
     if (state != null) {
       if (!id.startsWith("hiob.")) {
-        const adapaterKey = id.split(".")[0] + "." + id.split(".")[1];
+        const adapaterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
         if (this.subsribedStates.has(adapaterKey) && ((_a = this.subsribedStates.get(adapaterKey)) == null ? void 0 : _a.subscribed.has(id))) {
           if (this.adapter.valueDatapoints[id] == null) {
             this.adapter.valueDatapoints[id] = {};
@@ -68,8 +68,15 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
           (_b = this.adapter.server) == null ? void 0 : _b.broadcastMsg(
             new import_datapacks.StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON()
           );
-          const stateValueUpdate = new proto.StateValueUpdate({ stateId: id, acc: state.ack, stringValue: (_c = state.val) == null ? void 0 : _c.toString(), time: state.ts });
-          this.subscribedWriters.forEach((e) => e.writer.write(new proto.StatesValueUpdate({ stateUpdates: [stateValueUpdate] })));
+          const stateValueUpdate = new proto.StateValueUpdate({
+            stateId: id,
+            acc: state.ack,
+            stringValue: (_c = state.val) == null ? void 0 : _c.toString(),
+            time: state.ts
+          });
+          this.subscribedWriters.forEach(
+            (e) => e.writer.write(new proto.StatesValueUpdate({ stateUpdates: [stateValueUpdate] }))
+          );
         }
       }
       this.emit("stateChanged" /* StateChange */, new StateChangeEvent(id, state.val, state.ack));
@@ -87,7 +94,7 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
   addPendingSubscribeState(id) {
     this.mutex.runExclusive(async () => {
       this.pendingSubscribeStates.add(id);
-      const adapaterKey = id.split(".")[0] + "." + id.split(".")[1];
+      const adapaterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
       if (this.subsribedStates.has(adapaterKey)) {
         const t = this.subsribedStates.get(adapaterKey);
         if (!t.subscribed.has(id)) {
@@ -118,8 +125,10 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
               subsribedStatesStatus.pending.forEach((e) => {
                 subsribedStatesStatus.subscribed.add(e);
               });
-              this.adapter.log.debug("More than " + _Listener.subscribtionThresholdPerInstance + " states of " + adapaterKey + " were subscribed. Now only listening to " + adapaterKey + ".*");
-              await this.adapter.subscribeForeignStatesAsync(adapaterKey + ".*");
+              this.adapter.log.debug(
+                `More than ${_Listener.subscribtionThresholdPerInstance} states of ${adapaterKey} were subscribed. Now only listening to ${adapaterKey}.*`
+              );
+              await this.adapter.subscribeForeignStatesAsync(`${adapaterKey}.*`);
               for (const i of subsribedStatesStatus.subscribed) {
                 this.adapter.unsubscribeForeignStatesAsync(i);
               }

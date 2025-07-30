@@ -231,7 +231,7 @@ class LoginManager {
     return false;
   }
   async onLoginRequestProto(loginRequest) {
-    this.adapter.log.debug("Client(" + loginRequest + ") requested to login");
+    this.adapter.log.debug(`Client(${loginRequest}) requested to login`);
     const sessionId = this.genRandomString(12, true);
     this.pendingClientIds.push(sessionId);
     let deviceIDRep = loginRequest.deviceId.replace(".", "-");
@@ -239,7 +239,7 @@ class LoginManager {
       deviceIDRep = deviceIDRep.replace(".", "-");
     }
     await this.createObjects(deviceIDRep, loginRequest.deviceName, loginRequest.key, "No version");
-    this.adapter.setStateAsync("devices." + deviceIDRep + ".connected", true, true);
+    this.adapter.setStateAsync(`devices.${deviceIDRep}.connected`, true, true);
     const validdate = await this.validateLoginRequestProto(loginRequest.deviceName, deviceIDRep, loginRequest);
     if (validdate != proto.LoginResponse.Status.succesfull) {
       this.adapter.log.debug("Login declained");
@@ -249,26 +249,28 @@ class LoginManager {
     return new proto.LoginResponse({ sessionId, status: proto.LoginResponse.Status.succesfull });
   }
   async requestApproval(request) {
-    this.adapter.log.debug("Client " + request.deviceName + " requests approval");
+    this.adapter.log.debug(`Client ${request.deviceName} requests approval`);
     let deviceIDRep = request.deviceId.replace(".", "-");
     while (deviceIDRep.includes(".")) {
       deviceIDRep = deviceIDRep.replace(".", "-");
     }
     const approved = await new Promise((resolve2, rejects2) => {
-      let onChange = (event) => {
+      const onChange = (event) => {
         resolve2(event.value);
       };
-      this.adapter.listener.once(import_listener.Events.StateChange + "hiob.0.devices." + deviceIDRep + ".approved", onChange.bind(this));
+      this.adapter.listener.once(
+        `${import_listener.Events.StateChange}hiob.0.devices.${deviceIDRep}.approved`,
+        onChange.bind(this)
+      );
     });
-    this.adapter.log.debug("Client " + request.deviceName + " request for approval: " + approved);
+    this.adapter.log.debug(`Client ${request.deviceName} request for approval: ${approved}`);
     if (approved) {
       this.adapter.log.debug("Generating new key");
       const keys = await this.genKey();
-      await this.adapter.setStateAsync("devices." + deviceIDRep + ".key", keys[1], true);
+      await this.adapter.setStateAsync(`devices.${deviceIDRep}.key`, keys[1], true);
       return new proto.ApprovalResponse({ key: keys[0], status: proto.ApprovalResponse.Status.aprroved });
-    } else {
-      return new proto.ApprovalResponse({ key: "", status: proto.ApprovalResponse.Status.timeout });
     }
+    return new proto.ApprovalResponse({ key: "", status: proto.ApprovalResponse.Status.timeout });
   }
   async onLoginRequest(client, loginRequestData) {
     this.adapter.log.debug(`Client(${client.toString()}) requested to login`);
@@ -304,11 +306,11 @@ class LoginManager {
     return true;
   }
   /**
-  * @param client
-  * @param deviceIDRep
-  * @param loginRequestData
-  * @deprecated The method should not be used
-  */
+   * @param client
+   * @param deviceIDRep
+   * @param loginRequestData
+   * @deprecated The method should not be used
+   */
   async validateLoginRequest(client, deviceIDRep, loginRequestData) {
     const approved = await this.adapter.getStateAsync(`devices.${deviceIDRep}.approved`);
     const keyState = await this.adapter.getStateAsync(`devices.${deviceIDRep}.key`);
@@ -353,19 +355,19 @@ class LoginManager {
   /**
    * This method validdates the Loginrequest based on the key and password
    *
-   * @param clientName 
-   * @param deviceIDRep 
-   * @param loginRequestData 
+   * @param clientName
+   * @param deviceIDRep
+   * @param loginRequestData
    * @returns true if valid, false if invalid
    */
   async validateLoginRequestProto(clientName, deviceIDRep, loginRequestData) {
-    const approved = await this.adapter.getStateAsync("devices." + deviceIDRep + ".approved");
-    const keyState = await this.adapter.getStateAsync("devices." + deviceIDRep + ".key");
-    const needPWD = await this.adapter.getStateAsync("devices." + deviceIDRep + ".noPwdAllowed");
+    const approved = await this.adapter.getStateAsync(`devices.${deviceIDRep}.approved`);
+    const keyState = await this.adapter.getStateAsync(`devices.${deviceIDRep}.key`);
+    const needPWD = await this.adapter.getStateAsync(`devices.${deviceIDRep}.noPwdAllowed`);
     let apr = proto.LoginResponse.Status.succesfull;
     if (!approved || !approved.val) {
       this.adapter.log.debug(
-        "Login declined for client: " + clientName + " (" + loginRequestData.deviceName + "): not approved"
+        `Login declined for client: ${clientName} (${loginRequestData.deviceName}): not approved`
       );
       apr = proto.LoginResponse.Status.notApproved;
     }
@@ -378,7 +380,7 @@ class LoginManager {
     if (needPWD && !(needPWD == null ? void 0 : needPWD.val)) {
       if (!loginRequestData.user || !loginRequestData.password || !await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
         this.adapter.log.debug(
-          "Login declined for client: " + clientName + " (" + loginRequestData.deviceName + "): wrong password"
+          `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`
         );
         apr = proto.LoginResponse.Status.wrongPassword;
       }
@@ -388,12 +390,12 @@ class LoginManager {
     }
     if (keyState != null && keyState.val != null && loginRequestData.key && !await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
       this.adapter.log.debug(
-        "Login declined for client: " + clientName + " (" + loginRequestData.deviceName + "): wrong key" + !await bcrypt.compare(loginRequestData.key, keyState.val.toString())
+        `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong key${!await bcrypt.compare(loginRequestData.key, keyState.val.toString())}`
       );
       apr = proto.LoginResponse.Status.wrongKey;
     }
     if (!apr && this.approveLogins) {
-      await this.adapter.setStateAsync("devices." + deviceIDRep + ".approved", true, true);
+      await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
       apr = proto.LoginResponse.Status.succesfull;
     }
     return apr;
