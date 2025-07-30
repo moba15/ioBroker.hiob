@@ -71,8 +71,8 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
-- Added first gRPC support 
+### 0.2.0-alpha.1 (2025-07-30)
+- Added first gRPC support #127
 - Added support for client side states database
 - **IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished
 
@@ -88,7 +88,6 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
 - Migration to ESLint 9 #108
 - Added PingPong disconnection handling -> some offline message functionality
 - Optimized logic behind state subscription -> Now subscribes only to the necessary adapter
-
 
 ### 0.1.6 (2024-08-17)
 - Updated Packages

@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob",
-    "version": "0.2.0-alpha.0",
+    "version": "0.2.0-alpha.1",
     "news": {
+      "0.2.0-alpha.1": {
+        "en": "Added first gRPC support \nAdded support for client side states database\n**IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished",
+        "de": "Erste Unterstützung von gRPC\nUnterstützung für Client-Seitenstaaten Datenbank hinzugefügt\n**IMPORTANT** Dies ist nur eine Alpha-Version, es sollte nur zum Testen und Feedback verwendet werden. Viele Features ** sind nicht** fertig",
+        "ru": "Добавлена первая поддержка GRPC\nДобавлена поддержка базы данных клиентских государств\n** ВАЖНО** Это только альфа-версия, она должна использоваться только для тестирования и обратной связи. Многие функции ** не завершены",
+        "pt": "Adicionado suporte ao primeiro gRPC\nAdicionado suporte para banco de dados de estados do lado do cliente\n** IMPORTANTE** Esta é apenas uma versão alfa, que só deve ser usada para testes e feedback. Muitos recursos ** não estão** terminados",
+        "nl": "Eerste gRPC-ondersteuning toegevoegd\nOndersteuning toegevoegd voor client side states database\n**BELANGRIJK** Dit is slechts een alpha versie, het mag alleen gebruikt worden voor testen en feedback. Veel functies ** zijn nog niet klaar**",
+        "fr": "Ajout du premier support GRPC\nAjout du support pour la base de données des états clients\n**IMPORTANT** Il ne s'agit que d'une version alpha, elle ne devrait être utilisée que pour les tests et la rétroaction. Beaucoup de fonctionnalités ** ne sont pas terminées**",
+        "it": "Aggiunto il primo supporto gRPC\nAggiunto supporto per database di stati laterali client\n**IMPORTANTE** Questa è solo una versione alfa, dovrebbe essere utilizzata solo per test e feedback. Molte caratteristiche **non sono** finito ",
+        "es": "Añadido el primer apoyo de GRPC\nAñadido soporte para la base de datos de estados lado cliente\n**IMPORTANTE** Esta es sólo una versión alfa, sólo debe utilizarse para pruebas y comentarios. Muchas características ** no están terminados**",
+        "pl": "Dodano pierwsze wsparcie gRPC\nDodano wsparcie dla bazy danych po stronie klienta\n* * WAŻNE * * Jest to tylko wersja alfa, powinno być używane tylko do testowania i sprzężenia zwrotnego. Wiele funkcji * * nie jest ukończonych",
+        "uk": "Додано підтримку першого gRPC\nДодано підтримку бази даних клієнтських бокових станів\n**IMPORTANT*** Це тільки альфа-версія, вона повинна бути використана тільки для тестування та зворотного зв'язку. Багато функцій****",
+        "zh-cn": "添加了第一个 gRPC 支持\n为客户端状态数据库添加支持\n**IMPORANT** 这只是一个α版本,只应用于测试和反馈. 许多特性**没有**完成"
+      },
       "0.2.0-alpha.0": {
         "en": "Added first gRPC support\nAdded support for client side states database\nIMPORTANT: This is only an alpha version, it should only be used for testing and feedback. Many features are not implemented yet.",
         "de": "Erste gRPC-Unterstützung hinzugefügt\nUnterstützung für clientseitige Statusdatenbank hinzugefügt\nWICHTIG: Dies ist nur eine Alpha-Version und sollte nur zum Testen und für Feedback verwendet werden. Viele Funktionen sind noch nicht implementiert.",
@@ -80,32 +93,6 @@
         "pl": "Aktualizacja pakietów\nNapraw dla # 93\nNapraw dla # 91\nNapraw dla # 109\nMigracja do ESLint 9 # 108\nNaprawiona aktualizacja Komunikat aplikacji\nDodano obsługę odłączenia PingPong - > niektóre funkcje wiadomości offline",
         "uk": "Оновлені пакети\nВиправлення для #93\nВиправлення для #91\nВиправлення для #109\nМіграція до ESLint 9 #108\nВиправлено оновлення Повідомлення\nДодано PingPong роз'єднання -> деякі функції офлайн повідомлення",
         "zh-cn": "更新软件包\n准备93号\n准备91号\n修复为 #109\n迁移到ESLint 9#108\n固定更新 应用消息\n添加了 PingPong 断开处理 - > 一些离线消息功能"
-      },
-      "0.1.6": {
-        "en": "Updated Packages\nPrepared lates release",
-        "de": "Aktualisierte Pakete\nVorbereitete Verspätung",
-        "ru": "Обновленные пакеты\nГотовые задержки релиз",
-        "pt": "Pacotes atualizados\nLiberação de tardes preparada",
-        "nl": "Bijgewerkte pakketten\nBereide te late vrijgave",
-        "fr": "Packages mis à jour\nLibération tardive préparée",
-        "it": "Pacchetti aggiornati\nComunicato in ritardo preparato",
-        "es": "Paquetes actualizados\nLiberación de los lates preparados",
-        "pl": "Aktualizacja pakietów\nGotowe uwalnianie lamentów",
-        "uk": "Оновлені пакети\nПриготований реліз пізніх фінішів",
-        "zh-cn": "更新软件包\n准备的迟发"
-      },
-      "0.1.5": {
-        "en": "Removed blockly\nFixed some bugs \nUpdated dependencies",
-        "de": "Entfernt blockweise\nEinige Fehler behoben\nAktualisierte Abhängigkeiten",
-        "ru": "Удалено блокно\nИсправлены некоторые ошибки\nОбновленные зависимости",
-        "pt": "Removido em bloco\nCorrigido alguns bugs\nDependências atualizadas",
-        "nl": "Blokjes verwijderd\nEnkele bugs hersteld\nBijgewerkte afhankelijkheden",
-        "fr": "Supprimé en bloc\nCorrection de certains bugs\nDépendances actualisées",
-        "it": "Rimozione bloccata\nRisolto alcuni bug\nDipendenze aggiornate",
-        "es": "Retirada bloqueada\nArreglado algunos errores\nDependencias actualizadas",
-        "pl": "Usunięte blokowane\nNaprawiono kilka błędów\nAktualizacja zależności",
-        "uk": "Видалити блокноти\nВиправлено деякі помилки\nОновлені залежності",
-        "zh-cn": "块状删除\n修补一些错误\n更新的依赖关系"
       }
     },
     "titleLang": {
