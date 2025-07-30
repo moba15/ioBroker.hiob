@@ -231,7 +231,7 @@ class LoginManager {
     return false;
   }
   async onLoginRequestProto(loginRequest) {
-    this.adapter.log.debug(`Client(${loginRequest}) requested to login`);
+    this.adapter.log.debug(`Client(${loginRequest.toString()}) requested to login`);
     const sessionId = this.genRandomString(12, true);
     this.pendingClientIds.push(sessionId);
     let deviceIDRep = loginRequest.deviceId.replace(".", "-");
@@ -254,9 +254,9 @@ class LoginManager {
     while (deviceIDRep.includes(".")) {
       deviceIDRep = deviceIDRep.replace(".", "-");
     }
-    const approved = await new Promise((resolve2, rejects2) => {
+    const approved = await new Promise((resolve, _rejects) => {
       const onChange = (event) => {
-        resolve2(event.value);
+        resolve(event.value);
       };
       this.adapter.listener.once(
         `${import_listener.Events.StateChange}hiob.0.devices.${deviceIDRep}.approved`,

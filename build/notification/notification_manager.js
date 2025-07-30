@@ -32,8 +32,7 @@ class NotificationManager {
   init() {
     this.adapter.listener.on(import_listener.Events.StateChange, this.onStateChange.bind(this));
   }
-  onStateChange(event) {
-    const match = event.objectID.match("(hiob.\\d*.devices.)(.*)(.sendNotification)");
+  onStateChange(_event) {
   }
   async sendNotificationLocal(client, deviceID, notification) {
     if (client != void 0 && (client == null ? void 0 : client.isConnected)) {

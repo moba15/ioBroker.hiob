@@ -13,10 +13,6 @@ import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import * as proto from '../generated/login/login';
 import type { Stream } from 'stream';
-import { EventEmitter } from 'stream';
-import { Listener } from '@grpc/grpc-js';
-import { resolve } from 'path';
-import { rejects } from 'assert';
 export class LoginManager {
     adapter: SamartHomeHandyBis;
     pendingClients: Client[];
@@ -229,7 +225,7 @@ export class LoginManager {
     }
 
     public async onLoginRequestProto(loginRequest: proto.LoginRequest): Promise<proto.LoginResponse> {
-        this.adapter.log.debug(`Client(${loginRequest}) requested to login`);
+        this.adapter.log.debug(`Client(${loginRequest.toString()}) requested to login`);
         const sessionId = this.genRandomString(12, true);
         this.pendingClientIds.push(sessionId);
         let deviceIDRep = loginRequest.deviceId.replace('.', '-');
@@ -258,8 +254,8 @@ export class LoginManager {
             deviceIDRep = deviceIDRep.replace('.', '-');
         }
 
-        const approved = await new Promise<boolean>((resolve, rejects) => {
-            const onChange = (event: StateChangeEvent) => {
+        const approved = await new Promise<boolean>((resolve, _rejects) => {
+            const onChange = (event: StateChangeEvent): void => {
                 resolve(event.value);
             };
             //TODO Dynamic
@@ -787,7 +783,10 @@ export class LoginManager {
             },
             native: {},
         });
+        //TODO
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const get_aes = await this.adapter.getStateAsync(`devices.${deviceIDRep}.aesKey`);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const random_key = this.genRandomString(6, true);
         //TODO Aes
         /*if (!get_aes || get_aes.val == null || get_aes.val == "") {

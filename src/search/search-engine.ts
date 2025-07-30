@@ -35,13 +35,12 @@ export class StateSearchEngine {
      *
      * @param keyword
      */
-    public async searchKeyWord(keyword: string): Promise<void> {
+    /*public async searchKeyWord(keyword: string): Promise<void> {
         const allObjects = await this.adapater.getForeignObjectsAsync(`*${keyword}*`);
-        for (const obj in allObjects) {
-        }
+        
     }
 
     public getPossibleEnums() {}
 
-    public getPossibleFunctions() {}
+    public getPossibleFunctions() {}*/
 }

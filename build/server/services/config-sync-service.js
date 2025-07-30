@@ -34,7 +34,7 @@ module.exports = __toCommonJS(config_sync_service_exports);
 var proto = __toESM(require("../../generated/config_sync/config_sync"));
 function addConfigSyncServices(gRpcServer, adapter) {
   gRpcServer.addService(proto.ConfigSyncClient.service, {
-    GetAvailableConfigs: async (call, callback) => {
+    GetAvailableConfigs: async (_call, callback) => {
       const list = await adapter.templateManager.fetchTemplateSettings();
       callback(
         null,
@@ -43,7 +43,7 @@ function addConfigSyncServices(gRpcServer, adapter) {
         })
       );
     },
-    ConfigSyncUp: async (call, callback) => {
+    ConfigSyncUp: async (call, _callback) => {
       await adapter.templateManager.uploadTemplateSetting(
         call.request.config.name,
         call.request.config.screens.toString(),

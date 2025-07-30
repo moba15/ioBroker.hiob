@@ -33,25 +33,7 @@ __export(state_service_exports, {
 module.exports = __toCommonJS(state_service_exports);
 var grpc = __toESM(require("@grpc/grpc-js"));
 var proto = __toESM(require("../../generated/state/state"));
-var import_state = require("../../generated/state/state");
 var import_authenticator = require("./authenticator/authenticator");
-class Test extends import_state.UnimplementedStateUpdateService {
-  Subscibe(call) {
-    throw new Error("Method not implemented.");
-  }
-  UpdateValue(call, callback) {
-    throw new Error("Method not implemented.");
-  }
-  SearchState(call, callback) {
-    throw new Error("Method not implemented.");
-  }
-  SearchStateStream(call) {
-    throw new Error("Method not implemented.");
-  }
-  GetAllObjects(call, callback) {
-    throw new Error("Method not implemented.");
-  }
-}
 function addStateServices(gRpcServer, adapter) {
   gRpcServer.addService(proto.StateUpdateClient.service, {
     Subscibe: async (call) => {
@@ -73,11 +55,11 @@ function addStateServices(gRpcServer, adapter) {
       const id = call.metadata.get("deviceId")[0].toString();
       adapter.listener.addWriter(id, call);
     },
-    searchStateStream: async (call) => {
+    searchStateStream: (call) => {
       adapter.log.debug("Start search");
       const firstLevelMap = adapter.stateSearchEngine.getFirstLevel();
       const firstLevelResponse = [];
-      for (const [id, adapaterObj] of firstLevelMap) {
+      for (const [id] of firstLevelMap) {
         firstLevelResponse.push(
           new proto.State({
             stateId: id

@@ -1,9 +1,6 @@
-import * as ws from 'ws';
-import * as fs from 'fs';
 import type * as m from '../..//main';
 import type { Client } from '.././client';
 import * as grpc from '@grpc/grpc-js';
-import * as proto from '../../generated/login/login';
 import { addLoginServices } from '../services/login-service';
 import { addStateServices } from '../services/state-service';
 import { addConfigSyncServices } from '../services/config-sync-service';

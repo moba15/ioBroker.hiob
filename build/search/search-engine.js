@@ -54,15 +54,14 @@ class StateSearchEngine {
    *
    * @param keyword
    */
-  async searchKeyWord(keyword) {
-    const allObjects = await this.adapater.getForeignObjectsAsync(`*${keyword}*`);
-    for (const obj in allObjects) {
-    }
-  }
-  getPossibleEnums() {
-  }
-  getPossibleFunctions() {
-  }
+  /*public async searchKeyWord(keyword: string): Promise<void> {
+          const allObjects = await this.adapater.getForeignObjectsAsync(`*${keyword}*`);
+          
+      }
+  
+      public getPossibleEnums() {}
+  
+      public getPossibleFunctions() {}*/
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

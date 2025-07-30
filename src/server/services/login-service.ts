@@ -2,7 +2,7 @@ import type * as m from '../..//main';
 import type * as grpc from '@grpc/grpc-js';
 import * as proto from '../../generated/login/login';
 
-export function addLoginServices(gRpcServer: grpc.Server, adapter: m.SamartHomeHandyBis) {
+export function addLoginServices(gRpcServer: grpc.Server, adapter: m.SamartHomeHandyBis): void {
     gRpcServer.addService(proto.LoginClient.service, {
         Login: async (
             call: grpc.ServerUnaryCall<proto.LoginRequest, proto.LoginResponse>,

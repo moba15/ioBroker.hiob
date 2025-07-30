@@ -1,12 +1,11 @@
 import type * as m from '../..//main';
 import type * as grpc from '@grpc/grpc-js';
 import * as proto from '../../generated/config_sync/config_sync';
-import { TemplateSettings } from '../../template/template_manager';
 
-export function addConfigSyncServices(gRpcServer: grpc.Server, adapter: m.SamartHomeHandyBis) {
+export function addConfigSyncServices(gRpcServer: grpc.Server, adapter: m.SamartHomeHandyBis): void {
     gRpcServer.addService(proto.ConfigSyncClient.service, {
         GetAvailableConfigs: async (
-            call: grpc.ServerUnaryCall<proto.AvailableConfigsRequest, proto.AvailableConfigsResponse>,
+            _call: grpc.ServerUnaryCall<proto.AvailableConfigsRequest, proto.AvailableConfigsResponse>,
             callback: grpc.sendUnaryData<proto.AvailableConfigsResponse>,
         ) => {
             const list = await adapter.templateManager.fetchTemplateSettings();
@@ -19,7 +18,7 @@ export function addConfigSyncServices(gRpcServer: grpc.Server, adapter: m.Samart
         },
         ConfigSyncUp: async (
             call: grpc.ServerUnaryCall<proto.ConfigSyncUpRequest, proto.ConfigSyncUpResponse>,
-            callback: grpc.sendUnaryData<proto.ConfigSyncUpResponse>,
+            _callback: grpc.sendUnaryData<proto.ConfigSyncUpResponse>,
         ) => {
             await adapter.templateManager.uploadTemplateSetting(
                 call.request.config.name,

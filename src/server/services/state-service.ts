@@ -1,40 +1,9 @@
+/* eslint-disable @typescript-eslint/no-base-to-string */
 import type * as m from '../..//main';
 import * as grpc from '@grpc/grpc-js';
 import * as proto from '../../generated/state/state';
-import type {
-    SearchStateResponse,
-    StateSubscribtion,
-    StateValueUpdateRequest,
-    StateValueUpdateResponse,
-} from '../../generated/state/state';
-import { StateValueUpdate, UnimplementedStateUpdateService } from '../../generated/state/state';
+import type { SearchStateResponse, StateSubscribtion } from '../../generated/state/state';
 import { checkAuthentication } from './authenticator/authenticator';
-class Test extends UnimplementedStateUpdateService {
-    Subscibe(call: grpc.ServerWritableStream<StateSubscribtion, proto.StatesValueUpdate>): void {
-        throw new Error('Method not implemented.');
-    }
-    UpdateValue(
-        call: grpc.ServerUnaryCall<StateValueUpdateRequest, StateValueUpdateResponse>,
-        callback: grpc.sendUnaryData<StateValueUpdateResponse>,
-    ): void {
-        throw new Error('Method not implemented.');
-    }
-    SearchState(
-        call: grpc.ServerUnaryCall<proto.SearchStateRequest, SearchStateResponse>,
-        callback: grpc.sendUnaryData<SearchStateResponse>,
-    ): void {
-        throw new Error('Method not implemented.');
-    }
-    SearchStateStream(call: grpc.ServerDuplexStream<proto.SearchStateRequest, SearchStateResponse>): void {
-        throw new Error('Method not implemented.');
-    }
-    GetAllObjects(
-        call: grpc.ServerUnaryCall<proto.AllObjectRequest, proto.AllObjectsResults>,
-        callback: grpc.sendUnaryData<proto.AllObjectsResults>,
-    ): void {
-        throw new Error('Method not implemented.');
-    }
-}
 
 export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeHandyBis): void {
     gRpcServer.addService(proto.StateUpdateClient.service, {
@@ -59,12 +28,12 @@ export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
             const id = call.metadata.get('deviceId')[0].toString();
             adapter.listener.addWriter(id, call);
         },
-        searchStateStream: async (call: grpc.ServerDuplexStream<proto.SearchStateRequest, SearchStateResponse>) => {
+        searchStateStream: (call: grpc.ServerDuplexStream<proto.SearchStateRequest, SearchStateResponse>) => {
             adapter.log.debug('Start search');
             //1. Return first level
             const firstLevelMap = adapter.stateSearchEngine.getFirstLevel();
             const firstLevelResponse: proto.State[] = [];
-            for (const [id, adapaterObj] of firstLevelMap) {
+            for (const [id] of firstLevelMap) {
                 firstLevelResponse.push(
                     new proto.State({
                         stateId: id,
@@ -88,6 +57,7 @@ export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
 
                         common: new proto.State.StateCommon({
                             //TODO Language support
+
                             name: object.common.name.toString(),
                             unit: object.common.unit,
                             desc: object.common.desc?.toString(),

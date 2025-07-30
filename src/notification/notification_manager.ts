@@ -16,10 +16,10 @@ export class NotificationManager {
         this.adapter.listener.on(Events.StateChange, this.onStateChange.bind(this));
     }
 
-    private onStateChange(event: StateChangeEvent): void {
+    private onStateChange(_event: StateChangeEvent): void {
         //TODO
-        const match: RegExpMatchArray | null = event.objectID.match('(hiob.\\d*.devices.)(.*)(.sendNotification)');
-        /* if (match && match[2] && !event.ack) {
+        /*const match: RegExpMatchArray | null = event.objectID.match('(hiob.\\d*.devices.)(.*)(.sendNotification)');
+         if (match && match[2] && !event.ack) {
             const deviceID = match[2];
             const clients: Client[] | undefined = this.adapter.server?.getClients(deviceID);
             //Check if client is connected

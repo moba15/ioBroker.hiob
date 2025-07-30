@@ -247,12 +247,12 @@ class Client {
     this.adapter.log.debug(`OnTemplateSettingCreate: ${templateSettingCreatePack.name}`);
     this.sendMSG(new import_datapacks.TemplateSettingCreatePack(templateSettingCreatePack.name).toJSON(), true);
   }
-  async onTemplateUpload(uploadTemplateSettingPack) {
+  async onTemplateUpload(_uploadTemplateSettingPack) {
     this.sendMSG(new import_datapacks.TemplateSettingUploadSuccessPack().toJSON(), true);
   }
-  async getTemplatesSetting(name, device, screen, widget) {
+  async getTemplatesSetting(name, _device, _screen, _widget) {
     this.adapter.log.debug(`NAME: ${name}`);
-    const map = await this.adapter.templateManager.getTemplateSettings(name);
+    await this.adapter.templateManager.getTemplateSettings(name);
   }
   onNotification(pack) {
     if (pack.onlySendNotification != void 0) {

@@ -277,7 +277,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
                         ack: this.valueDatapoints[i].ack,
                     };
                 }
-            } catch (e) {
+            } catch (e: any) {
                 this.log.warn(`App tried to request to a deleted datapoint. ID:${i}${e}`);
                 continue;
             }

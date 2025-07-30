@@ -71,7 +71,7 @@ export class Listener extends EventEmitter {
      * @param id The id of the State you want to subscribe to
      */
     addPendingSubscribeState(id: string): void {
-        this.mutex.runExclusive(async () => {
+        this.mutex.runExclusive((): void => {
             this.pendingSubscribeStates.add(id);
             const adapaterKey = `${id.split('.')[0]}.${id.split('.')[1]}`;
             if (this.subsribedStates.has(adapaterKey)) {

@@ -9,6 +9,7 @@ export default [
         // specify files to exclude from linting here
         ignores: [
             '.dev-server/',
+            'src/generated/',
             '.vscode/',
             '*.test.js', 
             'test/**/*.js', 

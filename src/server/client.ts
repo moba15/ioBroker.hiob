@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/require-await */
 import type { IncomingMessage } from 'http';
 import type { WebSocket } from 'ws';
 import type { SamartHomeHandyBis } from '../main';
@@ -5,7 +6,6 @@ import type { Server } from './server';
 import {
     EnumUpdatePack,
     EnumUpdateRequestPack,
-    GetTemplateSettingPack,
     RequestLoginPacket,
     StateChangeRequestPack,
     SubscribeToDataPointsPack,
@@ -15,7 +15,6 @@ import {
     TemplateSettingsRequestedPack,
     NotificationPack,
 } from './datapacks';
-import { TemplateSettings } from '../template/template_manager';
 import * as CryptoJS from 'crypto-js';
 import { Mutex } from 'async-mutex';
 
@@ -292,14 +291,14 @@ export class Client {
         this.sendMSG(new TemplateSettingCreatePack(templateSettingCreatePack.name).toJSON(), true);
     }
 
-    async onTemplateUpload(uploadTemplateSettingPack: any): Promise<void> {
+    async onTemplateUpload(_uploadTemplateSettingPack: any): Promise<void> {
         //await this.adapter.templateManager.uploadTemplateSetting(uploadTemplateSettingPack.name, uploadTemplateSettingPack.devices, uploadTemplateSettingPack.screens, uploadTemplateSettingPack.widgets);
         this.sendMSG(new TemplateSettingUploadSuccessPack().toJSON(), true);
     }
 
-    async getTemplatesSetting(name: any, device: any, screen: any, widget: any): Promise<void> {
+    async getTemplatesSetting(name: any, _device: any, _screen: any, _widget: any): Promise<void> {
         this.adapter.log.debug(`NAME: ${name}`);
-        const map = await this.adapter.templateManager.getTemplateSettings(name);
+        await this.adapter.templateManager.getTemplateSettings(name);
         //this.sendMSG(new GetTemplateSettingPack(device ? map["devices"]: null, screen ? map["screens"]: null, widget ? map["widgets"] : null).toJSON(), true);
     }
 
