@@ -269,14 +269,14 @@ export class Client {
         // this.adapter.historyManager.subscribeToHistory(sub.dataPoint, sub.start, sub.end, this, sub.minInterval);
     } */
 
-    onLoginRequest(requestLoginPacket: RequestLoginPacket): void {
-        this.adapter.loginManager.onLoginRequest(this, requestLoginPacket).then(_ => {
+    onLoginRequest(_: RequestLoginPacket): void {
+        /*this.adapter.loginManager.onLoginRequest(this, requestLoginPacket).then(_ => {
             this.setConnection();
-        });
+        });*/
     }
 
     onWrongAesKey(): void {
-        this.adapter.loginManager.onWrongAesKey(this);
+        // this.adapter.loginManager.onWrongAesKey(this);
     }
 
     async onTemplateSettingsRequest(): Promise<void> {

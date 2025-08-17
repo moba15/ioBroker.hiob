@@ -1,14 +1,6 @@
 import { Events, type StateChangeEvent } from '../listener/listener';
 import type { SamartHomeHandyBis } from '../main';
 import type { Client } from '../server/client';
-import {
-    LoginApprovedPacket,
-    LoginDeclinedPacket,
-    LoginKeyPacket,
-    WrongAesKeyPack,
-    NewAesPacket,
-    type RequestLoginPacket,
-} from '../server/datapacks';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import * as proto from '../generated/login/login';
@@ -39,18 +31,7 @@ export class LoginManager {
                 const deviceID = splited[3];
                 if (splited[4] == 'approved') {
                     //Get Client from pending list
-                    const cl = this.pendingClients.find(e => e.id == deviceID);
                     //If Approved was set to true
-                    if (cl && event.value) {
-                        this.setAndSendLoginKeys(deviceID, cl);
-                    } else {
-                        const client = this.adapter.server?.getClient(deviceID);
-                        if (client) {
-                            this.setAndSendLoginKeys(deviceID, client);
-                        } else {
-                            this.adapter.log.debug('No pending client found');
-                        }
-                    }
                     this.adapter.setStateAsync(event.objectID, { ack: true });
                 } else if (splited[4] == 'aesKey_active') {
                     const cl = this.pendingClients.find(e => e.id == deviceID);
@@ -77,20 +58,6 @@ export class LoginManager {
                     this.viewAesKey(deviceID);
                     this.adapter.setStateAsync(event.objectID, false, true);
                 } else if (splited[4] == 'aesKey_new') {
-                    const cl = this.pendingClients.find(e => e.id == deviceID);
-                    if (cl) {
-                        if (event.value) {
-                            this.setAesNewAndSentInfo(deviceID, cl);
-                        }
-                        this.adapter.setState(event.objectID, false, true);
-                    } else {
-                        const client = this.adapter.server?.getClient(deviceID);
-                        if (client && event.value) {
-                            this.setAesNewAndSentInfo(deviceID, client);
-                        } else {
-                            this.adapter.log.debug('No pending client found');
-                        }
-                    }
                     this.adapter.setStateAsync(event.objectID, false, true);
                 } else if (splited[4] == 'noPwdAllowed') {
                     this.adapter.setStateAsync(event.objectID, { ack: true });
@@ -144,7 +111,7 @@ export class LoginManager {
         }
     }
 
-    private async setAesNewAndSentInfo(deviceID: string, cl: Client): Promise<void> {
+    /*private async setAesNewAndSentInfo(deviceID: string, cl: Client): Promise<void> {
         if (this.aesViewTimeout[deviceID]) {
             this.adapter.clearTimeout(this.aesViewTimeout[deviceID]);
             this.aesViewTimeout[deviceID] = undefined;
@@ -158,7 +125,7 @@ export class LoginManager {
         cl.aesKey = random_key;
         cl.setAESKey(random_key);
         cl.sendMSG(new NewAesPacket().toJSON(), false);
-    }
+    }*/
 
     private async setAesStatus(deviceID: string, cl: Client): Promise<void> {
         const get_aes = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
@@ -182,7 +149,7 @@ export class LoginManager {
      * @param deviceID
      * @param cl
      */
-    private async setAndSendLoginKeys(deviceID: string, cl: Client): Promise<void> {
+    /*private async setAndSendLoginKeys(deviceID: string, cl: Client): Promise<void> {
         const keys = await this.genKey();
         const aes_status = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey_active`);
         if (aes_status && aes_status.val) {
@@ -204,7 +171,7 @@ export class LoginManager {
                 current.sendMSG(new LoginKeyPacket(keys[0]).toJSON(), false, false);
             }
         }
-    }
+    }*/
 
     public stop(): boolean {
         this.approveLoginsTimeout && this.adapter.clearTimeout(this.approveLoginsTimeout);
@@ -218,11 +185,11 @@ export class LoginManager {
         return false;
     }
 
-    public onWrongAesKey(client: Client): boolean {
+    /* public onWrongAesKey(client: Client): boolean {
         this.adapter.log.debug(`Client(${client.toString()}) send wrong aes!`);
         this.wrongAesKey(client);
         return false;
-    }
+    }*/
 
     public async onLoginRequestProto(loginRequest: proto.LoginRequest): Promise<proto.LoginResponse> {
         this.adapter.log.debug(`Client(${loginRequest.toString()}) requested to login`);
@@ -234,7 +201,7 @@ export class LoginManager {
         }
 
         await this.createObjects(deviceIDRep, loginRequest.deviceName, loginRequest.key, 'No version');
-        this.adapter.setStateAsync(`devices.${deviceIDRep}.connected`, true, true);
+        void this.adapter.setStateAsync(`devices.${deviceIDRep}.connected`, true, true);
         const validdate = await this.validateLoginRequestProto(loginRequest.deviceName, deviceIDRep, loginRequest);
         if (validdate != proto.LoginResponse.Status.succesfull) {
             //Login declined
@@ -254,29 +221,31 @@ export class LoginManager {
             deviceIDRep = deviceIDRep.replace('.', '-');
         }
 
-        const approved = await new Promise<boolean>((resolve, _rejects) => {
-            const onChange = (event: StateChangeEvent): void => {
-                resolve(event.value);
-            };
-            //TODO Dynamic
-            this.adapter.listener.once(
-                `${Events.StateChange}hiob.0.devices.${deviceIDRep}.approved`,
-                onChange.bind(this),
-            );
-        });
+        const approved = this.approveLogins
+            ? true
+            : await new Promise<boolean>((resolve, _rejects) => {
+                  const onChange = (event: StateChangeEvent): void => {
+                      resolve(event.value);
+                  };
+                  this.adapter.listener.once(
+                      `${Events.StateChange}hiob.0.devices.${deviceIDRep}.approved`,
+                      onChange.bind(this),
+                  );
+              });
 
         this.adapter.log.debug(`Client ${request.deviceName} request for approval: ${approved}`);
         if (approved) {
             //Gen key
             this.adapter.log.debug('Generating new key');
             const keys = await this.genKey();
-            await this.adapter.setStateAsync(`devices.${deviceIDRep}.key`, keys[1], true);
+            await this.adapter.setState(`devices.${deviceIDRep}.key`, keys[1], true);
+            await this.adapter.setState(`devices.${deviceIDRep}.approved`, true, true);
             return new proto.ApprovalResponse({ key: keys[0], status: proto.ApprovalResponse.Status.aprroved });
         }
         return new proto.ApprovalResponse({ key: '', status: proto.ApprovalResponse.Status.timeout });
     }
 
-    public async onLoginRequest(client: Client, loginRequestData: RequestLoginPacket): Promise<boolean> {
+    /*public async onLoginRequest(client: Client, loginRequestData: RequestLoginPacket): Promise<boolean> {
         this.adapter.log.debug(`Client(${client.toString()}) requested to login`);
         this.pendingClients.push(client);
         this.pendingClients = this.pendingClients.filter((cli, i, s) => s.indexOf(cli) == i);
@@ -308,14 +277,14 @@ export class LoginManager {
         const version = this.adapter.version != null ? this.adapter.version.toString() : '';
         client.sendMSG(new LoginApprovedPacket(version).toJSON(), false);
         return true;
-    }
+    }*/
     /**
      * @param client
      * @param deviceIDRep
      * @param loginRequestData
      * @deprecated The method should not be used
      */
-    private async validateLoginRequest(
+    /*private async validateLoginRequest(
         client: Client,
         deviceIDRep: string,
         loginRequestData: RequestLoginPacket,
@@ -375,7 +344,7 @@ export class LoginManager {
             apr = true;
         }
         return apr;
-    }
+    }*/
 
     /**
      * This method validdates the Loginrequest based on the key and password
@@ -869,13 +838,5 @@ export class LoginManager {
         const key = this.genRandomString(512, false);
         const hashedKey = await bcrypt.hash(key, 5);
         return [key, hashedKey];
-    }
-
-    private loginDeclined(client: Client): void {
-        client.sendMSG(new LoginDeclinedPacket().toJSON(), false);
-    }
-
-    private wrongAesKey(client: Client): void {
-        client.sendMSG(new WrongAesKeyPack().toJSON(), false);
     }
 }
