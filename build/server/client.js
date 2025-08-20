@@ -231,13 +231,9 @@ class Client {
   /* onSubscribeToHistory(sub: SubscribeToDataPointsHistory): void {
       // this.adapter.historyManager.subscribeToHistory(sub.dataPoint, sub.start, sub.end, this, sub.minInterval);
   } */
-  onLoginRequest(requestLoginPacket) {
-    this.adapter.loginManager.onLoginRequest(this, requestLoginPacket).then((_) => {
-      this.setConnection();
-    });
+  onLoginRequest(_) {
   }
   onWrongAesKey() {
-    this.adapter.loginManager.onWrongAesKey(this);
   }
   async onTemplateSettingsRequest() {
     const list = await this.adapter.templateManager.fetchTemplateSettings();
