@@ -34,7 +34,7 @@ const createMockAdapter = (): SamartHomeHandyBis => {
 };
 async function waitFor(test: () => boolean): Promise<void> {
     while (!test()) {
-        await new Promise(f => setTimeout(f, 100));
+        await new Promise(f => setTimeout(f, 10));
     }
 }
 
@@ -129,6 +129,26 @@ describe('LoginManager', () => {
         });
         adapter.listener.emit('stateChangedhiob.0.devices.newdeviceid.approved', deviceApproveState);
         const result = await resultPromise;
+        expect(result.key.length).to.be.greaterThan(0);
+        (adapter.getStateAsync as sinon.SinonStub).withArgs('devices.newdeviceid.approved').resolves({ val: true });
+        const hashedKey = await bcrypt.hash(result.key, 5);
+        (adapter.getStateAsync as sinon.SinonStub).withArgs('devices.newdeviceid.key').resolves({ val: hashedKey });
+        loginRequestNoKey.key = result.key;
+        const resultLoginRequest = await loginManager.onLoginRequestProto(loginRequestNoKey);
+        expect(resultLoginRequest.status).to.be.equal(LoginResponse.Status.succesfull);
+    });
+
+    it('request login with approvedNextLogin', async () => {
+        const loginRequestNoKey = LoginRequest.fromObject({
+            deviceName: 'new device',
+            deviceId: 'newdeviceid',
+        });
+        (adapter.getStateAsync as sinon.SinonStub).withArgs('devices.newdeviceid.approved').resolves({ val: false });
+        await loginManager.onLoginRequestProto(loginRequestNoKey);
+        const requestApproval = ApprovalRequest.fromObject({ deviceName: 'new dvice', deviceId: 'newdeviceid' });
+        loginManager.approveLogins = true;
+        expect(loginManager.approveLogins).to.be.true;
+        const result = await loginManager.requestApproval(requestApproval);
         expect(result.key.length).to.be.greaterThan(0);
         (adapter.getStateAsync as sinon.SinonStub).withArgs('devices.newdeviceid.approved').resolves({ val: true });
         const hashedKey = await bcrypt.hash(result.key, 5);
