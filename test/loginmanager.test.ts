@@ -32,6 +32,11 @@ const createMockAdapter = (): SamartHomeHandyBis => {
     };
     return mock as any;
 };
+async function waitFor(test: () => boolean): Promise<void> {
+    while (!test()) {
+        await new Promise(f => setTimeout(f, 100));
+    }
+}
 
 describe('LoginManager', () => {
     let adapter: SamartHomeHandyBis;
@@ -119,7 +124,9 @@ describe('LoginManager', () => {
         const deviceApproveStateId = 'hiob.0.devices.newdeviceid.approved';
         const deviceApproveState = { value: true, ack: true, objectID: deviceApproveStateId };
         const resultPromise = loginManager.requestApproval(requestApproval);
-        await new Promise(f => setTimeout(f, 100));
+        await waitFor(() => {
+            return (adapter.listener.once as sinon.SinonSpy).called;
+        });
         adapter.listener.emit('stateChangedhiob.0.devices.newdeviceid.approved', deviceApproveState);
         const result = await resultPromise;
         expect(result.key.length).to.be.greaterThan(0);
