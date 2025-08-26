@@ -2,36 +2,10 @@ import { LoginManager } from '../src/login/loginmanager';
 import type { SamartHomeHandyBis } from '../src/main';
 import * as sinon from 'sinon';
 import { expect } from 'chai';
-import { EventEmitter } from 'events';
 import { ApprovalRequest, LoginRequest, LoginResponse } from '../src/generated/login/login';
 import * as bcrypt from 'bcrypt';
+import { createMockAdapter } from '../test/mocks';
 
-/**
- * Creates a mock of the SamartHomeHandyBis adapter class for testing purposes.
- * This mock provides the necessary properties and methods that LoginManager interacts with.
- */
-const createMockAdapter = (): SamartHomeHandyBis => {
-    const listenerMock = new EventEmitter();
-    sinon.spy(listenerMock, 'on');
-    sinon.spy(listenerMock, 'once');
-    const mock = {
-        log: {
-            info: sinon.stub(),
-            warn: sinon.stub(),
-            debug: sinon.stub(),
-            error: sinon.stub(),
-        },
-        listener: listenerMock,
-        setStateAsync: sinon.stub().resolves(),
-        setObjectNotExistsAsync: sinon.stub().resolves(),
-        setObjectAsync: sinon.stub().resolves(),
-        setState: sinon.stub(),
-        getStateAsync: sinon.stub().resolves(),
-        checkPasswordAsync: sinon.stub().resolves(true),
-        // You can extend this mock with more adapter properties and methods as needed for your tests
-    };
-    return mock as any;
-};
 async function waitFor(test: () => boolean): Promise<void> {
     while (!test()) {
         await new Promise(f => setTimeout(f, 10));
