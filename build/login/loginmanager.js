@@ -217,6 +217,11 @@ class LoginManager {
       await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
       apr = proto.LoginResponse.Status.succesfull;
     }
+    if (apr == proto.LoginResponse.Status.succesfull) {
+      await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
+    } else {
+      await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, false, true);
+    }
     return apr;
   }
   /**
