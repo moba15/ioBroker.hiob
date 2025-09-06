@@ -36,7 +36,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
             ...options,
-            name: 'hiob',
+            name: 'hiob-testing',
         });
         this.templateManager = new TemplateManager(this);
         this.listener = new Listener(this);
