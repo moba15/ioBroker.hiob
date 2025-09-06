@@ -38,7 +38,6 @@ var import_config_sync_service = require("../services/config-sync-service");
 class GrpcServer {
   constructor(port = 4500, keyPath = "key.pem", certPath = "cert.pem", adapter, useCert = false) {
     this.stoped = false;
-    this.conClients = [];
     this.port = port;
     this.certPath = certPath;
     this.keyPath = keyPath;
@@ -56,19 +55,6 @@ class GrpcServer {
     (0, import_login_service.addLoginServices)(this.gRpcServer, this.adapter);
     (0, import_state_service.addStateServices)(this.gRpcServer, this.adapter);
     (0, import_config_sync_service.addConfigSyncServices)(this.gRpcServer, this.adapter);
-  }
-  broadcastMsg(msg) {
-    this.conClients.filter((e) => !e.onlySendNotification).forEach((element) => {
-      if (element.isConnected) {
-        element.sendMSG(msg, true);
-      }
-    });
-  }
-  isConnected(deviceID) {
-    return this.conClients.some((c) => c.isConnected && c.id == deviceID);
-  }
-  getClient(deviceID) {
-    return this.conClients.find((c) => c.isConnected && c.id == deviceID);
   }
   stop() {
     this.adapter.log.info("Server stoped");

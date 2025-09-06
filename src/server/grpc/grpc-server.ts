@@ -1,5 +1,4 @@
 import type * as m from '../..//main';
-import type { Client } from '.././client';
 import * as grpc from '@grpc/grpc-js';
 import { addLoginServices } from '../services/login-service';
 import { addStateServices } from '../services/state-service';
@@ -13,7 +12,6 @@ export class GrpcServer {
     adapter: m.SamartHomeHandyBis;
     gRpcServer: grpc.Server | undefined;
     stoped: boolean = false;
-    conClients: Client[] = [];
     constructor(
         port: number = 4500,
         keyPath: string = 'key.pem',
@@ -39,25 +37,6 @@ export class GrpcServer {
         addLoginServices(this.gRpcServer, this.adapter);
         addStateServices(this.gRpcServer, this.adapter);
         addConfigSyncServices(this.gRpcServer, this.adapter);
-    }
-
-    broadcastMsg(msg: string): void {
-        //this.webSocketServer.clients.forEach((e) => {});
-        this.conClients
-            .filter(e => !e.onlySendNotification)
-            .forEach(element => {
-                if (element.isConnected) {
-                    element.sendMSG(msg, true);
-                }
-            });
-    }
-
-    isConnected(deviceID: string): boolean {
-        return this.conClients.some(c => c.isConnected && c.id == deviceID);
-    }
-
-    getClient(deviceID: string): Client | undefined {
-        return this.conClients.find(c => c.isConnected && c.id == deviceID);
     }
 
     stop(): void {

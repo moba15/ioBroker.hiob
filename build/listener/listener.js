@@ -34,7 +34,6 @@ __export(listener_exports, {
 });
 module.exports = __toCommonJS(listener_exports);
 var import_stream = require("stream");
-var import_datapacks = require("../server/datapacks");
 var import_async_mutex = require("async-mutex");
 var proto = __toESM(require("../generated/state/state"));
 var Events = /* @__PURE__ */ ((Events2) => {
@@ -54,7 +53,7 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
     this.adapter = adapter;
   }
   onStateChange(id, state) {
-    var _a, _b, _c;
+    var _a, _b;
     this.adapter.log.debug(`Send${JSON.stringify(this.pendingSubscribeStates)}`);
     if (state != null) {
       if (!id.startsWith("hiob.")) {
@@ -65,13 +64,10 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
           }
           this.adapter.valueDatapoints[id].val = state.val;
           this.adapter.valueDatapoints[id].ack = state.ack;
-          (_b = this.adapter.server) == null ? void 0 : _b.broadcastMsg(
-            new import_datapacks.StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON()
-          );
           const stateValueUpdate = new proto.StateValueUpdate({
             stateId: id,
             acc: state.ack,
-            stringValue: (_c = state.val) == null ? void 0 : _c.toString(),
+            stringValue: (_b = state.val) == null ? void 0 : _b.toString(),
             time: state.ts
           });
           this.subscribedWriters.forEach(

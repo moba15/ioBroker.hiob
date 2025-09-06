@@ -35,12 +35,11 @@ var import_datapacks = require("./datapacks");
 var CryptoJS = __toESM(require("crypto-js"));
 var import_async_mutex = require("async-mutex");
 class Client {
-  constructor(socket, server, req, adapter) {
+  constructor(socket, req, adapter) {
     this.onlySendNotification = false;
     this.messageHistoryMutex = new import_async_mutex.Mutex();
     this.messageHistory = [];
     this.socket = socket;
-    this.server = server;
     this.req = req;
     this.isConnected = true;
     this.adapter = adapter;

@@ -78,7 +78,6 @@ function addStateServices(gRpcServer, adapter) {
           new proto.State({
             stateId: objectId,
             common: new proto.State.StateCommon({
-              //TODO Language support
               name: object.common.name.toString(),
               unit: object.common.unit,
               desc: (_a = object.common.desc) == null ? void 0 : _a.toString(),

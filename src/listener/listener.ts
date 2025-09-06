@@ -1,6 +1,5 @@
 import { EventEmitter } from 'stream';
 import type { SamartHomeHandyBis } from '../main';
-import { StateChangedDataPack } from '../server/datapacks';
 import { Mutex } from 'async-mutex';
 import * as proto from '../generated/state/state';
 import type { ServerWritableStream } from '@grpc/grpc-js';
@@ -44,9 +43,6 @@ export class Listener extends EventEmitter {
                     }
                     this.adapter.valueDatapoints[id].val = state.val;
                     this.adapter.valueDatapoints[id].ack = state.ack;
-                    this.adapter.server?.broadcastMsg(
-                        new StateChangedDataPack(id, state.val, state.ack, state.lc, state.ts).toJSON(),
-                    );
                     const stateValueUpdate = new proto.StateValueUpdate({
                         stateId: id,
                         acc: state.ack,

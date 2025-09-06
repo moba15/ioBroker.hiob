@@ -24,7 +24,6 @@ export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
                 });
             });
             call.write(new proto.StatesValueUpdate({ stateUpdates: stateValueUpdates }));
-            //TODO Device Id from header
             const id = call.metadata.get('deviceId')[0].toString();
             adapter.listener.addWriter(id, call);
         },
@@ -56,8 +55,6 @@ export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
                         stateId: objectId,
 
                         common: new proto.State.StateCommon({
-                            //TODO Language support
-
                             name: object.common.name.toString(),
                             unit: object.common.unit,
                             desc: object.common.desc?.toString(),

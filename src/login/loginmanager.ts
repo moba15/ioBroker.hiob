@@ -28,37 +28,10 @@ export class LoginManager {
             const splited = event.objectID.split('.');
             //If Datapoint is approved Datapoint
             if (splited.length > 4 && splited[2] == 'devices') {
-                const deviceID = splited[3];
                 if (splited[4] == 'approved') {
                     //Get Client from pending list
                     //If Approved was set to true
                     this.adapter.setStateAsync(event.objectID, { ack: true });
-                } else if (splited[4] == 'aesKey_active') {
-                    const cl = this.pendingClients.find(e => e.id == deviceID);
-                    if (cl) {
-                        if (event.value) {
-                            this.setAesStatus(deviceID, cl);
-                        } else {
-                            cl.setAESKey('');
-                            if (!this.adapter.server?.useCert) {
-                                this.adapter.log.info('AES encryption disabled!');
-                            }
-                        }
-                        this.adapter.setState(event.objectID, { ack: true });
-                    } else {
-                        const client = this.adapter.server?.getClient(deviceID);
-                        if (client) {
-                            this.setAesStatus(deviceID, client);
-                        } else {
-                            this.adapter.log.debug('No pending client found');
-                        }
-                    }
-                    this.adapter.setStateAsync(event.objectID, { ack: true });
-                } else if (splited[4] == 'aesKey_view') {
-                    this.viewAesKey(deviceID);
-                    this.adapter.setStateAsync(event.objectID, false, true);
-                } else if (splited[4] == 'aesKey_new') {
-                    this.adapter.setStateAsync(event.objectID, false, true);
                 } else if (splited[4] == 'noPwdAllowed') {
                     this.adapter.setStateAsync(event.objectID, { ack: true });
                 }
@@ -111,22 +84,6 @@ export class LoginManager {
         }
     }
 
-    /*private async setAesNewAndSentInfo(deviceID: string, cl: Client): Promise<void> {
-        if (this.aesViewTimeout[deviceID]) {
-            this.adapter.clearTimeout(this.aesViewTimeout[deviceID]);
-            this.aesViewTimeout[deviceID] = undefined;
-        }
-        const random_key = this.genRandomString(6, true);
-        await this.adapter.setStateAsync(
-            `devices.${deviceID}.aesKey`,
-            this.adapter.encrypt(random_key.toString()),
-            true,
-        );
-        cl.aesKey = random_key;
-        cl.setAESKey(random_key);
-        cl.sendMSG(new NewAesPacket().toJSON(), false);
-    }*/
-
     private async setAesStatus(deviceID: string, cl: Client): Promise<void> {
         const get_aes = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
         const aes_status = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey_active`);
@@ -144,35 +101,6 @@ export class LoginManager {
         }
     }
 
-    /**
-     * @deprecated
-     * @param deviceID
-     * @param cl
-     */
-    /*private async setAndSendLoginKeys(deviceID: string, cl: Client): Promise<void> {
-        const keys = await this.genKey();
-        const aes_status = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey_active`);
-        if (aes_status && aes_status.val) {
-            const aes = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
-            if (aes != null && aes.val != null) {
-                if (aes.val.toString().length > 6) {
-                    aes.val = this.adapter.decrypt(aes.val.toString());
-                }
-                cl.setAESKey(aes.val.toString());
-            } else {
-                cl.setAESKey('');
-            }
-        } else {
-            cl.setAESKey('');
-        }
-        await this.adapter.setStateAsync(`devices.${deviceID}.key`, keys[1], true);
-        for (const current of this.pendingClients) {
-            if (current.id == cl.id) {
-                current.sendMSG(new LoginKeyPacket(keys[0]).toJSON(), false, false);
-            }
-        }
-    }*/
-
     public stop(): boolean {
         this.approveLoginsTimeout && this.adapter.clearTimeout(this.approveLoginsTimeout);
         this.approveLoginsTimeout = undefined;
@@ -184,12 +112,6 @@ export class LoginManager {
         }
         return false;
     }
-
-    /* public onWrongAesKey(client: Client): boolean {
-        this.adapter.log.debug(`Client(${client.toString()}) send wrong aes!`);
-        this.wrongAesKey(client);
-        return false;
-    }*/
 
     public async onLoginRequestProto(loginRequest: proto.LoginRequest): Promise<proto.LoginResponse> {
         this.adapter.log.debug(`Client(${loginRequest.toString()}) requested to login`);
@@ -244,107 +166,6 @@ export class LoginManager {
         }
         return new proto.ApprovalResponse({ key: '', status: proto.ApprovalResponse.Status.timeout });
     }
-
-    /*public async onLoginRequest(client: Client, loginRequestData: RequestLoginPacket): Promise<boolean> {
-        this.adapter.log.debug(`Client(${client.toString()}) requested to login`);
-        this.pendingClients.push(client);
-        this.pendingClients = this.pendingClients.filter((cli, i, s) => s.indexOf(cli) == i);
-        let deviceIDRep = loginRequestData.deviceID.replace('.', '-');
-        while (deviceIDRep.includes('.')) {
-            deviceIDRep = deviceIDRep.replace('.', '-');
-        }
-        client.id = deviceIDRep;
-        if (!this.adapter.clientinfos[deviceIDRep] || !this.adapter.clientinfos[deviceIDRep].firstload) {
-            this.adapter.clientinfos[deviceIDRep] = {};
-        }
-        //!Quick fix
-        await this.createObjects(
-            deviceIDRep,
-            loginRequestData.deviceName,
-            loginRequestData.key,
-            loginRequestData.version,
-        );
-        this.adapter.clientinfos[deviceIDRep].firstload = true;
-        this.adapter.setStateAsync(`devices.${deviceIDRep}.connected`, true, true);
-        client.setID(deviceIDRep);
-        if (!(await this.validateLoginRequest(client, deviceIDRep, loginRequestData))) {
-            this.loginDeclined(client);
-            return false;
-        }
-        this.pendingClients = this.pendingClients.filter(cl => cl != client);
-        await this.setAesStatus(deviceIDRep, client);
-        client.onApprove();
-        const version = this.adapter.version != null ? this.adapter.version.toString() : '';
-        client.sendMSG(new LoginApprovedPacket(version).toJSON(), false);
-        return true;
-    }*/
-    /**
-     * @param client
-     * @param deviceIDRep
-     * @param loginRequestData
-     * @deprecated The method should not be used
-     */
-    /*private async validateLoginRequest(
-        client: Client,
-        deviceIDRep: string,
-        loginRequestData: RequestLoginPacket,
-    ): Promise<boolean> {
-        const approved = await this.adapter.getStateAsync(`devices.${deviceIDRep}.approved`);
-        const keyState = await this.adapter.getStateAsync(`devices.${deviceIDRep}.key`);
-        const needPWD = await this.adapter.getStateAsync(`devices.${deviceIDRep}.noPwdAllowed`);
-        //Check if next should be accepted:
-        let apr = true;
-        if (!approved || !approved.val) {
-            this.adapter.log.debug(
-                `Login declined for client: ${client.toString()} (${loginRequestData.deviceName}): not approved`,
-            );
-            apr = false;
-        }
-        if (keyState == null || keyState.val == null) {
-            apr = false;
-        }
-        if (!loginRequestData.key) {
-            apr = false;
-        }
-
-        if (needPWD && !needPWD?.val) {
-            if (
-                !loginRequestData.user ||
-                !loginRequestData.password ||
-                !(await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password))
-            ) {
-                this.adapter.log.debug(
-                    `Login declined for client: ${client.toString()} (${loginRequestData.deviceName}): wrong password`,
-                );
-                apr = false;
-            }
-        }
-        if (loginRequestData.key == null) {
-            apr = false;
-        }
-        if (
-            keyState != null &&
-            keyState.val != null &&
-            loginRequestData.key &&
-            !(await bcrypt.compare(loginRequestData.key, keyState.val.toString()))
-        ) {
-            this.adapter.log.debug(
-                `Login declined for client: ${client.toString()} (${
-                    loginRequestData.deviceName
-                }): wrong key${!(await bcrypt.compare(loginRequestData.key, keyState.val.toString()))}`,
-            );
-            apr = false;
-        }
-        if (!apr && this.approveLogins) {
-            await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
-
-            //Send Login Keys
-            await this.setAndSendLoginKeys(deviceIDRep, client);
-
-            apr = true;
-        }
-        return apr;
-    }*/
 
     /**
      * This method validdates the Loginrequest based on the key and password
@@ -702,56 +523,7 @@ export class LoginManager {
             },
             native: {},
         });
-        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_view`, {
-            type: 'state',
-            common: {
-                name: {
-                    en: 'decrypt AES key for 30 seconds.',
-                    de: 'AES Schlüssel für 30 Sekunden entschlüsseln.',
-                    ru: 'расшифровать ключ AES в течение 30 секунд.',
-                    pt: 'descriptografar AES chave por 30 segundos.',
-                    nl: 'decodeer AES sleutel gedurende 30 seconden.',
-                    fr: 'déchiffrer la clé AES pendant 30 secondes.',
-                    it: 'decifrare la chiave AES per 30 secondi.',
-                    es: 'descifrar la tecla AES durante 30 segundos.',
-                    pl: 'odszyfrować klucz AES przez 30 sekund.',
-                    uk: 'розшифрувати ключ AES на 30 секунд.',
-                    'zh-cn': '解密AES密钥30秒.',
-                },
-                type: 'boolean',
-                role: 'button',
-                desc: 'Created by Adapter',
-                def: false,
-                read: true,
-                write: true,
-            },
-            native: {},
-        });
-        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey`, {
-            type: 'state',
-            common: {
-                name: {
-                    en: 'Insert AES-key into the APP.',
-                    de: 'AES-key in die APP einfügen.',
-                    ru: 'Вставить AES-ключ в APP.',
-                    pt: 'Insira o AES-key no APP.',
-                    nl: 'Plaats AES-toets in de APP.',
-                    fr: "Insérer la touche AES dans l'APP.",
-                    it: 'Inserire AES-chiave nella APP.',
-                    es: 'Inserte AES-key en el APP.',
-                    pl: 'Wstaw klucz AES- do APP.',
-                    uk: 'Вставте AES-ключ у APP.',
-                    'zh-cn': '在APP中插入AES键.',
-                },
-                type: 'string',
-                role: 'state',
-                desc: 'Created by Adapter',
-                def: '',
-                read: true,
-                write: false,
-            },
-            native: {},
-        });
+
         //TODO
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const get_aes = await this.adapter.getStateAsync(`devices.${deviceIDRep}.aesKey`);
@@ -787,31 +559,6 @@ export class LoginManager {
                 },
                 type: 'boolean',
                 role: 'button',
-                desc: 'Created by Adapter',
-                def: false,
-                read: true,
-                write: true,
-            },
-            native: {},
-        });
-        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_active`, {
-            type: 'state',
-            common: {
-                name: {
-                    en: 'AES encryption active',
-                    de: 'AES-Verschlüsselung aktiv',
-                    ru: 'Активное шифрование AES',
-                    pt: 'AES criptografia ativa',
-                    nl: 'AES-versleuteling actief',
-                    fr: 'Cryptage AES actif',
-                    it: 'AES crittografia attiva',
-                    es: 'AES encriptación activa',
-                    pl: 'Aktywne szyfrowanie AES',
-                    uk: 'AES шифрування активна',
-                    'zh-cn': 'AES 加密活动',
-                },
-                type: 'boolean',
-                role: 'switch',
                 desc: 'Created by Adapter',
                 def: false,
                 read: true,

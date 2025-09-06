@@ -355,29 +355,7 @@ class SamartHomeHandyBis extends utils.Adapter {
   //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
   //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
   //  */
-  onMessage(obj) {
-    var _a;
-    if (typeof obj === "object" && obj.message) {
-      if (obj.command === "send") {
-        this.log.debug("send command");
-        const message = obj.message;
-        if ("notification" in message && "uuid" in message) {
-          const cl = (_a = this.server) == null ? void 0 : _a.getClient(message.uuid);
-          this.notificationManager.sendNotificationLocal(
-            cl,
-            message.uuid,
-            JSON.stringify(message.notification)
-          );
-          if (obj.callback) {
-            this.sendTo(obj.from, obj.command, "Message received", obj.callback);
-          }
-        } else {
-          if (obj.callback) {
-            this.sendTo(obj.from, obj.command, "Error received", obj.callback);
-          }
-        }
-      }
-    }
+  onMessage(_) {
   }
 }
 if (require.main !== module) {

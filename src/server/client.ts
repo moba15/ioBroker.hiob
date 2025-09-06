@@ -2,7 +2,6 @@
 import type { IncomingMessage } from 'http';
 import type { WebSocket } from 'ws';
 import type { SamartHomeHandyBis } from '../main';
-import type { Server } from './server';
 import {
     EnumUpdatePack,
     EnumUpdateRequestPack,
@@ -20,7 +19,6 @@ import { Mutex } from 'async-mutex';
 
 export class Client {
     socket;
-    server;
     isConnected;
     req;
     adapter: SamartHomeHandyBis;
@@ -31,9 +29,8 @@ export class Client {
     name?: string;
     messageHistoryMutex = new Mutex();
     messageHistory: any[] = [];
-    constructor(socket: WebSocket, server: Server, req: IncomingMessage, adapter: SamartHomeHandyBis) {
+    constructor(socket: WebSocket, req: IncomingMessage, adapter: SamartHomeHandyBis) {
         this.socket = socket;
-        this.server = server;
         this.req = req;
         this.isConnected = true;
         this.adapter = adapter;

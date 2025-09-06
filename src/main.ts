@@ -409,8 +409,8 @@ export class SamartHomeHandyBis extends utils.Adapter {
     //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
     //  */
-    private onMessage(obj: ioBroker.Message): void {
-        if (typeof obj === 'object' && obj.message) {
+    private onMessage(_: ioBroker.Message): void {
+        /*if (typeof obj === 'object' && obj.message) {
             if (obj.command === 'send') {
                 this.log.debug('send command');
                 const message = obj.message;
@@ -431,7 +431,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
                     }
                 }
             }
-        }
+        }*/
     }
 }
 
