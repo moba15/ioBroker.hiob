@@ -18,5 +18,13 @@ export function addLoginServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
             const request: proto.ApprovalRequest = call.request;
             callback(null, await adapter.loginManager.requestApproval(request));
         },
+        CompatibilityRequest: (
+            call: grpc.ServerUnaryCall<proto.CompatibilityRequest, proto.CompatibilityResponse>,
+            callback: grpc.sendUnaryData<proto.CompatibilityResponse>,
+        ) => {
+            const request: proto.CompatibilityRequest = call.request;
+            const comp = adapter.checkCompatibility(request.versionumber);
+            callback(null, proto.CompatibilityResponse.fromObject({ compatible: comp }));
+        },
     });
 }

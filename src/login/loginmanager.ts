@@ -531,9 +531,7 @@ export class LoginManager {
 
         //TODO
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const get_aes = await this.adapter.getStateAsync(`devices.${deviceIDRep}.aesKey`);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const random_key = this.genRandomString(6, true);
         //TODO Aes
         /*if (!get_aes || get_aes.val == null || get_aes.val == "") {
             await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
@@ -546,31 +544,6 @@ export class LoginManager {
         } else {
             this.adapter.log.warn("Cannot find AES Key. Please Restart Adapter!");
         } */
-        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.aesKey_new`, {
-            type: 'state',
-            common: {
-                name: {
-                    en: 'Create new AES-Key',
-                    de: 'Neue AES-Key erstellen',
-                    ru: 'Создать новые AES-Key',
-                    pt: 'Criar novo AES-Key',
-                    nl: 'Nieuwe AES-sleutel aanmaken',
-                    fr: 'Créer une nouvelle clé AES',
-                    it: 'Crea nuovo AES-Key',
-                    es: 'Crear nuevo AES-Key',
-                    pl: 'Utwórz nowy klucz AES-',
-                    uk: 'Створення нових AES-Key',
-                    'zh-cn': '创建新 AES 密钥',
-                },
-                type: 'boolean',
-                role: 'button',
-                desc: 'Created by Adapter',
-                def: false,
-                read: true,
-                write: true,
-            },
-            native: {},
-        });
     }
 
     private genRandomString(length: number, woCharacters: boolean): string {

@@ -1,9 +1,5 @@
-/*
- * Created with @iobroker/create-adapter v2.5.0
- */
+const minVersionNumber = '0.0.710';
 
-// The adapter-core module gives you access to the core ioBroker functions
-// you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
 import { Listener } from './listener/listener';
 import { LoginManager } from './login/loginmanager';
@@ -393,6 +389,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
      * Is called if a subscribed state changes
      *
      * @param obj
+     * @param _
      */
     //private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
     //    if (state) {
@@ -432,6 +429,12 @@ export class SamartHomeHandyBis extends utils.Adapter {
                 }
             }
         }*/
+    }
+    public checkCompatibility(versionNumber: string): boolean {
+        if (minVersionNumber.localeCompare(versionNumber, undefined, { numeric: true, sensitivity: 'base' }) <= 0) {
+            return true;
+        }
+        return false;
     }
 }
 
