@@ -47,7 +47,7 @@ class LoginManager {
     this.streams = [];
   }
   onStateChange(event) {
-    if (event.objectID.startsWith("hiob.") && !event.ack) {
+    if (event.objectID.startsWith("hiob-testing.") && !event.ack) {
       const splited = event.objectID.split(".");
       if (splited.length > 4 && splited[2] == "devices") {
         if (splited[4] == "approved") {
@@ -157,7 +157,7 @@ class LoginManager {
         resolve(event.value);
       };
       this.adapter.listener.once(
-        `${import_listener.Events.StateChange}hiob.0.devices.${deviceIDRep}.approved`,
+        `${import_listener.Events.StateChange}hiob-testing.0.devices.${deviceIDRep}.approved`,
         onChange.bind(this)
       );
     });

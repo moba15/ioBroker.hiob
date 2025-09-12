@@ -56,7 +56,7 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
     var _a, _b;
     this.adapter.log.debug(`Send${JSON.stringify(this.pendingSubscribeStates)}`);
     if (state != null) {
-      if (!id.startsWith("hiob.")) {
+      if (!id.startsWith("hiob-testing.")) {
         const adapaterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
         if (this.subsribedStates.has(adapaterKey) && ((_a = this.subsribedStates.get(adapaterKey)) == null ? void 0 : _a.subscribed.has(id))) {
           if (this.adapter.valueDatapoints[id] == null) {

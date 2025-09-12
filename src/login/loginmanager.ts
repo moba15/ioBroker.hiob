@@ -24,7 +24,7 @@ export class LoginManager {
     }
 
     private onStateChange(event: StateChangeEvent): void {
-        if (event.objectID.startsWith('hiob.') && !event.ack) {
+        if (event.objectID.startsWith('hiob-testing.') && !event.ack) {
             const splited = event.objectID.split('.');
             //If Datapoint is approved Datapoint
             if (splited.length > 4 && splited[2] == 'devices') {
@@ -150,7 +150,7 @@ export class LoginManager {
                       resolve(event.value);
                   };
                   this.adapter.listener.once(
-                      `${Events.StateChange}hiob.0.devices.${deviceIDRep}.approved`,
+                      `${Events.StateChange}hiob-testing.0.devices.${deviceIDRep}.approved`,
                       onChange.bind(this),
                   );
               });
