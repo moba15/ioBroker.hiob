@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob-testing",
-    "version": "0.2.0-alpha.3",
+    "version": "0.2.0-alpha.4",
     "news": {
+      "0.2.0-alpha.4": {
+        "en": "Added first gRPC support #127\nAdded support for client side states database\n**IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished",
+        "de": "Hinzufügung erster gRPC-Unterstützung #127\nUnterstützung für die clientseitige Zustandsdatenbank hinzugefügt\n**WICHTIG** Dies ist nur eine Alpha-Version, die nur für Tests und Feedback verwendet werden sollte. Viele Funktionen sind noch nicht abgeschlossen.",
+        "ru": "Добавлена поддержка первого gRPC #127\nДобавлена поддержка клиентской базы данных состояний\n**ВАЖНО** Это только альфа-версия, её следует использовать только для тестирования и обратной связи. Многие функции **не завершены**",
+        "pt": "Adicionado o primeiro suporte ao gRPC #127\nAdicionado suporte para banco de dados de estados do lado do cliente\n**IMPORTANTE** Esta é apenas uma versão alpha, deve ser usada apenas para testes e feedback. Muitos recursos **não estão** finalizados.",
+        "nl": "Toegevoegde eerste gRPC-ondersteuning #127\nToegevoegde ondersteuning voor client-side states database\n**BELANGRIJK** Dit is slechts een alfaversie, het moet alleen worden gebruikt voor tests en feedback. Veel functies zijn nog niet voltooid.",
+        "fr": "Ajout du premier support gRPC #127\nAjout de la prise en charge de la base de données des états côté client.\n**IMPORTANT** Il s'agit seulement d'une version alpha, elle ne devrait être utilisée que pour des tests et des retours. De nombreuses fonctionnalités ne sont pas encore terminées.",
+        "it": "Aggiunto il primo supporto per gRPC #127\nAggiunto il supporto per il database degli stati lato client.\n**IMPORTANTE** Questa è solo una versione alpha, dovrebbe essere utilizzata solo per test e feedback. Moltissime funzionalità **non sono** ancora completate",
+        "es": "Agregado primer soporte para gRPC #127\nSe añadió soporte para base de datos de estados del lado del cliente\n**IMPORTANTE** Esta es solo una versión alfa, debería ser utilizada solo para pruebas y comentarios. Muchas características **no están** completadas",
+        "pl": "Dodano pierwsze wsparcie dla gRPC #127\nDodano obsługę bazy danych stanów klienta\n**WAŻNE** To jest tylko wersja alfa, powinna być używana jedynie do testowania i zbierania opinii. Wiele funkcji **nie jest** jeszcze ukończonych.",
+        "uk": "Додано підтримку першої gRPC #127\nДодана підтримка бази даних станів клієнта на стороні клієнта\n**ВАЖЛИВО** Це лише альфа-версія, її слід використовувати лише для тестування та отримання відгуків. Багато функцій **не** завершені",
+        "zh-cn": "添加了第一个 gRPC 支持 #127\n新增了对客户端状态数据库的支持\n**重要提示** 这仅为 alpha 版本，仅供测试和反馈使用。许多功能尚未完成。"
+      },
       "0.2.0-alpha.3": {
         "en": "Added first gRPC support #127\nAdded support for client side states database\n**IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished\nadded some basic tests\nfixed some login issues\nchange package name, for better testing",
         "de": "Erste Unterstützung für gRPC #127 hinzugefügt\nUnterstützung für Client-Seitenstaaten Datenbank hinzugefügt\n**IMPORTANT** Dies ist nur eine Alpha-Version, es sollte nur zum Testen und Feedback verwendet werden. Viele Features ** sind nicht** fertig\neinige grundlegende tests\neinige anmeldeprobleme behoben\npaketname ändern, um besser zu testen",
@@ -80,19 +93,6 @@
         "pl": "fixed notification bug: backlog jest teraz wysyłany tylko wtedy, gdy klient ponownie łączy się wielokrotnie (moba15)",
         "uk": "виправлено помилку повідомлення: backlog тепер надсилається тільки ті, якщо клієнт відключає кілька разів (moba15)",
         "zh-cn": "固定通知错误: 如果客户端多次重连接( moba15) , 现在只发送积压 "
-      },
-      "0.1.7-beta.2": {
-        "en": "Updated packages (moba15)\nFixing adpater issues found by ioBroker bot (moba15)\nFixed some smaller bugs (moba15)",
-        "de": "Aktualisierte Pakete (moba15)\nAdpater Probleme gefunden von ioBroker bot (moba15)\nEinige kleinere Fehler behoben (moba15)",
-        "ru": "Обновленные пакеты (moba15)\nИсправление проблем с адпатером, обнаруженных ботом ioBroker (moba15)\nИсправлено несколько небольших багов (moba15)",
-        "pt": "Pacotes atualizados (moba15)\nCorrigindo problemas de adpater encontrados pelo bot ioBroker (moba15)\nCorrigido alguns bugs menores (moba15)",
-        "nl": "Bijgewerkte pakketten (moba15)\nBevestiging adpater problemen gevonden door ioBroker bot (moba15)\nEnkele kleinere bugs gerepareerd (moba15)",
-        "fr": "Paquets mis à jour (moba15)\nCorrection des problèmes d'adpater trouvés par ioBroker bot (moba15)\nCorrection de quelques bugs plus petits (moba15)",
-        "it": "Pacchetti aggiornati (moba15)\nFissare i problemi di adpater trovati da ioBroker bot (moba15)\nRisolto alcuni bug più piccoli (moba15)",
-        "es": "Paquetes actualizados (moba15)\nCorrección de problemas de adpater encontrados por ioBroker bot (moba15)\nArreglado algunos errores más pequeños (moba15)",
-        "pl": "Aktualizacja pakietów (moba15)\nFixing adpater issues found by joBroker bot (moba15)\nNaprawiono kilka mniejszych błędów (moba15)",
-        "uk": "Оновлені пакети (moba15)\nВиправлення проблем адпатора, знайдених ботом ioBroker (moba15)\nВиправлено деякі менші помилки (moba15)",
-        "zh-cn": "更新的软件包(moba15)\n修复 ioBroker bot(moba15)发现的寄生虫问题\n修补一些小虫子( moba15)"
       }
     },
     "titleLang": {
