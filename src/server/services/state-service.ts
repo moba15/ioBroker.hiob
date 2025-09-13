@@ -18,7 +18,7 @@ export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
             const stateValueUpdates = result.map(e => {
                 return new proto.StateValueUpdate({
                     stateId: e.objectID,
-                    stringValue: e.val.toString(),
+                    stringValue: e.val?.toString() ?? null,
                     acc: e.ack,
                     time: 0,
                 });
@@ -45,7 +45,6 @@ export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
             call: grpc.ServerUnaryCall<proto.AllObjectRequest, proto.AllObjectsResults>,
             callback: grpc.sendUnaryData<proto.AllObjectsResults>,
         ) => {
-            //TODO Filter
             const objects: Record<string, ioBroker.Object> = await adapter.getForeignObjectsAsync('*');
             const result: proto.State[] = [];
             for (const objectId in objects) {
@@ -55,12 +54,12 @@ export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
                         stateId: objectId,
 
                         common: new proto.State.StateCommon({
-                            name: object.common.name.toString(),
+                            name: object.common.name?.toString() ?? 'No name found',
                             unit: object.common.unit,
-                            desc: object.common.desc?.toString(),
+                            desc: object.common.desc?.toString() ?? 'No name found',
                             max: object.common.max,
                             min: object.common.min,
-                            type: object.common.type.toString(),
+                            type: object.common.type?.toString() ?? 'No name found',
                             step: object.common.step,
                             read: object.common.read,
                             write: object.common.write,

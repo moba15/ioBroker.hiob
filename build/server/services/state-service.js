@@ -44,9 +44,10 @@ function addStateServices(gRpcServer, adapter) {
       }
       const result = await adapter.subscribeToDataPointsProto(call.request.stateIds);
       const stateValueUpdates = result.map((e) => {
+        var _a, _b;
         return new proto.StateValueUpdate({
           stateId: e.objectID,
-          stringValue: e.val.toString(),
+          stringValue: (_b = (_a = e.val) == null ? void 0 : _a.toString()) != null ? _b : null,
           acc: e.ack,
           time: 0
         });
@@ -69,7 +70,7 @@ function addStateServices(gRpcServer, adapter) {
       call.write(new proto.SearchStateResponse({ states: firstLevelResponse }));
     },
     GetAllObjects: async (call, callback) => {
-      var _a;
+      var _a, _b, _c, _d, _e, _f;
       const objects = await adapter.getForeignObjectsAsync("*");
       const result = [];
       for (const objectId in objects) {
@@ -78,12 +79,12 @@ function addStateServices(gRpcServer, adapter) {
           new proto.State({
             stateId: objectId,
             common: new proto.State.StateCommon({
-              name: object.common.name.toString(),
+              name: (_b = (_a = object.common.name) == null ? void 0 : _a.toString()) != null ? _b : "No name found",
               unit: object.common.unit,
-              desc: (_a = object.common.desc) == null ? void 0 : _a.toString(),
+              desc: (_d = (_c = object.common.desc) == null ? void 0 : _c.toString()) != null ? _d : "No name found",
               max: object.common.max,
               min: object.common.min,
-              type: object.common.type.toString(),
+              type: (_f = (_e = object.common.type) == null ? void 0 : _e.toString()) != null ? _f : "No name found",
               step: object.common.step,
               read: object.common.read,
               write: object.common.write,
