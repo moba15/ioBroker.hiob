@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob-testing",
-    "version": "0.2.0-alpha.4",
+    "version": "0.2.0-alpha.5",
     "news": {
+      "0.2.0-alpha.5": {
+        "en": "Fixed some smaller bugs\nAdded first gRPC support #127\nAdded support for client side states database\n**IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished",
+        "de": "Einige kleinere Fehler behoben\nErste Unterstützung für gRPC #127 hinzugefügt\nUnterstützung für Client-Seitenstaaten Datenbank hinzugefügt\n**IMPORTANT** Dies ist nur eine Alpha-Version, es sollte nur zum Testen und Feedback verwendet werden. Viele Features ** sind nicht** fertig",
+        "ru": "Исправлено несколько небольших багов\nДобавлена первая поддержка gRPC #127\nДобавлена поддержка базы данных клиентских государств\n** ВАЖНО** Это только альфа-версия, она должна использоваться только для тестирования и обратной связи. Многие функции ** не завершены",
+        "pt": "Corrigido alguns erros menores\nAdicionado primeiro suporte ao gRPC #127\nAdicionado suporte para banco de dados de estados do lado do cliente\n** IMPORTANTE** Esta é apenas uma versão alfa, que só deve ser usada para testes e feedback. Muitos recursos ** não estão** terminados",
+        "nl": "Enkele kleinere bugs hersteld\nEerste gRPC-ondersteuning toegevoegd #127\nOndersteuning toegevoegd voor client side states database\n**BELANGRIJK** Dit is slechts een alpha versie, het mag alleen gebruikt worden voor testen en feedback. Veel functies ** zijn nog niet klaar**",
+        "fr": "Correction de quelques bugs plus petits\nAjout du premier support GRPC #127\nAjout du support pour la base de données des états clients\n**IMPORTANT** Il ne s'agit que d'une version alpha, elle ne devrait être utilisée que pour les tests et la rétroaction. Beaucoup de fonctionnalités ** ne sont pas terminées**",
+        "it": "Risolto alcuni bug più piccoli\nAggiunto il primo supporto gRPC #127\nAggiunto supporto per database di stati laterali client\n**IMPORTANTE** Questa è solo una versione alfa, dovrebbe essere utilizzata solo per test e feedback. Molte caratteristiche **non sono** finito ",
+        "es": "Arreglado algunos errores más pequeños\nAñadido el primer apoyo GRPC #127\nAñadido soporte para la base de datos de estados lado cliente\n**IMPORTANTE** Esta es sólo una versión alfa, sólo debe utilizarse para pruebas y comentarios. Muchas características ** no están terminados**",
+        "pl": "Naprawiono kilka mniejszych błędów\nDodano pierwsze wsparcie gRPC # 127\nDodano wsparcie dla bazy danych po stronie klienta\n* * WAŻNE * * Jest to tylko wersja alfa, powinno być używane tylko do testowania i sprzężenia zwrotnego. Wiele funkcji * * nie jest ukończonych",
+        "uk": "Виправлено деякі менші помилки\nДодано перший gRPC support #127\nДодано підтримку бази даних клієнтських бокових станів\n**IMPORTANT*** Це тільки альфа-версія, вона повинна бути використана тільки для тестування та зворотного зв'язку. Багато функцій****",
+        "zh-cn": "修补一些小错误\n添加了第一个 gRPC 支持 # 127\n为客户端状态数据库添加支持\n**IMPORANT** 这只是一个α版本,只应用于测试和反馈. 许多特性**没有**完成"
+      },
       "0.2.0-alpha.4": {
         "en": "Added first gRPC support #127\nAdded support for client side states database\n**IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished",
         "de": "Hinzufügung erster gRPC-Unterstützung #127\nUnterstützung für die clientseitige Zustandsdatenbank hinzugefügt\n**WICHTIG** Dies ist nur eine Alpha-Version, die nur für Tests und Feedback verwendet werden sollte. Viele Funktionen sind noch nicht abgeschlossen.",
@@ -80,19 +93,6 @@
         "pl": "fixed notification bug: backlog jest teraz wysyłany tylko wtedy, gdy klient ponownie łączy się wielokrotnie (moba15)\nAktualizacja pakietów\nAktualizacja pakietów (moba15)\nFixing adpater issues found by joBroker bot (moba15)\nNaprawiono kilka mniejszych błędów (moba15)\nNapraw dla # 93\nNapraw dla # 91\nNapraw dla # 109\nMigracja do ESLint 9 # 108\nDodano obsługę odłączenia PingPong - > niektóre funkcje wiadomości offline\nZoptymalizowana logika za subskrypcją państwową - > Teraz subskrybuje tylko do niezbędnego adaptera",
         "uk": "виправлено помилку повідомлення: backlog тепер надсилається тільки ті, якщо клієнт відключає кілька разів (moba15)\nОновлені пакети\nОновлені пакети (moba15)\nВиправлення проблем адпатора, знайдених ботом ioBroker (moba15)\nВиправлено деякі менші помилки (moba15)\nВиправлення для #93\nВиправлення для #91\nВиправлення для #109\nМіграція до ESLint 9 #108\nДодано PingPong роз'єднання -> деякі функції офлайн повідомлення\nОптимізована логіка за державною підпискою -> Тепер підписується тільки на необхідний адаптер",
         "zh-cn": "固定通知错误: 如果客户端多次重连接( moba15) , 现在只发送积压 \n更新软件包\n更新的软件包(moba15)\n修复 ioBroker bot(moba15)发现的寄生虫问题\n修补一些小虫子( moba15)\n准备93号\n准备91号\n修复为 #109\n迁移到ESLint 9#108\n添加了 PingPong 断开处理 - > 一些离线消息功能\n状态订阅背后的优化逻辑 - > 现在只订阅必要的适配器"
-      },
-      "0.1.7-beta.3": {
-        "en": "fixed notification bug: the backlog now is sent only ones if the client reconnects multiple times (moba15)",
-        "de": "behobener benachrichtigungsfehler: das backlog wird jetzt nur gesendet, wenn der client mehrfach wieder vernetzt (moba15)",
-        "ru": "исправленная ошибка уведомления: отставание теперь отправляется только в том случае, если клиент повторно подключается несколько раз (moba15)",
-        "pt": "bug de notificação fixa: o backlog agora é enviado apenas um se o cliente reconectar várias vezes (moba15)",
-        "nl": "vaste melding bug: de achterstand wordt nu alleen verstuurd als de client meerdere keren opnieuw verbinding maakt (moba15)",
-        "fr": "bug de notification fixe: l'arriéré n'est maintenant envoyé que si le client reconnecte plusieurs fois (moba15)",
-        "it": "bug di notifica fisso: il backlog ora viene inviato solo se il client ricollega più volte (moba15)",
-        "es": "error de notificación fija: el atraso ahora se envía sólo los si el cliente vuelve a conectar varias veces (moba15)",
-        "pl": "fixed notification bug: backlog jest teraz wysyłany tylko wtedy, gdy klient ponownie łączy się wielokrotnie (moba15)",
-        "uk": "виправлено помилку повідомлення: backlog тепер надсилається тільки ті, якщо клієнт відключає кілька разів (moba15)",
-        "zh-cn": "固定通知错误: 如果客户端多次重连接( moba15) , 现在只发送积压 "
       }
     },
     "titleLang": {
