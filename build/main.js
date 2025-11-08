@@ -39,6 +39,7 @@ var import_template_manager = require("./template/template_manager");
 var import_notification_manager = require("./notification/notification_manager");
 var import_grpc_server = require("./server/grpc/grpc-server");
 var import_search_engine = require("./search/search-engine");
+var import_state = require("./generated/state/state");
 const minVersionNumber = "0.0.710";
 class SamartHomeHandyBis extends utils.Adapter {
   constructor(options = {}) {
@@ -218,17 +219,17 @@ class SamartHomeHandyBis extends utils.Adapter {
     }
     return list;
   }
-  async subscribeToDataPointsProto(dataPoints) {
+  async subscribeToDataPointsProto(dataPoints, call) {
+    var _a, _b;
     this.log.debug(`Trying to subscribe to ${dataPoints.length} Datapoints`);
     const all_dp = [];
     for (const i of dataPoints) {
       let state = null;
+      this.log.debug(`Requuest: ${i}`);
       try {
         if (this.valueDatapoints[i] == null) {
           state = await this.getForeignStateAsync(i);
-          this.log.debug("Use getForeignStateAsync");
         } else {
-          this.log.debug("Use memory");
           state = {
             objectID: i,
             val: this.valueDatapoints[i].val,
@@ -251,12 +252,22 @@ class SamartHomeHandyBis extends utils.Adapter {
           ack: state.ack
         };
         all_dp.push(map);
+        const stateValueUpdates = [
+          new import_state.StateValueUpdate({
+            stateId: map.objectID,
+            stringValue: (_b = (_a = map.val) == null ? void 0 : _a.toString()) != null ? _b : null,
+            acc: map.ack,
+            time: 0
+          })
+        ];
+        call.write(new import_state.StatesValueUpdate({ stateUpdates: stateValueUpdates }));
         this.listener.addPendingSubscribeState(i);
       } else {
         this.log.warn(`App tried to request to a deleted datapoint. ${i}`);
       }
     }
     this.listener.subscribeToPendingStates();
+    this.log.debug(`Subscribed to ${dataPoints.length} Datapoints`);
     return all_dp;
   }
   /**

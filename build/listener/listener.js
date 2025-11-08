@@ -88,22 +88,20 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
    * @param id The id of the State you want to subscribe to
    */
   addPendingSubscribeState(id) {
-    this.mutex.runExclusive(() => {
-      this.pendingSubscribeStates.add(id);
-      const adapaterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
-      if (this.subsribedStates.has(adapaterKey)) {
-        const t = this.subsribedStates.get(adapaterKey);
-        if (!t.subscribed.has(id)) {
-          t == null ? void 0 : t.pending.add(id);
-        } else {
-          this.subsribedStates.set(adapaterKey, {
-            overThreshold: false,
-            subscribed: /* @__PURE__ */ new Set(),
-            pending: /* @__PURE__ */ new Set([id])
-          });
-        }
+    this.pendingSubscribeStates.add(id);
+    const adapaterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
+    if (this.subsribedStates.has(adapaterKey)) {
+      const t = this.subsribedStates.get(adapaterKey);
+      if (!t.subscribed.has(id)) {
+        t == null ? void 0 : t.pending.add(id);
+      } else {
+        this.subsribedStates.set(adapaterKey, {
+          overThreshold: false,
+          subscribed: /* @__PURE__ */ new Set(),
+          pending: /* @__PURE__ */ new Set([id])
+        });
       }
-    });
+    }
   }
   /**
    * Subscribes to all States listed in the pending (see addPendingSubscribeState)

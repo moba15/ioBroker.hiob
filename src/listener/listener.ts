@@ -67,22 +67,20 @@ export class Listener extends EventEmitter {
      * @param id The id of the State you want to subscribe to
      */
     addPendingSubscribeState(id: string): void {
-        this.mutex.runExclusive((): void => {
-            this.pendingSubscribeStates.add(id);
-            const adapaterKey = `${id.split('.')[0]}.${id.split('.')[1]}`;
-            if (this.subsribedStates.has(adapaterKey)) {
-                const t = this.subsribedStates.get(adapaterKey);
-                if (!t!.subscribed.has(id)) {
-                    t?.pending.add(id);
-                } else {
-                    this.subsribedStates.set(adapaterKey, {
-                        overThreshold: false,
-                        subscribed: new Set(),
-                        pending: new Set([id]),
-                    });
-                }
+        this.pendingSubscribeStates.add(id);
+        const adapaterKey = `${id.split('.')[0]}.${id.split('.')[1]}`;
+        if (this.subsribedStates.has(adapaterKey)) {
+            const t = this.subsribedStates.get(adapaterKey);
+            if (!t!.subscribed.has(id)) {
+                t?.pending.add(id);
+            } else {
+                this.subsribedStates.set(adapaterKey, {
+                    overThreshold: false,
+                    subscribed: new Set(),
+                    pending: new Set([id]),
+                });
             }
-        });
+        }
     }
     /**
      * Subscribes to all States listed in the pending (see addPendingSubscribeState)

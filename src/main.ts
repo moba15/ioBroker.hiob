@@ -9,6 +9,8 @@ import { TemplateManager } from './template/template_manager';
 import { NotificationManager } from './notification/notification_manager';
 import { GrpcServer } from './server/grpc/grpc-server';
 import { StateSearchEngine } from './search/search-engine';
+import { StatesValueUpdate, StateValueUpdate, type StateSubscribtion } from './generated/state/state';
+import type { ServerWritableStream } from '@grpc/grpc-js';
 type DatapointState = {
     val?: any;
     ack?: boolean;
@@ -246,7 +248,10 @@ export class SamartHomeHandyBis extends utils.Adapter {
         return list;
     }
 
-    public async subscribeToDataPointsProto(dataPoints: string[]): Promise<
+    public async subscribeToDataPointsProto(
+        dataPoints: string[],
+        call: ServerWritableStream<StateSubscribtion, StatesValueUpdate>,
+    ): Promise<
         {
             objectID: string;
             val: any;
@@ -261,12 +266,11 @@ export class SamartHomeHandyBis extends utils.Adapter {
         }[] = [];
         for (const i of dataPoints) {
             let state = null;
+            this.log.debug(`Requuest: ${i}`);
             try {
                 if (this.valueDatapoints[i] == null) {
                     state = await this.getForeignStateAsync(i);
-                    this.log.debug('Use getForeignStateAsync');
                 } else {
-                    this.log.debug('Use memory');
                     state = {
                         objectID: i,
                         val: this.valueDatapoints[i].val,
@@ -284,20 +288,30 @@ export class SamartHomeHandyBis extends utils.Adapter {
                     this.valueDatapoints[i].val = state.val;
                     this.valueDatapoints[i].ack = state.ack;
                 }
-                //this.log.info("sub to " + dataPoints[i]);
                 const map = {
                     objectID: i,
                     val: state.val,
                     ack: state.ack,
                 };
                 all_dp.push(map);
+                const stateValueUpdates = [
+                    new StateValueUpdate({
+                        stateId: map.objectID,
+                        stringValue: map.val?.toString() ?? null,
+                        acc: map.ack,
+                        time: 0,
+                    }),
+                ];
+                call.write(new StatesValueUpdate({ stateUpdates: stateValueUpdates }));
 
                 this.listener.addPendingSubscribeState(i);
             } else {
                 this.log.warn(`App tried to request to a deleted datapoint. ${i}`);
             }
         }
+
         this.listener.subscribeToPendingStates();
+        this.log.debug(`Subscribed to ${dataPoints.length} Datapoints`);
         return all_dp;
     }
 

@@ -117,20 +117,37 @@ const _AllObjectRequest = class _AllObjectRequest extends pb_1.Message {
   constructor(data) {
     super();
     __privateAdd(this, _one_of_decls2, []);
-    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], __privateGet(this, _one_of_decls2));
+    pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], __privateGet(this, _one_of_decls2));
     if (!Array.isArray(data) && typeof data == "object") {
+      if ("filterPatterns" in data && data.filterPatterns != void 0) {
+        this.filterPatterns = data.filterPatterns;
+      }
     }
+  }
+  get filterPatterns() {
+    return pb_1.Message.getFieldWithDefault(this, 1, []);
+  }
+  set filterPatterns(value) {
+    pb_1.Message.setField(this, 1, value);
   }
   static fromObject(data) {
     const message = new _AllObjectRequest({});
+    if (data.filterPatterns != null) {
+      message.filterPatterns = data.filterPatterns;
+    }
     return message;
   }
   toObject() {
     const data = {};
+    if (this.filterPatterns != null) {
+      data.filterPatterns = this.filterPatterns;
+    }
     return data;
   }
   serialize(w) {
     const writer = w || new pb_1.BinaryWriter();
+    if (this.filterPatterns.length)
+      writer.writeRepeatedString(1, this.filterPatterns);
     if (!w)
       return writer.getResultBuffer();
   }
@@ -140,6 +157,9 @@ const _AllObjectRequest = class _AllObjectRequest extends pb_1.Message {
       if (reader.isEndGroup())
         break;
       switch (reader.getFieldNumber()) {
+        case 1:
+          pb_1.Message.addToRepeatedField(message, 1, reader.readString());
+          break;
         default:
           reader.skipField();
       }

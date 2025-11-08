@@ -74,23 +74,47 @@ export class AllObjectsResults extends pb_1.Message {
 }
 export class AllObjectRequest extends pb_1.Message {
     #one_of_decls: number[][] = [];
-    constructor(data?: any[] | {}) {
+    constructor(data?: any[] | {
+        filterPatterns?: string[];
+    }) {
         super();
-        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
-        if (!Array.isArray(data) && typeof data == "object") { }
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [1], this.#one_of_decls);
+        if (!Array.isArray(data) && typeof data == "object") {
+            if ("filterPatterns" in data && data.filterPatterns != undefined) {
+                this.filterPatterns = data.filterPatterns;
+            }
+        }
     }
-    static fromObject(data: {}): AllObjectRequest {
+    get filterPatterns() {
+        return pb_1.Message.getFieldWithDefault(this, 1, []) as string[];
+    }
+    set filterPatterns(value: string[]) {
+        pb_1.Message.setField(this, 1, value);
+    }
+    static fromObject(data: {
+        filterPatterns?: string[];
+    }): AllObjectRequest {
         const message = new AllObjectRequest({});
+        if (data.filterPatterns != null) {
+            message.filterPatterns = data.filterPatterns;
+        }
         return message;
     }
     toObject() {
-        const data: {} = {};
+        const data: {
+            filterPatterns?: string[];
+        } = {};
+        if (this.filterPatterns != null) {
+            data.filterPatterns = this.filterPatterns;
+        }
         return data;
     }
     serialize(): Uint8Array;
     serialize(w: pb_1.BinaryWriter): void;
     serialize(w?: pb_1.BinaryWriter): Uint8Array | void {
         const writer = w || new pb_1.BinaryWriter();
+        if (this.filterPatterns.length)
+            writer.writeRepeatedString(1, this.filterPatterns);
         if (!w)
             return writer.getResultBuffer();
     }
@@ -100,6 +124,9 @@ export class AllObjectRequest extends pb_1.Message {
             if (reader.isEndGroup())
                 break;
             switch (reader.getFieldNumber()) {
+                case 1:
+                    pb_1.Message.addToRepeatedField(message, 1, reader.readString());
+                    break;
                 default: reader.skipField();
             }
         }
