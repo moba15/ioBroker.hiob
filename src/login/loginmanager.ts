@@ -10,7 +10,7 @@ import {
     type RequestLoginPacket,
 } from '../server/datapacks';
 import * as bcrypt from 'bcrypt';
-import * as crypto from 'crypto';
+import * as crypto from 'node:crypto';
 export class LoginManager {
     adapter: SamartHomeHandyBis;
     pendingClients: Client[];

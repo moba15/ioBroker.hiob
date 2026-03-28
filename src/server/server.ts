@@ -1,6 +1,6 @@
 import * as ws from 'ws';
-import * as fs from 'fs';
-import { createServer } from 'https';
+import * as fs from 'node:fs';
+import { createServer } from 'node:https';
 import type * as m from '../main';
 import { Client } from './client';
 import { FirstPingPack } from './datapacks';

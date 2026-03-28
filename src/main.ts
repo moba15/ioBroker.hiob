@@ -20,7 +20,7 @@ type ClientInfo = {
     firstload?: boolean;
 };
 // Load your modules here, e.g.:
-// import * as fs from "fs";
+// import * as fs from "node:fs";
 export class SamartHomeHandyBis extends utils.Adapter {
     server?: Server;
     listener: Listener;
