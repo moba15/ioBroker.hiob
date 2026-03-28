@@ -1,4 +1,4 @@
-import type { IncomingMessage } from 'http';
+import type { IncomingMessage } from 'node:http';
 import type { WebSocket } from 'ws';
 import type { SamartHomeHandyBis } from '../main';
 import type { Server } from './server';

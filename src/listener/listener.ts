@@ -1,4 +1,4 @@
-import { EventEmitter } from 'stream';
+import { EventEmitter } from 'node:stream';
 import type { SamartHomeHandyBis } from '../main';
 import { StateChangedDataPack } from '../server/datapacks';
 import { Mutex } from 'async-mutex';
