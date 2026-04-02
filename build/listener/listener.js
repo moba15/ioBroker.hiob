@@ -44,8 +44,7 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
   constructor(adapter) {
     super();
     this.busy = false;
-    this.subsribedStates = /* @__PURE__ */ new Map();
-    //subscribedStates: Set<string> = new Set();
+    this.subscribedStates = /* @__PURE__ */ new Map();
     this.pendingSubscribeStates = /* @__PURE__ */ new Set();
     this.mutex = new import_async_mutex.Mutex();
     this.subscribedWritersMutex = new import_async_mutex.Mutex();
@@ -56,9 +55,10 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
     var _a, _b;
     this.adapter.log.debug(`Send${JSON.stringify(this.pendingSubscribeStates)}`);
     if (state != null) {
+      this.adapter.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
       if (!id.startsWith("hiob-testing.")) {
-        const adapaterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
-        if (this.subsribedStates.has(adapaterKey) && ((_a = this.subsribedStates.get(adapaterKey)) == null ? void 0 : _a.subscribed.has(id))) {
+        const adapterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
+        if (this.subscribedStates.has(adapterKey) && ((_a = this.subscribedStates.get(adapterKey)) == null ? void 0 : _a.subscribed.has(id))) {
           if (this.adapter.valueDatapoints[id] == null) {
             this.adapter.valueDatapoints[id] = {};
           }
@@ -88,18 +88,21 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
    * @param id The id of the State you want to subscribe to
    */
   addPendingSubscribeState(id) {
-    this.pendingSubscribeStates.add(id);
-    const adapaterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
-    if (this.subsribedStates.has(adapaterKey)) {
-      const t = this.subsribedStates.get(adapaterKey);
-      if (!t.subscribed.has(id)) {
-        t == null ? void 0 : t.pending.add(id);
+    const adapterKey = `${id.split(".")[0]}.${id.split(".")[1]}`;
+    if (!this.subscribedStates.has(adapterKey)) {
+      this.adapter.log.debug(`Creating new subscription entry for adapter: ${adapterKey}`);
+      this.subscribedStates.set(adapterKey, {
+        overThreshold: false,
+        subscribed: /* @__PURE__ */ new Set(),
+        pending: /* @__PURE__ */ new Set([id])
+      });
+    } else {
+      const subscribedStatesStatus = this.subscribedStates.get(adapterKey);
+      if (subscribedStatesStatus && !subscribedStatesStatus.subscribed.has(id)) {
+        this.adapter.log.debug(`Adding state ${id} to pending subscriptions for ${adapterKey}`);
+        subscribedStatesStatus.pending.add(id);
       } else {
-        this.subsribedStates.set(adapaterKey, {
-          overThreshold: false,
-          subscribed: /* @__PURE__ */ new Set(),
-          pending: /* @__PURE__ */ new Set([id])
-        });
+        this.adapter.log.debug(`State ${id} already subscribed for ${adapterKey}`);
       }
     }
   }
@@ -109,31 +112,44 @@ const _Listener = class _Listener extends import_stream.EventEmitter {
    */
   subscribeToPendingStates() {
     this.mutex.runExclusive(async () => {
-      for (const [adapaterKey, subsribedStatesStatus] of this.subsribedStates) {
-        if (subsribedStatesStatus.pending.size > 0) {
-          if (subsribedStatesStatus.overThreshold) {
-            subsribedStatesStatus.pending.forEach((e) => subsribedStatesStatus.subscribed.add(e));
+      for (const [adapterKey, subscribedStatesStatus] of this.subscribedStates) {
+        if (subscribedStatesStatus.pending.size > 0) {
+          this.adapter.log.debug(
+            `Processing ${subscribedStatesStatus.pending.size} pending subscriptions for ${adapterKey}`
+          );
+          if (subscribedStatesStatus.overThreshold) {
+            this.adapter.log.debug(
+              `Adapter ${adapterKey} already over threshold, adding pending states to subscribed`
+            );
+            subscribedStatesStatus.pending.forEach((e) => subscribedStatesStatus.subscribed.add(e));
           } else {
-            const newSubscriptionSize = subsribedStatesStatus.pending.size + subsribedStatesStatus.subscribed.size;
-            if (newSubscriptionSize > _Listener.subscribtionThresholdPerInstance && !adapaterKey.startsWith("alias.")) {
-              subsribedStatesStatus.pending.forEach((e) => {
-                subsribedStatesStatus.subscribed.add(e);
+            const newSubscriptionSize = subscribedStatesStatus.pending.size + subscribedStatesStatus.subscribed.size;
+            if (newSubscriptionSize > _Listener.subscribtionThresholdPerInstance && !adapterKey.startsWith("alias.")) {
+              subscribedStatesStatus.pending.forEach((e) => {
+                subscribedStatesStatus.subscribed.add(e);
               });
               this.adapter.log.debug(
-                `More than ${_Listener.subscribtionThresholdPerInstance} states of ${adapaterKey} were subscribed. Now only listening to ${adapaterKey}.*`
+                `More than ${_Listener.subscribtionThresholdPerInstance} states of ${adapterKey} were subscribed. Now only listening to ${adapterKey}.*`
               );
-              await this.adapter.subscribeForeignStatesAsync(`${adapaterKey}.*`);
-              for (const i of subsribedStatesStatus.subscribed) {
-                this.adapter.unsubscribeForeignStatesAsync(i);
+              await this.adapter.subscribeForeignStatesAsync(`${adapterKey}.*`);
+              this.adapter.log.debug(
+                `Unsubscribing from ${subscribedStatesStatus.subscribed.size} individual states for ${adapterKey}`
+              );
+              for (const i of subscribedStatesStatus.subscribed) {
+                await this.adapter.unsubscribeForeignStatesAsync(i);
               }
+              subscribedStatesStatus.overThreshold = true;
             } else {
-              subsribedStatesStatus.pending.forEach((e) => {
-                subsribedStatesStatus.subscribed.add(e);
+              this.adapter.log.debug(
+                `Subscribing to ${subscribedStatesStatus.pending.size} individual states for ${adapterKey}`
+              );
+              subscribedStatesStatus.pending.forEach((e) => {
+                subscribedStatesStatus.subscribed.add(e);
                 this.adapter.subscribeForeignStates(e);
               });
             }
           }
-          subsribedStatesStatus.pending.clear();
+          subscribedStatesStatus.pending.clear();
         }
       }
     });
