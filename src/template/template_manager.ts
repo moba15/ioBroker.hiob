@@ -23,7 +23,7 @@ export class TemplateManager {
     public async getTemplateSettings(
         name: string,
     ): Promise<{ screens: any; widgets: any } | { [index: string]: never }> {
-        let temp = await this.adapter.getStateAsync(`settings.${name}.devices`);
+        let temp = await this.adapter.getStateAsync(`settings.${name}.screens`);
         if (temp == null) {
             return {};
         }

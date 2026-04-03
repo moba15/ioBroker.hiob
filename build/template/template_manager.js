@@ -35,7 +35,7 @@ class TemplateManager {
     }
   }
   async getTemplateSettings(name) {
-    let temp = await this.adapter.getStateAsync(`settings.${name}.devices`);
+    let temp = await this.adapter.getStateAsync(`settings.${name}.screens`);
     if (temp == null) {
       return {};
     }
