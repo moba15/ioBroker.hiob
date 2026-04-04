@@ -71,10 +71,12 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 0.2.0-alpha.5 (2025-11-08)
+
+### **WORK IN PROGRESS**
 - Fixed some smaller bugs
 - Added first gRPC support #127
 - Added support for client side states database
+- Added support for identity switch between release and dev package
 - **IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished
 
 ### 0.1.7 (2025-04-19)
@@ -188,7 +190,7 @@ A heartfelt thank you to everyone who has contributed to this project! Whether t
 
 MIT License
 
-Copyright (c) 2023-2025 mor15Euro [hiob@bachmaiers.de](http://localhost:5000/u/bh3bIYvKVLQXD837pc8JlAJHx3Z2)
+Copyright (c) 2023-2026 mor15Euro [hiob@bachmaiers.de](http://localhost:5000/u/bh3bIYvKVLQXD837pc8JlAJHx3Z2)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
