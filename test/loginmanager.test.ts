@@ -95,13 +95,13 @@ describe('LoginManager', () => {
         (adapter.getStateAsync as sinon.SinonStub).withArgs('devices.newdeviceid.approved').resolves({ val: false });
         await loginManager.onLoginRequestProto(loginRequestNoKey);
         const requestApproval = ApprovalRequest.fromObject({ deviceName: 'new dvice', deviceId: 'newdeviceid' });
-        const deviceApproveStateId = 'hiob-testing.0.devices.newdeviceid.approved';
+        const deviceApproveStateId = `${adapter.namespace}.devices.newdeviceid.approved`;
         const deviceApproveState = { value: true, ack: true, objectID: deviceApproveStateId };
         const resultPromise = loginManager.requestApproval(requestApproval);
         await waitFor(() => {
             return (adapter.listener.once as sinon.SinonSpy).called;
         });
-        adapter.listener.emit('stateChangedhiob-testing.0.devices.newdeviceid.approved', deviceApproveState);
+        adapter.listener.emit(`stateChanged${adapter.namespace}.devices.newdeviceid.approved`, deviceApproveState);
         const result = await resultPromise;
         expect(result.key.length).to.be.greaterThan(0);
         (adapter.getStateAsync as sinon.SinonStub).withArgs('devices.newdeviceid.approved').resolves({ val: true });

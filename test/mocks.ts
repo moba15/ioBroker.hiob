@@ -11,6 +11,7 @@ export const createMockAdapter = (): SamartHomeHandyBis => {
     sinon.spy(listenerMock, 'on');
     sinon.spy(listenerMock, 'once');
     const mock = {
+        namespace: 'hiob.0',
         log: {
             info: sinon.stub(),
             warn: sinon.stub(),
