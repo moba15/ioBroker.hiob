@@ -45,7 +45,7 @@ class SamartHomeHandyBis extends utils.Adapter {
   constructor(options = {}) {
     super({
       ...options,
-      name: "hiob-testing"
+      name: "hiob-dev"
     });
     this.port = 8095;
     this.keyPath = "";
