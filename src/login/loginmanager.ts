@@ -24,7 +24,7 @@ export class LoginManager {
     }
 
     private onStateChange(event: StateChangeEvent): void {
-        if (event.objectID.startsWith('hiob-testing.') && !event.ack) {
+        if (event.objectID.startsWith(`${this.adapter.namespace}.`) && !event.ack) {
             const splited = event.objectID.split('.');
             //If Datapoint is approved Datapoint
             if (splited.length > 4 && splited[2] == 'devices') {
@@ -57,47 +57,6 @@ export class LoginManager {
         } else {
             this.approveLogins = false;
             this.adapter.setStateAsync('approveNextLogins', { ack: true });
-        }
-    }
-
-    private async viewAesKey(deviceID: string): Promise<void> {
-        if (!this.aesViewTimeout[deviceID]) {
-            const state = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
-            if (state != null && state.val != null) {
-                if (state.val.toString().length > 6) {
-                    const dec_shaAes = this.adapter.decrypt(state.val.toString());
-                    await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, dec_shaAes, true);
-                }
-            } else {
-                return;
-            }
-            this.aesViewTimeout[deviceID] = this.adapter.setTimeout(async () => {
-                const state = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
-                if (state != null && state.val != null) {
-                    if (state.val.toString().length === 6) {
-                        const shaAes = this.adapter.encrypt(state.val.toString());
-                        await this.adapter.setStateAsync(`devices.${deviceID}.aesKey`, shaAes, true);
-                    }
-                }
-                this.aesViewTimeout[deviceID] = undefined;
-            }, 1000 * 60);
-        }
-    }
-
-    private async setAesStatus(deviceID: string, cl: Client): Promise<void> {
-        const get_aes = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey`);
-        const aes_status = await this.adapter.getStateAsync(`devices.${deviceID}.aesKey_active`);
-        if (get_aes && get_aes.val && aes_status && aes_status.val) {
-            if (get_aes.val.toString().length > 6) {
-                get_aes.val = this.adapter.decrypt(get_aes.val.toString());
-            }
-            cl.setAESKey(get_aes.val.toString());
-            this.adapter.log.info('AES encryption enabled!');
-        } else {
-            cl.setAESKey('');
-            if (!this.adapter.server?.useCert) {
-                this.adapter.log.info('AES encryption disabled!');
-            }
         }
     }
 
@@ -150,7 +109,7 @@ export class LoginManager {
                       resolve(event.value);
                   };
                   this.adapter.listener.once(
-                      `${Events.StateChange}hiob-testing.0.devices.${deviceIDRep}.approved`,
+                      `${Events.StateChange}${this.adapter.namespace}.devices.${deviceIDRep}.approved`,
                       onChange.bind(this),
                   );
               });

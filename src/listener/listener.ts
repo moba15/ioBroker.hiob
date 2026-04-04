@@ -32,7 +32,7 @@ export class Listener extends EventEmitter {
             // The state was changed
             this.adapter.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
             //Check if notification
-            if (!id.startsWith('hiob-testing.')) {
+            if (!id.startsWith(`${this.adapter.namespace}.`)) {
                 const adapterKey = `${id.split('.')[0]}.${id.split('.')[1]}`;
                 if (
                     this.subscribedStates.has(adapterKey) &&
