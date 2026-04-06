@@ -72,6 +72,7 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     ### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+- (iobroker-bot) Adapter requires node.js >= 20 now.
 - Conversion to gRPC #127
 
 ### 0.1.7 (2025-04-19)
