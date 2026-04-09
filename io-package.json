@@ -1,6 +1,6 @@
 {
   "common": {
-    "name": "hiob-dev",
+    "name": "hiob",
     "version": "0.3.0-alpha.0",
     "news": {
       "0.3.0-alpha.0": {
@@ -96,17 +96,17 @@
       }
     },
     "titleLang": {
-      "en": "HioB Dev",
-      "de": "HioB Dev",
-      "ru": "HioB Dev",
-      "pt": "HioB Dev",
-      "nl": "HioB Dev",
-      "fr": "HioB Dev",
-      "it": "HioB Dev",
-      "es": "HioB Dev",
-      "pl": "HioB Dev",
-      "uk": "HioB Dev",
-      "zh-cn": "HioB Dev"
+      "en": "HioB APP",
+      "de": "HioB APP",
+      "ru": "HioB APP",
+      "pt": "HioB APP",
+      "nl": "HioB APP",
+      "fr": "HioB APP",
+      "it": "HioB APP",
+      "es": "HioB APP",
+      "pl": "HioB APP",
+      "uk": "HioB APP",
+      "zh-cn": "HioB APP"
     },
     "desc": {
       "en": "Visualization for mobile phones",
@@ -163,7 +163,7 @@
         "admin": ">=7.4.10"
       }
     ],
-    "title": "HioB Dev"
+    "title": "HioB APP"
   },
   "native": {
     "port": 8090,

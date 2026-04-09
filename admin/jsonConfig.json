@@ -4,7 +4,7 @@
   "items": {
     "_headerAdapter": {
       "type": "header",
-      "text": "hiob-dev adapter settings",
+      "text": "hiob adapter settings",
       "size": 2
     },
     "port": {
