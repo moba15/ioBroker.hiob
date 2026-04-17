@@ -7,7 +7,9 @@ declare global {
 			port: number;
 			useCert: boolean;
 			certPath: string;
-			keyPath: string
+			keyPath: string;
+			notificationPassword: string;
+			userUUID: string;
 		}
 	}
 }

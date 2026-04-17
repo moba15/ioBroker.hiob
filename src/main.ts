@@ -11,6 +11,7 @@ import { GrpcServer } from './server/grpc/grpc-server';
 import { StateSearchEngine } from './search/search-engine';
 import { StatesValueUpdate, StateValueUpdate, type StateSubscribtion } from './generated/state/state';
 import type { ServerWritableStream } from '@grpc/grpc-js';
+import { createUserForNotificationService } from './server/services/notifications-service';
 type DatapointState = {
     val?: any;
     ack?: boolean;
@@ -141,6 +142,23 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.certPath = this.config.certPath;
         this.useCer = this.config.useCert;
         this.keyPath = this.config.keyPath;
+    }
+
+    private async saveNotificationUserUuid(uuid: string): Promise<void> {
+        const instanceObjectId = `system.adapter.${this.namespace}`;
+        const instanceObject = await this.getForeignObjectAsync(instanceObjectId);
+
+        if (!instanceObject) {
+            this.log.error(`Could not update userUUID: instance object not found (${instanceObjectId})`);
+            return;
+        }
+
+        instanceObject.native = instanceObject.native ?? {};
+        instanceObject.native.userUUID = uuid;
+        await this.setForeignObjectAsync(instanceObjectId, instanceObject);
+
+        // Keep in-memory config aligned with persisted adapter config.
+        this.config.userUUID = uuid;
     }
 
     private async check_aes_key(): Promise<void> {
@@ -420,29 +438,111 @@ export class SamartHomeHandyBis extends utils.Adapter {
     //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
     //  */
-    private onMessage(_: ioBroker.Message): void {
-        /*if (typeof obj === 'object' && obj.message) {
-            if (obj.command === 'send') {
-                this.log.debug('send command');
-                const message = obj.message;
-                if ('notification' in message && 'uuid' in message) {
-                    //Send Not.
-                    const cl: Client | undefined = this.server?.getClient(message.uuid);
-                    this.notificationManager.sendNotificationLocal(
-                        cl,
-                        message.uuid,
-                        JSON.stringify(message.notification),
-                    );
+    public onMessage(obj: ioBroker.Message): void {
+        if (typeof obj === 'object' && obj.command) {
+            this.log.debug(`Received message: ${JSON.stringify(obj.message)}`);
+            if (obj.command === 'generateUuidAndSend') {
+                const password = this.config.notificationPassword;
+                if (!password) {
+                    this.log.error('notificationPassword is empty in message and adapter config');
                     if (obj.callback) {
-                        this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
+                        this.sendTo(
+                            obj.from,
+                            obj.command,
+                            {
+                                error: `Password is empty`,
+                                native: {
+                                    apiStatus: `Error:`,
+                                },
+                            },
+                            obj.callback,
+                        );
                     }
-                } else {
-                    if (obj.callback) {
-                        this.sendTo(obj.from, obj.command, 'Error received', obj.callback);
-                    }
+                    return;
+                }
+
+                void createUserForNotificationService(this, password)
+                    .then(async uuid => {
+                        if (uuid) {
+                            await this.saveNotificationUserUuid(uuid);
+                            this.log.info(`User for notification service created successfully: ${uuid}`);
+
+                            if (obj.callback) {
+                                this.sendTo(
+                                    obj.from,
+                                    obj.command,
+                                    {
+                                        message: `User created successfully`,
+                                        native: {
+                                            apiStatus: `Success`,
+                                            userUUID: uuid,
+                                        },
+                                    },
+                                    obj.callback,
+                                );
+                            }
+                        } else {
+                            if (obj.callback) {
+                                this.sendTo(
+                                    obj.from,
+                                    obj.command,
+                                    {
+                                        error: `Failed to send request`,
+                                        native: {
+                                            apiStatus: `Error:`,
+                                        },
+                                    },
+                                    obj.callback,
+                                );
+                            }
+                            this.log.error('Failed to create user for notification service');
+                        }
+                    })
+                    .catch(error => {
+                        this.log.error(`Failed to create user for notification service: ${String(error)}`);
+                    });
+            } else if (obj.command === 'resetUser') {
+                void this.saveNotificationUserUuid('')
+                    .then(() => {
+                        this.log.info('User UUID reset successfully');
+
+                        if (obj.callback) {
+                            this.sendTo(
+                                obj.from,
+                                obj.command,
+                                {
+                                    message: `User reset successfully`,
+                                    native: {
+                                        apiStatus: `Success`,
+                                        userUUID: '',
+                                    },
+                                },
+                                obj.callback,
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        this.log.error(`Failed to reset user UUID: ${String(error)}`);
+                        if (obj.callback) {
+                            this.sendTo(
+                                obj.from,
+                                obj.command,
+                                {
+                                    error: `Failed to reset user`,
+                                    native: {
+                                        apiStatus: `Error:`,
+                                    },
+                                },
+                                obj.callback,
+                            );
+                        }
+                    });
+            } else if (obj.command === 'getUserUuidQr') {
+                if (obj.callback) {
+                    this.sendTo(obj.from, obj.command, this.config.userUUID || '', obj.callback);
                 }
             }
-        }*/
+        }
     }
     public checkCompatibility(versionNumber: string): boolean {
         if (minVersionNumber.localeCompare(versionNumber, undefined, { numeric: true, sensitivity: 'base' }) <= 0) {

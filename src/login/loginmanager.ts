@@ -462,6 +462,31 @@ export class LoginManager {
             },
             native: {},
         });
+        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notification`, {
+            type: 'state',
+            common: {
+                name: {
+                    en: 'Notification',
+                    de: 'Benachrichtigung',
+                    ru: 'Уведомление',
+                    pt: 'Notificação',
+                    nl: 'Melding',
+                    fr: 'Notification',
+                    it: 'Notifica',
+                    es: 'Notificación',
+                    pl: 'Powiadomienie',
+                    uk: 'Сповіщення',
+                    'zh-cn': '通知',
+                },
+                type: 'string',
+                role: 'state',
+                desc: 'Created by Adapter',
+                def: '',
+                read: true,
+                write: true,
+            },
+            native: {},
+        });
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notificationBacklog`, {
             type: 'state',
             common: {

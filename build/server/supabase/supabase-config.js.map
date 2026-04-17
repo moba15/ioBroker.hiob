@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/server/supabase/supabase-config.ts"],
+  "sourcesContent": ["export const SUPABASE_URL = 'https://chvazplrvwsvznegekqy.supabase.co';\nexport const SUPABASE_ANON_KEY = 'sb_publishable_3dW4LAbXNar4lLW8iyOLKQ_fucrNUi-';\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,MAAM,eAAe;AACrB,MAAM,oBAAoB;",
+  "names": []
+}
