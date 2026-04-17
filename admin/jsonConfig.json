@@ -69,6 +69,77 @@
       "lg": 4,
       "xl": 4,
       "default": ""
+    },
+    "notificationPassword": {
+      "type": "password",
+      "label": "notificationPassword",
+      "tooltip": "notificationPassword_tooltip",
+      "newLine": true,
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4,
+      "xl": 4,
+      "default": ""
+    },
+    "generateNewUser": {
+      "type": "sendTo",
+      "command": "generateUuidAndSend",
+      "label": "Generate Login Information",
+      "variant": "contained",
+      "color": "primary",
+      "useNative": true,
+      "newLine": true,
+      "data": { "password": "${data.notificationPassword}" },
+      "disabled": "data.userUUID",
+      "xs": 6,
+      "sm": 6,
+      "md": 4,
+      "lg": 3,
+      "xl": 3
+    },
+    "resetUser": {
+      "type": "sendTo",
+      "command": "resetUser",
+      "label": "Reset Login Information",
+      "variant": "contained",
+      "color": "primary",
+      "useNative": true,
+      "newLine": false,
+      "disabled": "!data.userUUID",
+       "xs": 6,
+      "sm": 6,
+      "md": 4,
+      "lg": 3,
+      "xl": 3
+    },
+    "userUUID": {
+      "type": "text",
+      "label": "userUUID",
+      "tooltip": "userUUID",
+      "readOnly": true,
+      "copyToClipboard": true,
+      "newLine": true,
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4,
+      "xl": 4,
+      "default": ""
+    },
+    "qrCode2": {
+      "type": "qrCodeSendTo",
+      "command": "getUserUuidQr",
+      "alsoDependsOn": ["userUUID"],
+      "label": "userUUID",
+      "tooltip": "userUUID",
+      "newLine": true,
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4,
+      "xl": 4,
+      "hidden": "!data.userUUID"
     }
   }
 }
