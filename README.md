@@ -180,6 +180,8 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
 
 -   (moba15) initial release
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## 🎉 Hall of Fame 🎉
 A heartfelt thank you to everyone who has contributed to this project! Whether through code, bug reports, feature suggestions, or spreading the word, your support helps make this project better for everyone. 
 ### Special thanks goes to:
