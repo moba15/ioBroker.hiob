@@ -147,7 +147,6 @@
     "compact": true,
     "connectionType": "local",
     "dataSource": "push",
-    "materialize": false,
     "messagebox": true,
     "blockly": false,
     "adminUI": {
