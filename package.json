@@ -31,6 +31,7 @@
     "async-mutex": "^0.5.0",
     "bcrypt": "^5.1.1",
     "crypto-js": "^4.2.0",
+    "dotenv": "^17.4.2",
     "google-protobuf": "^3.21.4",
     "protobufjs": "^7.6.5",
     "supabase": "^2.111.0",
