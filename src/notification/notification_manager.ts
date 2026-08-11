@@ -3,6 +3,7 @@ import { Events, type StateChangeEvent } from '../listener/listener';
 
 import { NotificationPack } from '../server/datapacks';
 import type { Client } from '../server/client';
+import { sendNotificationViaSupabase } from '../server/services/notifications-service';
 
 export class NotificationManager {
     adapter: SamartHomeHandyBis;
@@ -16,21 +17,27 @@ export class NotificationManager {
         this.adapter.listener.on(Events.StateChange, this.onStateChange.bind(this));
     }
 
-    private onStateChange(_event: StateChangeEvent): void {
-        //TODO
-        /*const match: RegExpMatchArray | null = event.objectID.match('(hiob.\\d*.devices.)(.*)(.sendNotification)');
-         if (match && match[2] && !event.ack) {
-            const deviceID = match[2];
-            const clients: Client[] | undefined = this.adapter.server?.getClients(deviceID);
-            //Check if client is connected
-            clients?.forEach(e => {
-                this.sendNotificationLocal(e, deviceID, event.value);
-            });
-            if (!clients || clients.length <= 0) {
-                this.sendNotificationLocal(this.adapter.server?.getClient(deviceID), deviceID, event.value);
-            }
-            this.adapter.setState(event.objectID, { ack: true });
-        }*/
+    private async onStateChange(event: StateChangeEvent): Promise<void> {
+        if (event.ack) {
+            return;
+        }
+
+        const escapedNamespace = this.adapter.namespace.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const notificationStateMatch = event.objectID.match(
+            new RegExp(`^${escapedNamespace}\\.devices.([^.]+).(sendNotification|notification)$`),
+        );
+
+        if (!notificationStateMatch || !notificationStateMatch[1]) {
+            return;
+        }
+
+        const deviceID = notificationStateMatch[1];
+        const sent = await sendNotificationViaSupabase(this.adapter, event.objectID, event.value);
+
+        if (sent) {
+            await this.adapter.setStateAsync(event.objectID, event.value, true);
+            this.adapter.log.info(`Notification state ${event.objectID} sent via Supabase for device ${deviceID}`);
+        }
     }
 
     public async sendNotificationLocal(

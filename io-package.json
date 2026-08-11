@@ -193,6 +193,31 @@
         "def": false
       },
       "native": {}
+    },
+    {
+      "_id": "info.supabaseLoginState",
+      "type": "state",
+      "common": {
+        "name": {
+          "en": "Supabase login status",
+          "de": "Supabase-Anmeldestatus",
+          "ru": "Статус входа Supabase",
+          "pt": "Status de login do Supabase",
+          "nl": "Supabase-inlogstatus",
+          "fr": "Statut de connexion Supabase",
+          "it": "Stato di accesso a Supabase",
+          "es": "Estado de inicio de sesión de Supabase",
+          "pl": "Status logowania do Supabase",
+          "uk": "Статус входу до Supabase",
+          "zh-cn": "Supabase 登录状态"
+        },
+        "role": "text",
+        "type": "string",
+        "read": true,
+        "write": false,
+        "def": "Logged out"
+      },
+      "native": {}
     }
   ]
 }

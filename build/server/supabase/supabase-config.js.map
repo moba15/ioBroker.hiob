@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../src/server/supabase/supabase-config.ts"],
-  "sourcesContent": ["export const SUPABASE_URL = 'https://chvazplrvwsvznegekqy.supabase.co';\nexport const SUPABASE_ANON_KEY = 'sb_publishable_3dW4LAbXNar4lLW8iyOLKQ_fucrNUi-';\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAO,MAAM,eAAe;AACrB,MAAM,oBAAoB;",
+  "sourcesContent": ["//export const SUPABASE_URL = 'https://chvazplrvwsvznegekqy.supabase.co';\n//export const SUPABASE_ANON_KEY = 'sb_publishable_3dW4LAbXNar4lLW8iyOLKQ_fucrNUi-';\nexport const SUPABASE_URL = 'http://127.0.0.1:54321';\nexport const SUPABASE_ANON_KEY = 'sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH';\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAEO,MAAM,eAAe;AACrB,MAAM,oBAAoB;",
   "names": []
 }

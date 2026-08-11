@@ -22,8 +22,8 @@ __export(supabase_config_exports, {
   SUPABASE_URL: () => SUPABASE_URL
 });
 module.exports = __toCommonJS(supabase_config_exports);
-const SUPABASE_URL = "https://chvazplrvwsvznegekqy.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_3dW4LAbXNar4lLW8iyOLKQ_fucrNUi-";
+const SUPABASE_URL = "http://127.0.0.1:54321";
+const SUPABASE_ANON_KEY = "sb_publishable_ACJWlzQHlZjBrEguHvfOxg_3BJgxAaH";
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   SUPABASE_ANON_KEY,

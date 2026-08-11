@@ -127,6 +127,20 @@
       "xl": 4,
       "default": ""
     },
+    "supabaseLoginState": {
+      "type": "state",
+      "label": "Supabase login status",
+      "oid": "info.supabaseLoginState",
+      "control": "text",
+      "readOnly": true,
+      "newLine": true,
+      "xs": 12,
+      "sm": 12,
+      "md": 6,
+      "lg": 4,
+      "xl": 4,
+      "default": "Logged out"
+    },
     "qrCode2": {
       "type": "qrCodeSendTo",
       "command": "getUserUuidQr",

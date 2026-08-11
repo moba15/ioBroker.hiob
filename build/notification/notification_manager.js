@@ -23,6 +23,7 @@ __export(notification_manager_exports, {
 module.exports = __toCommonJS(notification_manager_exports);
 var import_listener = require("../listener/listener");
 var import_datapacks = require("../server/datapacks");
+var import_notifications_service = require("../server/services/notifications-service");
 class NotificationManager {
   constructor(adapter) {
     this.backlog = {};
@@ -32,7 +33,23 @@ class NotificationManager {
   init() {
     this.adapter.listener.on(import_listener.Events.StateChange, this.onStateChange.bind(this));
   }
-  onStateChange(_event) {
+  async onStateChange(event) {
+    if (event.ack) {
+      return;
+    }
+    const escapedNamespace = this.adapter.namespace.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const notificationStateMatch = event.objectID.match(
+      new RegExp(`^${escapedNamespace}\\.devices.([^.]+).(sendNotification|notification)$`)
+    );
+    if (!notificationStateMatch || !notificationStateMatch[1]) {
+      return;
+    }
+    const deviceID = notificationStateMatch[1];
+    const sent = await (0, import_notifications_service.sendNotificationViaSupabase)(this.adapter, event.objectID, event.value);
+    if (sent) {
+      await this.adapter.setStateAsync(event.objectID, event.value, true);
+      this.adapter.log.info(`Notification state ${event.objectID} sent via Supabase for device ${deviceID}`);
+    }
   }
   async sendNotificationLocal(client, deviceID, notification) {
     if (client != void 0 && (client == null ? void 0 : client.isConnected)) {

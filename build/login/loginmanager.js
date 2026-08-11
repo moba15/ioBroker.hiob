@@ -439,6 +439,31 @@ class LoginManager {
       },
       native: {}
     });
+    await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notification`, {
+      type: "state",
+      common: {
+        name: {
+          en: "Notification",
+          de: "Benachrichtigung",
+          ru: "\u0423\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u0435",
+          pt: "Notifica\xE7\xE3o",
+          nl: "Melding",
+          fr: "Notification",
+          it: "Notifica",
+          es: "Notificaci\xF3n",
+          pl: "Powiadomienie",
+          uk: "\u0421\u043F\u043E\u0432\u0456\u0449\u0435\u043D\u043D\u044F",
+          "zh-cn": "\u901A\u77E5"
+        },
+        type: "string",
+        role: "state",
+        desc: "Created by Adapter",
+        def: "",
+        read: true,
+        write: true
+      },
+      native: {}
+    });
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notificationBacklog`, {
       type: "state",
       common: {
