@@ -554,7 +554,11 @@ export class SamartHomeHandyBis extends utils.Adapter {
                     });
             } else if (obj.command === 'getUserUuidQr') {
                 if (obj.callback) {
-                    this.sendTo(obj.from, obj.command, this.config.userUUID || '', obj.callback);
+                    const qrCodeJson = {
+                        userUUID: this.config.userUUID || '',
+                        notificationPassword: this.config.notificationPassword || '',
+                    };
+                    this.sendTo(obj.from, obj.command, qrCodeJson, obj.callback);
                 }
             }
         }
