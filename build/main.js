@@ -40,7 +40,7 @@ var import_notification_manager = require("./notification/notification_manager")
 var import_grpc_server = require("./server/grpc/grpc-server");
 var import_search_engine = require("./search/search-engine");
 var import_state = require("./generated/state/state");
-var import_notifications_service = require("./server/services/notifications-service");
+var import_supabase_service = require("./server/services/supabase-service");
 const minVersionNumber = "0.0.710";
 class SamartHomeHandyBis extends utils.Adapter {
   constructor(options = {}) {
@@ -139,6 +139,7 @@ class SamartHomeHandyBis extends utils.Adapter {
       }
     }
     this.stateSearchEngine.loadFirstLevel();
+    await this.loginSupabaseUser();
   }
   loadConfigs() {
     this.port = Number(this.config.port);
@@ -408,7 +409,7 @@ class SamartHomeHandyBis extends utils.Adapter {
           }
           return;
         }
-        void (0, import_notifications_service.createUserForNotificationService)(this, password).then(async (uuid) => {
+        void (0, import_supabase_service.createSupabaseUser)(this, password).then(async (uuid) => {
           if (uuid) {
             await this.saveNotificationUserUuid(uuid);
             this.log.info(`User for notification service created successfully: ${uuid}`);
@@ -425,6 +426,7 @@ class SamartHomeHandyBis extends utils.Adapter {
                 },
                 obj.callback
               );
+              await this.loginSupabaseUser();
             }
           } else {
             if (obj.callback) {
@@ -449,6 +451,7 @@ class SamartHomeHandyBis extends utils.Adapter {
         void this.saveNotificationUserUuid("").then(() => {
           this.log.info("User UUID reset successfully");
           if (obj.callback) {
+            this.logoutSupabaseUser();
             this.sendTo(
               obj.from,
               obj.command,
@@ -490,6 +493,14 @@ class SamartHomeHandyBis extends utils.Adapter {
       return true;
     }
     return false;
+  }
+  async loginSupabaseUser() {
+    const status = await (0, import_supabase_service.loginSupabaseUser)(this, this.config.userUUID, this.config.notificationPassword);
+    await this.setStateChangedAsync("info.supabaseLoginState", status, true);
+  }
+  async logoutSupabaseUser() {
+    await (0, import_supabase_service.logoutSupabaseUser)(this);
+    await this.setStateChangedAsync("info.supabaseLoginState", "Logged out", true);
   }
 }
 if (require.main !== module) {

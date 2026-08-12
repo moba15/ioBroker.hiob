@@ -18,7 +18,6 @@ var __copyProps = (to, from, except, desc) => {
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var notifications_service_exports = {};
 __export(notifications_service_exports, {
-  createUserForNotificationService: () => createUserForNotificationService,
   sendNotificationViaSupabase: () => sendNotificationViaSupabase
 });
 module.exports = __toCommonJS(notifications_service_exports);
@@ -84,43 +83,6 @@ function normalizeNotificationContent(content, sourceStateId) {
     }
   };
 }
-async function createUserForNotificationService(adapter, password) {
-  var _a;
-  adapter.log.debug("Creating user for notification service");
-  if (!import_supabase_config.SUPABASE_ANON_KEY) {
-    adapter.log.error("Failed to create user for notification service: missing SUPABASE_ANON_KEY");
-    return null;
-  }
-  const supabase = (0, import_supabase_js.createClient)(import_supabase_config.SUPABASE_URL, import_supabase_config.SUPABASE_ANON_KEY);
-  const { data, error } = await supabase.functions.invoke("registerNewUser", {
-    // Pass an object directly. Supabase handles JSON.stringify automatically.
-    body: { password }
-  });
-  if (error) {
-    let errorMessage = error.message;
-    if (error.context && typeof error.context.json === "function") {
-      try {
-        const responseBody = await error.context.json();
-        if (responseBody && responseBody.error) {
-          errorMessage = responseBody.error;
-        }
-      } catch (e) {
-        adapter.log.debug(
-          `Failed to parse Edge Function error context: ${e instanceof Error ? e.message : String(e)}`
-        );
-      }
-    }
-    adapter.log.error(`Failed to create user for notification service: ${errorMessage}`);
-    return null;
-  }
-  const uuid = (_a = data == null ? void 0 : data.user) == null ? void 0 : _a.id;
-  if (!uuid) {
-    adapter.log.error("Failed to create user for notification service: no uuid returned by function");
-    return null;
-  }
-  adapter.log.debug(`User for notification service created successfully with uuid ${uuid} and ${password}`);
-  return uuid;
-}
 async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
   const userUUID = adapter.config.userUUID;
   if (!userUUID) {
@@ -169,7 +131,6 @@ async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  createUserForNotificationService,
   sendNotificationViaSupabase
 });
 //# sourceMappingURL=notifications-service.js.map

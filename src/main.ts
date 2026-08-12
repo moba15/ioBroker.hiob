@@ -11,7 +11,7 @@ import { GrpcServer } from './server/grpc/grpc-server';
 import { StateSearchEngine } from './search/search-engine';
 import { StatesValueUpdate, StateValueUpdate, type StateSubscribtion } from './generated/state/state';
 import type { ServerWritableStream } from '@grpc/grpc-js';
-import { createUserForNotificationService } from './server/services/notifications-service';
+import { createSupabaseUser, loginSupabaseUser, logoutSupabaseUser } from './server/services/supabase-service';
 type DatapointState = {
     val?: any;
     ack?: boolean;
@@ -135,6 +135,8 @@ export class SamartHomeHandyBis extends utils.Adapter {
             }
         }
         this.stateSearchEngine.loadFirstLevel();
+
+        await this.loginSupabaseUser();
     }
 
     private loadConfigs(): void {
@@ -471,7 +473,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
                     return;
                 }
 
-                void createUserForNotificationService(this, password)
+                void createSupabaseUser(this, password)
                     .then(async uuid => {
                         if (uuid) {
                             await this.saveNotificationUserUuid(uuid);
@@ -490,6 +492,8 @@ export class SamartHomeHandyBis extends utils.Adapter {
                                     },
                                     obj.callback,
                                 );
+
+                                await this.loginSupabaseUser();
                             }
                         } else {
                             if (obj.callback) {
@@ -517,6 +521,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
                         this.log.info('User UUID reset successfully');
 
                         if (obj.callback) {
+                            this.logoutSupabaseUser();
                             this.sendTo(
                                 obj.from,
                                 obj.command,
@@ -559,6 +564,16 @@ export class SamartHomeHandyBis extends utils.Adapter {
             return true;
         }
         return false;
+    }
+
+    private async loginSupabaseUser(): Promise<void> {
+        const status = await loginSupabaseUser(this, this.config.userUUID, this.config.notificationPassword);
+        await this.setStateChangedAsync('info.supabaseLoginState', status, true);
+    }
+
+    private async logoutSupabaseUser(): Promise<void> {
+        await logoutSupabaseUser(this);
+        await this.setStateChangedAsync('info.supabaseLoginState', 'Logged out', true);
     }
 }
 

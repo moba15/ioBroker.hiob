@@ -1,7 +1,7 @@
-import type { User } from '@supabase/supabase-js';
 import { createClient } from '@supabase/supabase-js';
 import type { SamartHomeHandyBis } from '../../main';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../supabase/supabase-config';
+import type { SendNotificationRequest, SendNotificationResponse } from '../supabase/types';
 
 type NotificationContent = {
     title: string;
@@ -93,53 +93,6 @@ function normalizeNotificationContent(content: unknown, sourceStateId: string): 
     };
 }
 
-export async function createUserForNotificationService(
-    adapter: SamartHomeHandyBis,
-    password: string,
-): Promise<string | null> {
-    adapter.log.debug('Creating user for notification service');
-
-    if (!SUPABASE_ANON_KEY) {
-        adapter.log.error('Failed to create user for notification service: missing SUPABASE_ANON_KEY');
-        return null;
-    }
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const { data, error } = await supabase.functions.invoke<{ user?: User }>('registerNewUser', {
-        // Pass an object directly. Supabase handles JSON.stringify automatically.
-        body: { password },
-    });
-
-    if (error) {
-        let errorMessage = error.message;
-
-        if (error.context && typeof error.context.json === 'function') {
-            try {
-                const responseBody = await error.context.json();
-                if (responseBody && responseBody.error) {
-                    errorMessage = responseBody.error;
-                }
-            } catch (e) {
-                adapter.log.debug(
-                    `Failed to parse Edge Function error context: ${e instanceof Error ? e.message : String(e)}`,
-                );
-            }
-        }
-
-        adapter.log.error(`Failed to create user for notification service: ${errorMessage}`);
-        return null;
-    }
-
-    const uuid = data?.user?.id;
-    if (!uuid) {
-        adapter.log.error('Failed to create user for notification service: no uuid returned by function');
-        return null;
-    }
-
-    adapter.log.debug(`User for notification service created successfully with uuid ${uuid} and ${password}`);
-    return uuid;
-}
-
 export async function sendNotificationViaSupabase(
     adapter: SamartHomeHandyBis,
     sourceStateId: string,
@@ -164,13 +117,13 @@ export async function sendNotificationViaSupabase(
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const { error, data } = await supabase.functions.invoke('send-notification', {
+    const { error, data } = await supabase.functions.invoke<SendNotificationResponse>('send-notification', {
         body: {
             user_id: userUUID,
             title: notification.title,
             body: notification.body,
             data: notification.data,
-        },
+        } satisfies SendNotificationRequest,
     });
 
     if (error) {
