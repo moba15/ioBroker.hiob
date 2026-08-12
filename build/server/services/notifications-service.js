@@ -97,7 +97,20 @@ async function createUserForNotificationService(adapter, password) {
     body: { password }
   });
   if (error) {
-    adapter.log.error(`Failed to create user for notification service: ${error.message}`);
+    let errorMessage = error.message;
+    if (error.context && typeof error.context.json === "function") {
+      try {
+        const responseBody = await error.context.json();
+        if (responseBody && responseBody.error) {
+          errorMessage = responseBody.error;
+        }
+      } catch (e) {
+        adapter.log.debug(
+          `Failed to parse Edge Function error context: ${e instanceof Error ? e.message : String(e)}`
+        );
+      }
+    }
+    adapter.log.error(`Failed to create user for notification service: ${errorMessage}`);
     return null;
   }
   const uuid = (_a = data == null ? void 0 : data.user) == null ? void 0 : _a.id;
@@ -141,7 +154,9 @@ async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
           errorMessage = responseBody.error;
         }
       } catch (e) {
-        adapter.log.debug(`Failed to parse Edge Function error context: ${e instanceof Error ? e.message : String(e)}`);
+        adapter.log.debug(
+          `Failed to parse Edge Function error context: ${e instanceof Error ? e.message : String(e)}`
+        );
       }
     }
     adapter.log.error(`Failed to send notification for ${sourceStateId}: ${errorMessage}`);

@@ -386,7 +386,11 @@ class SamartHomeHandyBis extends utils.Adapter {
     if (typeof obj === "object" && obj.command) {
       this.log.debug(`Received message: ${JSON.stringify(obj.message)}`);
       if (obj.command === "generateUuidAndSend") {
-        const password = this.config.notificationPassword;
+        let password = this.config.notificationPassword;
+        if (typeof obj.message === "object" && obj.message !== null && "password" in obj.message && typeof obj.message.password === "string" && obj.message.password) {
+          password = obj.message.password;
+        }
+        this.log.debug(`Password for user generation: ${password}`);
         if (!password) {
           this.log.error("notificationPassword is empty in message and adapter config");
           if (obj.callback) {
