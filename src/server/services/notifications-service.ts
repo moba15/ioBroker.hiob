@@ -111,7 +111,22 @@ export async function createUserForNotificationService(
     });
 
     if (error) {
-        adapter.log.error(`Failed to create user for notification service: ${error.message}`);
+        let errorMessage = error.message;
+
+        if (error.context && typeof error.context.json === 'function') {
+            try {
+                const responseBody = await error.context.json();
+                if (responseBody && responseBody.error) {
+                    errorMessage = responseBody.error;
+                }
+            } catch (e) {
+                adapter.log.debug(
+                    `Failed to parse Edge Function error context: ${e instanceof Error ? e.message : String(e)}`,
+                );
+            }
+        }
+
+        adapter.log.error(`Failed to create user for notification service: ${errorMessage}`);
         return null;
     }
 
@@ -148,7 +163,7 @@ export async function sendNotificationViaSupabase(
     }
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
+
     const { error, data } = await supabase.functions.invoke('send-notification', {
         body: {
             user_id: userUUID,
@@ -166,14 +181,16 @@ export async function sendNotificationViaSupabase(
         if (error.context && typeof error.context.json === 'function') {
             try {
                 const responseBody = await error.context.json();
-                
+
                 // This targets the { error: "..." } structure we built in the Edge Function
                 if (responseBody && responseBody.error) {
-                    errorMessage = responseBody.error; 
+                    errorMessage = responseBody.error;
                 }
             } catch (e) {
                 // Failsafe in case the body wasn't JSON or was already consumed
-                adapter.log.debug(`Failed to parse Edge Function error context: ${e instanceof Error ? e.message : String(e)}`);
+                adapter.log.debug(
+                    `Failed to parse Edge Function error context: ${e instanceof Error ? e.message : String(e)}`,
+                );
             }
         }
 
