@@ -90,7 +90,7 @@
       "color": "primary",
       "useNative": true,
       "newLine": true,
-      "data": { "password": "${data.notificationPassword}" },
+      "jsonData": "{\"password\": \"${data.notificationPassword}\"}",
       "disabled": "data.userUUID",
       "xs": 6,
       "sm": 6,
