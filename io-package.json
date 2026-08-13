@@ -151,7 +151,8 @@
     "messagebox": true,
     "blockly": false,
     "adminUI": {
-      "config": "json"
+      "config": "json",
+      "tab": "html"
     },
     "dependencies": [
       {
@@ -163,6 +164,14 @@
         "admin": ">=7.4.10"
       }
     ],
+    "adminTab": {
+      "singleton": true,
+      "name": {
+        "en": "App Devices",
+        "de": "App Geräte"
+      },
+      "link": ""
+    },
     "title": "HioB APP"
   },
   "native": {

@@ -39,6 +39,7 @@ var import_template_manager = require("./template/template_manager");
 var import_notification_manager = require("./notification/notification_manager");
 var import_grpc_server = require("./server/grpc/grpc-server");
 var import_search_engine = require("./search/search-engine");
+var import_device_manager = require("./device-manager");
 var import_state = require("./generated/state/state");
 var import_supabase_service = require("./server/services/supabase-service");
 const minVersionNumber = "0.0.710";
@@ -60,6 +61,7 @@ class SamartHomeHandyBis extends utils.Adapter {
     this.notificationManager = new import_notification_manager.NotificationManager(this);
     this.loginManager = new import_loginmanager.LoginManager(this);
     this.stateSearchEngine = new import_search_engine.StateSearchEngine(this);
+    this.deviceManager = new import_device_manager.DeviceManager(this);
     this.on("ready", this.onReady.bind(this));
     this.on("stateChange", this.listener.onStateChange.bind(this.listener));
     this.on("message", this.onMessage.bind(this));
@@ -489,6 +491,8 @@ class SamartHomeHandyBis extends utils.Adapter {
           };
           this.sendTo(obj.from, obj.command, qrCodeJson, obj.callback);
         }
+      } else if (obj.command === "getDevices" || obj.command === "setDeviceApproval" || obj.command === "setDevicePasswordRequired") {
+        void this.deviceManager.handleMessage(obj);
       }
     }
   }

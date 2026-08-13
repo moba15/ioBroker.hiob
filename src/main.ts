@@ -9,6 +9,7 @@ import { TemplateManager } from './template/template_manager';
 import { NotificationManager } from './notification/notification_manager';
 import { GrpcServer } from './server/grpc/grpc-server';
 import { StateSearchEngine } from './search/search-engine';
+import { DeviceManager } from './device-manager';
 import { StatesValueUpdate, StateValueUpdate, type StateSubscribtion } from './generated/state/state';
 import type { ServerWritableStream } from '@grpc/grpc-js';
 import { createSupabaseUser, loginSupabaseUser, logoutSupabaseUser } from './server/services/supabase-service';
@@ -27,6 +28,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     loginManager: LoginManager;
     notificationManager: NotificationManager;
     stateSearchEngine: StateSearchEngine;
+    deviceManager: DeviceManager;
     port: number = 8095;
     keyPath: string = '';
     certPath: string = '';
@@ -46,6 +48,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.notificationManager = new NotificationManager(this);
         this.loginManager = new LoginManager(this);
         this.stateSearchEngine = new StateSearchEngine(this);
+        this.deviceManager = new DeviceManager(this);
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.listener.onStateChange.bind(this.listener));
         // this.on("objectChange", this.onObjectChange.bind(this));
@@ -560,6 +563,8 @@ export class SamartHomeHandyBis extends utils.Adapter {
                     };
                     this.sendTo(obj.from, obj.command, qrCodeJson, obj.callback);
                 }
+            } else if (obj.command === 'getDevices' || obj.command === 'setDeviceApproval' || obj.command === 'setDevicePasswordRequired') {
+                void this.deviceManager.handleMessage(obj);
             }
         }
     }
