@@ -44,13 +44,10 @@ class DeviceManager {
             }
             const approvedState = await this.adapter.getStateAsync(`devices.${shortId}.approved`);
             const approved = approvedState ? !!approvedState.val : false;
-            const noPwdAllowedState = await this.adapter.getStateAsync(`devices.${shortId}.noPwdAllowed`);
-            const needPwd = noPwdAllowedState ? !noPwdAllowedState.val : true;
             result.push({
               id: shortId,
               name,
-              approved,
-              needPwd
+              approved
             });
           }
         }

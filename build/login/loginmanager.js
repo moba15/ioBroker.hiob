@@ -142,7 +142,6 @@ class LoginManager {
   async validateLoginRequestProto(clientName, deviceIDRep, loginRequestData) {
     const approved = await this.adapter.getStateAsync(`devices.${deviceIDRep}.approved`);
     const keyState = await this.adapter.getStateAsync(`devices.${deviceIDRep}.key`);
-    const needPWD = await this.adapter.getStateAsync(`devices.${deviceIDRep}.noPwdAllowed`);
     let apr = proto.LoginResponse.Status.succesfull;
     if (!approved || !approved.val) {
       this.adapter.log.debug(
@@ -156,13 +155,11 @@ class LoginManager {
     if (!loginRequestData.key) {
       apr = proto.LoginResponse.Status.wrongKey;
     }
-    if (needPWD && !(needPWD == null ? void 0 : needPWD.val)) {
-      if (!loginRequestData.user || !loginRequestData.password || !await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
-        this.adapter.log.debug(
-          `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`
-        );
-        apr = proto.LoginResponse.Status.wrongPassword;
-      }
+    if (!loginRequestData.user || !loginRequestData.password || !await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
+      this.adapter.log.debug(
+        `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`
+      );
+      apr = proto.LoginResponse.Status.wrongPassword;
     }
     if (loginRequestData.key == null) {
       apr = proto.LoginResponse.Status.wrongKey;
@@ -378,31 +375,6 @@ class LoginManager {
           pl: "Zatwierdzone",
           uk: "\u0417\u0430\u0442\u0432\u0435\u0440\u0434\u0436\u0435\u043D\u043D\u044F",
           "zh-cn": "\u6838\u5B9A\u6570"
-        },
-        type: "boolean",
-        role: "switch",
-        desc: "Created by Adapter",
-        def: false,
-        read: true,
-        write: true
-      },
-      native: {}
-    });
-    await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.noPwdAllowed`, {
-      type: "state",
-      common: {
-        name: {
-          en: "No Password Allowed",
-          de: "Kein Passwort erlaubt",
-          ru: "\u0411\u0435\u0437 \u043F\u0430\u0440\u043E\u043B\u044F",
-          pt: "Nenhuma senha permitida",
-          nl: "Geen wachtwoord toegestaan",
-          fr: "Pas de mot de passe autoris\xE9",
-          it: "Nessuna password consentita",
-          es: "No se admite contrase\xF1a",
-          pl: "Brak has\u0142a",
-          uk: "\u041D\u0435\u043C\u0430\u0454 \u043F\u0430\u0440\u043E\u043B\u044F",
-          "zh-cn": "\u6CA1\u6709\u5141\u8BB8\u7684\u5BC6\u7801"
         },
         type: "boolean",
         role: "switch",

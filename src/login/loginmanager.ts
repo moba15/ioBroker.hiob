@@ -141,7 +141,6 @@ export class LoginManager {
     ): Promise<proto.LoginResponse.Status> {
         const approved = await this.adapter.getStateAsync(`devices.${deviceIDRep}.approved`);
         const keyState = await this.adapter.getStateAsync(`devices.${deviceIDRep}.key`);
-        const needPWD = await this.adapter.getStateAsync(`devices.${deviceIDRep}.noPwdAllowed`);
         //Check if next should be accepted:
         let apr = proto.LoginResponse.Status.succesfull;
         if (!approved || !approved.val) {
@@ -158,18 +157,17 @@ export class LoginManager {
             apr = proto.LoginResponse.Status.wrongKey;
         }
 
-        if (needPWD && !needPWD?.val) {
-            if (
-                !loginRequestData.user ||
-                !loginRequestData.password ||
-                !(await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password))
-            ) {
-                this.adapter.log.debug(
-                    `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`,
-                );
-                apr = proto.LoginResponse.Status.wrongPassword;
-            }
+        if (
+            !loginRequestData.user ||
+            !loginRequestData.password ||
+            !(await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password))
+        ) {
+            this.adapter.log.debug(
+                `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`,
+            );
+            apr = proto.LoginResponse.Status.wrongPassword;
         }
+
         if (loginRequestData.key == null) {
             apr = proto.LoginResponse.Status.wrongKey;
         }
@@ -411,32 +409,6 @@ export class LoginManager {
             native: {},
         });
 
-        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.noPwdAllowed`, {
-            type: 'state',
-            common: {
-                name: {
-                    en: 'No Password Allowed',
-                    de: 'Kein Passwort erlaubt',
-                    ru: 'Без пароля',
-                    pt: 'Nenhuma senha permitida',
-                    nl: 'Geen wachtwoord toegestaan',
-                    fr: 'Pas de mot de passe autorisé',
-                    it: 'Nessuna password consentita',
-                    es: 'No se admite contraseña',
-                    pl: 'Brak hasła',
-                    uk: 'Немає пароля',
-                    'zh-cn': '没有允许的密码',
-                },
-                type: 'boolean',
-                role: 'switch',
-                desc: 'Created by Adapter',
-                def: false,
-                read: true,
-                write: true,
-            },
-            native: {},
-        });
-
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.sendNotification`, {
             type: 'state',
             common: {
@@ -514,8 +486,7 @@ export class LoginManager {
         });
 
         //TODO
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
         //TODO Aes
         /*if (!get_aes || get_aes.val == null || get_aes.val == "") {
             await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, this.adapter.encrypt(random_key.toString()), true);

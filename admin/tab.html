@@ -55,7 +55,7 @@
                             <th>Device Name</th>
                             <th>Device ID</th>
                             <th>Approved</th>
-                            <th>Need Password</th>
+                           
                         </tr>
                     </thead>
                     <tbody id="devices-table-body">
@@ -116,28 +116,6 @@
                     $tbody.append('<tr><td colspan="4">No devices found. Ensure the app has requested to connect.</td></tr>');
                     return;
                 }
-                
-                result.devices.forEach(function(device) {
-                    var approvedChecked = device.approved ? 'checked="checked"' : '';
-                    var pwdChecked = device.needPwd ? 'checked="checked"' : '';
-                    var tr = '<tr>' +
-                        '<td><strong>' + device.name + '</strong></td>' +
-                        '<td>' + device.id + '</td>' +
-                        '<td>' +
-                            '<label>' +
-                                '<input type="checkbox" class="filled-in device-approve-cb" data-device-id="' + device.id + '" ' + approvedChecked + ' />' +
-                                '<span>Approve</span>' +
-                            '</label>' +
-                        '</td>' +
-                        '<td>' +
-                            '<label>' +
-                                '<input type="checkbox" class="filled-in device-pwd-cb" data-device-id="' + device.id + '" ' + pwdChecked + ' />' +
-                                '<span>Required</span>' +
-                            '</label>' +
-                        '</td>' +
-                    '</tr>';
-                    $tbody.append(tr);
-                });
                 
                 // Bind change events
                 $('.device-approve-cb').on('change', function() {
