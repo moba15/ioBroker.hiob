@@ -7,6 +7,7 @@ type NotificationContent = {
     title: string;
     body: string;
     data?: Record<string, unknown>;
+    ts?: number;
 };
 
 function normalizeNotificationContent(content: unknown, sourceStateId: string): NotificationContent | null {
@@ -104,6 +105,15 @@ export async function sendNotificationViaSupabase(
         return false;
     }
 
+    // Extract deviceID from sourceStateId, e.g. hiob-dev.0.devices.99a2164f-e607-4af1-bf6a-e29d35ca5931.notification
+    const deviceIdMatch = sourceStateId.match(/\.devices\.([^.]+)\./);
+    const deviceId = deviceIdMatch ? deviceIdMatch[1] : null;
+
+    if (!deviceId) {
+        adapter.log.warn(`Cannot extract device_id from ${sourceStateId}`);
+        return false;
+    }
+
     const notification = normalizeNotificationContent(content, sourceStateId);
     if (!notification) {
         adapter.log.warn(`Cannot send notification for ${sourceStateId}: empty payload`);
@@ -115,39 +125,81 @@ export async function sendNotificationViaSupabase(
         return false;
     }
 
+    // Add the notification to notification queue in the adapter's state, so that it can be sent to the device when it is online.
+    const notificationQueueStateId = `devices.${deviceId}.notification_queue`;
+    const stateObj = await adapter.getStateAsync(notificationQueueStateId);
+
+    let currentQueue: NotificationContent[] = [];
+    if (stateObj && stateObj.val) {
+        try {
+            if (typeof stateObj.val === 'string') {
+                const parsed = JSON.parse(stateObj.val);
+                if (Array.isArray(parsed)) {
+                    currentQueue = parsed;
+                }
+            } else if (Array.isArray(stateObj.val)) {
+                currentQueue = stateObj.val as NotificationContent[];
+            }
+        } catch (e) {
+            adapter.log.warn(`Could not parse notification_queue for ${deviceId}: ${e}`);
+        }
+    }
+
+    currentQueue.push({
+        ...notification,
+        ts: Date.now(),
+    });
+
+    await adapter.setStateAsync(notificationQueueStateId, JSON.stringify(currentQueue), true);
+
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const { error, data } = await supabase.functions.invoke<SendNotificationResponse>('send-notification', {
         body: {
             user_id: userUUID,
-            title: notification.title,
-            body: notification.body,
-            data: notification.data,
+            device_id: deviceId,
         } satisfies SendNotificationRequest,
     });
 
     if (error) {
-        let errorMessage = error.message;
+        let errorMessage = error.message || String(error);
 
         // The Supabase client attaches the raw Response to error.context
-        // for any non-2xx status code. We can await .json() to read our custom payload.
-        if (error.context && typeof error.context.json === 'function') {
+        // for any non-2xx status code. We can await .text() to read our custom payload.
+        if (error.context && typeof error.context.text === 'function') {
             try {
-                const responseBody = await error.context.json();
-
-                // This targets the { error: "..." } structure we built in the Edge Function
-                if (responseBody && responseBody.error) {
-                    errorMessage = responseBody.error;
+                const textBody = await error.context.text();
+                try {
+                    const responseBody = JSON.parse(textBody);
+                    if (responseBody && responseBody.error) {
+                        errorMessage += ` - Details: ${typeof responseBody.error === 'object' ? JSON.stringify(responseBody.error) : responseBody.error}`;
+                    } else if (textBody) {
+                        errorMessage += ` - Details: ${textBody}`;
+                    }
+                } catch {
+                    if (textBody) {
+                        errorMessage += ` - Details: ${textBody}`;
+                    }
                 }
             } catch (e) {
-                // Failsafe in case the body wasn't JSON or was already consumed
+                // Failsafe in case the body wasn't readable or was already consumed
                 adapter.log.debug(
                     `Failed to parse Edge Function error context: ${e instanceof Error ? e.message : String(e)}`,
                 );
             }
         }
 
-        // Now this will log: "Failed to send notification... Server Configuration Error: FIREBASE_PROJECT_ID is not set"
+        if (errorMessage === error.message || errorMessage === String(error)) {
+            try {
+                const errorString = JSON.stringify(error, Object.getOwnPropertyNames(error));
+                if (errorString !== '{}') {
+                    errorMessage += ` - Full Error: ${errorString}`;
+                }
+            } catch (e) {
+                // ignore stringify errors
+            }
+        }
+
         adapter.log.error(`Failed to send notification for ${sourceStateId}: ${errorMessage}`);
         return false;
     }

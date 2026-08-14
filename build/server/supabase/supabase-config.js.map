@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../src/server/supabase/supabase-config.ts"],
-  "sourcesContent": ["import * as dotenv from 'dotenv';\ndotenv.config();\n\n// Use environment variables if they exist, otherwise fallback to production defaults\nexport const SUPABASE_URL = process.env.SUPABASE_URL || 'https://chvazplrvwsvznegekqy.supabase.co';\nexport const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'sb_publishable_3dW4LAbXNar4lLW8iyOLKQ_fucrNUi-';\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,aAAwB;AACxB,OAAO,OAAO;AAGP,MAAM,eAAe,QAAQ,IAAI,gBAAgB;AACjD,MAAM,oBAAoB,QAAQ,IAAI,qBAAqB;",
-  "names": []
-}

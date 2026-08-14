@@ -459,12 +459,12 @@ export class LoginManager {
             },
             native: {},
         });
-        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notificationBacklog`, {
+        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notification_queue`, {
             type: 'state',
             common: {
                 name: {
-                    en: 'Notification Backlog',
-                    de: 'Rückstand bei der Benachrichtigung',
+                    en: 'Notification Queue',
+                    de: 'Warteschlange für Benachrichtigungen',
                     ru: 'Уведомления',
                     pt: 'Atraso de notificação',
                     nl: 'Kennisgeving Achterstand',

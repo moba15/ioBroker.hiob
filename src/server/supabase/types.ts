@@ -22,8 +22,7 @@ export interface RegisterNewUserResponse {
 // ----------------------------------------------------------------------------
 export interface SendNotificationRequest {
     user_id: string;
-    title: string;
-    body: string;
+    device_id: string;
     data?: Record<string, unknown>;
 }
 
