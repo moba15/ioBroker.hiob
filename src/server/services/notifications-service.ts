@@ -2,12 +2,14 @@ import { createClient } from '@supabase/supabase-js';
 import type { SamartHomeHandyBis } from '../../main';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../supabase/supabase-config';
 import type { SendNotificationRequest, SendNotificationResponse } from '../supabase/types';
+import { randomUUID } from 'crypto';
 
 type NotificationContent = {
+    id: string;
     title: string;
     body: string;
     data?: Record<string, unknown>;
-    ts?: number;
+    ts: number;
 };
 
 function normalizeNotificationContent(content: unknown, sourceStateId: string): NotificationContent | null {
@@ -35,12 +37,14 @@ function normalizeNotificationContent(content: unknown, sourceStateId: string): 
                         : trimmedContent;
 
                 return {
+                    id: randomUUID().toString(),
                     title,
                     body,
                     data: {
                         ...parsedNotification,
                         sourceStateId,
                     },
+                    ts: Date.now(),
                 };
             }
         } catch {
@@ -48,11 +52,13 @@ function normalizeNotificationContent(content: unknown, sourceStateId: string): 
         }
 
         return {
+            id: randomUUID().toString(),
             title: 'Notification',
             body: trimmedContent,
             data: {
                 sourceStateId,
             },
+            ts: Date.now(),
         };
     }
 
@@ -71,12 +77,14 @@ function normalizeNotificationContent(content: unknown, sourceStateId: string): 
                   : 'Notification';
 
         return {
+            id: randomUUID().toString(),
             title,
             body,
             data: {
                 ...notification,
                 sourceStateId,
             },
+            ts: Date.now(),
         };
     }
 
@@ -86,11 +94,13 @@ function normalizeNotificationContent(content: unknown, sourceStateId: string): 
     }
 
     return {
+        id: randomUUID().toString(),
         title: 'Notification',
         body: fallbackBody,
         data: {
             sourceStateId,
         },
+        ts: Date.now(),
     };
 }
 
@@ -147,7 +157,6 @@ export async function sendNotificationViaSupabase(
 
     currentQueue.push({
         ...notification,
-        ts: Date.now(),
     });
 
     await adapter.setStateAsync(notificationQueueStateId, JSON.stringify(currentQueue), true);
