@@ -87,42 +87,9 @@ export class DeviceManager {
                     this.adapter.sendTo(obj.from, obj.command, { error: 'Invalid parameters' }, obj.callback);
                 }
             }
-        } else if (obj.command === 'setDevicePasswordRequired') {
-            if (
-                typeof obj.message === 'object' &&
-                obj.message &&
-                'deviceId' in obj.message &&
-                'needPwd' in obj.message
-            ) {
-                const deviceId = obj.message.deviceId;
-                const needPwd = obj.message.needPwd;
-                const noPwdAllowed = !needPwd; // invert it
-
-                try {
-                    await this.adapter.setStateAsync(`devices.${deviceId}.noPwdAllowed`, noPwdAllowed, true);
-                    this.adapter.log.info(`Device ${deviceId} password required set to ${needPwd} via Admin UI`);
-
-                    this.adapter.emit('stateChange', `${this.adapter.namespace}.devices.${deviceId}.noPwdAllowed`, {
-                        val: noPwdAllowed,
-                        ack: true,
-                        ts: Date.now(),
-                        lc: Date.now(),
-                        from: `system.adapter.${this.adapter.namespace}`,
-                    });
-
-                    if (obj.callback) {
-                        this.adapter.sendTo(obj.from, obj.command, { success: true }, obj.callback);
-                    }
-                } catch (e: any) {
-                    this.adapter.log.error(`Error setting device password requirement: ${e.message}`);
-                    if (obj.callback) {
-                        this.adapter.sendTo(obj.from, obj.command, { error: e.message }, obj.callback);
-                    }
-                }
-            } else {
-                if (obj.callback) {
-                    this.adapter.sendTo(obj.from, obj.command, { error: 'Invalid parameters' }, obj.callback);
-                }
+        } else {
+            if (obj.callback) {
+                this.adapter.sendTo(obj.from, obj.command, { error: 'Invalid parameters' }, obj.callback);
             }
         }
     }
