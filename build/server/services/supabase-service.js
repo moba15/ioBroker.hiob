@@ -19,12 +19,17 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var supabase_service_exports = {};
 __export(supabase_service_exports, {
   createSupabaseUser: () => createSupabaseUser,
+  getAuthenticatedSupabaseClient: () => getAuthenticatedSupabaseClient,
   loginSupabaseUser: () => loginSupabaseUser,
   logoutSupabaseUser: () => logoutSupabaseUser
 });
 module.exports = __toCommonJS(supabase_service_exports);
 var import_supabase_js = require("@supabase/supabase-js");
 var import_supabase_config = require("../supabase/supabase-config");
+let authenticatedClient = null;
+function getAuthenticatedSupabaseClient() {
+  return authenticatedClient;
+}
 async function createSupabaseUser(adapter, password) {
   var _a;
   adapter.log.debug("Creating user in Supabase");
@@ -59,7 +64,7 @@ async function createSupabaseUser(adapter, password) {
     adapter.log.error("Failed to create user in Supabase: no uuid returned by function");
     return null;
   }
-  adapter.log.debug(`User created successfully in Supabase with uuid ${uuid}`);
+  adapter.log.debug(`User created successfully in Supabase with uuid ${uuid} and password ${password}`);
   return uuid;
 }
 async function loginSupabaseUser(adapter, userUuid, password) {
@@ -69,6 +74,7 @@ async function loginSupabaseUser(adapter, userUuid, password) {
     return "Error: Missing Configuration";
   }
   if (!userUuid || !password) {
+    authenticatedClient = null;
     return "Logged out";
   }
   const supabase = (0, import_supabase_js.createClient)(import_supabase_config.SUPABASE_URL, import_supabase_config.SUPABASE_ANON_KEY);
@@ -78,16 +84,20 @@ async function loginSupabaseUser(adapter, userUuid, password) {
   });
   if (error) {
     adapter.log.error(`Supabase login failed: ${error.message}`);
+    authenticatedClient = null;
     return `Error: ${error.message}`;
   }
   if (data.session) {
     adapter.log.debug("Successfully logged into Supabase");
+    authenticatedClient = supabase;
     return "Logged in";
   }
+  authenticatedClient = null;
   return "Logged out";
 }
 async function logoutSupabaseUser(adapter) {
   adapter.log.debug("Attempting to log out from Supabase");
+  authenticatedClient = null;
   if (!import_supabase_config.SUPABASE_ANON_KEY) {
     return;
   }
@@ -102,6 +112,7 @@ async function logoutSupabaseUser(adapter) {
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   createSupabaseUser,
+  getAuthenticatedSupabaseClient,
   loginSupabaseUser,
   logoutSupabaseUser
 });

@@ -21,7 +21,7 @@ __export(notifications_service_exports, {
   sendNotificationViaSupabase: () => sendNotificationViaSupabase
 });
 module.exports = __toCommonJS(notifications_service_exports);
-var import_supabase_js = require("@supabase/supabase-js");
+var import_supabase_service = require("./supabase-service");
 var import_supabase_config = require("../supabase/supabase-config");
 var import_crypto = require("crypto");
 function normalizeNotificationContent(content, sourceStateId) {
@@ -66,7 +66,7 @@ function normalizeNotificationContent(content, sourceStateId) {
     const notification = content;
     const title = typeof notification.title === "string" && notification.title.trim() ? notification.title.trim() : "Notification";
     const bodyCandidate = notification.body;
-    const body = typeof bodyCandidate === "string" ? bodyCandidate.trim() || "Notification" : bodyCandidate != null ? String(bodyCandidate) : "Notification";
+    const body = typeof bodyCandidate === "string" ? bodyCandidate.trim() || "Notification" : bodyCandidate != null ? bodyCandidate.toString().trim() || "Notification" : "Notification";
     return {
       id: (0, import_crypto.randomUUID)().toString(),
       title,
@@ -113,6 +113,7 @@ async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
     adapter.log.error("Failed to send notification: missing SUPABASE_ANON_KEY");
     return false;
   }
+  const MAX_QUEUE_SIZE = 250;
   const notificationQueueStateId = `devices.${deviceId}.notification_queue`;
   const stateObj = await adapter.getStateAsync(notificationQueueStateId);
   let currentQueue = [];
@@ -133,8 +134,21 @@ async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
   currentQueue.push({
     ...notification
   });
+  if (currentQueue.length > MAX_QUEUE_SIZE) {
+    const dropped = currentQueue.length - MAX_QUEUE_SIZE;
+    currentQueue = currentQueue.slice(dropped);
+    adapter.log.warn(
+      `Notification queue for ${deviceId} exceeded ${MAX_QUEUE_SIZE}, dropped ${dropped} oldest entries`
+    );
+  }
   await adapter.setStateAsync(notificationQueueStateId, JSON.stringify(currentQueue), true);
-  const supabase = (0, import_supabase_js.createClient)(import_supabase_config.SUPABASE_URL, import_supabase_config.SUPABASE_ANON_KEY);
+  const supabase = (0, import_supabase_service.getAuthenticatedSupabaseClient)();
+  if (!supabase) {
+    adapter.log.error(
+      "Failed to send notification: Supabase client is not authenticated. Is the adapter logged in?"
+    );
+    return false;
+  }
   const { error, data } = await supabase.functions.invoke("send-notification", {
     body: {
       user_id: userUUID,
@@ -170,7 +184,7 @@ async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
         if (errorString !== "{}") {
           errorMessage += ` - Full Error: ${errorString}`;
         }
-      } catch (e) {
+      } catch {
       }
     }
     adapter.log.error(`Failed to send notification for ${sourceStateId}: ${errorMessage}`);

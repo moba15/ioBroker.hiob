@@ -32,10 +32,17 @@ __export(notification_grpc_service_exports, {
 });
 module.exports = __toCommonJS(notification_grpc_service_exports);
 var proto = __toESM(require("../../generated/notification/notification"));
+var import_authenticator = require("./authenticator/authenticator");
 function addNotificationServices(gRpcServer, adapter) {
   gRpcServer.addService(proto.UnimplementedNotificationServiceService.definition, {
     fetchNotifications: async (call, callback) => {
+      var _a;
       try {
+        const authStatus = await (0, import_authenticator.checkAuthentication)(call.metadata, adapter);
+        if (authStatus.code !== 0) {
+          callback({ code: authStatus.code, message: (_a = authStatus.details) != null ? _a : "Unauthenticated" }, null);
+          return;
+        }
         const request = call.request;
         const deviceId = request.deviceId;
         if (!deviceId) {
@@ -75,7 +82,13 @@ function addNotificationServices(gRpcServer, adapter) {
       }
     },
     ackNotifications: async (call, callback) => {
+      var _a;
       try {
+        const authStatus = await (0, import_authenticator.checkAuthentication)(call.metadata, adapter);
+        if (authStatus.code !== 0) {
+          callback({ code: authStatus.code, message: (_a = authStatus.details) != null ? _a : "Unauthenticated" }, null);
+          return;
+        }
         const request = call.request;
         const deviceId = request.deviceId;
         const ackIds = request.notificationIds || [];
@@ -100,6 +113,7 @@ function addNotificationServices(gRpcServer, adapter) {
               }
             } catch (e) {
               adapter.log.warn(`Could not parse/update notification_queue for ${deviceId}: ${e}`);
+              callback({ code: 13, message: e instanceof Error ? e.message : String(e) }, null);
             }
           }
         }

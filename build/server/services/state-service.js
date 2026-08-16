@@ -37,7 +37,7 @@ var import_authenticator = require("./authenticator/authenticator");
 function addStateServices(gRpcServer, adapter) {
   gRpcServer.addService(proto.StateUpdateClient.service, {
     Subscibe: async (call) => {
-      const authStatus = (0, import_authenticator.checkAuthentication)(call.metadata);
+      const authStatus = await (0, import_authenticator.checkAuthentication)(call.metadata, adapter);
       if (authStatus.code != grpc.status.OK) {
         call.emit("error", authStatus);
         return;
@@ -46,9 +46,9 @@ function addStateServices(gRpcServer, adapter) {
       const id = call.metadata.get("deviceId")[0].toString();
       adapter.listener.addWriter(id, call);
     },
-    UpdateValue: (call, _callback) => {
+    UpdateValue: async (call, _callback) => {
       adapter.log.debug(`Update value for state ${call.request.stateId} to ${call.request.value}`);
-      const authStatus = (0, import_authenticator.checkAuthentication)(call.metadata);
+      const authStatus = await (0, import_authenticator.checkAuthentication)(call.metadata, adapter);
       if (authStatus.code != grpc.status.OK) {
         call.emit("error", authStatus);
         return;
