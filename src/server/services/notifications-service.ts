@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { getAuthenticatedSupabaseClient } from './supabase-service';
 import type { SamartHomeHandyBis } from '../../main';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../supabase/supabase-config';
 import type { SendNotificationRequest, SendNotificationResponse } from '../supabase/types';
@@ -136,6 +136,7 @@ export async function sendNotificationViaSupabase(
     }
 
     // Add the notification to notification queue in the adapter's state, so that it can be sent to the device when it is online.
+    const MAX_QUEUE_SIZE = 250;
     const notificationQueueStateId = `devices.${deviceId}.notification_queue`;
     const stateObj = await adapter.getStateAsync(notificationQueueStateId);
 
@@ -159,9 +160,20 @@ export async function sendNotificationViaSupabase(
         ...notification,
     });
 
+    // Cap the queue to prevent unbounded growth when a device is offline for a long time
+    if (currentQueue.length > MAX_QUEUE_SIZE) {
+        const dropped = currentQueue.length - MAX_QUEUE_SIZE;
+        currentQueue = currentQueue.slice(dropped);
+        adapter.log.warn(`Notification queue for ${deviceId} exceeded ${MAX_QUEUE_SIZE}, dropped ${dropped} oldest entries`);
+    }
+
     await adapter.setStateAsync(notificationQueueStateId, JSON.stringify(currentQueue), true);
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = getAuthenticatedSupabaseClient();
+    if (!supabase) {
+        adapter.log.error('Failed to send notification: Supabase client is not authenticated. Is the adapter logged in?');
+        return false;
+    }
 
     const { error, data } = await supabase.functions.invoke<SendNotificationResponse>('send-notification', {
         body: {

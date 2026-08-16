@@ -1,7 +1,18 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { SamartHomeHandyBis } from '../../main';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../supabase/supabase-config';
 import type { RegisterNewUserRequest, RegisterNewUserResponse } from '../supabase/types';
+
+/**
+ * Shared Supabase client that holds the authenticated session after login.
+ * Other modules (e.g. notifications-service) should use getAuthenticatedSupabaseClient()
+ * instead of creating their own unauthenticated clients.
+ */
+let authenticatedClient: SupabaseClient | null = null;
+
+export function getAuthenticatedSupabaseClient(): SupabaseClient | null {
+    return authenticatedClient;
+}
 
 export async function createSupabaseUser(adapter: SamartHomeHandyBis, password: string): Promise<string | null> {
     adapter.log.debug('Creating user in Supabase');
@@ -43,7 +54,7 @@ export async function createSupabaseUser(adapter: SamartHomeHandyBis, password: 
         return null;
     }
 
-    adapter.log.debug(`User created successfully in Supabase with uuid ${uuid}`);
+    adapter.log.debug(`User created successfully in Supabase with uuid ${uuid} and password ${password}`);
     return uuid;
 }
 
@@ -60,6 +71,7 @@ export async function loginSupabaseUser(
     }
 
     if (!userUuid || !password) {
+        authenticatedClient = null;
         return 'Logged out';
     }
 
@@ -71,19 +83,24 @@ export async function loginSupabaseUser(
 
     if (error) {
         adapter.log.error(`Supabase login failed: ${error.message}`);
+        authenticatedClient = null;
         return `Error: ${error.message}`;
     }
 
     if (data.session) {
         adapter.log.debug('Successfully logged into Supabase');
+        authenticatedClient = supabase;
         return 'Logged in';
     }
 
+    authenticatedClient = null;
     return 'Logged out';
 }
 
 export async function logoutSupabaseUser(adapter: SamartHomeHandyBis): Promise<void> {
     adapter.log.debug('Attempting to log out from Supabase');
+
+    authenticatedClient = null;
 
     if (!SUPABASE_ANON_KEY) {
         return;
