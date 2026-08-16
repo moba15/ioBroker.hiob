@@ -23,7 +23,7 @@ __export(notifications_service_exports, {
 module.exports = __toCommonJS(notifications_service_exports);
 var import_supabase_service = require("./supabase-service");
 var import_supabase_config = require("../supabase/supabase-config");
-var import_crypto = require("crypto");
+var import_node_crypto = require("node:crypto");
 function normalizeNotificationContent(content, sourceStateId) {
   if (content == null) {
     return null;
@@ -40,7 +40,7 @@ function normalizeNotificationContent(content, sourceStateId) {
         const title = typeof parsedNotification.title === "string" && parsedNotification.title.trim() ? parsedNotification.title.trim() : "Notification";
         const body = typeof parsedNotification.body === "string" && parsedNotification.body.trim() ? parsedNotification.body.trim() : trimmedContent;
         return {
-          id: (0, import_crypto.randomUUID)().toString(),
+          id: (0, import_node_crypto.randomUUID)().toString(),
           title,
           body,
           data: {
@@ -53,7 +53,7 @@ function normalizeNotificationContent(content, sourceStateId) {
     } catch {
     }
     return {
-      id: (0, import_crypto.randomUUID)().toString(),
+      id: (0, import_node_crypto.randomUUID)().toString(),
       title: "Notification",
       body: trimmedContent,
       data: {
@@ -68,7 +68,7 @@ function normalizeNotificationContent(content, sourceStateId) {
     const bodyCandidate = notification.body;
     const body = typeof bodyCandidate === "string" ? bodyCandidate.trim() || "Notification" : bodyCandidate != null ? bodyCandidate.toString().trim() || "Notification" : "Notification";
     return {
-      id: (0, import_crypto.randomUUID)().toString(),
+      id: (0, import_node_crypto.randomUUID)().toString(),
       title,
       body,
       data: {
@@ -83,7 +83,7 @@ function normalizeNotificationContent(content, sourceStateId) {
     return null;
   }
   return {
-    id: (0, import_crypto.randomUUID)().toString(),
+    id: (0, import_node_crypto.randomUUID)().toString(),
     title: "Notification",
     body: fallbackBody,
     data: {
@@ -109,7 +109,8 @@ async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
     adapter.log.warn(`Cannot send notification for ${sourceStateId}: empty payload`);
     return false;
   }
-  if (!import_supabase_config.SUPABASE_ANON_KEY) {
+  const anonKey = (0, import_supabase_config.getSupabaseAnonKey)(adapter);
+  if (!anonKey) {
     adapter.log.error("Failed to send notification: missing SUPABASE_ANON_KEY");
     return false;
   }

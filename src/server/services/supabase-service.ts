@@ -1,6 +1,6 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { SamartHomeHandyBis } from '../../main';
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../supabase/supabase-config';
+import { getSupabaseAnonKey, getSupabaseUrl } from '../supabase/supabase-config';
 import type { RegisterNewUserRequest, RegisterNewUserResponse } from '../supabase/types';
 
 /**
@@ -17,12 +17,15 @@ export function getAuthenticatedSupabaseClient(): SupabaseClient | null {
 export async function createSupabaseUser(adapter: SamartHomeHandyBis, password: string): Promise<string | null> {
     adapter.log.debug('Creating user in Supabase');
 
-    if (!SUPABASE_ANON_KEY) {
+    const anonKey = getSupabaseAnonKey(adapter);
+    const url = getSupabaseUrl(adapter);
+
+    if (!anonKey) {
         adapter.log.error('Failed to create user in Supabase: missing SUPABASE_ANON_KEY');
         return null;
     }
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = createClient(url, anonKey);
     const { data, error } = await supabase.functions.invoke<RegisterNewUserResponse>('registerNewUser', {
         // Pass an object directly. Supabase handles JSON.stringify automatically.
         body: { password } satisfies RegisterNewUserRequest,
@@ -65,7 +68,10 @@ export async function loginSupabaseUser(
 ): Promise<string> {
     adapter.log.debug(`Attempting to log into Supabase for user ${userUuid}`);
 
-    if (!SUPABASE_ANON_KEY) {
+    const anonKey = getSupabaseAnonKey(adapter);
+    const url = getSupabaseUrl(adapter);
+
+    if (!anonKey) {
         adapter.log.error('Failed to login to Supabase: missing SUPABASE_ANON_KEY');
         return 'Error: Missing Configuration';
     }
@@ -75,7 +81,7 @@ export async function loginSupabaseUser(
         return 'Logged out';
     }
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = createClient(url, anonKey);
     const { data, error } = await supabase.auth.signInWithPassword({
         email: `${userUuid.trim()}@hiob-app.local`,
         password: password.trim(),
@@ -102,11 +108,14 @@ export async function logoutSupabaseUser(adapter: SamartHomeHandyBis): Promise<v
 
     authenticatedClient = null;
 
-    if (!SUPABASE_ANON_KEY) {
+    const anonKey = getSupabaseAnonKey(adapter);
+    const url = getSupabaseUrl(adapter);
+
+    if (!anonKey) {
         return;
     }
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabase = createClient(url, anonKey);
     const { error } = await supabase.auth.signOut();
 
     if (error) {

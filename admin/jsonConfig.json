@@ -92,7 +92,7 @@
       "newLine": true,
       "jsonData": "{\"password\": \"${data.notificationPassword}\"}",
       "disabled": "data.userUUID",
-      "xs": 6,
+      "xs": 12,
       "sm": 6,
       "md": 4,
       "lg": 3,
@@ -107,7 +107,7 @@
       "useNative": true,
       "newLine": false,
       "disabled": "!data.userUUID",
-      "xs": 6,
+      "xs": 12,
       "sm": 6,
       "md": 4,
       "lg": 3,
@@ -138,8 +138,7 @@
       "sm": 12,
       "md": 6,
       "lg": 4,
-      "xl": 4,
-      "default": "Logged out"
+      "xl": 4
     },
     "qrCode2": {
       "type": "qrCodeSendTo",

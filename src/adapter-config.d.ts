@@ -10,6 +10,8 @@ declare global {
 			keyPath: string;
 			notificationPassword: string;
 			userUUID: string;
+			supabaseUrl?: string;
+			supabaseAnonKey?: string;
 		}
 	}
 }

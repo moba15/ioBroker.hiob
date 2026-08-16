@@ -33,11 +33,13 @@ function getAuthenticatedSupabaseClient() {
 async function createSupabaseUser(adapter, password) {
   var _a;
   adapter.log.debug("Creating user in Supabase");
-  if (!import_supabase_config.SUPABASE_ANON_KEY) {
+  const anonKey = (0, import_supabase_config.getSupabaseAnonKey)(adapter);
+  const url = (0, import_supabase_config.getSupabaseUrl)(adapter);
+  if (!anonKey) {
     adapter.log.error("Failed to create user in Supabase: missing SUPABASE_ANON_KEY");
     return null;
   }
-  const supabase = (0, import_supabase_js.createClient)(import_supabase_config.SUPABASE_URL, import_supabase_config.SUPABASE_ANON_KEY);
+  const supabase = (0, import_supabase_js.createClient)(url, anonKey);
   const { data, error } = await supabase.functions.invoke("registerNewUser", {
     // Pass an object directly. Supabase handles JSON.stringify automatically.
     body: { password }
@@ -69,7 +71,9 @@ async function createSupabaseUser(adapter, password) {
 }
 async function loginSupabaseUser(adapter, userUuid, password) {
   adapter.log.debug(`Attempting to log into Supabase for user ${userUuid}`);
-  if (!import_supabase_config.SUPABASE_ANON_KEY) {
+  const anonKey = (0, import_supabase_config.getSupabaseAnonKey)(adapter);
+  const url = (0, import_supabase_config.getSupabaseUrl)(adapter);
+  if (!anonKey) {
     adapter.log.error("Failed to login to Supabase: missing SUPABASE_ANON_KEY");
     return "Error: Missing Configuration";
   }
@@ -77,7 +81,7 @@ async function loginSupabaseUser(adapter, userUuid, password) {
     authenticatedClient = null;
     return "Logged out";
   }
-  const supabase = (0, import_supabase_js.createClient)(import_supabase_config.SUPABASE_URL, import_supabase_config.SUPABASE_ANON_KEY);
+  const supabase = (0, import_supabase_js.createClient)(url, anonKey);
   const { data, error } = await supabase.auth.signInWithPassword({
     email: `${userUuid.trim()}@hiob-app.local`,
     password: password.trim()
@@ -98,10 +102,12 @@ async function loginSupabaseUser(adapter, userUuid, password) {
 async function logoutSupabaseUser(adapter) {
   adapter.log.debug("Attempting to log out from Supabase");
   authenticatedClient = null;
-  if (!import_supabase_config.SUPABASE_ANON_KEY) {
+  const anonKey = (0, import_supabase_config.getSupabaseAnonKey)(adapter);
+  const url = (0, import_supabase_config.getSupabaseUrl)(adapter);
+  if (!anonKey) {
     return;
   }
-  const supabase = (0, import_supabase_js.createClient)(import_supabase_config.SUPABASE_URL, import_supabase_config.SUPABASE_ANON_KEY);
+  const supabase = (0, import_supabase_js.createClient)(url, anonKey);
   const { error } = await supabase.auth.signOut();
   if (error) {
     adapter.log.error(`Supabase logout failed: ${error.message}`);

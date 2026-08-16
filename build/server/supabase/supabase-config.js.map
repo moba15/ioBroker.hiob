@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../src/server/supabase/supabase-config.ts"],
-  "sourcesContent": ["import * as dotenv from 'dotenv';\ndotenv.config();\n\n// Use environment variables if they exist, otherwise fallback to production defaults\nexport const SUPABASE_URL = process.env.SUPABASE_URL || 'https://chvazplrvwsvznegekqy.supabase.co';\nexport const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'sb_publishable_3dW4LAbXNar4lLW8iyOLKQ_fucrNUi-';\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,aAAwB;AACxB,OAAO,OAAO;AAGP,MAAM,eAAe,QAAQ,IAAI,gBAAgB;AACjD,MAAM,oBAAoB,QAAQ,IAAI,qBAAqB;",
+  "sourcesContent": ["import type { SamartHomeHandyBis } from '../../main';\n\nexport function getSupabaseUrl(adapter: SamartHomeHandyBis): string {\n    return adapter.config.supabaseUrl || 'https://chvazplrvwsvznegekqy.supabase.co';\n}\n\nexport function getSupabaseAnonKey(adapter: SamartHomeHandyBis): string {\n    return adapter.config.supabaseAnonKey || 'sb_publishable_3dW4LAbXNar4lLW8iyOLKQ_fucrNUi-';\n}\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAEO,SAAS,eAAe,SAAqC;AAChE,SAAO,QAAQ,OAAO,eAAe;AACzC;AAEO,SAAS,mBAAmB,SAAqC;AACpE,SAAO,QAAQ,OAAO,mBAAmB;AAC7C;",
   "names": []
 }

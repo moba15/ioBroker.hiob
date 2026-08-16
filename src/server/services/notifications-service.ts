@@ -1,8 +1,8 @@
 import { getAuthenticatedSupabaseClient } from './supabase-service';
 import type { SamartHomeHandyBis } from '../../main';
-import { SUPABASE_ANON_KEY } from '../supabase/supabase-config';
+import { getSupabaseAnonKey } from '../supabase/supabase-config';
 import type { SendNotificationRequest, SendNotificationResponse } from '../supabase/types';
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 
 type NotificationContent = {
     id: string;
@@ -132,7 +132,9 @@ export async function sendNotificationViaSupabase(
         return false;
     }
 
-    if (!SUPABASE_ANON_KEY) {
+    const anonKey = getSupabaseAnonKey(adapter);
+
+    if (!anonKey) {
         adapter.log.error('Failed to send notification: missing SUPABASE_ANON_KEY');
         return false;
     }

@@ -2,9 +2,9 @@ import { Events, type StateChangeEvent } from '../listener/listener';
 import type { SamartHomeHandyBis } from '../main';
 import type { Client } from '../server/client';
 import * as bcrypt from 'bcrypt';
-import * as crypto from 'crypto';
+import * as crypto from 'node:crypto';
 import * as proto from '../generated/login/login';
-import type { Stream } from 'stream';
+import type { Stream } from 'node:stream';
 export class LoginManager {
     adapter: SamartHomeHandyBis;
     pendingClients: Client[];

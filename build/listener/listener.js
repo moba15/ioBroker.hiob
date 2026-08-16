@@ -33,14 +33,14 @@ __export(listener_exports, {
   StateChangeEvent: () => StateChangeEvent
 });
 module.exports = __toCommonJS(listener_exports);
-var import_stream = require("stream");
+var import_node_stream = require("node:stream");
 var import_async_mutex = require("async-mutex");
 var proto = __toESM(require("../generated/state/state"));
 var Events = /* @__PURE__ */ ((Events2) => {
   Events2["StateChange"] = "stateChanged";
   return Events2;
 })(Events || {});
-const _Listener = class _Listener extends import_stream.EventEmitter {
+const _Listener = class _Listener extends import_node_stream.EventEmitter {
   constructor(adapter) {
     super();
     this.busy = false;

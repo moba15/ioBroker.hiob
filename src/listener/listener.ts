@@ -1,4 +1,4 @@
-import { EventEmitter } from 'stream';
+import { EventEmitter } from 'node:stream';
 import type { SamartHomeHandyBis } from '../main';
 import { Mutex } from 'async-mutex';
 import * as proto from '../generated/state/state';

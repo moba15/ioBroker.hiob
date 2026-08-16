@@ -33,7 +33,7 @@ __export(loginmanager_exports, {
 module.exports = __toCommonJS(loginmanager_exports);
 var import_listener = require("../listener/listener");
 var bcrypt = __toESM(require("bcrypt"));
-var crypto = __toESM(require("crypto"));
+var crypto = __toESM(require("node:crypto"));
 var proto = __toESM(require("../generated/login/login"));
 class LoginManager {
   constructor(adapter) {
@@ -155,26 +155,39 @@ class LoginManager {
     if (!loginRequestData.key) {
       apr = proto.LoginResponse.Status.wrongKey;
     }
-    if (!loginRequestData.user || !loginRequestData.password || !await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
-      this.adapter.log.debug(
-        `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`
-      );
-      apr = proto.LoginResponse.Status.wrongPassword;
+    let keyValid = false;
+    if (keyState != null && keyState.val != null && loginRequestData.key && await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
+      keyValid = true;
     }
-    if (loginRequestData.key == null) {
-      apr = proto.LoginResponse.Status.wrongKey;
+    if (!keyValid) {
+      if (!loginRequestData.user || !loginRequestData.password || !await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
+        this.adapter.log.debug(
+          `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`
+        );
+        if (apr === proto.LoginResponse.Status.succesfull || apr === proto.LoginResponse.Status.wrongKey) {
+          apr = proto.LoginResponse.Status.wrongPassword;
+        }
+      } else {
+        if (apr === proto.LoginResponse.Status.wrongKey) {
+          apr = proto.LoginResponse.Status.succesfull;
+        }
+      }
+      if (keyState != null && keyState.val != null && loginRequestData.key && !keyValid) {
+        this.adapter.log.debug(
+          `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong key`
+        );
+        apr = proto.LoginResponse.Status.wrongKey;
+      }
+    } else {
+      if (apr === proto.LoginResponse.Status.wrongKey) {
+        apr = proto.LoginResponse.Status.succesfull;
+      }
     }
-    if (keyState != null && keyState.val != null && loginRequestData.key && !await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
-      this.adapter.log.debug(
-        `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong key${!await bcrypt.compare(loginRequestData.key, keyState.val.toString())}`
-      );
-      apr = proto.LoginResponse.Status.wrongKey;
-    }
-    if (!apr && this.approveLogins) {
+    if (apr !== proto.LoginResponse.Status.succesfull && this.approveLogins) {
       await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
       apr = proto.LoginResponse.Status.succesfull;
     }
-    if (apr == proto.LoginResponse.Status.succesfull) {
+    if (apr === proto.LoginResponse.Status.succesfull) {
       await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
     } else {
       await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, false, true);

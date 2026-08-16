@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   repochecker:
@@ -36,7 +37,105 @@ jobs:
           
           if [ $EXIT_CODE -ne 0 ]; then
             echo "❌ **Repo checker found errors.** Please review the log above." >> $GITHUB_STEP_SUMMARY
-            exit $EXIT_CODE
           else
             echo "✅ **Repo checker passed successfully.**" >> $GITHUB_STEP_SUMMARY
           fi
+          
+          # We don't exit here so the next step can post the comment.
+          # We will exit with the correct code at the end of the job.
+          echo "EXIT_CODE=$EXIT_CODE" >> $GITHUB_ENV
+
+      - name: Post Comment to PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const log = fs.readFileSync('repochecker_output.log', 'utf8');
+            const lines = log.split('\n');
+            
+            const signature = '<!-- repochecker-comment -->';
+            
+            const currentIssues = new Set();
+            for (const line of lines) {
+              const match = line.match(/^\[([EWS]\d+)\]\s(.*)/);
+              if (match) {
+                const code = match[1];
+                const msg = match[2];
+                currentIssues.add(`**[${code}]** ${msg}`);
+              }
+            }
+            
+            const { data: comments } = await github.rest.issues.listComments({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            const existingComment = comments.find(c => c.body.includes(signature) && c.user.type === 'Bot');
+            
+            const allIssues = new Map();
+            if (existingComment) {
+              const regex = /- \[(x| )\] (.*)/g;
+              let match;
+              while ((match = regex.exec(existingComment.body)) !== null) {
+                const isFixed = match[1] === 'x';
+                const issueText = match[2];
+                allIssues.set(issueText, isFixed);
+              }
+            }
+            
+            for (const issue of currentIssues) {
+              allIssues.set(issue, false);
+            }
+            for (const [issue, isFixed] of allIssues.entries()) {
+              if (!currentIssues.has(issue)) {
+                allIssues.set(issue, true);
+              }
+            }
+            
+            let errors = [];
+            let warnings = [];
+            let suggestions = [];
+            
+            for (const [issue, isFixed] of allIssues.entries()) {
+              const checkbox = isFixed ? '- [x]' : '- [ ]';
+              const item = `${checkbox} ${issue}`;
+              if (issue.startsWith('**[E')) errors.push(item);
+              else if (issue.startsWith('**[W')) warnings.push(item);
+              else if (issue.startsWith('**[S')) suggestions.push(item);
+            }
+            
+            let commentBody = `## ioBroker Repo Checker Results\n${signature}\n\n`;
+            
+            if (allIssues.size === 0) {
+              commentBody += '✅ No issues found!\n';
+            } else {
+              if (errors.length > 0) {
+                commentBody += '### Errors\n' + errors.join('\n') + '\n\n';
+              }
+              if (warnings.length > 0) {
+                commentBody += '### Warnings\n' + warnings.join('\n') + '\n\n';
+              }
+              if (suggestions.length > 0) {
+                commentBody += '### Suggestions\n' + suggestions.join('\n') + '\n\n';
+              }
+            }
+            
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                comment_id: existingComment.id,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+            } else {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: commentBody
+              });
+            }
+
+      - name: Check Status
+        run: exit ${{ env.EXIT_CODE }}
