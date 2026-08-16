@@ -1,6 +1,7 @@
 import type * as m from '../..//main';
 import type * as grpc from '@grpc/grpc-js';
 import * as proto from '../../generated/notification/notification';
+import { checkAuthentication } from './authenticator/authenticator';
 
 export function addNotificationServices(gRpcServer: grpc.Server, adapter: m.SamartHomeHandyBis): void {
     gRpcServer.addService(proto.UnimplementedNotificationServiceService.definition, {
@@ -9,6 +10,12 @@ export function addNotificationServices(gRpcServer: grpc.Server, adapter: m.Sama
             callback: grpc.sendUnaryData<proto.FetchNotificationsResponse>,
         ) => {
             try {
+                const authStatus = await checkAuthentication(call.metadata, adapter);
+                if (authStatus.code !== 0) {
+                    callback({ code: authStatus.code, message: authStatus.details ?? 'Unauthenticated' }, null);
+                    return;
+                }
+
                 const request: proto.FetchNotificationsRequest = call.request;
                 const deviceId = request.deviceId;
 
@@ -58,6 +65,12 @@ export function addNotificationServices(gRpcServer: grpc.Server, adapter: m.Sama
             callback: grpc.sendUnaryData<proto.AckNotificationsResponse>,
         ) => {
             try {
+                const authStatus = await checkAuthentication(call.metadata, adapter);
+                if (authStatus.code !== 0) {
+                    callback({ code: authStatus.code, message: authStatus.details ?? 'Unauthenticated' }, null);
+                    return;
+                }
+
                 const request: proto.AckNotificationsRequest = call.request;
                 const deviceId = request.deviceId;
                 const ackIds = request.notificationIds || [];

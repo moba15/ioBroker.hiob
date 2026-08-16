@@ -8,7 +8,7 @@ import { checkAuthentication } from './authenticator/authenticator';
 export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeHandyBis): void {
     gRpcServer.addService(proto.StateUpdateClient.service, {
         Subscibe: async (call: grpc.ServerWritableStream<StateSubscribtion, proto.StatesValueUpdate>) => {
-            const authStatus = checkAuthentication(call.metadata);
+            const authStatus = await checkAuthentication(call.metadata, adapter);
             if (authStatus.code != grpc.status.OK) {
                 call.emit('error', authStatus);
                 return;
@@ -19,12 +19,12 @@ export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
             const id = call.metadata.get('deviceId')[0].toString();
             adapter.listener.addWriter(id, call);
         },
-        UpdateValue: (
+        UpdateValue: async (
             call: grpc.ServerUnaryCall<proto.StateValueUpdateRequest, proto.StateValueUpdateResponse>,
             _callback: grpc.sendUnaryData<proto.StateValueUpdateResponse>,
         ) => {
             adapter.log.debug(`Update value for state ${call.request.stateId} to ${call.request.value}`);
-            const authStatus = checkAuthentication(call.metadata);
+            const authStatus = await checkAuthentication(call.metadata, adapter);
             if (authStatus.code != grpc.status.OK) {
                 call.emit('error', authStatus);
                 return;
