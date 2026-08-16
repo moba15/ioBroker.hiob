@@ -1,6 +1,6 @@
 {
   "common": {
-    "name": "hiob",
+    "name": "hiob-dev",
     "version": "0.3.0-alpha.1",
     "news": {
       "0.3.0-alpha.1": {
@@ -44,17 +44,17 @@
       }
     },
     "titleLang": {
-      "en": "HioB APP",
-      "de": "HioB APP",
-      "ru": "HioB APP",
-      "pt": "HioB APP",
-      "nl": "HioB APP",
-      "fr": "HioB APP",
-      "it": "HioB APP",
-      "es": "HioB APP",
-      "pl": "HioB APP",
-      "uk": "HioB APP",
-      "zh-cn": "HioB APP"
+      "en": "HioB Dev",
+      "de": "HioB Dev",
+      "ru": "HioB Dev",
+      "pt": "HioB Dev",
+      "nl": "HioB Dev",
+      "fr": "HioB Dev",
+      "it": "HioB Dev",
+      "es": "HioB Dev",
+      "pl": "HioB Dev",
+      "uk": "HioB Dev",
+      "zh-cn": "HioB Dev"
     },
     "desc": {
       "en": "Visualization for mobile phones",
@@ -119,7 +119,8 @@
         "de": "App Geräte"
       },
       "link": ""
-    }
+    },
+    "title": "HioB Dev"
   },
   "encryptedNative": [
     "notificationPassword"
