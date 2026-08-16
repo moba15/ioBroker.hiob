@@ -71,8 +71,7 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.3.0-alpha.2 (2026-08-16)
 - Added first gRPC support #127
 - Implemented tickle pattern for notification using supabase and firebase 
 - **IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished

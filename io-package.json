@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "hiob-dev",
-    "version": "0.3.0-alpha.1",
+    "version": "0.3.0-alpha.2",
     "news": {
+      "0.3.0-alpha.2": {
+        "en": "Added first gRPC support #127\nImplemented tickle pattern for notification using supabase and firebase \n**IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished",
+        "de": "Erster gRPC-Support hinzugefügt #127\nImplementiertes Tickle-Muster für Benachrichtigungen mit Supabase und Firebase\n**WICHTIG** Dies ist lediglich eine Alpha-Version und sollte nur zum Testen und für Feedback verwendet werden. Viele Funktionen sind **noch** nicht fertiggestellt.",
+        "ru": "Добавлена первая поддержка gRPC #127\nРеализован шаблон «щелчков» для уведомлений с использованием Supabase и Firebase.\n**ВАЖНО** Это всего лишь альфа-версия, её следует использовать только для тестирования и получения обратной связи. Многие функции **ещё не** доработаны.",
+        "pt": "Adicionado o primeiro suporte a gRPC #127\nImplementei o padrão Tickle para notificações usando Supabase e Firebase.\n**IMPORTANTE** Esta é apenas uma versão alfa, deve ser usada somente para testes e feedback. Muitos recursos **ainda não** estão finalizados.",
+        "nl": "Eerste gRPC-ondersteuning toegevoegd #127\nHet tickle-patroon is geïmplementeerd voor notificaties met behulp van Supabase en Firebase.\n**BELANGRIJK** Dit is slechts een alfaversie en mag alleen worden gebruikt voor testen en feedback. Veel functies zijn **nog niet** afgerond.",
+        "fr": "Ajout de la première prise en charge de gRPC #127\nMise en œuvre du modèle de notification par impulsions à l'aide de Supabase et Firebase.\n**IMPORTANT** Ceci est une version alpha, à utiliser uniquement pour les tests et les retours. De nombreuses fonctionnalités **ne sont pas** finalisées.",
+        "it": "Aggiunto il primo supporto gRPC #127\nImplementato il pattern tickle per le notifiche utilizzando Supabase e Firebase\n**IMPORTANTE** Questa è solo una versione alpha, da utilizzare esclusivamente per test e feedback. Molte funzionalità **non sono** ancora complete.",
+        "es": "Se agregó soporte para gRPC por primera vez #127\nSe implementó un patrón de notificaciones por pulsación utilizando Supabase y Firebase.\n**IMPORTANTE** Esta es solo una versión alfa, debe usarse únicamente para pruebas y comentarios. Muchas funciones **no** están terminadas.",
+        "pl": "Dodano pierwsze wsparcie gRPC #127\nWprowadzono wzorzec łaskotania dla powiadomień przy użyciu Supabase i Firebase\n**WAŻNE** To tylko wersja alfa, należy jej używać wyłącznie do testów i zbierania opinii. Wiele funkcji **nie jest** ukończonych.",
+        "uk": "Додано першу підтримку gRPC #127\nРеалізовано шаблон лоскотання для сповіщень за допомогою supabase та firebase\n**ВАЖЛИВО** Це лише альфа-версія, її слід використовувати лише для тестування та відгуків. Багато функцій **ще** не завершені",
+        "zh-cn": "首次添加 gRPC 支持 #127\n使用 Superbase 和 Firebase 实现了通知的触发模式\n**重要提示**：这只是一个早期版本，仅供测试和反馈之用。许多功能尚未完成。"
+      },
       "0.3.0-alpha.1": {
         "en": "Added first gRPC support #127\nImplemented tickle pattern for notification using supabase and firebase \n**IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished",
         "de": "Erster gRPC-Support hinzugefügt #127\nImplementiertes Tickle-Muster für Benachrichtigungen mit Supabase und Firebase\n**WICHTIG** Dies ist lediglich eine Alpha-Version und sollte nur zum Testen und für Feedback verwendet werden. Viele Funktionen sind **noch** nicht fertiggestellt.",
