@@ -1,0 +1,42 @@
+name: ioBroker Repo Checker
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  repochecker:
+    name: Run Repo Checker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run ioBroker.repochecker
+        id: repochecker
+        run: |
+          echo "## ioBroker Repo Checker Results" >> $GITHUB_STEP_SUMMARY
+          echo '```text' >> $GITHUB_STEP_SUMMARY
+          
+          # Run repochecker in local mode, capture output and exit code
+          set +e
+          npx @iobroker/repochecker "https://github.com/${{ github.repository }}" --local > repochecker_output.log 2>&1
+          EXIT_CODE=$?
+          set -e
+          
+          cat repochecker_output.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "❌ **Repo checker found errors.** Please review the log above." >> $GITHUB_STEP_SUMMARY
+            exit $EXIT_CODE
+          else
+            echo "✅ **Repo checker passed successfully.**" >> $GITHUB_STEP_SUMMARY
+          fi
