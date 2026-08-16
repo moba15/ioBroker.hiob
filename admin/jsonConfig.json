@@ -107,7 +107,7 @@
       "useNative": true,
       "newLine": false,
       "disabled": "!data.userUUID",
-       "xs": 6,
+      "xs": 6,
       "sm": 6,
       "md": 4,
       "lg": 3,
@@ -144,7 +144,9 @@
     "qrCode2": {
       "type": "qrCodeSendTo",
       "command": "getUserUuidQr",
-      "alsoDependsOn": ["userUUID"],
+      "alsoDependsOn": [
+        "userUUID"
+      ],
       "label": "userUUID",
       "tooltip": "userUUID",
       "newLine": true,
