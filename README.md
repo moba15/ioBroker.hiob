@@ -62,7 +62,7 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     - Allow Popup Menu for all widgets
     - Allow Theme rules for every widget
 - Add graphs for history data [0%]
-- Simplify process of adding devices by listing all [0%]
+- Simplify process of adding devices by listing all [90%]
 - Automatically create widgets based on selected device [0%]
 
 ## Changelog
@@ -71,12 +71,10 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 0.3.0-alpha.0 (2026-04-04)
-- Quick fix for login errors due to changed identity
-- Fixed some smaller bugs
+
+### **WORK IN PROGRESS**
 - Added first gRPC support #127
-- Added support for client side states database
-- Added support for identity switch between release and dev package
+- Implemented tickle pattern for notification using supabase and firebase 
 - **IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished
 
 ### 0.1.7 (2025-04-19)
