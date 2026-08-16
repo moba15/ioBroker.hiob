@@ -116,30 +116,32 @@
                     $tbody.append('<tr><td colspan="4">No devices found. Ensure the app has requested to connect.</td></tr>');
                     return;
                 }
-                
-                // Bind change events
-                $('.device-approve-cb').on('change', function() {
+
+                result.devices.forEach(function (device) {
+                    var checked = device.approved ? 'checked' : '';
+                    $tbody.append(
+                        '<tr>' +
+                            '<td>' + device.name + '</td>' +
+                            '<td>' + device.id + '</td>' +
+                            '<td>' +
+                                '<label>' +
+                                    '<input type="checkbox" class="filled-in device-approve-cb" data-device-id="' + device.id + '" ' + checked + ' />' +
+                                    '<span></span>' +
+                                '</label>' +
+                            '</td>' +
+                        '</tr>'
+                    );
+                });
+
+                $('.device-approve-cb').off('change').on('change', function() {
                     var deviceId = $(this).data('device-id');
                     var isApproved = $(this).prop('checked');
-                    
+
                     sendToBackend('setDeviceApproval', { deviceId: deviceId, approved: isApproved }, function(res) {
                         if (res && res.error) {
                             alert('Error updating device: ' + res.error);
                         } else {
                             M.toast({html: 'Device ' + (isApproved ? 'approved' : 'rejected'), classes: 'rounded green'});
-                        }
-                    });
-                });
-
-                $('.device-pwd-cb').on('change', function() {
-                    var deviceId = $(this).data('device-id');
-                    var needPwd = $(this).prop('checked');
-                    
-                    sendToBackend('setDevicePasswordRequired', { deviceId: deviceId, needPwd: needPwd }, function(res) {
-                        if (res && res.error) {
-                            alert('Error updating password requirement: ' + res.error);
-                        } else {
-                            M.toast({html: 'Password ' + (needPwd ? 'required' : 'not required'), classes: 'rounded green'});
                         }
                     });
                 });
