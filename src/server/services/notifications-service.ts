@@ -1,6 +1,6 @@
 import { getAuthenticatedSupabaseClient } from './supabase-service';
 import type { SamartHomeHandyBis } from '../../main';
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../supabase/supabase-config';
+import { SUPABASE_ANON_KEY } from '../supabase/supabase-config';
 import type { SendNotificationRequest, SendNotificationResponse } from '../supabase/types';
 import { randomUUID } from 'crypto';
 
@@ -63,7 +63,7 @@ function normalizeNotificationContent(content: unknown, sourceStateId: string): 
     }
 
     if (typeof content === 'object') {
-        const notification = content as Record<string, unknown>;
+        const notification = content as Record<string, string | number | boolean | null | undefined>;
         const title =
             typeof notification.title === 'string' && notification.title.trim()
                 ? notification.title.trim()
@@ -73,7 +73,7 @@ function normalizeNotificationContent(content: unknown, sourceStateId: string): 
             typeof bodyCandidate === 'string'
                 ? bodyCandidate.trim() || 'Notification'
                 : bodyCandidate != null
-                  ? String(bodyCandidate)
+                  ? bodyCandidate.toString().trim() || 'Notification'
                   : 'Notification';
 
         return {
@@ -88,6 +88,8 @@ function normalizeNotificationContent(content: unknown, sourceStateId: string): 
         };
     }
 
+    // Fallback for other types (number, boolean, etc.), normaly this should not happen, but we handle it gracefully.
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     const fallbackBody = String(content).trim();
     if (!fallbackBody) {
         return null;
@@ -151,7 +153,7 @@ export async function sendNotificationViaSupabase(
             } else if (Array.isArray(stateObj.val)) {
                 currentQueue = stateObj.val as NotificationContent[];
             }
-        } catch (e) {
+        } catch (e: any) {
             adapter.log.warn(`Could not parse notification_queue for ${deviceId}: ${e}`);
         }
     }
@@ -164,14 +166,18 @@ export async function sendNotificationViaSupabase(
     if (currentQueue.length > MAX_QUEUE_SIZE) {
         const dropped = currentQueue.length - MAX_QUEUE_SIZE;
         currentQueue = currentQueue.slice(dropped);
-        adapter.log.warn(`Notification queue for ${deviceId} exceeded ${MAX_QUEUE_SIZE}, dropped ${dropped} oldest entries`);
+        adapter.log.warn(
+            `Notification queue for ${deviceId} exceeded ${MAX_QUEUE_SIZE}, dropped ${dropped} oldest entries`,
+        );
     }
 
     await adapter.setStateAsync(notificationQueueStateId, JSON.stringify(currentQueue), true);
 
     const supabase = getAuthenticatedSupabaseClient();
     if (!supabase) {
-        adapter.log.error('Failed to send notification: Supabase client is not authenticated. Is the adapter logged in?');
+        adapter.log.error(
+            'Failed to send notification: Supabase client is not authenticated. Is the adapter logged in?',
+        );
         return false;
     }
 
@@ -216,7 +222,7 @@ export async function sendNotificationViaSupabase(
                 if (errorString !== '{}') {
                     errorMessage += ` - Full Error: ${errorString}`;
                 }
-            } catch (e) {
+            } catch {
                 // ignore stringify errors
             }
         }

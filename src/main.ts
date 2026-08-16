@@ -563,7 +563,11 @@ export class SamartHomeHandyBis extends utils.Adapter {
                     };
                     this.sendTo(obj.from, obj.command, qrCodeJson, obj.callback);
                 }
-            } else if (obj.command === 'getDevices' || obj.command === 'setDeviceApproval' || obj.command === 'setDevicePasswordRequired') {
+            } else if (
+                obj.command === 'getDevices' ||
+                obj.command === 'setDeviceApproval' ||
+                obj.command === 'setDevicePasswordRequired'
+            ) {
                 void this.deviceManager.handleMessage(obj);
             }
         }

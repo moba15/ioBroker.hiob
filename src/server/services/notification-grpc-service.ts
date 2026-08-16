@@ -49,7 +49,7 @@ export function addNotificationServices(gRpcServer: grpc.Server, adapter: m.Sama
                                 }),
                             );
                         }
-                    } catch (e) {
+                    } catch (e: any) {
                         adapter.log.warn(`Could not parse notification_queue for ${deviceId}: ${e}`);
                     }
                 }
@@ -97,8 +97,9 @@ export function addNotificationServices(gRpcServer: grpc.Server, adapter: m.Sama
                                 const newQueue = parsed.filter(item => !ackIds.includes(item.id));
                                 await adapter.setStateAsync(notificationQueueStateId, JSON.stringify(newQueue), true);
                             }
-                        } catch (e) {
+                        } catch (e: any) {
                             adapter.log.warn(`Could not parse/update notification_queue for ${deviceId}: ${e}`);
+                            callback({ code: 13, message: e instanceof Error ? e.message : String(e) }, null);
                         }
                     }
                 }
