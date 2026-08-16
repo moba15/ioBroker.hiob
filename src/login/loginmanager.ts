@@ -141,7 +141,7 @@ export class LoginManager {
     ): Promise<proto.LoginResponse.Status> {
         const approved = await this.adapter.getStateAsync(`devices.${deviceIDRep}.approved`);
         const keyState = await this.adapter.getStateAsync(`devices.${deviceIDRep}.key`);
-        //Check if next should be accepted:
+
         let apr = proto.LoginResponse.Status.succesfull;
         if (!approved || !approved.val) {
             this.adapter.log.debug(
@@ -153,42 +153,62 @@ export class LoginManager {
         if (keyState == null || keyState.val == null) {
             apr = proto.LoginResponse.Status.error;
         }
+
         if (!loginRequestData.key) {
             apr = proto.LoginResponse.Status.wrongKey;
         }
 
-        if (
-            !loginRequestData.user ||
-            !loginRequestData.password ||
-            !(await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password))
-        ) {
-            this.adapter.log.debug(
-                `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`,
-            );
-            apr = proto.LoginResponse.Status.wrongPassword;
-        }
-
-        if (loginRequestData.key == null) {
-            apr = proto.LoginResponse.Status.wrongKey;
-        }
+        let keyValid = false;
         if (
             keyState != null &&
             keyState.val != null &&
             loginRequestData.key &&
-            !(await bcrypt.compare(loginRequestData.key, keyState.val.toString()))
+            (await bcrypt.compare(loginRequestData.key, keyState.val.toString()))
         ) {
-            this.adapter.log.debug(
-                `Login declined for client: ${clientName} (${
-                    loginRequestData.deviceName
-                }): wrong key${!(await bcrypt.compare(loginRequestData.key, keyState.val.toString()))}`,
-            );
-            apr = proto.LoginResponse.Status.wrongKey;
+            keyValid = true;
         }
-        if (!apr && this.approveLogins) {
+
+        // If the key is not valid, we check for a valid password
+        if (!keyValid) {
+            if (
+                !loginRequestData.user ||
+                !loginRequestData.password ||
+                !(await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password))
+            ) {
+                this.adapter.log.debug(
+                    `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`,
+                );
+                // If it wasn't already rejected for another reason, set it to wrongPassword
+                if (apr === proto.LoginResponse.Status.succesfull || apr === proto.LoginResponse.Status.wrongKey) {
+                    apr = proto.LoginResponse.Status.wrongPassword;
+                }
+            } else {
+                // Password is valid!
+                if (apr === proto.LoginResponse.Status.wrongKey) {
+                    apr = proto.LoginResponse.Status.succesfull;
+                }
+            }
+
+            // Check if key was wrong (and not just missing)
+            if (keyState != null && keyState.val != null && loginRequestData.key && !keyValid) {
+                this.adapter.log.debug(
+                    `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong key`,
+                );
+                apr = proto.LoginResponse.Status.wrongKey;
+            }
+        } else {
+            // Key is valid, so we can ignore wrongKey and wrongPassword
+            if (apr === proto.LoginResponse.Status.wrongKey) {
+                apr = proto.LoginResponse.Status.succesfull;
+            }
+        }
+
+        if (apr !== proto.LoginResponse.Status.succesfull && this.approveLogins) {
             await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
             apr = proto.LoginResponse.Status.succesfull;
         }
-        if (apr == proto.LoginResponse.Status.succesfull) {
+
+        if (apr === proto.LoginResponse.Status.succesfull) {
             await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
         } else {
             await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, false, true);
