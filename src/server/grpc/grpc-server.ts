@@ -27,7 +27,10 @@ export class GrpcServer {
         this.useCert = useCert;
     }
     startServer(): void {
-        this.gRpcServer = new grpc.Server();
+        this.gRpcServer = new grpc.Server({
+            'grpc.max_receive_message_length': 1024 * 1024 * 50,
+            'grpc.max_send_message_length': 1024 * 1024 * 50,
+        });
 
         this.gRpcServer.bindAsync(`0.0.0.0:${this.port}`, grpc.ServerCredentials.createInsecure(), () => {
             this.adapter.log.info(`Server listening on port: ${this.port}`);

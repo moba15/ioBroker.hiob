@@ -30,7 +30,7 @@ export class Listener extends EventEmitter {
         this.adapter.log.debug(`Send${JSON.stringify(this.pendingSubscribeStates)}`);
         if (state != null) {
             // The state was changed
-            this.adapter.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+            this.adapter.log.silly(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
             //Check if notification
             if (!id.startsWith(`${this.adapter.namespace}.`)) {
                 const adapterKey = `${id.split('.')[0]}.${id.split('.')[1]}`;

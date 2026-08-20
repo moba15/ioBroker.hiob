@@ -1621,7 +1621,7 @@ export abstract class UnimplementedStateUpdateService {
         GetAllObjects: {
             path: "/StateUpdate/GetAllObjects",
             requestStream: false,
-            responseStream: false,
+            responseStream: true,
             requestSerialize: (message: AllObjectRequest) => Buffer.from(message.serialize()),
             requestDeserialize: (bytes: Buffer) => AllObjectRequest.deserialize(new Uint8Array(bytes)),
             responseSerialize: (message: AllObjectsResults) => Buffer.from(message.serialize()),
@@ -1633,7 +1633,7 @@ export abstract class UnimplementedStateUpdateService {
     abstract UpdateValue(call: grpc_1.ServerUnaryCall<StateValueUpdateRequest, StateValueUpdateResponse>, callback: grpc_1.sendUnaryData<StateValueUpdateResponse>): void;
     abstract SearchState(call: grpc_1.ServerUnaryCall<SearchStateRequest, SearchStateResponse>, callback: grpc_1.sendUnaryData<SearchStateResponse>): void;
     abstract SearchStateStream(call: grpc_1.ServerDuplexStream<SearchStateRequest, SearchStateResponse>): void;
-    abstract GetAllObjects(call: grpc_1.ServerUnaryCall<AllObjectRequest, AllObjectsResults>, callback: grpc_1.sendUnaryData<AllObjectsResults>): void;
+    abstract GetAllObjects(call: grpc_1.ServerWritableStream<AllObjectRequest, AllObjectsResults>): void;
 }
 export class StateUpdateClient extends grpc_1.makeGenericClientConstructor(UnimplementedStateUpdateService.definition, "StateUpdate", {}) {
     constructor(address: string, credentials: grpc_1.ChannelCredentials, options?: Partial<grpc_1.ChannelOptions>) {
@@ -1651,7 +1651,7 @@ export class StateUpdateClient extends grpc_1.makeGenericClientConstructor(Unimp
     SearchStateStream: GrpcChunkServiceInterface<SearchStateRequest, SearchStateResponse> = (metadata?: grpc_1.Metadata | grpc_1.CallOptions, options?: grpc_1.CallOptions): grpc_1.ClientDuplexStream<SearchStateRequest, SearchStateResponse> => {
         return super.SearchStateStream(metadata, options);
     };
-    GetAllObjects: GrpcUnaryServiceInterface<AllObjectRequest, AllObjectsResults> = (message: AllObjectRequest, metadata: grpc_1.Metadata | grpc_1.CallOptions | grpc_1.requestCallback<AllObjectsResults>, options?: grpc_1.CallOptions | grpc_1.requestCallback<AllObjectsResults>, callback?: grpc_1.requestCallback<AllObjectsResults>): grpc_1.ClientUnaryCall => {
-        return super.GetAllObjects(message, metadata, options, callback);
+    GetAllObjects: GrpcStreamServiceInterface<AllObjectRequest, AllObjectsResults> = (message: AllObjectRequest, metadata?: grpc_1.Metadata | grpc_1.CallOptions, options?: grpc_1.CallOptions): grpc_1.ClientReadableStream<AllObjectsResults> => {
+        return super.GetAllObjects(message, metadata, options);
     };
 }
