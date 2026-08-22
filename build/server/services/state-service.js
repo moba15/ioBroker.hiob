@@ -90,78 +90,74 @@ function addStateServices(gRpcServer, adapter) {
       }
       call.write(new proto.SearchStateResponse({ states: firstLevelResponse }));
     },
-    GetAllObjects: async (call, callback) => {
-      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r;
-      const result = [];
+    GetAllObjects: async (call) => {
+      let result = [];
+      const sendBatch = () => {
+        if (result.length > 0) {
+          call.write(new proto.AllObjectsResults({ states: result }));
+          result = [];
+        }
+      };
+      const safeNumber = (val) => {
+        if (val === void 0 || val === null) {
+          return void 0;
+        }
+        const num = Number(val);
+        return isNaN(num) ? void 0 : Math.round(num);
+      };
+      const safeBool = (val) => {
+        if (val === void 0 || val === null) {
+          return false;
+        }
+        if (typeof val === "boolean") {
+          return val;
+        }
+        return val === "true" || val === 1 || val === "1";
+      };
+      const pushState = (objectId, object) => {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _i;
+        result.push(
+          new proto.State({
+            stateId: objectId,
+            common: new proto.State.StateCommon({
+              name: (_b = (_a = object.common.name) == null ? void 0 : _a.toString()) != null ? _b : "No name found",
+              unit: (_c = object.common.unit) == null ? void 0 : _c.toString(),
+              desc: (_e = (_d = object.common.desc) == null ? void 0 : _d.toString()) != null ? _e : "No name found",
+              max: safeNumber(object.common.max),
+              min: safeNumber(object.common.min),
+              type: (_g = (_f = object.common.type) == null ? void 0 : _f.toString()) != null ? _g : "No name found",
+              step: safeNumber(object.common.step),
+              read: safeBool(object.common.read),
+              write: safeBool(object.common.write),
+              role: (_i = (_h = object.common.role) == null ? void 0 : _h.toString()) != null ? _i : ""
+            })
+          })
+        );
+        if (result.length >= 100) {
+          sendBatch();
+        }
+      };
       if (call.request.filterPatterns.length != 0) {
+        adapter.log.debug(`Get all objects with filter patterns: ${call.request.filterPatterns.join(", ")}`);
         let objects = await adapter.getForeignObjectsAsync("system.adapter.*.alive");
         for (const objectId in objects) {
-          const object = objects[objectId];
-          result.push(
-            new proto.State({
-              stateId: objectId,
-              common: new proto.State.StateCommon({
-                name: (_b = (_a = object.common.name) == null ? void 0 : _a.toString()) != null ? _b : "No name found",
-                unit: object.common.unit,
-                desc: (_d = (_c = object.common.desc) == null ? void 0 : _c.toString()) != null ? _d : "No name found",
-                max: object.common.max,
-                min: object.common.min,
-                type: (_f = (_e = object.common.type) == null ? void 0 : _e.toString()) != null ? _f : "No name found",
-                step: object.common.step,
-                read: object.common.read,
-                write: object.common.write,
-                role: object.common.role
-              })
-            })
-          );
+          pushState(objectId, objects[objectId]);
         }
         for (const filterPattern of call.request.filterPatterns) {
           objects = await adapter.getForeignObjectsAsync(`${filterPattern}.*`);
           for (const objectId in objects) {
-            const object = objects[objectId];
-            result.push(
-              new proto.State({
-                stateId: objectId,
-                common: new proto.State.StateCommon({
-                  name: (_h = (_g = object.common.name) == null ? void 0 : _g.toString()) != null ? _h : "No name found",
-                  unit: object.common.unit,
-                  desc: (_j = (_i = object.common.desc) == null ? void 0 : _i.toString()) != null ? _j : "No name found",
-                  max: object.common.max,
-                  min: object.common.min,
-                  type: (_l = (_k = object.common.type) == null ? void 0 : _k.toString()) != null ? _l : "No name found",
-                  step: object.common.step,
-                  read: object.common.read,
-                  write: object.common.write,
-                  role: object.common.role
-                })
-              })
-            );
+            pushState(objectId, objects[objectId]);
           }
         }
       } else {
         const objects = await adapter.getForeignObjectsAsync("*");
+        adapter.log.debug(`Get all objects without filter patterns${Object.keys(objects).length}`);
         for (const objectId in objects) {
-          const object = objects[objectId];
-          result.push(
-            new proto.State({
-              stateId: objectId,
-              common: new proto.State.StateCommon({
-                name: (_n = (_m = object.common.name) == null ? void 0 : _m.toString()) != null ? _n : "No name found",
-                unit: object.common.unit,
-                desc: (_p = (_o = object.common.desc) == null ? void 0 : _o.toString()) != null ? _p : "No name found",
-                max: object.common.max,
-                min: object.common.min,
-                type: (_r = (_q = object.common.type) == null ? void 0 : _q.toString()) != null ? _r : "No name found",
-                step: object.common.step,
-                read: object.common.read,
-                write: object.common.write,
-                role: object.common.role
-              })
-            })
-          );
+          pushState(objectId, objects[objectId]);
         }
       }
-      callback(null, new proto.AllObjectsResults({ states: result }));
+      sendBatch();
+      call.end();
     }
   });
 }

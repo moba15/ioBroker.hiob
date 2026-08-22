@@ -43,6 +43,7 @@
     "@iobroker/testing": "^5.3.0",
     "@tsconfig/node22": "^22.0.0",
     "@types/bcrypt": "^5.0.2",
+    "blockly": "^13.2.1",
     "@types/crypto-js": "^4.2.2",
     "@types/google-protobuf": "^3.15.12",
     "@types/node": "^22.20.1",
@@ -69,7 +70,7 @@
     "switch:dev": "ts-node scripts/toggle-identity.ts dev",
     "switch:release": "ts-node scripts/toggle-identity.ts release",
     "prebuild": "rimraf build",
-    "build": "build-adapter ts",
+    "build": "build-adapter ts && npm run build:blockly",
     "build:dev": "npm run switch:dev && npm run build",
     "build:release": "npm run switch:release && npm run build",
     "watch": "build-adapter ts --watch",
@@ -87,6 +88,7 @@
     "lintFix": "eslint -c eslint.config.mjs . --fix",
     "translate": "translate-adapter",
     "release": "release-script",
+    "build:blockly": "tsc -p src-blockly/tsconfig.json && node src-blockly/build.mjs",
     "generate": "rm -rf src/generated && mkdir -p src/generated &&  protoc  -I=hiob_protobuf --ts_out=grpc:'./src/generated' hiob_protobuf/packages.proto hiob_protobuf/state/state.proto  hiob_protobuf/login/login.proto hiob_protobuf/config_sync/config_sync.proto hiob_protobuf/notification/notification.proto"
   },
   "bugs": {

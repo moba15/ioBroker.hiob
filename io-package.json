@@ -110,7 +110,7 @@
     "dataSource": "push",
     "materialize": false,
     "messagebox": true,
-    "blockly": false,
+    "blockly": true,
     "adminUI": {
       "config": "json",
       "tab": "html"
