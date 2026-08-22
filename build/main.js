@@ -42,6 +42,7 @@ var import_search_engine = require("./search/search-engine");
 var import_device_manager = require("./device-manager");
 var import_state = require("./generated/state/state");
 var import_supabase_service = require("./server/services/supabase-service");
+var import_notifications_service = require("./server/services/notifications-service");
 const minVersionNumber = "0.0.710";
 class SamartHomeHandyBis extends utils.Adapter {
   constructor(options = {}) {
@@ -493,6 +494,34 @@ class SamartHomeHandyBis extends utils.Adapter {
         }
       } else if (obj.command === "getDevices" || obj.command === "setDeviceApproval" || obj.command === "setDevicePasswordRequired") {
         void this.deviceManager.handleMessage(obj);
+      } else if (obj.command === "sendNotification") {
+        if (typeof obj.message === "object" && obj.message !== null) {
+          const payload = obj.message;
+          const deviceID = typeof payload.deviceId === "string" ? payload.deviceId : payload.deviceID;
+          const notification = payload.notification;
+          if (typeof deviceID === "string" && (typeof notification === "string" || typeof notification === "object")) {
+            void (0, import_notifications_service.sendNotificationViaSupabase)(this, deviceID, notification).then((sent) => {
+              if (obj.callback) {
+                this.sendTo(obj.from, obj.command, { success: sent }, obj.callback);
+              }
+            });
+          } else {
+            this.log.error(`sendNotification received invalid payload: ${JSON.stringify(obj.message)}`);
+            if (obj.callback) {
+              this.sendTo(
+                obj.from,
+                obj.command,
+                { error: "Invalid payload. Expected deviceId (string) and notification (string|object)." },
+                obj.callback
+              );
+            }
+          }
+        } else {
+          this.log.error(`sendNotification received invalid message: ${typeof obj.message}`);
+          if (obj.callback) {
+            this.sendTo(obj.from, obj.command, { error: "Message must be an object" }, obj.callback);
+          }
+        }
       }
     }
   }

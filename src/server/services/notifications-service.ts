@@ -3,132 +3,136 @@ import type { SamartHomeHandyBis } from '../../main';
 import { getSupabaseAnonKey } from '../supabase/supabase-config';
 import type { SendNotificationRequest, SendNotificationResponse } from '../supabase/types';
 import { randomUUID } from 'node:crypto';
+import * as proto from '../../generated/notification/notification';
 
-type NotificationContent = {
+// We use a strict type and parsing function here because the generated `proto.NotificationContent.fromObject`
+// does not perform runtime type checking or validation of required fields. This safeguard prevents
+// improperly formatted user data from causing unexpected crashes during protobuf serialization.
+type StrictNotificationContentPayload = {
     id: string;
     title: string;
     body: string;
-    data?: Record<string, unknown>;
     ts: number;
+    group: boolean;
+    data: string[];
+    groupKey?: string;
+    locked?: boolean;
 };
 
-function normalizeNotificationContent(content: unknown, sourceStateId: string): NotificationContent | null {
-    if (content == null) {
+function parseStrictNotificationContentPayload(content: unknown): StrictNotificationContentPayload | null {
+    if (!content || typeof content !== 'object' || Array.isArray(content)) {
         return null;
+    }
+
+    const raw = content as Record<string, unknown>;
+
+    if (typeof raw.id !== 'string' || !raw.id.trim()) {
+        return null;
+    }
+
+    if (typeof raw.title !== 'string' || !raw.title.trim()) {
+        return null;
+    }
+
+    if (typeof raw.body !== 'string' || !raw.body.trim()) {
+        return null;
+    }
+
+    if (typeof raw.ts !== 'number' || !Number.isFinite(raw.ts) || raw.ts <= 0) {
+        return null;
+    }
+
+    if (typeof raw.group !== 'boolean') {
+        return null;
+    }
+
+    if (!Array.isArray(raw.data) || raw.data.some(item => typeof item !== 'string')) {
+        return null;
+    }
+
+
+    if (raw.groupKey != null && typeof raw.groupKey !== 'string') {
+        return null;
+    }
+
+    if (raw.locked != null && typeof raw.locked !== 'boolean') {
+        return null;
+    }
+
+    return {
+        id: raw.id.trim(),
+        title: raw.title.trim(),
+        body: raw.body.trim(),
+        ts: raw.ts,
+        group: raw.group,
+        data: raw.data,
+        groupKey: typeof raw.groupKey === 'string' ? raw.groupKey : undefined,
+        locked: typeof raw.locked === 'boolean' ? raw.locked : false,
+    };
+}
+
+function normalizeNotificationContent(
+    content: unknown,
+): { notification: proto.NotificationContent | null; error?: string } {
+    if (content == null) {
+        return { notification: null, error: 'Payload is null or undefined' };
     }
 
     if (typeof content === 'string') {
         const trimmedContent = content.trim();
         if (!trimmedContent) {
-            return null;
-        }
-
-        try {
-            const parsedContent = JSON.parse(trimmedContent);
-            if (parsedContent && typeof parsedContent === 'object') {
-                const parsedNotification = parsedContent as Record<string, unknown>;
-                const title =
-                    typeof parsedNotification.title === 'string' && parsedNotification.title.trim()
-                        ? parsedNotification.title.trim()
-                        : 'Notification';
-                const body =
-                    typeof parsedNotification.body === 'string' && parsedNotification.body.trim()
-                        ? parsedNotification.body.trim()
-                        : trimmedContent;
-
-                return {
-                    id: randomUUID().toString(),
-                    title,
-                    body,
-                    data: {
-                        ...parsedNotification,
-                        sourceStateId,
-                    },
-                    ts: Date.now(),
-                };
-            }
-        } catch {
-            // Not JSON, treat as plain text below.
+            return { notification: null, error: 'Payload string is empty' };
         }
 
         return {
-            id: randomUUID().toString(),
-            title: 'Notification',
-            body: trimmedContent,
-            data: {
-                sourceStateId,
-            },
-            ts: Date.now(),
+            notification: proto.NotificationContent.fromObject({
+                id: randomUUID().toString(),
+                title: 'Notification',
+                body: trimmedContent,
+                ts: Date.now(),
+                group: false,
+                data: [],
+                locked: false,
+            }),
         };
     }
 
     if (typeof content === 'object') {
-        const notification = content as Record<string, string | number | boolean | null | undefined>;
-        const title =
-            typeof notification.title === 'string' && notification.title.trim()
-                ? notification.title.trim()
-                : 'Notification';
-        const bodyCandidate = notification.body;
-        const body =
-            typeof bodyCandidate === 'string'
-                ? bodyCandidate.trim() || 'Notification'
-                : bodyCandidate != null
-                  ? bodyCandidate.toString().trim() || 'Notification'
-                  : 'Notification';
+        const strictPayload = parseStrictNotificationContentPayload(content);
+        if (!strictPayload) {
+            return {
+                notification: null,
+                error: 'Object payload does not satisfy NotificationContent',
+            };
+        }
 
         return {
-            id: randomUUID().toString(),
-            title,
-            body,
-            data: {
-                ...notification,
-                sourceStateId,
-            },
-            ts: Date.now(),
+            notification: proto.NotificationContent.fromObject(strictPayload),
         };
     }
 
-    // Fallback for other types (number, boolean, etc.), normaly this should not happen, but we handle it gracefully.
-    // eslint-disable-next-line @typescript-eslint/no-base-to-string
-    const fallbackBody = String(content).trim();
-    if (!fallbackBody) {
-        return null;
-    }
-
     return {
-        id: randomUUID().toString(),
-        title: 'Notification',
-        body: fallbackBody,
-        data: {
-            sourceStateId,
-        },
-        ts: Date.now(),
+        notification: null,
+        error: `Unsupported payload type: ${typeof content}`,
     };
 }
 
 export async function sendNotificationViaSupabase(
     adapter: SamartHomeHandyBis,
-    sourceStateId: string,
+    deviceId: string,
     content: unknown,
 ): Promise<boolean> {
     const userUUID = adapter.config.userUUID;
     if (!userUUID) {
-        adapter.log.warn(`Cannot send notification for ${sourceStateId}: missing userUUID in adapter config`);
+        adapter.log.warn(`Cannot send notification to device ${deviceId}: missing userUUID in adapter config`);
         return false;
     }
 
-    // Extract deviceID from sourceStateId, e.g. hiob-dev.0.devices.99a2164f-e607-4af1-bf6a-e29d35ca5931.notification
-    const deviceIdMatch = sourceStateId.match(/\.devices\.([^.]+)\./);
-    const deviceId = deviceIdMatch ? deviceIdMatch[1] : null;
-
-    if (!deviceId) {
-        adapter.log.warn(`Cannot extract device_id from ${sourceStateId}`);
-        return false;
-    }
-
-    const notification = normalizeNotificationContent(content, sourceStateId);
+    const { notification, error: normalizationError } = normalizeNotificationContent(content);
     if (!notification) {
-        adapter.log.warn(`Cannot send notification for ${sourceStateId}: empty payload`);
+        adapter.log.error(
+            `Cannot send notification to device ${deviceId}: ${normalizationError ?? 'invalid notification payload'}`,
+        );
         return false;
     }
 
@@ -144,25 +148,42 @@ export async function sendNotificationViaSupabase(
     const notificationQueueStateId = `devices.${deviceId}.notification_queue`;
     const stateObj = await adapter.getStateAsync(notificationQueueStateId);
 
-    let currentQueue: NotificationContent[] = [];
+    let currentQueue: proto.NotificationContent[] = [];
     if (stateObj && stateObj.val) {
         try {
+            let parsedQueue: unknown[] = [];
             if (typeof stateObj.val === 'string') {
                 const parsed = JSON.parse(stateObj.val);
                 if (Array.isArray(parsed)) {
-                    currentQueue = parsed;
+                    parsedQueue = parsed;
                 }
             } else if (Array.isArray(stateObj.val)) {
-                currentQueue = stateObj.val as NotificationContent[];
+                parsedQueue = stateObj.val;
+            }
+
+            if (parsedQueue.length > 0) {
+                currentQueue = parsedQueue.map(item => {
+                    const raw = item && typeof item === 'object' ? (item as Record<string, unknown>) : {};
+                    return proto.NotificationContent.fromObject({
+                        id: typeof raw.id === 'string' ? raw.id : '',
+                        title: typeof raw.title === 'string' ? raw.title : 'Notification',
+                        body: typeof raw.body === 'string' ? raw.body : 'Notification',
+                        ts: typeof raw.ts === 'number' ? raw.ts : 0,
+                        group: typeof raw.group === 'boolean' ? raw.group : false,
+                        groupKey: typeof raw.groupKey === 'string' ? raw.groupKey : undefined,
+                        locked: typeof raw.locked === 'boolean' ? raw.locked : false,
+                        data: Array.isArray(raw.data)
+                            ? raw.data.filter((value): value is string => typeof value === 'string')
+                            : [],
+                    });
+                });
             }
         } catch (e: any) {
             adapter.log.warn(`Could not parse notification_queue for ${deviceId}: ${e}`);
         }
     }
 
-    currentQueue.push({
-        ...notification,
-    });
+    currentQueue.push(notification);
 
     // Cap the queue to prevent unbounded growth when a device is offline for a long time
     if (currentQueue.length > MAX_QUEUE_SIZE) {
@@ -173,7 +194,11 @@ export async function sendNotificationViaSupabase(
         );
     }
 
-    await adapter.setStateAsync(notificationQueueStateId, JSON.stringify(currentQueue), true);
+    await adapter.setStateAsync(
+        notificationQueueStateId,
+        JSON.stringify(currentQueue.map(item => item.toObject())),
+        true,
+    );
 
     const supabase = getAuthenticatedSupabaseClient();
     if (!supabase) {
@@ -229,12 +254,12 @@ export async function sendNotificationViaSupabase(
             }
         }
 
-        adapter.log.error(`Failed to send notification for ${sourceStateId}: ${errorMessage}`);
+        adapter.log.error(`Failed to send notification to device ${deviceId}: ${errorMessage}`);
         return false;
     }
 
     adapter.log.debug(
-        `Notification for ${sourceStateId} sent successfully via Supabase${data ? `: ${JSON.stringify(data)}` : ''}`,
+        `Notification to device ${deviceId} sent successfully via Supabase${data ? `: ${JSON.stringify(data)}` : ''}`,
     );
     return true;
 }

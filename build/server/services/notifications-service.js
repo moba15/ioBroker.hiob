@@ -1,7 +1,9 @@
 "use strict";
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -15,6 +17,14 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var notifications_service_exports = {};
 __export(notifications_service_exports, {
@@ -24,89 +34,96 @@ module.exports = __toCommonJS(notifications_service_exports);
 var import_supabase_service = require("./supabase-service");
 var import_supabase_config = require("../supabase/supabase-config");
 var import_node_crypto = require("node:crypto");
-function normalizeNotificationContent(content, sourceStateId) {
-  if (content == null) {
+var proto = __toESM(require("../../generated/notification/notification"));
+function parseStrictNotificationContentPayload(content) {
+  if (!content || typeof content !== "object" || Array.isArray(content)) {
     return null;
+  }
+  const raw = content;
+  if (typeof raw.id !== "string" || !raw.id.trim()) {
+    return null;
+  }
+  if (typeof raw.title !== "string" || !raw.title.trim()) {
+    return null;
+  }
+  if (typeof raw.body !== "string" || !raw.body.trim()) {
+    return null;
+  }
+  if (typeof raw.ts !== "number" || !Number.isFinite(raw.ts) || raw.ts <= 0) {
+    return null;
+  }
+  if (typeof raw.group !== "boolean") {
+    return null;
+  }
+  if (!Array.isArray(raw.data) || raw.data.some((item) => typeof item !== "string")) {
+    return null;
+  }
+  if (raw.groupKey != null && typeof raw.groupKey !== "string") {
+    return null;
+  }
+  if (raw.locked != null && typeof raw.locked !== "boolean") {
+    return null;
+  }
+  return {
+    id: raw.id.trim(),
+    title: raw.title.trim(),
+    body: raw.body.trim(),
+    ts: raw.ts,
+    group: raw.group,
+    data: raw.data,
+    groupKey: typeof raw.groupKey === "string" ? raw.groupKey : void 0,
+    locked: typeof raw.locked === "boolean" ? raw.locked : false
+  };
+}
+function normalizeNotificationContent(content) {
+  if (content == null) {
+    return { notification: null, error: "Payload is null or undefined" };
   }
   if (typeof content === "string") {
     const trimmedContent = content.trim();
     if (!trimmedContent) {
-      return null;
-    }
-    try {
-      const parsedContent = JSON.parse(trimmedContent);
-      if (parsedContent && typeof parsedContent === "object") {
-        const parsedNotification = parsedContent;
-        const title = typeof parsedNotification.title === "string" && parsedNotification.title.trim() ? parsedNotification.title.trim() : "Notification";
-        const body = typeof parsedNotification.body === "string" && parsedNotification.body.trim() ? parsedNotification.body.trim() : trimmedContent;
-        return {
-          id: (0, import_node_crypto.randomUUID)().toString(),
-          title,
-          body,
-          data: {
-            ...parsedNotification,
-            sourceStateId
-          },
-          ts: Date.now()
-        };
-      }
-    } catch {
+      return { notification: null, error: "Payload string is empty" };
     }
     return {
-      id: (0, import_node_crypto.randomUUID)().toString(),
-      title: "Notification",
-      body: trimmedContent,
-      data: {
-        sourceStateId
-      },
-      ts: Date.now()
+      notification: proto.NotificationContent.fromObject({
+        id: (0, import_node_crypto.randomUUID)().toString(),
+        title: "Notification",
+        body: trimmedContent,
+        ts: Date.now(),
+        group: false,
+        data: [],
+        locked: false
+      })
     };
   }
   if (typeof content === "object") {
-    const notification = content;
-    const title = typeof notification.title === "string" && notification.title.trim() ? notification.title.trim() : "Notification";
-    const bodyCandidate = notification.body;
-    const body = typeof bodyCandidate === "string" ? bodyCandidate.trim() || "Notification" : bodyCandidate != null ? bodyCandidate.toString().trim() || "Notification" : "Notification";
+    const strictPayload = parseStrictNotificationContentPayload(content);
+    if (!strictPayload) {
+      return {
+        notification: null,
+        error: "Object payload does not satisfy NotificationContent"
+      };
+    }
     return {
-      id: (0, import_node_crypto.randomUUID)().toString(),
-      title,
-      body,
-      data: {
-        ...notification,
-        sourceStateId
-      },
-      ts: Date.now()
+      notification: proto.NotificationContent.fromObject(strictPayload)
     };
   }
-  const fallbackBody = String(content).trim();
-  if (!fallbackBody) {
-    return null;
-  }
   return {
-    id: (0, import_node_crypto.randomUUID)().toString(),
-    title: "Notification",
-    body: fallbackBody,
-    data: {
-      sourceStateId
-    },
-    ts: Date.now()
+    notification: null,
+    error: `Unsupported payload type: ${typeof content}`
   };
 }
-async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
+async function sendNotificationViaSupabase(adapter, deviceId, content) {
   const userUUID = adapter.config.userUUID;
   if (!userUUID) {
-    adapter.log.warn(`Cannot send notification for ${sourceStateId}: missing userUUID in adapter config`);
+    adapter.log.warn(`Cannot send notification to device ${deviceId}: missing userUUID in adapter config`);
     return false;
   }
-  const deviceIdMatch = sourceStateId.match(/\.devices\.([^.]+)\./);
-  const deviceId = deviceIdMatch ? deviceIdMatch[1] : null;
-  if (!deviceId) {
-    adapter.log.warn(`Cannot extract device_id from ${sourceStateId}`);
-    return false;
-  }
-  const notification = normalizeNotificationContent(content, sourceStateId);
+  const { notification, error: normalizationError } = normalizeNotificationContent(content);
   if (!notification) {
-    adapter.log.warn(`Cannot send notification for ${sourceStateId}: empty payload`);
+    adapter.log.error(
+      `Cannot send notification to device ${deviceId}: ${normalizationError != null ? normalizationError : "invalid notification payload"}`
+    );
     return false;
   }
   const anonKey = (0, import_supabase_config.getSupabaseAnonKey)(adapter);
@@ -120,21 +137,35 @@ async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
   let currentQueue = [];
   if (stateObj && stateObj.val) {
     try {
+      let parsedQueue = [];
       if (typeof stateObj.val === "string") {
         const parsed = JSON.parse(stateObj.val);
         if (Array.isArray(parsed)) {
-          currentQueue = parsed;
+          parsedQueue = parsed;
         }
       } else if (Array.isArray(stateObj.val)) {
-        currentQueue = stateObj.val;
+        parsedQueue = stateObj.val;
+      }
+      if (parsedQueue.length > 0) {
+        currentQueue = parsedQueue.map((item) => {
+          const raw = item && typeof item === "object" ? item : {};
+          return proto.NotificationContent.fromObject({
+            id: typeof raw.id === "string" ? raw.id : "",
+            title: typeof raw.title === "string" ? raw.title : "Notification",
+            body: typeof raw.body === "string" ? raw.body : "Notification",
+            ts: typeof raw.ts === "number" ? raw.ts : 0,
+            group: typeof raw.group === "boolean" ? raw.group : false,
+            groupKey: typeof raw.groupKey === "string" ? raw.groupKey : void 0,
+            locked: typeof raw.locked === "boolean" ? raw.locked : false,
+            data: Array.isArray(raw.data) ? raw.data.filter((value) => typeof value === "string") : []
+          });
+        });
       }
     } catch (e) {
       adapter.log.warn(`Could not parse notification_queue for ${deviceId}: ${e}`);
     }
   }
-  currentQueue.push({
-    ...notification
-  });
+  currentQueue.push(notification);
   if (currentQueue.length > MAX_QUEUE_SIZE) {
     const dropped = currentQueue.length - MAX_QUEUE_SIZE;
     currentQueue = currentQueue.slice(dropped);
@@ -142,7 +173,11 @@ async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
       `Notification queue for ${deviceId} exceeded ${MAX_QUEUE_SIZE}, dropped ${dropped} oldest entries`
     );
   }
-  await adapter.setStateAsync(notificationQueueStateId, JSON.stringify(currentQueue), true);
+  await adapter.setStateAsync(
+    notificationQueueStateId,
+    JSON.stringify(currentQueue.map((item) => item.toObject())),
+    true
+  );
   const supabase = (0, import_supabase_service.getAuthenticatedSupabaseClient)();
   if (!supabase) {
     adapter.log.error(
@@ -188,11 +223,11 @@ async function sendNotificationViaSupabase(adapter, sourceStateId, content) {
       } catch {
       }
     }
-    adapter.log.error(`Failed to send notification for ${sourceStateId}: ${errorMessage}`);
+    adapter.log.error(`Failed to send notification to device ${deviceId}: ${errorMessage}`);
     return false;
   }
   adapter.log.debug(
-    `Notification for ${sourceStateId} sent successfully via Supabase${data ? `: ${JSON.stringify(data)}` : ""}`
+    `Notification to device ${deviceId} sent successfully via Supabase${data ? `: ${JSON.stringify(data)}` : ""}`
   );
   return true;
 }

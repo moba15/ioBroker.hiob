@@ -45,7 +45,7 @@ class NotificationManager {
       return;
     }
     const deviceID = notificationStateMatch[1];
-    const sent = await (0, import_notifications_service.sendNotificationViaSupabase)(this.adapter, event.objectID, event.value);
+    const sent = await (0, import_notifications_service.sendNotificationViaSupabase)(this.adapter, deviceID, event.value);
     if (sent) {
       await this.adapter.setStateAsync(event.objectID, event.value, true);
       this.adapter.log.info(`Notification state ${event.objectID} sent via Supabase for device ${deviceID}`);

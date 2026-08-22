@@ -58,6 +58,23 @@
         </shadow>
     </value>
 </block>`;
+    Blockly.Blocks.hiob_mutator = {
+      init: function() {
+        this.appendDummyInput().appendField("Options");
+        this.setNextStatement(true, null);
+        this.setColour(Blockly.Sendto.HUE);
+      }
+    };
+    ["title", "groupKey", "locked", "id"].forEach((field) => {
+      Blockly.Blocks[`hiob_${field}`] = {
+        init: function() {
+          this.appendDummyInput().appendField(field);
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour(Blockly.Sendto.HUE);
+        }
+      };
+    });
     Blockly.Blocks.hiob = {
       init: function() {
         this.appendDummyInput("INSTANCE").appendField(Blockly.Translate("hiob")).appendField(new Blockly.FieldDropdown(instanceOptions()), "INSTANCE");
@@ -76,6 +93,117 @@
         this.setColour(Blockly.Sendto.HUE);
         this.setTooltip(Blockly.Translate("hiob_tooltip"));
         this.setHelpUrl("https://github.com/moba15/ioBroker.hiob/blob/main/README.md");
+        if (Blockly.icons) {
+          this.setMutator(new Blockly.icons.MutatorIcon(["hiob_title", "hiob_groupKey", "hiob_locked", "hiob_id"], this));
+        } else if (Blockly.Mutator) {
+          this.setMutator(new Blockly.Mutator(["hiob_title", "hiob_groupKey", "hiob_locked", "hiob_id"], this));
+        }
+      },
+      mutationToDom: function() {
+        const container = document.createElement("mutation");
+        container.setAttribute("title", this.title_ ? "true" : "false");
+        container.setAttribute("groupKey", this.groupKey_ ? "true" : "false");
+        container.setAttribute("locked", this.locked_ ? "true" : "false");
+        container.setAttribute("id", this.id_ ? "true" : "false");
+        return container;
+      },
+      domToMutation: function(xmlElement) {
+        this.title_ = xmlElement.getAttribute("title") === "true";
+        this.groupKey_ = xmlElement.getAttribute("groupKey") === "true";
+        this.locked_ = xmlElement.getAttribute("locked") === "true";
+        this.id_ = xmlElement.getAttribute("id") === "true";
+        this.updateShape_();
+      },
+      decompose: function(workspace) {
+        const containerBlock = workspace.newBlock("hiob_mutator");
+        containerBlock.initSvg();
+        let connection = containerBlock.nextConnection;
+        ["title", "groupKey", "locked", "id"].forEach((field) => {
+          if (this[`${field}_`]) {
+            const itemBlock = workspace.newBlock(`hiob_${field}`);
+            itemBlock.initSvg();
+            connection.connect(itemBlock.previousConnection);
+            connection = itemBlock.nextConnection;
+          }
+        });
+        return containerBlock;
+      },
+      compose: function(containerBlock) {
+        this.title_ = false;
+        this.groupKey_ = false;
+        this.locked_ = false;
+        this.id_ = false;
+        let itemBlock = containerBlock.nextConnection.targetBlock();
+        while (itemBlock) {
+          const field = itemBlock.type.replace("hiob_", "");
+          this[`${field}_`] = true;
+          itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
+        }
+        this.updateShape_();
+        itemBlock = containerBlock.nextConnection.targetBlock();
+        while (itemBlock) {
+          const field = itemBlock.type.replace("hiob_", "");
+          if (itemBlock.valueConnection_ && !itemBlock.valueConnection_.isHidden()) {
+            const input = this.getInput(field);
+            if (input) {
+              input.connection.connect(itemBlock.valueConnection_);
+            }
+          }
+          itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
+        }
+      },
+      saveConnections: function(containerBlock) {
+        let itemBlock = containerBlock.nextConnection.targetBlock();
+        while (itemBlock) {
+          const field = itemBlock.type.replace("hiob_", "");
+          const input = this.getInput(field);
+          itemBlock.valueConnection_ = input && input.connection.targetConnection;
+          itemBlock = itemBlock.nextConnection && itemBlock.nextConnection.targetBlock();
+        }
+      },
+      updateShape_: function() {
+        const workspace = this.workspace;
+        ["title", "groupKey", "locked", "id"].forEach((field) => {
+          if (this[`${field}_`] && !this.getInput(field)) {
+            const input = this.appendValueInput(field).appendField(field);
+            setTimeout(
+              (__input, __field) => {
+                if (!__input.connection?.isConnected()) {
+                  let shadowType = "text";
+                  let fieldName = "TEXT";
+                  let value = "";
+                  if (__field === "title") {
+                    value = "Notification";
+                  } else if (__field === "groupKey") {
+                    value = "Group";
+                  } else if (__field === "locked") {
+                    shadowType = "logic_boolean";
+                    fieldName = "BOOL";
+                    value = "FALSE";
+                  } else if (__field === "id") {
+                    value = "my_id";
+                  }
+                  const shadow = workspace.newBlock(shadowType);
+                  shadow.setShadow(true);
+                  shadow.setFieldValue(value, fieldName);
+                  shadow.initSvg();
+                  if (shadow.render) {
+                    shadow.render();
+                  }
+                  shadow.outputConnection.connect(__input.connection);
+                }
+              },
+              100,
+              input,
+              field
+            );
+          } else if (!this[`${field}_`] && this.getInput(field)) {
+            this.removeInput(field);
+          }
+        });
+        if (this.getInput("LOG")) {
+          this.moveInputBefore("LOG", null);
+        }
       }
     };
     registerGenerator("hiob", (block) => {
@@ -83,22 +211,58 @@
       let device = block.getFieldValue("DEVICE");
       const logLevel = block.getFieldValue("LOG");
       const message = Blockly.JavaScript.valueToCode(block, "message", Blockly.JavaScript.ORDER_ATOMIC);
+      const title = Blockly.JavaScript.valueToCode(block, "title", Blockly.JavaScript.ORDER_ATOMIC) || "'Notification'";
+      const groupKey = Blockly.JavaScript.valueToCode(block, "groupKey", Blockly.JavaScript.ORDER_ATOMIC);
+      const locked = Blockly.JavaScript.valueToCode(block, "locked", Blockly.JavaScript.ORDER_ATOMIC) || "false";
+      const customId = Blockly.JavaScript.valueToCode(block, "id", Blockly.JavaScript.ORDER_ATOMIC);
       const logText = logLine(logLevel, "hiob", message);
       const instanceStr = instance ? instance.startsWith(".") ? "hiob" + instance : instance : "hiob.0";
-      const lines = [`sendTo('${instanceStr}', 'send', {
+      const lines = [`sendTo('${instanceStr}', 'sendNotification', {
 `];
       if (device && device !== "all") {
         const idParts = device.split(".");
         if (idParts.length > 2) {
           device = idParts[idParts.length - 1];
         }
-        lines.push(`  device: '${device}',
+        lines.push(`  deviceId: '${device}',
+`);
+      } else {
+        lines.push(`  deviceId: '',
 `);
       }
+      lines.push(`  notification: {
+`);
+      if (customId) {
+        lines.push(`    id: String(${customId}),
+`);
+      } else {
+        lines.push(`    id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+`);
+      }
+      lines.push(`    ts: Date.now(),
+`);
       if (message) {
-        lines.push(`  message: ${message},
+        lines.push(`    body: String(${message}),
+`);
+      } else {
+        lines.push(`    body: 'Notification',
 `);
       }
+      lines.push(`    title: String(${title}),
+`);
+      if (groupKey) {
+        lines.push(`    group: true,
+`);
+        lines.push(`    groupKey: String(${groupKey}),
+`);
+      } else {
+        lines.push(`    group: false,
+`);
+      }
+      lines.push(`    locked: Boolean(${locked})
+`);
+      lines.push(`  }
+`);
       lines.push("});\n");
       lines.push(logText);
       return lines.join("");

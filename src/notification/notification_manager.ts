@@ -32,7 +32,7 @@ export class NotificationManager {
         }
 
         const deviceID = notificationStateMatch[1];
-        const sent = await sendNotificationViaSupabase(this.adapter, event.objectID, event.value);
+        const sent = await sendNotificationViaSupabase(this.adapter, deviceID, event.value);
 
         if (sent) {
             await this.adapter.setStateAsync(event.objectID, event.value, true);

@@ -13,6 +13,7 @@ import { DeviceManager } from './device-manager';
 import { StatesValueUpdate, StateValueUpdate, type StateSubscribtion } from './generated/state/state';
 import type { ServerWritableStream } from '@grpc/grpc-js';
 import { createSupabaseUser, loginSupabaseUser, logoutSupabaseUser } from './server/services/supabase-service';
+import { sendNotificationViaSupabase } from './server/services/notifications-service';
 type DatapointState = {
     val?: any;
     ack?: boolean;
@@ -569,6 +570,38 @@ export class SamartHomeHandyBis extends utils.Adapter {
                 obj.command === 'setDevicePasswordRequired'
             ) {
                 void this.deviceManager.handleMessage(obj);
+            } else if (obj.command === 'sendNotification') {
+                if (typeof obj.message === 'object' && obj.message !== null) {
+                    const payload = obj.message as Record<string, unknown>;
+                    const deviceID = typeof payload.deviceId === 'string' ? payload.deviceId : payload.deviceID;
+                    const notification = payload.notification;
+
+                    if (
+                        typeof deviceID === 'string' &&
+                        (typeof notification === 'string' || typeof notification === 'object')
+                    ) {
+                        void sendNotificationViaSupabase(this, deviceID, notification).then(sent => {
+                            if (obj.callback) {
+                                this.sendTo(obj.from, obj.command, { success: sent }, obj.callback);
+                            }
+                        });
+                    } else {
+                        this.log.error(`sendNotification received invalid payload: ${JSON.stringify(obj.message)}`);
+                        if (obj.callback) {
+                            this.sendTo(
+                                obj.from,
+                                obj.command,
+                                { error: 'Invalid payload. Expected deviceId (string) and notification (string|object).' },
+                                obj.callback,
+                            );
+                        }
+                    }
+                } else {
+                    this.log.error(`sendNotification received invalid message: ${typeof obj.message}`);
+                    if (obj.callback) {
+                        this.sendTo(obj.from, obj.command, { error: 'Message must be an object' }, obj.callback);
+                    }
+                }
             }
         }
     }

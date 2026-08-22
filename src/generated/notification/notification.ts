@@ -73,15 +73,20 @@ export class FetchNotificationsRequest extends pb_1.Message {
     }
 }
 export class NotificationContent extends pb_1.Message {
-    #one_of_decls: number[][] = [];
-    constructor(data?: any[] | {
+    #one_of_decls: number[][] = [[8]];
+    constructor(data?: any[] | ({
         id?: string;
         title?: string;
         body?: string;
         ts?: number;
-    }) {
+        group?: boolean;
+        data?: string[];
+        locked?: boolean;
+    } & (({
+        groupKey?: string;
+    })))) {
         super();
-        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [], this.#one_of_decls);
+        pb_1.Message.initialize(this, Array.isArray(data) ? data : [], 0, -1, [7], this.#one_of_decls);
         if (!Array.isArray(data) && typeof data == "object") {
             if ("id" in data && data.id != undefined) {
                 this.id = data.id;
@@ -94,6 +99,18 @@ export class NotificationContent extends pb_1.Message {
             }
             if ("ts" in data && data.ts != undefined) {
                 this.ts = data.ts;
+            }
+            if ("group" in data && data.group != undefined) {
+                this.group = data.group;
+            }
+            if ("data" in data && data.data != undefined) {
+                this.data = data.data;
+            }
+            if ("groupKey" in data && data.groupKey != undefined) {
+                this.groupKey = data.groupKey;
+            }
+            if ("locked" in data && data.locked != undefined) {
+                this.locked = data.locked;
             }
         }
     }
@@ -121,11 +138,51 @@ export class NotificationContent extends pb_1.Message {
     set ts(value: number) {
         pb_1.Message.setField(this, 4, value);
     }
+    get group() {
+        return pb_1.Message.getFieldWithDefault(this, 5, false) as boolean;
+    }
+    set group(value: boolean) {
+        pb_1.Message.setField(this, 5, value);
+    }
+    get data() {
+        return pb_1.Message.getFieldWithDefault(this, 7, []) as string[];
+    }
+    set data(value: string[]) {
+        pb_1.Message.setField(this, 7, value);
+    }
+    get groupKey() {
+        return pb_1.Message.getFieldWithDefault(this, 8, "") as string;
+    }
+    set groupKey(value: string) {
+        pb_1.Message.setOneofField(this, 8, this.#one_of_decls[0], value);
+    }
+    get has_groupKey() {
+        return pb_1.Message.getField(this, 8) != null;
+    }
+    get locked() {
+        return pb_1.Message.getFieldWithDefault(this, 9, false) as boolean;
+    }
+    set locked(value: boolean) {
+        pb_1.Message.setField(this, 9, value);
+    }
+    get _groupKey() {
+        const cases: {
+            [index: number]: "none" | "groupKey";
+        } = {
+            0: "none",
+            8: "groupKey"
+        };
+        return cases[pb_1.Message.computeOneofCase(this, [8])];
+    }
     static fromObject(data: {
         id?: string;
         title?: string;
         body?: string;
         ts?: number;
+        group?: boolean;
+        data?: string[];
+        groupKey?: string;
+        locked?: boolean;
     }): NotificationContent {
         const message = new NotificationContent({});
         if (data.id != null) {
@@ -140,6 +197,18 @@ export class NotificationContent extends pb_1.Message {
         if (data.ts != null) {
             message.ts = data.ts;
         }
+        if (data.group != null) {
+            message.group = data.group;
+        }
+        if (data.data != null) {
+            message.data = data.data;
+        }
+        if (data.groupKey != null) {
+            message.groupKey = data.groupKey;
+        }
+        if (data.locked != null) {
+            message.locked = data.locked;
+        }
         return message;
     }
     toObject() {
@@ -148,6 +217,10 @@ export class NotificationContent extends pb_1.Message {
             title?: string;
             body?: string;
             ts?: number;
+            group?: boolean;
+            data?: string[];
+            groupKey?: string;
+            locked?: boolean;
         } = {};
         if (this.id != null) {
             data.id = this.id;
@@ -160,6 +233,18 @@ export class NotificationContent extends pb_1.Message {
         }
         if (this.ts != null) {
             data.ts = this.ts;
+        }
+        if (this.group != null) {
+            data.group = this.group;
+        }
+        if (this.data != null) {
+            data.data = this.data;
+        }
+        if (this.groupKey != null) {
+            data.groupKey = this.groupKey;
+        }
+        if (this.locked != null) {
+            data.locked = this.locked;
         }
         return data;
     }
@@ -175,6 +260,14 @@ export class NotificationContent extends pb_1.Message {
             writer.writeString(3, this.body);
         if (this.ts != 0)
             writer.writeUint64(4, this.ts);
+        if (this.group != false)
+            writer.writeBool(5, this.group);
+        if (this.data.length)
+            writer.writeRepeatedString(7, this.data);
+        if (this.has_groupKey)
+            writer.writeString(8, this.groupKey);
+        if (this.locked != false)
+            writer.writeBool(9, this.locked);
         if (!w)
             return writer.getResultBuffer();
     }
@@ -195,6 +288,18 @@ export class NotificationContent extends pb_1.Message {
                     break;
                 case 4:
                     message.ts = reader.readUint64();
+                    break;
+                case 5:
+                    message.group = reader.readBool();
+                    break;
+                case 7:
+                    pb_1.Message.addToRepeatedField(message, 7, reader.readString());
+                    break;
+                case 8:
+                    message.groupKey = reader.readString();
+                    break;
+                case 9:
+                    message.locked = reader.readBool();
                     break;
                 default: reader.skipField();
             }
