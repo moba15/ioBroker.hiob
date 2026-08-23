@@ -66,13 +66,12 @@ export function installHiob(): void {
     </value>
 </block>`;
 
-    
     Blockly.Blocks.hiob_mutator = {
         init: function (this: any): void {
             this.appendDummyInput().appendField('Options');
             this.setNextStatement(true, null);
             this.setColour(Blockly.Sendto.HUE);
-        }
+        },
     };
 
     ['title', 'groupKey', 'locked', 'id'].forEach(field => {
@@ -82,10 +81,9 @@ export function installHiob(): void {
                 this.setPreviousStatement(true, null);
                 this.setNextStatement(true, null);
                 this.setColour(Blockly.Sendto.HUE);
-            }
+            },
         };
     });
-
 
     Blockly.Blocks.hiob = {
         init: function (this: any): void {
@@ -104,8 +102,7 @@ export function installHiob(): void {
                 .appendField(Blockly.Translate('hiob_device'))
                 .appendField(deviceField, 'DEVICE');
 
-            this.appendValueInput('message')
-                .appendField(Blockly.Translate('hiob_message'));
+            this.appendValueInput('message').appendField(Blockly.Translate('hiob_message'));
 
             this.appendDummyInput('LOG')
                 .appendField(Blockly.Translate('hiob_log'))
@@ -119,25 +116,27 @@ export function installHiob(): void {
             this.setTooltip(Blockly.Translate('hiob_tooltip'));
             this.setHelpUrl('https://github.com/moba15/ioBroker.hiob/blob/main/README.md');
             if (Blockly.icons) {
-                this.setMutator(new Blockly.icons.MutatorIcon(['hiob_title', 'hiob_groupKey', 'hiob_locked', 'hiob_id'], this as any));
+                this.setMutator(
+                    new Blockly.icons.MutatorIcon(['hiob_title', 'hiob_groupKey', 'hiob_locked', 'hiob_id'], this),
+                );
             } else if (Blockly.Mutator) {
-                this.setMutator(new Blockly.Mutator(['hiob_title', 'hiob_groupKey', 'hiob_locked', 'hiob_id'], this as any));
+                this.setMutator(new Blockly.Mutator(['hiob_title', 'hiob_groupKey', 'hiob_locked', 'hiob_id'], this));
             }
         },
         mutationToDom: function (this: any): HTMLElement {
             const container = document.createElement('mutation');
             container.setAttribute('title', this.title_ ? 'true' : 'false');
-                        container.setAttribute('groupKey', this.groupKey_ ? 'true' : 'false');
+            container.setAttribute('groupKey', this.groupKey_ ? 'true' : 'false');
             container.setAttribute('locked', this.locked_ ? 'true' : 'false');
             container.setAttribute('id', this.id_ ? 'true' : 'false');
-                        return container;
+            return container;
         },
         domToMutation: function (this: any, xmlElement: HTMLElement): void {
             this.title_ = xmlElement.getAttribute('title') === 'true';
-                        this.groupKey_ = xmlElement.getAttribute('groupKey') === 'true';
+            this.groupKey_ = xmlElement.getAttribute('groupKey') === 'true';
             this.locked_ = xmlElement.getAttribute('locked') === 'true';
             this.id_ = xmlElement.getAttribute('id') === 'true';
-                        this.updateShape_();
+            this.updateShape_();
         },
         decompose: function (this: any, workspace: any): Block {
             const containerBlock = workspace.newBlock('hiob_mutator');
@@ -157,10 +156,10 @@ export function installHiob(): void {
         },
         compose: function (this: any, containerBlock: any): void {
             this.title_ = false;
-                        this.groupKey_ = false;
+            this.groupKey_ = false;
             this.locked_ = false;
             this.id_ = false;
-            
+
             let itemBlock = containerBlock.nextConnection.targetBlock();
             while (itemBlock) {
                 const field = itemBlock.type.replace('hiob_', '');
@@ -196,38 +195,38 @@ export function installHiob(): void {
                 if (this[`${field}_`] && !this.getInput(field)) {
                     const input = this.appendValueInput(field).appendField(field);
                     setTimeout(
-                            (__input: any, __field: string) => {
-                                if (!__input.connection?.isConnected()) {
-                                    let shadowType = 'text';
-                                    let fieldName = 'TEXT';
-                                    let value = '';
-                                    
-                                    if (__field === 'title') {
-                                        value = 'Notification';
-                                    } else if (__field === 'groupKey') {
-                                        value = 'Group';
-                                    } else if (__field === 'locked') {
-                                        shadowType = 'logic_boolean';
-                                        fieldName = 'BOOL';
-                                        value = 'FALSE';
-                                    } else if (__field === 'id') {
-                                        value = 'my_id';
-                                    }
-                                    
-                                    const shadow = workspace.newBlock(shadowType);
-                                    shadow.setShadow(true);
-                                    shadow.setFieldValue(value, fieldName);
-                                    shadow.initSvg();
-                                    if (shadow.render) {
-                                        shadow.render();
-                                    }
-                                    shadow.outputConnection!.connect(__input.connection!);
+                        (__input: any, __field: string) => {
+                            if (!__input.connection?.isConnected()) {
+                                let shadowType = 'text';
+                                let fieldName = 'TEXT';
+                                let value = '';
+
+                                if (__field === 'title') {
+                                    value = 'Notification';
+                                } else if (__field === 'groupKey') {
+                                    value = 'Group';
+                                } else if (__field === 'locked') {
+                                    shadowType = 'logic_boolean';
+                                    fieldName = 'BOOL';
+                                    value = 'FALSE';
+                                } else if (__field === 'id') {
+                                    value = 'my_id';
                                 }
-                            },
-                            100,
-                            input,
-                            field
-                        );
+
+                                const shadow = workspace.newBlock(shadowType);
+                                shadow.setShadow(true);
+                                shadow.setFieldValue(value, fieldName);
+                                shadow.initSvg();
+                                if (shadow.render) {
+                                    shadow.render();
+                                }
+                                shadow.outputConnection!.connect(__input.connection);
+                            }
+                        },
+                        100,
+                        input,
+                        field,
+                    );
                 } else if (!this[`${field}_`] && this.getInput(field)) {
                     this.removeInput(field);
                 }
@@ -235,32 +234,40 @@ export function installHiob(): void {
             if (this.getInput('LOG')) {
                 this.moveInputBefore('LOG', null);
             }
-        }
+        },
     };
 
-    
-    
     registerGenerator('hiob', (block: any): string => {
         const instance = block.getFieldValue('INSTANCE');
         let device = block.getFieldValue('DEVICE');
         const logLevel = block.getFieldValue('LOG');
         const message = Blockly.JavaScript.valueToCode(block, 'message', Blockly.JavaScript.ORDER_ATOMIC);
 
-        const title = Blockly.JavaScript.valueToCode(block, 'title', Blockly.JavaScript.ORDER_ATOMIC) || "'Notification'";
-                const groupKey = Blockly.JavaScript.valueToCode(block, 'groupKey', Blockly.JavaScript.ORDER_ATOMIC);
-        const locked = Blockly.JavaScript.valueToCode(block, 'locked', Blockly.JavaScript.ORDER_ATOMIC) || "false";
-        const customId = Blockly.JavaScript.valueToCode(block, 'id', Blockly.JavaScript.ORDER_ATOMIC);
-        
-        const logText = logLine(logLevel, 'hiob', message);
+        const title =
+            (block.getInput('title')
+                ? Blockly.JavaScript.valueToCode(block, 'title', Blockly.JavaScript.ORDER_ATOMIC)
+                : '') || "'Notification'";
+        const groupKey = block.getInput('groupKey')
+            ? Blockly.JavaScript.valueToCode(block, 'groupKey', Blockly.JavaScript.ORDER_ATOMIC)
+            : '';
+        const locked =
+            (block.getInput('locked')
+                ? Blockly.JavaScript.valueToCode(block, 'locked', Blockly.JavaScript.ORDER_ATOMIC)
+                : '') || 'false';
+        const customId = block.getInput('id')
+            ? Blockly.JavaScript.valueToCode(block, 'id', Blockly.JavaScript.ORDER_ATOMIC)
+            : '';
 
-        const instanceStr = instance ? (instance.startsWith('.') ? 'hiob' + instance : instance) : 'hiob.0';
+        const logText = logLine(logLevel, 'hiob', message || "'Notification'");
+
+        const instanceStr = instance ? (instance.startsWith('.') ? `hiob${instance}` : instance) : 'hiob.0';
 
         const lines = [`sendTo('${instanceStr}', 'sendNotification', {\n`];
-        
+
         if (device && device !== 'all') {
             const idParts = device.split('.');
             if (idParts.length > 2) {
-                device = idParts[idParts.length - 1]; 
+                device = idParts[idParts.length - 1];
             }
             lines.push(`  deviceId: '${device}',\n`);
         } else {
@@ -271,16 +278,16 @@ export function installHiob(): void {
         if (customId) {
             lines.push(`    id: String(${customId}),\n`);
         } else {
-            lines.push(`    id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),\n`);
+            lines.push(`    id: String(Math.floor(Math.random() * (2147483647 - 1028)) + 1028),\n`);
         }
         lines.push(`    ts: Date.now(),\n`);
-        
+
         if (message) {
             lines.push(`    body: String(${message}),\n`);
         } else {
             lines.push(`    body: 'Notification',\n`);
         }
-        
+
         lines.push(`    title: String(${title}),\n`);
         if (groupKey) {
             lines.push(`    group: true,\n`);
@@ -288,6 +295,7 @@ export function installHiob(): void {
         } else {
             lines.push(`    group: false,\n`);
         }
+        lines.push(`    data: [],\n`);
         lines.push(`    locked: Boolean(${locked})\n`);
         lines.push(`  }\n`);
         lines.push('});\n');
@@ -295,6 +303,4 @@ export function installHiob(): void {
 
         return lines.join('');
     });
-
-
 }

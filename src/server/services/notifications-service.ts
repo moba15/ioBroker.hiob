@@ -86,7 +86,7 @@ function normalizeNotificationContent(
 
         return {
             notification: proto.NotificationContent.fromObject({
-                id: randomUUID().toString(),
+                id: Math.floor(Math.random() * (2147483647 - 1028) + 1028).toString(),
                 title: 'Notification',
                 body: trimmedContent,
                 ts: Date.now(),

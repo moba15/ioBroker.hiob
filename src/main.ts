@@ -172,6 +172,13 @@ export class SamartHomeHandyBis extends utils.Adapter {
         for (const element of channels) {
             const id = `${this.namespace}.devices`;
             if (element._id.startsWith(id)) {
+                await this.extendObjectAsync(`${element._id}.notification_queue`, {
+                    common: {
+                        type: 'string',
+                        role: 'json',
+                    },
+                });
+
                 const state = await this.getStateAsync(`${element._id}.aesKey`);
                 if (state != null && state.val != null) {
                     if (state.val.toString().length === 6) {
@@ -591,7 +598,9 @@ export class SamartHomeHandyBis extends utils.Adapter {
                             this.sendTo(
                                 obj.from,
                                 obj.command,
-                                { error: 'Invalid payload. Expected deviceId (string) and notification (string|object).' },
+                                {
+                                    error: 'Invalid payload. Expected deviceId (string) and notification (string|object).',
+                                },
                                 obj.callback,
                             );
                         }

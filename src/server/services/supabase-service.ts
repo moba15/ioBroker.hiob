@@ -47,13 +47,15 @@ export async function createSupabaseUser(adapter: SamartHomeHandyBis, password: 
             }
         }
 
-        adapter.log.error(`Failed to create user in Supabase: ${errorMessage}`);
+        adapter.log.error(`Failed to create user in Supabase: ${errorMessage} - ${JSON.stringify(data)} ${url}`);
         return null;
     }
 
     const uuid = data?.user?.id;
     if (!uuid) {
-        adapter.log.error('Failed to create user in Supabase: no uuid returned by function');
+        adapter.log.error(
+            `Failed to create user in Supabase: no uuid returned by function ${JSON.stringify(data)} ${url} ${anonKey}`,
+        );
         return null;
     }
 

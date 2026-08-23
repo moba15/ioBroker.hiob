@@ -495,14 +495,20 @@ export class LoginManager {
                     uk: 'Відставання сповіщень',
                     'zh-cn': '通知积压',
                 },
-                type: 'array',
-                role: 'state',
+                type: 'string',
+                role: 'json',
                 desc: 'Created by Adapter',
-                def: '',
+                def: '[]',
                 read: true,
                 write: false,
             },
             native: {},
+        });
+        await this.adapter.extendObjectAsync(`devices.${deviceIDRep}.notification_queue`, {
+            common: {
+                type: 'string',
+                role: 'json',
+            },
         });
 
         //TODO
