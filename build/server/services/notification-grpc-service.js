@@ -68,7 +68,11 @@ function addNotificationServices(gRpcServer, adapter) {
                   id: item.id || "",
                   title: item.title || "",
                   body: item.body || "",
-                  ts: item.ts || 0
+                  ts: item.ts || 0,
+                  group: item.group || false,
+                  groupKey: item.groupKey,
+                  locked: item.locked || false,
+                  data: Array.isArray(item.data) ? item.data : []
                 })
               );
             }

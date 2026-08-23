@@ -58,12 +58,14 @@ async function createSupabaseUser(adapter, password) {
         );
       }
     }
-    adapter.log.error(`Failed to create user in Supabase: ${errorMessage}`);
+    adapter.log.error(`Failed to create user in Supabase: ${errorMessage} - ${JSON.stringify(data)} ${url}`);
     return null;
   }
   const uuid = (_a = data == null ? void 0 : data.user) == null ? void 0 : _a.id;
   if (!uuid) {
-    adapter.log.error("Failed to create user in Supabase: no uuid returned by function");
+    adapter.log.error(
+      `Failed to create user in Supabase: no uuid returned by function ${JSON.stringify(data)} ${url} ${anonKey}`
+    );
     return null;
   }
   adapter.log.debug(`User created successfully in Supabase with uuid ${uuid} and password ${password}`);

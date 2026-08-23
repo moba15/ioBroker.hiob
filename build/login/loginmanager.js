@@ -465,14 +465,20 @@ class LoginManager {
           uk: "\u0412\u0456\u0434\u0441\u0442\u0430\u0432\u0430\u043D\u043D\u044F \u0441\u043F\u043E\u0432\u0456\u0449\u0435\u043D\u044C",
           "zh-cn": "\u901A\u77E5\u79EF\u538B"
         },
-        type: "array",
-        role: "state",
+        type: "string",
+        role: "json",
         desc: "Created by Adapter",
-        def: "",
+        def: "[]",
         read: true,
         write: false
       },
       native: {}
+    });
+    await this.adapter.extendObjectAsync(`devices.${deviceIDRep}.notification_queue`, {
+      common: {
+        type: "string",
+        role: "json"
+      }
     });
   }
   genRandomString(length, woCharacters) {

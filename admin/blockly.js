@@ -94,7 +94,9 @@
         this.setTooltip(Blockly.Translate("hiob_tooltip"));
         this.setHelpUrl("https://github.com/moba15/ioBroker.hiob/blob/main/README.md");
         if (Blockly.icons) {
-          this.setMutator(new Blockly.icons.MutatorIcon(["hiob_title", "hiob_groupKey", "hiob_locked", "hiob_id"], this));
+          this.setMutator(
+            new Blockly.icons.MutatorIcon(["hiob_title", "hiob_groupKey", "hiob_locked", "hiob_id"], this)
+          );
         } else if (Blockly.Mutator) {
           this.setMutator(new Blockly.Mutator(["hiob_title", "hiob_groupKey", "hiob_locked", "hiob_id"], this));
         }
@@ -211,12 +213,12 @@
       let device = block.getFieldValue("DEVICE");
       const logLevel = block.getFieldValue("LOG");
       const message = Blockly.JavaScript.valueToCode(block, "message", Blockly.JavaScript.ORDER_ATOMIC);
-      const title = Blockly.JavaScript.valueToCode(block, "title", Blockly.JavaScript.ORDER_ATOMIC) || "'Notification'";
-      const groupKey = Blockly.JavaScript.valueToCode(block, "groupKey", Blockly.JavaScript.ORDER_ATOMIC);
-      const locked = Blockly.JavaScript.valueToCode(block, "locked", Blockly.JavaScript.ORDER_ATOMIC) || "false";
-      const customId = Blockly.JavaScript.valueToCode(block, "id", Blockly.JavaScript.ORDER_ATOMIC);
-      const logText = logLine(logLevel, "hiob", message);
-      const instanceStr = instance ? instance.startsWith(".") ? "hiob" + instance : instance : "hiob.0";
+      const title = (block.getInput("title") ? Blockly.JavaScript.valueToCode(block, "title", Blockly.JavaScript.ORDER_ATOMIC) : "") || "'Notification'";
+      const groupKey = block.getInput("groupKey") ? Blockly.JavaScript.valueToCode(block, "groupKey", Blockly.JavaScript.ORDER_ATOMIC) : "";
+      const locked = (block.getInput("locked") ? Blockly.JavaScript.valueToCode(block, "locked", Blockly.JavaScript.ORDER_ATOMIC) : "") || "false";
+      const customId = block.getInput("id") ? Blockly.JavaScript.valueToCode(block, "id", Blockly.JavaScript.ORDER_ATOMIC) : "";
+      const logText = logLine(logLevel, "hiob", message || "'Notification'");
+      const instanceStr = instance ? instance.startsWith(".") ? `hiob${instance}` : instance : "hiob.0";
       const lines = [`sendTo('${instanceStr}', 'sendNotification', {
 `];
       if (device && device !== "all") {
@@ -236,7 +238,7 @@
         lines.push(`    id: String(${customId}),
 `);
       } else {
-        lines.push(`    id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+        lines.push(`    id: String(Math.floor(Math.random() * (2147483647 - 1028)) + 1028),
 `);
       }
       lines.push(`    ts: Date.now(),
@@ -259,6 +261,8 @@
         lines.push(`    group: false,
 `);
       }
+      lines.push(`    data: [],
+`);
       lines.push(`    locked: Boolean(${locked})
 `);
       lines.push(`  }

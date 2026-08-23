@@ -33,7 +33,6 @@ __export(notifications_service_exports, {
 module.exports = __toCommonJS(notifications_service_exports);
 var import_supabase_service = require("./supabase-service");
 var import_supabase_config = require("../supabase/supabase-config");
-var import_node_crypto = require("node:crypto");
 var proto = __toESM(require("../../generated/notification/notification"));
 function parseStrictNotificationContentPayload(content) {
   if (!content || typeof content !== "object" || Array.isArray(content)) {
@@ -86,7 +85,7 @@ function normalizeNotificationContent(content) {
     }
     return {
       notification: proto.NotificationContent.fromObject({
-        id: (0, import_node_crypto.randomUUID)().toString(),
+        id: Math.floor(Math.random() * (2147483647 - 1028) + 1028).toString(),
         title: "Notification",
         body: trimmedContent,
         ts: Date.now(),
