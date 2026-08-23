@@ -71,11 +71,10 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 0.3.0-alpha.3 (2026-08-23)
 - Added first gRPC support #127
 - Implemented tickle pattern for notification using supabase and firebase
-- **IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished. Please use this only with the newest App version which is only available through at https://github.com/moba15/hiob_app/tree/development 
+- **IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished. Please use this only with the newest App version which is only available through at https://github.com/moba15/hiob_app/tree/development
 
 ### 0.1.7 (2025-04-19)
 - fixed notification bug: the backlog now is sent only ones if the client reconnects multiple times (moba15)
