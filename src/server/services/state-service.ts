@@ -71,21 +71,21 @@ export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
         GetAllObjects: async (call: grpc.ServerWritableStream<proto.AllObjectRequest, proto.AllObjectsResults>) => {
             let result: proto.State[] = [];
 
-            const sendBatch = () => {
+            const sendBatch = (): void => {
                 if (result.length > 0) {
                     call.write(new proto.AllObjectsResults({ states: result }));
                     result = [];
                 }
             };
 
-            const safeNumber = (val: any) => {
+            const safeNumber = (val: any): number | undefined => {
                 if (val === undefined || val === null) {
                     return undefined;
                 }
                 const num = Number(val);
                 return isNaN(num) ? undefined : Math.round(num);
             };
-            const safeBool = (val: any) => {
+            const safeBool = (val: any): boolean => {
                 if (val === undefined || val === null) {
                     return false;
                 }
@@ -95,7 +95,7 @@ export function addStateServices(gRpcServer: grpc.Server, adapter: m.SamartHomeH
                 return val === 'true' || val === 1 || val === '1';
             };
 
-            const pushState = (objectId: string, object: ioBroker.Object) => {
+            const pushState = (objectId: string, object: ioBroker.Object): void => {
                 result.push(
                     new proto.State({
                         stateId: objectId,

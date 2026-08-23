@@ -2,7 +2,6 @@ import { getAuthenticatedSupabaseClient } from './supabase-service';
 import type { SamartHomeHandyBis } from '../../main';
 import { getSupabaseAnonKey } from '../supabase/supabase-config';
 import type { SendNotificationRequest, SendNotificationResponse } from '../supabase/types';
-import { randomUUID } from 'node:crypto';
 import * as proto from '../../generated/notification/notification';
 
 // We use a strict type and parsing function here because the generated `proto.NotificationContent.fromObject`
@@ -50,7 +49,6 @@ function parseStrictNotificationContentPayload(content: unknown): StrictNotifica
         return null;
     }
 
-
     if (raw.groupKey != null && typeof raw.groupKey !== 'string') {
         return null;
     }
@@ -71,9 +69,10 @@ function parseStrictNotificationContentPayload(content: unknown): StrictNotifica
     };
 }
 
-function normalizeNotificationContent(
-    content: unknown,
-): { notification: proto.NotificationContent | null; error?: string } {
+function normalizeNotificationContent(content: unknown): {
+    notification: proto.NotificationContent | null;
+    error?: string;
+} {
     if (content == null) {
         return { notification: null, error: 'Payload is null or undefined' };
     }
