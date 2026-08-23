@@ -1,0 +1,17 @@
+{
+    "Generate Login Information": "Genera informazioni di accesso",
+    "Reset Login Information": "Reimposta le informazioni di accesso",
+    "Supabase login status": "Stato di accesso a Supabase",
+    "certPath": "Percorso verso il certificato",
+    "certPath_tooltip": "Percorso verso il certificato",
+    "hiob adapter settings": "Impostazioni dell'adattatore per hiob",
+    "keyPath": "Percorso alla chiave",
+    "keyPath_tooltip": "Percorso alla chiave",
+    "link to description": "collegamento alla descrizione",
+    "notificationPassword": "Password di notifica",
+    "notificationPassword_tooltip": "Password di notifica",
+    "select a port": "seleziona un porto",
+    "useCert": "Utilizza il certificato per la connessione",
+    "useCert_tooltip": "Utilizza il certificato per la connessione",
+    "userUUID": "UUID dell'utente"
+}

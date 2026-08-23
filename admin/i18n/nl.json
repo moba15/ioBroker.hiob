@@ -1,0 +1,17 @@
+{
+    "Generate Login Information": "Genereer inloggegevens",
+    "Reset Login Information": "Inloggegevens opnieuw instellen",
+    "Supabase login status": "Supabase-inlogstatus",
+    "certPath": "Pad naar certificaat",
+    "certPath_tooltip": "Pad naar certificaat",
+    "hiob adapter settings": "Adapterinstellingen voor hiob",
+    "keyPath": "Pad naar sleutel",
+    "keyPath_tooltip": "Pad naar sleutel",
+    "link to description": "link naar beschrijving",
+    "notificationPassword": "Meldingswachtwoord",
+    "notificationPassword_tooltip": "Meldingswachtwoord",
+    "select a port": "selecteer een poort",
+    "useCert": "Gebruik certificaat voor verbinding",
+    "useCert_tooltip": "Gebruik certificaat voor verbinding",
+    "userUUID": "Gebruiker-UUID"
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/server/supabase/types.ts"],
+  "sourcesContent": ["// Shared types for Supabase Edge Functions\n\n// ----------------------------------------------------------------------------\n// Function: registerNewUser\n// ----------------------------------------------------------------------------\nexport interface RegisterNewUserRequest {\n    password?: string;\n}\n\nexport interface RegisterNewUserResponse {\n    message?: string;\n    user?: {\n        id: string;\n        email?: string;\n        [key: string]: any;\n    };\n    error?: string;\n}\n\n// ----------------------------------------------------------------------------\n// Function: send-notification\n// ----------------------------------------------------------------------------\nexport interface SendNotificationRequest {\n    user_id: string;\n    device_id: string;\n    data?: Record<string, unknown>;\n}\n\nexport interface SendNotificationResponse {\n    message?: string;\n    error?: string;\n}\n"],
+  "mappings": ";;;;;;;;;;;;;;AAAA;AAAA;",
+  "names": []
+}

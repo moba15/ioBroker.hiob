@@ -9,8 +9,11 @@ import { TemplateManager } from './template/template_manager';
 import { NotificationManager } from './notification/notification_manager';
 import { GrpcServer } from './server/grpc/grpc-server';
 import { StateSearchEngine } from './search/search-engine';
+import { DeviceManager } from './device-manager';
 import { StatesValueUpdate, StateValueUpdate, type StateSubscribtion } from './generated/state/state';
 import type { ServerWritableStream } from '@grpc/grpc-js';
+import { createSupabaseUser, loginSupabaseUser, logoutSupabaseUser } from './server/services/supabase-service';
+import { sendNotificationViaSupabase } from './server/services/notifications-service';
 type DatapointState = {
     val?: any;
     ack?: boolean;
@@ -26,6 +29,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
     loginManager: LoginManager;
     notificationManager: NotificationManager;
     stateSearchEngine: StateSearchEngine;
+    deviceManager: DeviceManager;
     port: number = 8095;
     keyPath: string = '';
     certPath: string = '';
@@ -45,6 +49,7 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.notificationManager = new NotificationManager(this);
         this.loginManager = new LoginManager(this);
         this.stateSearchEngine = new StateSearchEngine(this);
+        this.deviceManager = new DeviceManager(this);
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.listener.onStateChange.bind(this.listener));
         // this.on("objectChange", this.onObjectChange.bind(this));
@@ -134,6 +139,8 @@ export class SamartHomeHandyBis extends utils.Adapter {
             }
         }
         this.stateSearchEngine.loadFirstLevel();
+
+        await this.loginSupabaseUser();
     }
 
     private loadConfigs(): void {
@@ -143,11 +150,35 @@ export class SamartHomeHandyBis extends utils.Adapter {
         this.keyPath = this.config.keyPath;
     }
 
+    private async saveNotificationUserUuid(uuid: string): Promise<void> {
+        const instanceObjectId = `system.adapter.${this.namespace}`;
+        const instanceObject = await this.getForeignObjectAsync(instanceObjectId);
+
+        if (!instanceObject) {
+            this.log.error(`Could not update userUUID: instance object not found (${instanceObjectId})`);
+            return;
+        }
+
+        instanceObject.native = instanceObject.native ?? {};
+        instanceObject.native.userUUID = uuid;
+        await this.setForeignObjectAsync(instanceObjectId, instanceObject);
+
+        // Keep in-memory config aligned with persisted adapter config.
+        this.config.userUUID = uuid;
+    }
+
     private async check_aes_key(): Promise<void> {
         const channels = await this.getChannelsAsync();
         for (const element of channels) {
             const id = `${this.namespace}.devices`;
             if (element._id.startsWith(id)) {
+                await this.extendObjectAsync(`${element._id}.notification_queue`, {
+                    common: {
+                        type: 'string',
+                        role: 'json',
+                    },
+                });
+
                 const state = await this.getStateAsync(`${element._id}.aesKey`);
                 if (state != null && state.val != null) {
                     if (state.val.toString().length === 6) {
@@ -420,35 +451,184 @@ export class SamartHomeHandyBis extends utils.Adapter {
     //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
     //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
     //  */
-    private onMessage(_: ioBroker.Message): void {
-        /*if (typeof obj === 'object' && obj.message) {
-            if (obj.command === 'send') {
-                this.log.debug('send command');
-                const message = obj.message;
-                if ('notification' in message && 'uuid' in message) {
-                    //Send Not.
-                    const cl: Client | undefined = this.server?.getClient(message.uuid);
-                    this.notificationManager.sendNotificationLocal(
-                        cl,
-                        message.uuid,
-                        JSON.stringify(message.notification),
-                    );
+    public onMessage(obj: ioBroker.Message): void {
+        if (typeof obj === 'object' && obj.command) {
+            this.log.debug(`Received message: ${JSON.stringify(obj.message)}`);
+            if (obj.command === 'generateUuidAndSend') {
+                let password = this.config.notificationPassword;
+                if (
+                    typeof obj.message === 'object' &&
+                    obj.message !== null &&
+                    'password' in obj.message &&
+                    typeof obj.message.password === 'string' &&
+                    obj.message.password
+                ) {
+                    password = obj.message.password;
+                }
+                this.log.debug(`Password for user generation: ${password}`);
+                if (!password) {
+                    this.log.error('notificationPassword is empty in message and adapter config');
                     if (obj.callback) {
-                        this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
+                        this.sendTo(
+                            obj.from,
+                            obj.command,
+                            {
+                                error: `Password is empty`,
+                                native: {
+                                    apiStatus: `Error:`,
+                                },
+                            },
+                            obj.callback,
+                        );
+                    }
+                    return;
+                }
+
+                void createSupabaseUser(this, password)
+                    .then(async uuid => {
+                        if (uuid) {
+                            await this.saveNotificationUserUuid(uuid);
+                            this.log.info(`User for notification service created successfully: ${uuid}`);
+
+                            if (obj.callback) {
+                                this.sendTo(
+                                    obj.from,
+                                    obj.command,
+                                    {
+                                        message: `User created successfully`,
+                                        native: {
+                                            apiStatus: `Success`,
+                                            userUUID: uuid,
+                                        },
+                                    },
+                                    obj.callback,
+                                );
+
+                                await this.loginSupabaseUser();
+                            }
+                        } else {
+                            if (obj.callback) {
+                                this.sendTo(
+                                    obj.from,
+                                    obj.command,
+                                    {
+                                        error: `Failed to send request`,
+                                        native: {
+                                            apiStatus: `Error:`,
+                                        },
+                                    },
+                                    obj.callback,
+                                );
+                            }
+                            this.log.error('Failed to create user for notification service');
+                        }
+                    })
+                    .catch(error => {
+                        this.log.error(`Failed to create user for notification service: ${String(error)}`);
+                    });
+            } else if (obj.command === 'resetUser') {
+                void this.saveNotificationUserUuid('')
+                    .then(() => {
+                        this.log.info('User UUID reset successfully');
+
+                        if (obj.callback) {
+                            this.logoutSupabaseUser();
+                            this.sendTo(
+                                obj.from,
+                                obj.command,
+                                {
+                                    message: `User reset successfully`,
+                                    native: {
+                                        apiStatus: `Success`,
+                                        userUUID: '',
+                                    },
+                                },
+                                obj.callback,
+                            );
+                        }
+                    })
+                    .catch(error => {
+                        this.log.error(`Failed to reset user UUID: ${String(error)}`);
+                        if (obj.callback) {
+                            this.sendTo(
+                                obj.from,
+                                obj.command,
+                                {
+                                    error: `Failed to reset user`,
+                                    native: {
+                                        apiStatus: `Error:`,
+                                    },
+                                },
+                                obj.callback,
+                            );
+                        }
+                    });
+            } else if (obj.command === 'getUserUuidQr') {
+                if (obj.callback) {
+                    const qrCodeJson = {
+                        userUUID: this.config.userUUID || '',
+                        notificationPassword: this.config.notificationPassword || '',
+                    };
+                    this.sendTo(obj.from, obj.command, qrCodeJson, obj.callback);
+                }
+            } else if (
+                obj.command === 'getDevices' ||
+                obj.command === 'setDeviceApproval' ||
+                obj.command === 'setDevicePasswordRequired'
+            ) {
+                void this.deviceManager.handleMessage(obj);
+            } else if (obj.command === 'sendNotification') {
+                if (typeof obj.message === 'object' && obj.message !== null) {
+                    const payload = obj.message as Record<string, unknown>;
+                    const deviceID = typeof payload.deviceId === 'string' ? payload.deviceId : payload.deviceID;
+                    const notification = payload.notification;
+
+                    if (
+                        typeof deviceID === 'string' &&
+                        (typeof notification === 'string' || typeof notification === 'object')
+                    ) {
+                        void sendNotificationViaSupabase(this, deviceID, notification).then(sent => {
+                            if (obj.callback) {
+                                this.sendTo(obj.from, obj.command, { success: sent }, obj.callback);
+                            }
+                        });
+                    } else {
+                        this.log.error(`sendNotification received invalid payload: ${JSON.stringify(obj.message)}`);
+                        if (obj.callback) {
+                            this.sendTo(
+                                obj.from,
+                                obj.command,
+                                {
+                                    error: 'Invalid payload. Expected deviceId (string) and notification (string|object).',
+                                },
+                                obj.callback,
+                            );
+                        }
                     }
                 } else {
+                    this.log.error(`sendNotification received invalid message: ${typeof obj.message}`);
                     if (obj.callback) {
-                        this.sendTo(obj.from, obj.command, 'Error received', obj.callback);
+                        this.sendTo(obj.from, obj.command, { error: 'Message must be an object' }, obj.callback);
                     }
                 }
             }
-        }*/
+        }
     }
     public checkCompatibility(versionNumber: string): boolean {
         if (minVersionNumber.localeCompare(versionNumber, undefined, { numeric: true, sensitivity: 'base' }) <= 0) {
             return true;
         }
         return false;
+    }
+
+    private async loginSupabaseUser(): Promise<void> {
+        const status = await loginSupabaseUser(this, this.config.userUUID, this.config.notificationPassword);
+        await this.setStateChangedAsync('info.supabaseLoginState', status, true);
+    }
+
+    private async logoutSupabaseUser(): Promise<void> {
+        await logoutSupabaseUser(this);
+        await this.setStateChangedAsync('info.supabaseLoginState', 'Logged out', true);
     }
 }
 

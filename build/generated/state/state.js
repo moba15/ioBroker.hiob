@@ -1442,7 +1442,7 @@ UnimplementedStateUpdateService.definition = {
   GetAllObjects: {
     path: "/StateUpdate/GetAllObjects",
     requestStream: false,
-    responseStream: false,
+    responseStream: true,
     requestSerialize: (message) => Buffer.from(message.serialize()),
     requestDeserialize: (bytes) => AllObjectRequest.deserialize(new Uint8Array(bytes)),
     responseSerialize: (message) => Buffer.from(message.serialize()),
@@ -1464,8 +1464,8 @@ class StateUpdateClient extends grpc_1.makeGenericClientConstructor(Unimplemente
     this.SearchStateStream = (metadata, options) => {
       return super.SearchStateStream(metadata, options);
     };
-    this.GetAllObjects = (message, metadata, options, callback) => {
-      return super.GetAllObjects(message, metadata, options, callback);
+    this.GetAllObjects = (message, metadata, options) => {
+      return super.GetAllObjects(message, metadata, options);
     };
   }
 }

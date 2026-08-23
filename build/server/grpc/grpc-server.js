@@ -35,6 +35,7 @@ var grpc = __toESM(require("@grpc/grpc-js"));
 var import_login_service = require("../services/login-service");
 var import_state_service = require("../services/state-service");
 var import_config_sync_service = require("../services/config-sync-service");
+var import_notification_grpc_service = require("../services/notification-grpc-service");
 class GrpcServer {
   constructor(port = 4500, keyPath = "key.pem", certPath = "cert.pem", adapter, useCert = false) {
     this.stoped = false;
@@ -45,7 +46,10 @@ class GrpcServer {
     this.useCert = useCert;
   }
   startServer() {
-    this.gRpcServer = new grpc.Server();
+    this.gRpcServer = new grpc.Server({
+      "grpc.max_receive_message_length": 1024 * 1024 * 50,
+      "grpc.max_send_message_length": 1024 * 1024 * 50
+    });
     this.gRpcServer.bindAsync(`0.0.0.0:${this.port}`, grpc.ServerCredentials.createInsecure(), () => {
       this.adapter.log.info(`Server listening on port: ${this.port}`);
     });
@@ -55,6 +59,7 @@ class GrpcServer {
     (0, import_login_service.addLoginServices)(this.gRpcServer, this.adapter);
     (0, import_state_service.addStateServices)(this.gRpcServer, this.adapter);
     (0, import_config_sync_service.addConfigSyncServices)(this.gRpcServer, this.adapter);
+    (0, import_notification_grpc_service.addNotificationServices)(this.gRpcServer, this.adapter);
   }
   stop() {
     this.adapter.log.info("Server stoped");
