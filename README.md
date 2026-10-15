@@ -62,7 +62,7 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     - Allow Popup Menu for all widgets
     - Allow Theme rules for every widget
 - Add graphs for history data [0%]
-- Simplify process of adding devices by listing all [0%]
+- Simplify process of adding devices by listing all [90%]
 - Automatically create widgets based on selected device [0%]
 
 ## Changelog
@@ -71,13 +71,10 @@ This app allows you to control your ioBroker Smarthome system via the hiob app. 
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### 0.3.0-alpha.0 (2026-04-04)
-- Quick fix for login errors due to changed identity
-- Fixed some smaller bugs
+### 0.3.0-alpha.4 (2026-08-23)
 - Added first gRPC support #127
-- Added support for client side states database
-- Added support for identity switch between release and dev package
-- **IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished
+- Implemented tickle pattern for notification using supabase and firebase
+- **IMPORTANT** This is only an alpha version, it should only be used for testing and feedback. Many features **are not** finished. Please use this only with the newest App version which is only available through at https://github.com/moba15/hiob_app/tree/development
 
 ### 0.1.7 (2025-04-19)
 - fixed notification bug: the backlog now is sent only ones if the client reconnects multiple times (moba15)
@@ -190,7 +187,7 @@ A heartfelt thank you to everyone who has contributed to this project! Whether t
 
 MIT License
 
-Copyright (c) 2023-2026 mor15Euro [hiob@bachmaiers.de](http://localhost:5000/u/bh3bIYvKVLQXD837pc8JlAJHx3Z2)
+Copyright (c) 2023-2026 mor15Euro moritz@bachmaiers.de
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

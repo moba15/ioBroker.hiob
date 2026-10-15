@@ -6,6 +6,7 @@
  */
 
 import { expect } from 'chai';
+import { describe, it } from 'node:test';
 // import { functionToTest } from "./moduleToTest";
 
 describe('module to test => function to test', () => {

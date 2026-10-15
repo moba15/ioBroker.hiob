@@ -1,0 +1,17 @@
+{
+    "Generate Login Information": "Создать информацию для входа",
+    "Reset Login Information": "Сбросить данные для входа",
+    "Supabase login status": "Статус входа в Supabase",
+    "certPath": "Путь к сертификату",
+    "certPath_tooltip": "Путь к сертификату",
+    "hiob adapter settings": "Настройки адаптера для hiob",
+    "keyPath": "Путь к ключу",
+    "keyPath_tooltip": "Путь к ключу",
+    "link to description": "ссылка на описание",
+    "notificationPassword": "Пароль уведомления",
+    "notificationPassword_tooltip": "Пароль уведомления",
+    "select a port": "выберите порт",
+    "useCert": "Использовать сертификат для подключения",
+    "useCert_tooltip": "Использовать сертификат для подключения",
+    "userUUID": "UUID пользователя"
+}
