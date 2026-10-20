@@ -1,3 +1,5 @@
+/// <reference types="mocha" />
+
 import { LoginManager } from '../src/login/loginmanager';
 import type { SamartHomeHandyBis } from '../src/main';
 import * as sinon from 'sinon';

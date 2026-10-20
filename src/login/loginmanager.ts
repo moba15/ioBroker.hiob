@@ -2,9 +2,9 @@ import { Events, type StateChangeEvent } from '../listener/listener';
 import type { SamartHomeHandyBis } from '../main';
 import type { Client } from '../server/client';
 import * as bcrypt from 'bcrypt';
-import * as crypto from 'crypto';
+import * as crypto from 'node:crypto';
 import * as proto from '../generated/login/login';
-import type { Stream } from 'stream';
+import type { Stream } from 'node:stream';
 export class LoginManager {
     adapter: SamartHomeHandyBis;
     pendingClients: Client[];
@@ -141,8 +141,7 @@ export class LoginManager {
     ): Promise<proto.LoginResponse.Status> {
         const approved = await this.adapter.getStateAsync(`devices.${deviceIDRep}.approved`);
         const keyState = await this.adapter.getStateAsync(`devices.${deviceIDRep}.key`);
-        const needPWD = await this.adapter.getStateAsync(`devices.${deviceIDRep}.noPwdAllowed`);
-        //Check if next should be accepted:
+
         let apr = proto.LoginResponse.Status.succesfull;
         if (!approved || !approved.val) {
             this.adapter.log.debug(
@@ -154,11 +153,23 @@ export class LoginManager {
         if (keyState == null || keyState.val == null) {
             apr = proto.LoginResponse.Status.error;
         }
+
         if (!loginRequestData.key) {
             apr = proto.LoginResponse.Status.wrongKey;
         }
 
-        if (needPWD && !needPWD?.val) {
+        let keyValid = false;
+        if (
+            keyState != null &&
+            keyState.val != null &&
+            loginRequestData.key &&
+            (await bcrypt.compare(loginRequestData.key, keyState.val.toString()))
+        ) {
+            keyValid = true;
+        }
+
+        // If the key is not valid, we check for a valid password
+        if (!keyValid) {
             if (
                 !loginRequestData.user ||
                 !loginRequestData.password ||
@@ -167,30 +178,37 @@ export class LoginManager {
                 this.adapter.log.debug(
                     `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`,
                 );
-                apr = proto.LoginResponse.Status.wrongPassword;
+                // If it wasn't already rejected for another reason, set it to wrongPassword
+                if (apr === proto.LoginResponse.Status.succesfull || apr === proto.LoginResponse.Status.wrongKey) {
+                    apr = proto.LoginResponse.Status.wrongPassword;
+                }
+            } else {
+                // Password is valid!
+                if (apr === proto.LoginResponse.Status.wrongKey) {
+                    apr = proto.LoginResponse.Status.succesfull;
+                }
+            }
+
+            // Check if key was wrong (and not just missing)
+            if (keyState != null && keyState.val != null && loginRequestData.key && !keyValid) {
+                this.adapter.log.debug(
+                    `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong key`,
+                );
+                apr = proto.LoginResponse.Status.wrongKey;
+            }
+        } else {
+            // Key is valid, so we can ignore wrongKey and wrongPassword
+            if (apr === proto.LoginResponse.Status.wrongKey) {
+                apr = proto.LoginResponse.Status.succesfull;
             }
         }
-        if (loginRequestData.key == null) {
-            apr = proto.LoginResponse.Status.wrongKey;
-        }
-        if (
-            keyState != null &&
-            keyState.val != null &&
-            loginRequestData.key &&
-            !(await bcrypt.compare(loginRequestData.key, keyState.val.toString()))
-        ) {
-            this.adapter.log.debug(
-                `Login declined for client: ${clientName} (${
-                    loginRequestData.deviceName
-                }): wrong key${!(await bcrypt.compare(loginRequestData.key, keyState.val.toString()))}`,
-            );
-            apr = proto.LoginResponse.Status.wrongKey;
-        }
-        if (!apr && this.approveLogins) {
+
+        if (apr !== proto.LoginResponse.Status.succesfull && this.approveLogins) {
             await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
             apr = proto.LoginResponse.Status.succesfull;
         }
-        if (apr == proto.LoginResponse.Status.succesfull) {
+
+        if (apr === proto.LoginResponse.Status.succesfull) {
             await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
         } else {
             await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, false, true);
@@ -411,32 +429,6 @@ export class LoginManager {
             native: {},
         });
 
-        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.noPwdAllowed`, {
-            type: 'state',
-            common: {
-                name: {
-                    en: 'No Password Allowed',
-                    de: 'Kein Passwort erlaubt',
-                    ru: 'Без пароля',
-                    pt: 'Nenhuma senha permitida',
-                    nl: 'Geen wachtwoord toegestaan',
-                    fr: 'Pas de mot de passe autorisé',
-                    it: 'Nessuna password consentita',
-                    es: 'No se admite contraseña',
-                    pl: 'Brak hasła',
-                    uk: 'Немає пароля',
-                    'zh-cn': '没有允许的密码',
-                },
-                type: 'boolean',
-                role: 'switch',
-                desc: 'Created by Adapter',
-                def: false,
-                read: true,
-                write: true,
-            },
-            native: {},
-        });
-
         await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.sendNotification`, {
             type: 'state',
             common: {
@@ -462,12 +454,37 @@ export class LoginManager {
             },
             native: {},
         });
-        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notificationBacklog`, {
+        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notification`, {
             type: 'state',
             common: {
                 name: {
-                    en: 'Notification Backlog',
-                    de: 'Rückstand bei der Benachrichtigung',
+                    en: 'Notification',
+                    de: 'Benachrichtigung',
+                    ru: 'Уведомление',
+                    pt: 'Notificação',
+                    nl: 'Melding',
+                    fr: 'Notification',
+                    it: 'Notifica',
+                    es: 'Notificación',
+                    pl: 'Powiadomienie',
+                    uk: 'Сповіщення',
+                    'zh-cn': '通知',
+                },
+                type: 'string',
+                role: 'state',
+                desc: 'Created by Adapter',
+                def: '',
+                read: true,
+                write: true,
+            },
+            native: {},
+        });
+        await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notification_queue`, {
+            type: 'state',
+            common: {
+                name: {
+                    en: 'Notification Queue',
+                    de: 'Warteschlange für Benachrichtigungen',
                     ru: 'Уведомления',
                     pt: 'Atraso de notificação',
                     nl: 'Kennisgeving Achterstand',
@@ -478,19 +495,24 @@ export class LoginManager {
                     uk: 'Відставання сповіщень',
                     'zh-cn': '通知积压',
                 },
-                type: 'array',
-                role: 'state',
+                type: 'string',
+                role: 'json',
                 desc: 'Created by Adapter',
-                def: '',
+                def: '[]',
                 read: true,
                 write: false,
             },
             native: {},
         });
+        await this.adapter.extendObjectAsync(`devices.${deviceIDRep}.notification_queue`, {
+            common: {
+                type: 'string',
+                role: 'json',
+            },
+        });
 
         //TODO
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
         //TODO Aes
         /*if (!get_aes || get_aes.val == null || get_aes.val == "") {
             await this.adapter.setStateAsync(`devices.${deviceIDRep}.aesKey`, this.adapter.encrypt(random_key.toString()), true);
