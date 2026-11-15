@@ -1,0 +1,17 @@
+{
+    "Generate Login Information": "生成登录信息",
+    "Reset Login Information": "重置登录信息",
+    "Supabase login status": "Supabase登录状态",
+    "certPath": "证书路径",
+    "certPath_tooltip": "证书路径",
+    "hiob adapter settings": "hiob 的适配器设置",
+    "keyPath": "密钥路径",
+    "keyPath_tooltip": "密钥路径",
+    "link to description": "链接到描述",
+    "notificationPassword": "通知密码",
+    "notificationPassword_tooltip": "通知密码",
+    "select a port": "选择一个端口",
+    "useCert": "使用证书进行连接",
+    "useCert_tooltip": "使用证书进行连接",
+    "userUUID": "用户UUID"
+}

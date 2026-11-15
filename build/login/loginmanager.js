@@ -33,7 +33,7 @@ __export(loginmanager_exports, {
 module.exports = __toCommonJS(loginmanager_exports);
 var import_listener = require("../listener/listener");
 var bcrypt = __toESM(require("bcrypt"));
-var crypto = __toESM(require("crypto"));
+var crypto = __toESM(require("node:crypto"));
 var proto = __toESM(require("../generated/login/login"));
 class LoginManager {
   constructor(adapter) {
@@ -142,7 +142,6 @@ class LoginManager {
   async validateLoginRequestProto(clientName, deviceIDRep, loginRequestData) {
     const approved = await this.adapter.getStateAsync(`devices.${deviceIDRep}.approved`);
     const keyState = await this.adapter.getStateAsync(`devices.${deviceIDRep}.key`);
-    const needPWD = await this.adapter.getStateAsync(`devices.${deviceIDRep}.noPwdAllowed`);
     let apr = proto.LoginResponse.Status.succesfull;
     if (!approved || !approved.val) {
       this.adapter.log.debug(
@@ -156,28 +155,39 @@ class LoginManager {
     if (!loginRequestData.key) {
       apr = proto.LoginResponse.Status.wrongKey;
     }
-    if (needPWD && !(needPWD == null ? void 0 : needPWD.val)) {
+    let keyValid = false;
+    if (keyState != null && keyState.val != null && loginRequestData.key && await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
+      keyValid = true;
+    }
+    if (!keyValid) {
       if (!loginRequestData.user || !loginRequestData.password || !await this.adapter.checkPasswordAsync(loginRequestData.user, loginRequestData.password)) {
         this.adapter.log.debug(
           `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong password`
         );
-        apr = proto.LoginResponse.Status.wrongPassword;
+        if (apr === proto.LoginResponse.Status.succesfull || apr === proto.LoginResponse.Status.wrongKey) {
+          apr = proto.LoginResponse.Status.wrongPassword;
+        }
+      } else {
+        if (apr === proto.LoginResponse.Status.wrongKey) {
+          apr = proto.LoginResponse.Status.succesfull;
+        }
+      }
+      if (keyState != null && keyState.val != null && loginRequestData.key && !keyValid) {
+        this.adapter.log.debug(
+          `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong key`
+        );
+        apr = proto.LoginResponse.Status.wrongKey;
+      }
+    } else {
+      if (apr === proto.LoginResponse.Status.wrongKey) {
+        apr = proto.LoginResponse.Status.succesfull;
       }
     }
-    if (loginRequestData.key == null) {
-      apr = proto.LoginResponse.Status.wrongKey;
-    }
-    if (keyState != null && keyState.val != null && loginRequestData.key && !await bcrypt.compare(loginRequestData.key, keyState.val.toString())) {
-      this.adapter.log.debug(
-        `Login declined for client: ${clientName} (${loginRequestData.deviceName}): wrong key${!await bcrypt.compare(loginRequestData.key, keyState.val.toString())}`
-      );
-      apr = proto.LoginResponse.Status.wrongKey;
-    }
-    if (!apr && this.approveLogins) {
+    if (apr !== proto.LoginResponse.Status.succesfull && this.approveLogins) {
       await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
       apr = proto.LoginResponse.Status.succesfull;
     }
-    if (apr == proto.LoginResponse.Status.succesfull) {
+    if (apr === proto.LoginResponse.Status.succesfull) {
       await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, true, true);
     } else {
       await this.adapter.setStateAsync(`devices.${deviceIDRep}.approved`, false, true);
@@ -388,31 +398,6 @@ class LoginManager {
       },
       native: {}
     });
-    await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.noPwdAllowed`, {
-      type: "state",
-      common: {
-        name: {
-          en: "No Password Allowed",
-          de: "Kein Passwort erlaubt",
-          ru: "\u0411\u0435\u0437 \u043F\u0430\u0440\u043E\u043B\u044F",
-          pt: "Nenhuma senha permitida",
-          nl: "Geen wachtwoord toegestaan",
-          fr: "Pas de mot de passe autoris\xE9",
-          it: "Nessuna password consentita",
-          es: "No se admite contrase\xF1a",
-          pl: "Brak has\u0142a",
-          uk: "\u041D\u0435\u043C\u0430\u0454 \u043F\u0430\u0440\u043E\u043B\u044F",
-          "zh-cn": "\u6CA1\u6709\u5141\u8BB8\u7684\u5BC6\u7801"
-        },
-        type: "boolean",
-        role: "switch",
-        desc: "Created by Adapter",
-        def: false,
-        read: true,
-        write: true
-      },
-      native: {}
-    });
     await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.sendNotification`, {
       type: "state",
       common: {
@@ -439,12 +424,37 @@ class LoginManager {
       },
       native: {}
     });
-    await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notificationBacklog`, {
+    await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notification`, {
       type: "state",
       common: {
         name: {
-          en: "Notification Backlog",
-          de: "R\xFCckstand bei der Benachrichtigung",
+          en: "Notification",
+          de: "Benachrichtigung",
+          ru: "\u0423\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u0435",
+          pt: "Notifica\xE7\xE3o",
+          nl: "Melding",
+          fr: "Notification",
+          it: "Notifica",
+          es: "Notificaci\xF3n",
+          pl: "Powiadomienie",
+          uk: "\u0421\u043F\u043E\u0432\u0456\u0449\u0435\u043D\u043D\u044F",
+          "zh-cn": "\u901A\u77E5"
+        },
+        type: "string",
+        role: "state",
+        desc: "Created by Adapter",
+        def: "",
+        read: true,
+        write: true
+      },
+      native: {}
+    });
+    await this.adapter.setObjectNotExistsAsync(`devices.${deviceIDRep}.notification_queue`, {
+      type: "state",
+      common: {
+        name: {
+          en: "Notification Queue",
+          de: "Warteschlange f\xFCr Benachrichtigungen",
           ru: "\u0423\u0432\u0435\u0434\u043E\u043C\u043B\u0435\u043D\u0438\u044F",
           pt: "Atraso de notifica\xE7\xE3o",
           nl: "Kennisgeving Achterstand",
@@ -455,14 +465,20 @@ class LoginManager {
           uk: "\u0412\u0456\u0434\u0441\u0442\u0430\u0432\u0430\u043D\u043D\u044F \u0441\u043F\u043E\u0432\u0456\u0449\u0435\u043D\u044C",
           "zh-cn": "\u901A\u77E5\u79EF\u538B"
         },
-        type: "array",
-        role: "state",
+        type: "string",
+        role: "json",
         desc: "Created by Adapter",
-        def: "",
+        def: "[]",
         read: true,
         write: false
       },
       native: {}
+    });
+    await this.adapter.extendObjectAsync(`devices.${deviceIDRep}.notification_queue`, {
+      common: {
+        type: "string",
+        role: "json"
+      }
     });
   }
   genRandomString(length, woCharacters) {

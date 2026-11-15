@@ -28,24 +28,94 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 var authenticator_exports = {};
 __export(authenticator_exports, {
-  checkAuthentication: () => checkAuthentication
+  checkAuthentication: () => checkAuthentication,
+  cleanupTokenCache: () => cleanupTokenCache,
+  invalidateDeviceTokens: () => invalidateDeviceTokens
 });
 module.exports = __toCommonJS(authenticator_exports);
 var grpc = __toESM(require("@grpc/grpc-js"));
-function checkAuthentication(metadata) {
-  const keyValue = metadata.get("token");
-  const id = metadata.get("deviceId");
-  if (id && keyValue && id.length == 1 && keyValue.length == 1) {
-    return { code: grpc.status.OK, name: "" };
+var bcrypt = __toESM(require("bcrypt"));
+const validatedTokenCache = /* @__PURE__ */ new Map();
+const CACHE_TTL_MS = 5 * 60 * 1e3;
+async function checkAuthentication(metadata, adapter) {
+  const tokenValues = metadata.get("token");
+  const idValues = metadata.get("deviceId");
+  if (!idValues || idValues.length !== 1 || !tokenValues || tokenValues.length !== 1) {
+    return {
+      code: grpc.status.UNAUTHENTICATED,
+      details: "Missing required metadata: token and deviceId",
+      name: "Not authenticated"
+    };
   }
-  return {
-    code: grpc.status.UNAUTHENTICATED,
-    details: "request missing metadata required field: id or key",
-    name: "Not authenticated"
-  };
+  const deviceId = idValues[0].toString();
+  const token = tokenValues[0].toString();
+  if (!deviceId || !token) {
+    return {
+      code: grpc.status.UNAUTHENTICATED,
+      details: "Empty token or deviceId",
+      name: "Not authenticated"
+    };
+  }
+  const cacheKey = `${deviceId}:${token}`;
+  const cachedAt = validatedTokenCache.get(cacheKey);
+  if (cachedAt && Date.now() - cachedAt < CACHE_TTL_MS) {
+    return { code: grpc.status.OK, name: "", deviceId };
+  }
+  const approvedState = await adapter.getStateAsync(`devices.${deviceId}.approved`);
+  if (!approvedState || !approvedState.val) {
+    return {
+      code: grpc.status.PERMISSION_DENIED,
+      details: `Device ${deviceId} is not approved`,
+      name: "Not approved"
+    };
+  }
+  const keyState = await adapter.getStateAsync(`devices.${deviceId}.key`);
+  if (!keyState || !keyState.val) {
+    return {
+      code: grpc.status.UNAUTHENTICATED,
+      details: `No key found for device ${deviceId}`,
+      name: "No key"
+    };
+  }
+  try {
+    const isValid = await bcrypt.compare(token, keyState.val.toString());
+    if (!isValid) {
+      return {
+        code: grpc.status.UNAUTHENTICATED,
+        details: "Invalid token",
+        name: "Wrong key"
+      };
+    }
+  } catch (e) {
+    adapter.log.warn(`Auth error for device ${deviceId}: ${e instanceof Error ? e.message : String(e)}`);
+    return {
+      code: grpc.status.INTERNAL,
+      details: "Authentication check failed",
+      name: "Internal error"
+    };
+  }
+  validatedTokenCache.set(cacheKey, Date.now());
+  return { code: grpc.status.OK, name: "", deviceId };
+}
+function cleanupTokenCache() {
+  const now = Date.now();
+  for (const [key, timestamp] of validatedTokenCache) {
+    if (now - timestamp >= CACHE_TTL_MS) {
+      validatedTokenCache.delete(key);
+    }
+  }
+}
+function invalidateDeviceTokens(deviceId) {
+  for (const key of validatedTokenCache.keys()) {
+    if (key.startsWith(`${deviceId}:`)) {
+      validatedTokenCache.delete(key);
+    }
+  }
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  checkAuthentication
+  checkAuthentication,
+  cleanupTokenCache,
+  invalidateDeviceTokens
 });
 //# sourceMappingURL=authenticator.js.map

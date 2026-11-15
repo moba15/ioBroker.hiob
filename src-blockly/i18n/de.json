@@ -1,0 +1,14 @@
+{
+    "hiob": "hiob",
+    "hiob_anyInstance": "Alle Instanzen",
+    "hiob_allDevices": "Alle Geräte",
+    "hiob_device": "Gerät",
+    "hiob_message": "Mitteilung",
+    "hiob_tooltip": "Nachricht an HioB senden",
+    "hiob_log_none": "keins",
+    "hiob_log_debug": "debug",
+    "hiob_log_info": "info",
+    "hiob_log_warn": "warn",
+    "hiob_log_error": "error",
+    "hiob_log": "Loglevel"
+}

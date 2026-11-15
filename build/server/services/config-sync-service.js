@@ -32,9 +32,16 @@ __export(config_sync_service_exports, {
 });
 module.exports = __toCommonJS(config_sync_service_exports);
 var proto = __toESM(require("../../generated/config_sync/config_sync"));
+var import_authenticator = require("./authenticator/authenticator");
 function addConfigSyncServices(gRpcServer, adapter) {
   gRpcServer.addService(proto.ConfigSyncClient.service, {
-    GetAvailableConfigs: async (_call, callback) => {
+    GetAvailableConfigs: async (call, callback) => {
+      var _a;
+      const authStatus = await (0, import_authenticator.checkAuthentication)(call.metadata, adapter);
+      if (authStatus.code !== 0) {
+        callback({ code: authStatus.code, message: (_a = authStatus.details) != null ? _a : "Unauthenticated" }, null);
+        return;
+      }
       const list = await adapter.templateManager.fetchTemplateSettings();
       callback(
         null,
@@ -44,6 +51,12 @@ function addConfigSyncServices(gRpcServer, adapter) {
       );
     },
     ConfigSyncUp: async (call, _callback) => {
+      var _a;
+      const authStatus = await (0, import_authenticator.checkAuthentication)(call.metadata, adapter);
+      if (authStatus.code !== 0) {
+        _callback({ code: authStatus.code, message: (_a = authStatus.details) != null ? _a : "Unauthenticated" }, null);
+        return;
+      }
       await adapter.templateManager.uploadTemplateSetting(
         call.request.config.name,
         call.request.config.screens.toString(),
@@ -51,6 +64,12 @@ function addConfigSyncServices(gRpcServer, adapter) {
       );
     },
     ConfigSyncDown: async (call, callback) => {
+      var _a;
+      const authStatus = await (0, import_authenticator.checkAuthentication)(call.metadata, adapter);
+      if (authStatus.code !== 0) {
+        callback({ code: authStatus.code, message: (_a = authStatus.details) != null ? _a : "Unauthenticated" }, null);
+        return;
+      }
       const map = await adapter.templateManager.getTemplateSettings(call.request.configName);
       callback(
         null,
@@ -62,6 +81,12 @@ function addConfigSyncServices(gRpcServer, adapter) {
       );
     },
     ConfigCreateDelete: async (call, callback) => {
+      var _a;
+      const authStatus = await (0, import_authenticator.checkAuthentication)(call.metadata, adapter);
+      if (authStatus.code !== 0) {
+        callback({ code: authStatus.code, message: (_a = authStatus.details) != null ? _a : "Unauthenticated" }, null);
+        return;
+      }
       if (!call.request.delete) {
         await adapter.templateManager.createNewTemplateSetting(call.request.configName);
       }

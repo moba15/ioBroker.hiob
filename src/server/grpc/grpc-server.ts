@@ -3,6 +3,7 @@ import * as grpc from '@grpc/grpc-js';
 import { addLoginServices } from '../services/login-service';
 import { addStateServices } from '../services/state-service';
 import { addConfigSyncServices } from '../services/config-sync-service';
+import { addNotificationServices } from '../services/notification-grpc-service';
 
 export class GrpcServer {
     certPath: string;
@@ -26,7 +27,10 @@ export class GrpcServer {
         this.useCert = useCert;
     }
     startServer(): void {
-        this.gRpcServer = new grpc.Server();
+        this.gRpcServer = new grpc.Server({
+            'grpc.max_receive_message_length': 1024 * 1024 * 50,
+            'grpc.max_send_message_length': 1024 * 1024 * 50,
+        });
 
         this.gRpcServer.bindAsync(`0.0.0.0:${this.port}`, grpc.ServerCredentials.createInsecure(), () => {
             this.adapter.log.info(`Server listening on port: ${this.port}`);
@@ -37,6 +41,7 @@ export class GrpcServer {
         addLoginServices(this.gRpcServer, this.adapter);
         addStateServices(this.gRpcServer, this.adapter);
         addConfigSyncServices(this.gRpcServer, this.adapter);
+        addNotificationServices(this.gRpcServer, this.adapter);
     }
 
     stop(): void {

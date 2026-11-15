@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../src/server/supabase/supabase-config.ts"],
+  "sourcesContent": ["import type { SamartHomeHandyBis } from '../../main';\n\nexport function getSupabaseUrl(adapter: SamartHomeHandyBis): string {\n    return adapter.config.supabaseUrl || 'https://chvazplrvwsvznegekqy.supabase.co';\n}\n\nexport function getSupabaseAnonKey(adapter: SamartHomeHandyBis): string {\n    return adapter.config.supabaseAnonKey || 'sb_publishable_3dW4LAbXNar4lLW8iyOLKQ_fucrNUi-';\n}\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA;AAEO,SAAS,eAAe,SAAqC;AAChE,SAAO,QAAQ,OAAO,eAAe;AACzC;AAEO,SAAS,mBAAmB,SAAqC;AACpE,SAAO,QAAQ,OAAO,mBAAmB;AAC7C;",
+  "names": []
+}

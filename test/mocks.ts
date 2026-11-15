@@ -25,6 +25,7 @@ export const createMockAdapter = (): SamartHomeHandyBis => {
         setState: sinon.stub(),
         getStateAsync: sinon.stub().resolves(),
         checkPasswordAsync: sinon.stub().resolves(true),
+        extendObjectAsync: sinon.stub().resolves(),
         // You can extend this mock with more adapter properties and methods as needed for your tests
     };
     return mock as any;
